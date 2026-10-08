@@ -8,6 +8,14 @@ and captures of `this`. The raw snapshots include detached lambda methods that
 PyJoern removes through its function-name filter. The public snapshots under
 `references` preserve both `Function.ddg` and the labeled original DOT graph.
 
+`method-pointers.cpp` covers both `.*` and `->*` call receivers. Its unresolved
+`operator()` receiver has argument index zero; a lambda receiver has no argument
+index. `namespaced-fields.cpp` preserves CDT's member-owner quirk: const member
+methods synthesize `this->value`, while non-const methods keep `value` with an
+unqualified owner pointer type. The grouped-call snapshot uses the existing
+`parser-recovery/ambiguous_casts.cpp` source and distinguishes typed function
+pointers from unresolved C++ `operator()` receivers.
+
 Joern 4.0.150 converts lambda bodies after popping their parameter scope. Body
 parameters consequently have no `REF`, while captured identifiers retain the
 surrounding binding's type. Capture lists create no extra executable AST children

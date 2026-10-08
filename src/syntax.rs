@@ -12,9 +12,13 @@ pub struct Function {
     pub name: String,
     pub full_name: String,
     pub return_type: String,
+    /// CDT's canonical function binding type can differ from METHOD_RETURN's
+    /// declaration-specifier type, especially for typedefs and pointer returns.
+    pub binding_return_type: String,
     pub signature: String,
     pub implicit_this: Option<String>,
     pub implicit_fields: Vec<(String, String)>,
+    pub member_cv_qualified: bool,
     /// CDT stores a lambda method separately from the enclosing method AST.
     pub lambda: bool,
     pub is_static: bool,

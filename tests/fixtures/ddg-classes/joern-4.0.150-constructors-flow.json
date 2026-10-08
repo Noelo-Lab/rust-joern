@@ -1,0 +1,1029 @@
+{
+  "generator": "Original Joern 4.0.150 / dataflowOss and ReachingDefProblem",
+  "source_sha256": "83ddeaef679424a22882bdf151233fdac6cbe06845f4a454aedbdc0e0b1e4643",
+  "capture_sha256": "2b7017b294c34caa687bbec7a59f87016053c434561cb2a05f88bf1ad2684178",
+  "methods": [
+    {
+      "name": "~type_info",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 11,
+            "code": "type_info::~type_info() {}",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "~type_info",
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "this",
+            "id": 1,
+            "column": 1,
+            "type_name": "std.type_info",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "",
+            "id": 2,
+            "column": 25,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "RET",
+            "id": 3,
+            "column": 1,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "this",
+            "id": 4,
+            "column": 1,
+            "type_name": "std.type_info",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          }
+        ]
+      },
+      "filename": "constructors.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 11,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "std.type_info.~type_info:ANY()",
+      "start_line": 11,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "type_info",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 12,
+            "code": "type_info::type_info(const type_info &rhs) {\n  __type_name = rhs.__type_name;\n}",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "type_info",
+            "start_byte": 0
+          },
+          {
+            "line": 12,
+            "code": "this",
+            "id": 1,
+            "column": 1,
+            "type_name": "std.type_info",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 12,
+            "code": "const type_info &rhs",
+            "id": 2,
+            "column": 22,
+            "type_name": "type_info&",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "rhs",
+            "start_byte": 0
+          },
+          {
+            "line": 12,
+            "code": "{\n  __type_name = rhs.__type_name;\n}",
+            "id": 3,
+            "column": 44,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 13,
+            "method_full_name": "<operator>.assignment",
+            "code": "__type_name = rhs.__type_name",
+            "id": 4,
+            "column": 3,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.assignment",
+            "start_byte": 0
+          },
+          {
+            "line": 13,
+            "code": "__type_name",
+            "id": 5,
+            "column": 3,
+            "type_name": "type_info*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "__type_name",
+            "start_byte": 0
+          },
+          {
+            "line": 13,
+            "method_full_name": "<operator>.fieldAccess",
+            "code": "rhs.__type_name",
+            "id": 6,
+            "column": 17,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.fieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 13,
+            "code": "rhs",
+            "id": 7,
+            "column": 17,
+            "type_name": "type_info&",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "rhs",
+            "start_byte": 0
+          },
+          {
+            "line": 13,
+            "code": "__type_name",
+            "id": 8,
+            "column": 17,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 12,
+            "code": "RET",
+            "id": 9,
+            "column": 1,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 12,
+            "code": "this",
+            "id": 10,
+            "column": 1,
+            "type_name": "std.type_info",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 12,
+            "code": "const type_info &rhs",
+            "id": 11,
+            "column": 22,
+            "type_name": "type_info&",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "rhs",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "rhs"
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "rhs"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "rhs"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "rhs"
+          },
+          {
+            "source": 2,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "rhs"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "__type_name = rhs.__type_name"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "__type_name"
+          },
+          {
+            "source": 5,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "__type_name"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "rhs.__type_name"
+          },
+          {
+            "source": 6,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "rhs.__type_name"
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "rhs.__type_name"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 2,
+            "kind": "REF"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "constructors.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 14,
+      "signature": "ANY(type_info&)",
+      "return_type": "ANY",
+      "fullname": "std.type_info.type_info:ANY(std.type_info&)",
+      "start_line": 12,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 2,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2,
+            4,
+            6
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            2,
+            4,
+            6
+          ],
+          "outgoing": [
+            1,
+            2,
+            4,
+            6
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            2,
+            4,
+            6
+          ],
+          "outgoing": [
+            1,
+            2,
+            4,
+            6
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            1,
+            2,
+            4,
+            6
+          ],
+          "outgoing": [
+            1,
+            2,
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "name": "~Plain",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 20,
+            "code": "~Plain();",
+            "id": 0,
+            "column": 3,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "~Plain",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 1,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 20,
+            "code": "RET",
+            "id": 2,
+            "column": 3,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "constructors.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 20,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "Plain.~Plain:ANY()",
+      "start_line": 20,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "Plain",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 19,
+            "code": "Plain(const Plain &rhs);",
+            "id": 0,
+            "column": 3,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "Plain",
+            "start_byte": 0
+          },
+          {
+            "line": 19,
+            "code": "const Plain &rhs",
+            "id": 1,
+            "column": 9,
+            "type_name": "Plain&",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "rhs",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 2,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 19,
+            "code": "RET",
+            "id": 3,
+            "column": 3,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 19,
+            "code": "const Plain &rhs",
+            "id": 4,
+            "column": 9,
+            "type_name": "Plain&",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "rhs",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "rhs"
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "rhs"
+          }
+        ]
+      },
+      "filename": "constructors.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 19,
+      "signature": "ANY(Plain&)",
+      "return_type": "ANY",
+      "fullname": "Plain.Plain:ANY(Plain &)",
+      "start_line": 19,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "Plain",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 18,
+            "code": "Plain();",
+            "id": 0,
+            "column": 3,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "Plain",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 1,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 18,
+            "code": "RET",
+            "id": 2,
+            "column": 3,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "constructors.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 18,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "Plain.Plain:ANY()",
+      "start_line": 18,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "type_info",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 6,
+            "code": "type_info();",
+            "id": 0,
+            "column": 3,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "type_info",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 1,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "RET",
+            "id": 2,
+            "column": 3,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "constructors.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 6,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "std.type_info.type_info:ANY()",
+      "start_line": 6,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    }
+  ]
+}

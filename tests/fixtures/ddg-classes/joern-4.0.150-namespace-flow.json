@@ -1,0 +1,1445 @@
+{
+  "generator": "Original Joern 4.0.150 / dataflowOss and ReachingDefProblem",
+  "source_sha256": "0f4f6e9aa05bcb5428fa00595c3389cd938f2089720a3d398edd415a2740effc",
+  "capture_sha256": "2b7017b294c34caa687bbec7a59f87016053c434561cb2a05f88bf1ad2684178",
+  "methods": [
+    {
+      "name": "~A",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 16,
+            "code": "A::~A() {}",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "~A",
+            "start_byte": 0
+          },
+          {
+            "line": 16,
+            "code": "this",
+            "id": 1,
+            "column": 1,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 16,
+            "code": "",
+            "id": 2,
+            "column": 9,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 16,
+            "code": "RET",
+            "id": 3,
+            "column": 1,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 16,
+            "code": "this",
+            "id": 4,
+            "column": 1,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          }
+        ]
+      },
+      "filename": "using-namespace.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 16,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "N.A.~A:ANY()",
+      "start_line": 16,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "~B",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 17,
+            "code": "B::~B() {}",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "~B",
+            "start_byte": 0
+          },
+          {
+            "line": 17,
+            "code": "this",
+            "id": 1,
+            "column": 1,
+            "type_name": "N.B",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 17,
+            "code": "",
+            "id": 2,
+            "column": 9,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 17,
+            "code": "RET",
+            "id": 3,
+            "column": 1,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 17,
+            "code": "this",
+            "id": 4,
+            "column": 1,
+            "type_name": "N.B",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          }
+        ]
+      },
+      "filename": "using-namespace.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 17,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "N.B.~B:ANY()",
+      "start_line": 17,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "read_a",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 18,
+            "code": "int A::read_a() const { return value; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "read_a",
+            "start_byte": 0
+          },
+          {
+            "line": 18,
+            "code": "this",
+            "id": 1,
+            "column": 1,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 18,
+            "code": "{ return value; }",
+            "id": 2,
+            "column": 23,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 18,
+            "code": "return value;",
+            "id": 3,
+            "column": 25,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 18,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "this->value",
+            "id": 4,
+            "column": 32,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 18,
+            "code": "this",
+            "id": 5,
+            "column": 32,
+            "type_name": "N.A*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 18,
+            "code": "value",
+            "id": 6,
+            "column": 32,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 18,
+            "code": "RET",
+            "id": 7,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 18,
+            "code": "this",
+            "id": 8,
+            "column": 1,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "using-namespace.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 18,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.A.read_a:int()",
+      "start_line": 18,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "plain_a",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 19,
+            "code": "int A::plain_a() { return value; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "plain_a",
+            "start_byte": 0
+          },
+          {
+            "line": 19,
+            "code": "this",
+            "id": 1,
+            "column": 1,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 19,
+            "code": "{ return value; }",
+            "id": 2,
+            "column": 18,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 19,
+            "code": "return value;",
+            "id": 3,
+            "column": 20,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 19,
+            "code": "value",
+            "id": 4,
+            "column": 27,
+            "type_name": "A*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 19,
+            "code": "RET",
+            "id": 5,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 19,
+            "code": "this",
+            "id": 6,
+            "column": 1,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          }
+        ]
+      },
+      "filename": "using-namespace.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 19,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.A.plain_a:int()",
+      "start_line": 19,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "read_b",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 20,
+            "code": "int B::read_b() const { return value; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "read_b",
+            "start_byte": 0
+          },
+          {
+            "line": 20,
+            "code": "this",
+            "id": 1,
+            "column": 1,
+            "type_name": "N.B",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 20,
+            "code": "{ return value; }",
+            "id": 2,
+            "column": 23,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 20,
+            "code": "return value;",
+            "id": 3,
+            "column": 25,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 20,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "this->value",
+            "id": 4,
+            "column": 32,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 20,
+            "code": "this",
+            "id": 5,
+            "column": 32,
+            "type_name": "N.B*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 20,
+            "code": "value",
+            "id": 6,
+            "column": 32,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 20,
+            "code": "RET",
+            "id": 7,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 20,
+            "code": "this",
+            "id": 8,
+            "column": 1,
+            "type_name": "N.B",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "using-namespace.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 20,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.B.read_b:int()",
+      "start_line": 20,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "plain_b",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 21,
+            "code": "int B::plain_b() { return value; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "plain_b",
+            "start_byte": 0
+          },
+          {
+            "line": 21,
+            "code": "this",
+            "id": 1,
+            "column": 1,
+            "type_name": "N.B",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 21,
+            "code": "{ return value; }",
+            "id": 2,
+            "column": 18,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 21,
+            "code": "return value;",
+            "id": 3,
+            "column": 20,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 21,
+            "code": "value",
+            "id": 4,
+            "column": 27,
+            "type_name": "B*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 21,
+            "code": "RET",
+            "id": 5,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 21,
+            "code": "this",
+            "id": 6,
+            "column": 1,
+            "type_name": "N.B",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          }
+        ]
+      },
+      "filename": "using-namespace.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 21,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.B.plain_b:int()",
+      "start_line": 21,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    }
+  ]
+}

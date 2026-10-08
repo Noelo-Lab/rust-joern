@@ -34,6 +34,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("log", type=Path)
     parser.add_argument("--filename", required=True)
+    parser.add_argument("--source", type=Path)
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
     methods = [json.loads(text) for text in re.findall(r"FLOW_JSON_START\n(.*?)FLOW_JSON_END", args.log.read_text(), re.S)]
@@ -43,7 +44,7 @@ def main():
     fixture = Path(__file__).parent
     result = {
         "generator": "Original Joern 4.0.150 / dataflowOss and ReachingDefProblem",
-        "source_sha256": hashlib.sha256((fixture / args.filename).read_bytes()).hexdigest(),
+        "source_sha256": hashlib.sha256((args.source or fixture / args.filename).read_bytes()).hexdigest(),
         "capture_sha256": hashlib.sha256((fixture / "capture.sc").read_bytes()).hexdigest(),
         "methods": methods,
     }

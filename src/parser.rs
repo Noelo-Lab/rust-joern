@@ -28,6 +28,7 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         class_scopes: HashSet::new(),
         class_fields: HashMap::new(),
         function_fields: Vec::new(),
+        function_member_cv: false,
         variables: HashSet::new(),
         variable_types: HashMap::new(),
         variable_closures: HashMap::new(),
@@ -35,6 +36,8 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         function_full_name: String::new(),
         lambda_counter: 0,
         imports: HashMap::new(),
+        using_namespaces: Vec::new(),
+        lexical_scope: String::new(),
         asm_problem_recovery: false,
         in_function_body: false,
         function_declarations: Vec::new(),
@@ -43,19 +46,59 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
     let mut functions = Vec::new();
     parser.translation_scope("", &mut functions);
     functions.append(&mut parser.function_declarations);
+    let declaration_count = functions.iter().filter(|function| matches!(function.body.kind, StmtKind::Empty))
+        .map(|function| function.full_name.as_str()).collect::<HashSet<_>>().len();
     // Joern collects declarations separately, and emits only those without a
     // matching definition after visiting every translation-unit declaration.
     let definitions: HashSet<_> = functions.iter()
         .filter(|f| !matches!(f.body.kind, StmtKind::Empty))
         .map(|f| f.full_name.clone())
         .collect();
+    let mut declarations = HashSet::new();
     functions.retain(|f| !matches!(f.body.kind, StmtKind::Empty)
-        || !definitions.contains(&f.full_name));
-    functions.sort_by_key(|f| matches!(f.body.kind, StmtKind::Empty));
+        || !definitions.contains(&f.full_name) && declarations.insert(f.full_name.clone()));
+    let declaration_names: Vec<_> = functions.iter().filter(|function| matches!(function.body.kind, StmtKind::Empty))
+        .map(|function| function.full_name.clone()).collect();
+    let ranks = joern_declaration_order(&declaration_names, declaration_count);
+    functions.sort_by_key(|f| if matches!(f.body.kind, StmtKind::Empty) {
+        (true, ranks[&f.full_name])
+    } else { (false, 0) });
     TranslationUnit {
         functions,
         diagnostics: parser.diagnostics,
     }
+}
+
+fn joern_declaration_order(names: &[String], registered_count: usize) -> HashMap<String, usize> {
+    // AstCreationPass copies its ConcurrentHashMap into Scala's immutable Map,
+    // then removes definitions. Small Maps retain Java's bucket order; larger
+    // Maps iterate the hash trie, visiting inline data before child nodes.
+    fn java_hash(name: &str) -> u32 {
+        name.encode_utf16().fold(0u32, |hash, unit| hash.wrapping_mul(31).wrapping_add(unit as u32))
+    }
+    fn improved_hash(name: &str) -> u32 {
+        let hash = java_hash(name);
+        let hash = hash.wrapping_add(!(hash << 9));
+        let hash = hash ^ (hash >> 14);
+        let hash = hash.wrapping_add(hash << 4);
+        hash ^ (hash >> 10)
+    }
+    fn trie_order<'a>(names: Vec<&'a String>, shift: u32, output: &mut Vec<&'a String>) {
+        if shift >= 32 { output.extend(names); return; }
+        let mut slots: [Vec<&String>; 32] = std::array::from_fn(|_| Vec::new());
+        for name in names { slots[((improved_hash(name) >> shift) & 31) as usize].push(name); }
+        output.extend(slots.iter().filter(|slot| slot.len() == 1).map(|slot| slot[0]));
+        for slot in slots.into_iter().filter(|slot| slot.len() > 1) { trie_order(slot, shift + 5, output); }
+    }
+    let mut order: Vec<_> = names.iter().collect();
+    if registered_count <= 4 {
+        order.sort_by_key(|name| { let hash = java_hash(name); (hash ^ (hash >> 16)) & 15 });
+    } else {
+        let mut sorted = Vec::with_capacity(order.len());
+        trie_order(order, 0, &mut sorted);
+        order = sorted;
+    }
+    order.into_iter().enumerate().map(|(index, name)| (name.clone(), index)).collect()
 }
 
 #[cfg(test)]
@@ -174,6 +217,7 @@ struct Parser<'a> {
     class_scopes: HashSet<String>,
     class_fields: HashMap<String, Vec<(String, String)>>,
     function_fields: Vec<(String, String)>,
+    function_member_cv: bool,
     variables: HashSet<String>,
     variable_types: HashMap<String, String>,
     variable_closures: HashMap<String, Closure>,
@@ -181,6 +225,8 @@ struct Parser<'a> {
     function_full_name: String,
     lambda_counter: usize,
     imports: HashMap<String, String>,
+    using_namespaces: Vec<String>,
+    lexical_scope: String,
     asm_problem_recovery: bool,
     in_function_body: bool,
     function_declarations: Vec<Function>,
@@ -306,6 +352,8 @@ impl Parser<'_> {
     }
 
     fn translation_scope(&mut self, prefix: &str, functions: &mut Vec<Function>) {
+        let old_scope = std::mem::replace(&mut self.lexical_scope, prefix.to_string());
+        let old_using_namespaces = self.using_namespaces.clone();
         while self.pos < self.limit && !self.at("}") {
             if self.eat(";") {
                 continue;
@@ -380,10 +428,19 @@ impl Parser<'_> {
                 let elaborated = (start..self.specifier_end(start, cursor))
                     .any(|i| matches!(self.text(i), "struct" | "union" | "enum" | "class"));
                 self.remember_types(start, cursor);
+                if self.cpp && self.text(start) == "using" {
+                    self.pos = cursor + 1;
+                    continue;
+                }
                 if !is_typedef && !elaborated {
                     // A simple declaration shares its specifiers across every
                     // declarator; Joern converts each function declarator.
-                    let base_end = self.specifier_end(start, cursor);
+                    // A constructor's name is also a known type. It belongs to
+                    // the declarator, rather than the shared type specifiers.
+                    let base_end = header.as_ref().map_or_else(
+                        || self.specifier_end(start, cursor),
+                        |header| self.specifier_end(start, cursor).min(header.name_start),
+                    );
                     let base_type = self.clean_type(start, base_end);
                     for (a, b) in self.split_ranges(base_end, cursor, ",") {
                         if let Some(mut header) = self.function_header(a, b) {
@@ -497,6 +554,8 @@ impl Parser<'_> {
                 self.pos = start + 1;
             }
         }
+        self.lexical_scope = old_scope;
+        self.using_namespaces = old_using_namespaces;
     }
 
     fn declaration_end(&self, start: usize) -> usize {
@@ -654,14 +713,14 @@ impl Parser<'_> {
                 i += 1;
                 continue;
             }
+            if name_start > start && self.text(name_start - 1) == "~" {
+                name_start -= 1;
+            }
             while name_start >= start + 2
                 && self.text(name_start - 1) == "::"
                 && self.tokens[name_start - 2].kind == TokenKind::Identifier
             {
                 name_start -= 2;
-            }
-            if name_start > start && self.text(name_start - 1) == "~" {
-                name_start -= 1;
             }
             if (start..name_start).any(|n| self.text(n) == "=" || self.text(n) == ":") {
                 i = close + 1;
@@ -815,23 +874,19 @@ impl Parser<'_> {
             return_start = close + 1;
         }
         let return_type = header.return_type.clone().unwrap_or_else(|| self.clean_type(return_start, header.name_start));
+        let return_binding_type = if return_type.is_empty() && self.cpp { "ANY".into() }
+            else if return_type.is_empty() { "int".into() } else { return_type.clone() };
         let return_type = if return_type.is_empty() {
-            if self.cpp {
-                "void".into()
-            } else {
-                "int".into()
-            }
-        } else {
-            return_type
-        };
-        let return_binding_type = return_type.clone();
-        let return_type = if definition {
+            if !definition && self.cpp && (return_start..header.name_start).any(|i| self.text(i) == "virtual") {
+                "virtual".into()
+            } else { return_binding_type.clone() }
+        } else if definition {
             let base = return_type.trim_end_matches(['*', '&']).trim();
             if base.split_whitespace().all(type_word) {
-                self.type_code(return_start, header.name_start, true).replace("_Bool", "bool")
+                primitive_return_display(&self.type_code(return_start, header.name_start, true))
             } else if self.explicit_types.contains(base) || self.class_scopes.contains(base)
                 || base.contains("::") {
-                base.replace("::", ".")
+                simple_type_name(base).to_string()
             } else { return_type }
         } else { return_type };
         let old_variables = self.variables.clone();
@@ -839,6 +894,7 @@ impl Parser<'_> {
         let old_variable_closures = self.variable_closures.clone();
         let old_function_full_name = self.function_full_name.clone();
         let old_function_fields = self.function_fields.clone();
+        let old_function_member_cv = self.function_member_cv;
         let old_body_context = self.in_function_body;
         self.in_function_body = false;
         let parameters =
@@ -900,16 +956,12 @@ impl Parser<'_> {
         } else {
             lexical_name
         };
-        let resolved_name = if let Some((owner, method)) = header.name.split_once("::") {
-            self.imports.get(owner).map_or_else(|| header.name.clone(), |qualified| format!("{qualified}::{method}"))
-        } else {
-            header.name
-        };
-        let qualified_name = if prefix.is_empty() {
-            resolved_name
-        } else {
-            format!("{prefix}::{resolved_name}")
-        };
+        let qualified_name = if let Some((owner, method)) = header.name.rsplit_once("::")
+            && let Some(owner) = self.resolve_class_name(owner)
+        {
+            format!("{owner}::{method}")
+        } else if prefix.is_empty() { header.name.clone() }
+        else { format!("{prefix}::{}", header.name) };
         let extern_c = self.cpp && (self.extern_c
             || (start..header.name_start).any(|i| self.text(i) == "extern" && self.text(i + 1) == "\"C\"")
             || self.extern_c_names.contains(&qualified_name));
@@ -937,6 +989,17 @@ impl Parser<'_> {
         };
         self.function_full_name.clone_from(&full_name);
         self.function_fields.clone_from(&implicit_fields);
+        let mut suffix = header.parameters_end + 1;
+        let mut member_cv_qualified = false;
+        while suffix < body_start && !matches!(self.text(suffix), "->" | ":") {
+            if matches!(self.text(suffix), "const" | "volatile") {
+                member_cv_qualified = true;
+            }
+            suffix = if matches!(self.text(suffix), "(" | "[") {
+                self.matching(suffix, body_start).map_or(body_start, |close| close + 1)
+            } else { suffix + 1 };
+        }
+        self.function_member_cv = member_cv_qualified;
         if let Some(owner) = &implicit_this {
             self.variables.insert("this".into());
             self.variable_types.insert("this".into(), owner.clone());
@@ -965,6 +1028,7 @@ impl Parser<'_> {
         self.variable_closures = old_variable_closures;
         self.function_full_name = old_function_full_name;
         self.function_fields = old_function_fields;
+        self.function_member_cv = old_function_member_cv;
         self.in_function_body = old_body_context;
         self.variables.insert(name.clone());
         let mut span = self.span(start, end);
@@ -976,10 +1040,12 @@ impl Parser<'_> {
         functions.push(Function {
             name,
             full_name,
+            binding_return_type: self.binding_type(&return_binding_type),
             return_type,
             signature,
             implicit_this,
             implicit_fields,
+            member_cv_qualified,
             lambda: false,
             is_static: (start..header.name_start).any(|i| self.text(i) == "static"),
             inherited_bindings: Vec::new(),
@@ -1023,6 +1089,9 @@ impl Parser<'_> {
             let name = self.text(end - 1).to_string();
             let qualified = (start + 1..end).map(|i| self.text(i)).collect::<String>();
             self.imports.insert(name, qualified);
+        }
+        if self.cpp && self.text(start) == "using" && self.text(start + 1) == "namespace" {
+            self.using_namespaces.push((start + 2..end).map(|i| self.text(i)).collect());
         }
         if (start..end).any(|i| self.text(i) == "typedef") {
             let base_end = self.specifier_end(start, end);
@@ -1152,6 +1221,8 @@ impl Parser<'_> {
         for keyword in ["struct ", "class ", "union ", "enum ", "const "] {
             if let Some(rest) = base.strip_prefix(keyword) { base = rest.to_string(); }
         }
+        let class_type = self.cpp.then(|| self.resolve_class_name(&base)).flatten();
+        if let Some(qualified) = &class_type { base.clone_from(qualified); }
         base = match base.as_str() {
             "signed" | "signed int" => "int".into(),
             "unsigned" => "unsigned int".into(),
@@ -1171,12 +1242,35 @@ impl Parser<'_> {
         if result.starts_with("unsigned ") || result.starts_with("volatile ") {
             let space = result.find(' ').unwrap();
             result = format!("{}{}", &result[..=space], result[space + 1..].replace(' ', ""));
-        } else if result.contains(['*', '[']) {
+        } else if result.contains(['*', '[']) || base.contains("::") {
             result = result.replace(' ', "");
         } else if raw[split..].contains('&') {
             result = format!("{base} {}", raw[split..].trim());
         }
         result.replace("::", ".")
+    }
+
+    fn resolve_class_name(&self, name: &str) -> Option<String> {
+        let raw = name.trim_start_matches("::");
+        if name.starts_with("::") {
+            return self.class_scopes.contains(raw).then(|| raw.to_string());
+        }
+        let mut scope = self.lexical_scope.as_str();
+        while !scope.is_empty() {
+            let candidate = format!("{scope}::{raw}");
+            if self.class_scopes.contains(&candidate) { return Some(candidate); }
+            scope = scope.rsplit_once("::").map_or("", |(owner, _)| owner);
+        }
+        if self.class_scopes.contains(raw) { return Some(raw.to_string()); }
+        let (head, suffix) = raw.split_once("::").map_or((raw, ""), |(head, tail)| (head, tail));
+        if let Some(imported) = self.imports.get(head) {
+            let candidate = if suffix.is_empty() { imported.clone() } else { format!("{imported}::{suffix}") };
+            if self.class_scopes.contains(&candidate) { return Some(candidate); }
+        }
+        let candidates: HashSet<_> = self.using_namespaces.iter()
+            .map(|namespace| format!("{namespace}::{raw}"))
+            .filter(|candidate| self.class_scopes.contains(candidate)).collect();
+        (candidates.len() == 1).then(|| candidates.into_iter().next().unwrap())
     }
 
     fn angle_close(&self, start: usize, end: usize) -> Option<usize> {
@@ -1554,6 +1648,9 @@ impl Parser<'_> {
 
     fn looks_declaration(&self, start: usize, end: usize) -> bool {
         let t = self.text(start);
+        if self.cpp && matches!(t, "new" | "delete" | "noexcept") {
+            return false;
+        }
         if (self.cpp || t != "[") && let Some(after) = self.skip_attribute(start, end) {
             return self.looks_declaration(after, end);
         }
@@ -2359,7 +2456,7 @@ impl Parser<'_> {
             diagnostics, types: self.types.clone(), explicit_types: self.explicit_types.clone(), type_aliases: self.type_aliases.clone(), variables: self.variables.clone(),
             variable_types: self.variable_types.clone(), variable_closures: self.variable_closures.clone(),
             function_returns: self.function_returns.clone(), function_full_name: self.function_full_name.clone(), lambda_counter: self.lambda_counter,
-            imports: self.imports.clone(), extern_c: self.extern_c, extern_c_names:self.extern_c_names.clone(), class_scopes:self.class_scopes.clone(), class_fields: self.class_fields.clone(), function_fields: self.function_fields.clone(), asm_problem_recovery: false,
+            imports: self.imports.clone(), using_namespaces: self.using_namespaces.clone(), lexical_scope: self.lexical_scope.clone(), extern_c: self.extern_c, extern_c_names:self.extern_c_names.clone(), class_scopes:self.class_scopes.clone(), class_fields: self.class_fields.clone(), function_fields: self.function_fields.clone(), function_member_cv: self.function_member_cv, asm_problem_recovery: false,
             in_function_body: self.in_function_body, function_declarations: Vec::new(),
             // The replacement for types_compatible_p contains its own name;
             // a disabled macro is not expanded a second time by CDT.
@@ -2472,8 +2569,9 @@ impl Parser<'_> {
         });
         let closure = Closure {full_name: full_name.clone(), return_type: self.binding_type(&call_return), parameter_types};
         self.function_declarations.push(Function {
-            name, full_name, return_type, signature,
-            implicit_this: None, implicit_fields: self.function_fields.clone(), lambda: true, is_static: false, inherited_bindings, inherited_closures,
+            name, full_name, binding_return_type: self.binding_type(&return_type), return_type, signature,
+            implicit_this: None, implicit_fields: self.function_fields.clone(), member_cv_qualified: self.function_member_cv,
+            lambda: true, is_static: false, inherited_bindings, inherited_closures,
             parameters, body, span: self.span(start, self.pos),
         });
         Expr {kind: ExprKind::Lambda(closure), span: self.span(start, self.pos)}
@@ -2690,11 +2788,15 @@ impl Parser<'_> {
                 self.pos += 1;
                 let type_start = self.pos;
                 self.pos = self.specifier_end(self.pos, self.limit);
+                let type_end = self.pos;
                 while self.eat("*") {}
-                let type_name = self.clean_type(type_start, self.pos);
+                let type_name = self.clean_type(type_start, type_end).replace("::", ".");
                 let mut arguments = vec![Expr {
-                    kind: ExprKind::Identifier(type_name),
-                    span: self.span(type_start, self.pos),
+                    kind: ExprKind::TypeSpecifier {
+                        code: self.raw(type_start, type_end),
+                        type_name,
+                    },
+                    span: self.span(type_start, type_end),
                 }];
                 while self.eat("[") {
                     arguments.push(self.expression(0));
@@ -3236,6 +3338,36 @@ fn binary_precedence(op: &str) -> Option<(u8, bool)> {
     })
 }
 
+// CDT's ASTStringUtil renders simple return specifiers from their flags, so
+// base qualifiers and signedness precede the type regardless of source order.
+// Qualifiers on pointer operators keep their position after the pointer.
+fn primitive_return_display(code: &str) -> String {
+    let split = code.find(['*', '&', '[']).unwrap_or(code.len());
+    let words: Vec<_> = code[..split].split_whitespace().collect();
+    let modifiers = ["const", "volatile", "signed", "unsigned"];
+    let mut base: Vec<_> = modifiers
+        .iter()
+        .copied()
+        .filter(|modifier| words.contains(modifier))
+        .collect();
+    base.extend(words.into_iter().filter(|word| !modifiers.contains(word)));
+    format!("{}{}", base.join(" "), &code[split..]).replace("_Bool", "bool")
+}
+
+fn simple_type_name(name: &str) -> &str {
+    let mut depth = 0usize;
+    let mut start = 0;
+    for (at, ch) in name.char_indices() {
+        match ch {
+            '<' => depth += 1,
+            '>' => depth = depth.saturating_sub(1),
+            ':' if depth == 0 && name[at..].starts_with("::") => start = at + 2,
+            _ => {}
+        }
+    }
+    &name[start..]
+}
+
 fn alternative_operator(op: &str) -> &str {
     match op {
         "and" => "&&",
@@ -3357,6 +3489,45 @@ mod declaration_tests {
     }
 
     #[test]
+    fn cpp_declaration_iteration_matches_original_constructor_selection() {
+        let reference: serde_json::Value = serde_json::from_str(include_str!(
+            "../tests/fixtures/ddg-classes/joern-4.0.150.json"
+        )).unwrap();
+        let unit = parse(include_str!("../tests/fixtures/ddg-classes/constructors.cpp"), true);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        let expected: Vec<_> = reference["methods"].as_array().unwrap().iter()
+            .map(|method| method["fullname"].as_str().unwrap()).collect();
+        assert_eq!(unit.functions.iter().map(|function| function.full_name.as_str()).collect::<Vec<_>>(), expected);
+        // Every reduced constructor has one CFG node, so PyJoern keeps the
+        // last declaration on ties, including Plain's default overload.
+        for name in ["type_info", "Plain"] {
+            let selected = unit.functions.iter().rev().find(|function| function.name == name).unwrap();
+            let original = reference["methods"].as_array().unwrap().iter()
+                .find(|method| method["name"] == name && method["selected_by_from_many"] == true).unwrap();
+            assert_eq!(selected.full_name, original["fullname"].as_str().unwrap());
+        }
+    }
+
+    #[test]
+    fn c_and_cpp_declaration_orders_match_original_joern() {
+        let reference: serde_json::Value = serde_json::from_str(include_str!(
+            "../tests/fixtures/ddg-classes/method-order-oracle.json"
+        )).unwrap();
+        for case in reference["cases"].as_array().unwrap() {
+            let unit = parse(case["source"].as_str().unwrap(), case["language"] == "cpp");
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let original = case["ordered_methods"].as_array().unwrap();
+            assert_eq!(unit.functions.len(), original.len());
+            for (function, method) in unit.functions.iter().zip(original) {
+                assert_eq!(function.name, method["name"].as_str().unwrap());
+                assert_eq!(function.full_name, method["fullname"].as_str().unwrap());
+                assert_eq!(function.signature, method["signature"].as_str().unwrap());
+                assert_eq!(function.return_type, method["return_type"].as_str().unwrap());
+            }
+        }
+    }
+
+    #[test]
     fn c_symbol_definition_replaces_array_parameter_declaration() {
         let unit = parse("int f(int values[]); int f(int *values) { return values[0]; }", false);
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
@@ -3423,7 +3594,8 @@ mod declaration_tests {
         for cpp in [false, true] {
             let unit = parse(source, cpp);
             assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-            assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["f", "start", "first"]);
+            let expected = if cpp { ["f", "first", "start"] } else { ["f", "start", "first"] };
+            assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), expected);
             assert!(unit.functions[1..].iter().all(|f| matches!(f.body.kind, StmtKind::Empty)));
             let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
             assert!(matches!(&body[0].kind, StmtKind::Declaration(values) if values.is_empty()));
@@ -3516,9 +3688,9 @@ mod declaration_tests {
     fn top_level_declarations_convert_each_function_declarator() {
         let unit = parse("void first(void), second(int); char *third(void), *fourth(int);", false);
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["first", "second", "third", "fourth"]);
-        assert_eq!(unit.functions[2].return_type, "char*");
-        assert_eq!(unit.functions[3].return_type, "char*");
+        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["third", "fourth", "first", "second"]);
+        assert_eq!(unit.functions[0].return_type, "char*");
+        assert_eq!(unit.functions[1].return_type, "char*");
     }
 
     #[test]

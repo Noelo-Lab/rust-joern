@@ -1,0 +1,1402 @@
+{
+  "generator": "Unchanged Joern 4.0.150 / PyJoern Function.from_many",
+  "joern_tag_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1"
+  },
+  "source_filename": "using-namespace.cpp",
+  "source_sha256": "0f4f6e9aa05bcb5428fa00595c3389cd938f2089720a3d398edd415a2740effc",
+  "capture_sha256": "80868f32823214b911c5ec9a1a3707207df8ab094cfc78e31424f9f41a957317",
+  "selector_sha256": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+  "methods": [
+    {
+      "name": "~A",
+      "ast_parent_fullname": "using-namespace.cpp:<global>",
+      "ast_parent_type": "TYPE_DECL",
+      "code": "A::~A() {}",
+      "filename": "using-namespace.cpp",
+      "cfg": [
+        "digraph \"~A\" {  \n\"111669149697\" [label = <(METHOD,~A)<SUB>16</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,ANY)<SUB>16</SUB>> ]\n  \"111669149697\" -> \"128849018880\" \n}\n"
+      ],
+      "method_index": 0,
+      "is_external": false,
+      "start_line": 16,
+      "ddg": [
+        "digraph \"~A\" {  \n\"111669149697\" [label = <(METHOD,~A)<SUB>16</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,ANY)<SUB>16</SUB>> ]\n\"115964116992\" [label = <(PARAM,this)<SUB>16</SUB>> ]\n  \"115964116992\" -> \"128849018880\"  [ label = \"this\"] \n  \"111669149697\" -> \"115964116992\" \n}\n"
+      ],
+      "cpg": {
+        "nodes": [
+          {
+            "id": 111669149697,
+            "kind": "METHOD",
+            "properties": {
+              "LINE_NUMBER_END": 16,
+              "AST_PARENT_TYPE": "TYPE_DECL",
+              "COLUMN_NUMBER_END": 10,
+              "SIGNATURE": "ANY()",
+              "COLUMN_NUMBER": 1,
+              "FULL_NAME": "N.A.~A:ANY()",
+              "ORDER": 2,
+              "AST_PARENT_FULL_NAME": "using-namespace.cpp:<global>",
+              "NAME": "~A",
+              "FILENAME": "using-namespace.cpp",
+              "CODE": "A::~A() {}",
+              "LINE_NUMBER": 16
+            }
+          },
+          {
+            "id": 115964116992,
+            "kind": "METHOD_PARAMETER_IN",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 16,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.A"
+            }
+          },
+          {
+            "id": 25769803777,
+            "kind": "BLOCK",
+            "properties": {
+              "ORDER": 2,
+              "COLUMN_NUMBER": 9,
+              "LINE_NUMBER": 16,
+              "TYPE_FULL_NAME": "void"
+            }
+          },
+          {
+            "id": 128849018880,
+            "kind": "METHOD_RETURN",
+            "properties": {
+              "COLUMN_NUMBER": 1,
+              "ORDER": 3,
+              "CODE": "RET",
+              "LINE_NUMBER": 16,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "ANY"
+            }
+          },
+          {
+            "id": 120259084288,
+            "kind": "METHOD_PARAMETER_OUT",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 16,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.A"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 111669149697,
+            "target": 115964116992,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149697,
+            "target": 25769803777,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149697,
+            "target": 128849018880,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149697,
+            "target": 120259084288,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149697,
+            "target": 128849018880,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 111669149697,
+            "target": 115964116992,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 115964116992,
+            "target": 120259084288,
+            "kind": "PARAMETER_LINK",
+            "label": ""
+          },
+          {
+            "source": 115964116992,
+            "target": 120259084288,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116992,
+            "target": 128849018880,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          }
+        ]
+      },
+      "end_line": 16,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "N.A.~A:ANY()",
+      "normalized_cfg_nodes": 1,
+      "normalized_ddg_nodes": 3,
+      "selected_by_from_many": true
+    },
+    {
+      "name": "~B",
+      "ast_parent_fullname": "using-namespace.cpp:<global>",
+      "ast_parent_type": "TYPE_DECL",
+      "code": "B::~B() {}",
+      "filename": "using-namespace.cpp",
+      "cfg": [
+        "digraph \"~B\" {  \n\"111669149698\" [label = <(METHOD,~B)<SUB>17</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,ANY)<SUB>17</SUB>> ]\n  \"111669149698\" -> \"128849018881\" \n}\n"
+      ],
+      "method_index": 1,
+      "is_external": false,
+      "start_line": 17,
+      "ddg": [
+        "digraph \"~B\" {  \n\"111669149698\" [label = <(METHOD,~B)<SUB>17</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,ANY)<SUB>17</SUB>> ]\n\"115964116993\" [label = <(PARAM,this)<SUB>17</SUB>> ]\n  \"115964116993\" -> \"128849018881\"  [ label = \"this\"] \n  \"111669149698\" -> \"115964116993\" \n}\n"
+      ],
+      "cpg": {
+        "nodes": [
+          {
+            "id": 111669149698,
+            "kind": "METHOD",
+            "properties": {
+              "LINE_NUMBER_END": 17,
+              "AST_PARENT_TYPE": "TYPE_DECL",
+              "COLUMN_NUMBER_END": 10,
+              "SIGNATURE": "ANY()",
+              "COLUMN_NUMBER": 1,
+              "FULL_NAME": "N.B.~B:ANY()",
+              "ORDER": 3,
+              "AST_PARENT_FULL_NAME": "using-namespace.cpp:<global>",
+              "NAME": "~B",
+              "FILENAME": "using-namespace.cpp",
+              "CODE": "B::~B() {}",
+              "LINE_NUMBER": 17
+            }
+          },
+          {
+            "id": 115964116993,
+            "kind": "METHOD_PARAMETER_IN",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 17,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.B"
+            }
+          },
+          {
+            "id": 25769803778,
+            "kind": "BLOCK",
+            "properties": {
+              "ORDER": 2,
+              "COLUMN_NUMBER": 9,
+              "LINE_NUMBER": 17,
+              "TYPE_FULL_NAME": "void"
+            }
+          },
+          {
+            "id": 128849018881,
+            "kind": "METHOD_RETURN",
+            "properties": {
+              "COLUMN_NUMBER": 1,
+              "ORDER": 3,
+              "CODE": "RET",
+              "LINE_NUMBER": 17,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "ANY"
+            }
+          },
+          {
+            "id": 120259084289,
+            "kind": "METHOD_PARAMETER_OUT",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 17,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.B"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 111669149698,
+            "target": 115964116993,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149698,
+            "target": 25769803778,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149698,
+            "target": 128849018881,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149698,
+            "target": 120259084289,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149698,
+            "target": 128849018881,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 111669149698,
+            "target": 115964116993,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 115964116993,
+            "target": 120259084289,
+            "kind": "PARAMETER_LINK",
+            "label": ""
+          },
+          {
+            "source": 115964116993,
+            "target": 120259084289,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116993,
+            "target": 128849018881,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          }
+        ]
+      },
+      "end_line": 17,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "N.B.~B:ANY()",
+      "normalized_cfg_nodes": 1,
+      "normalized_ddg_nodes": 3,
+      "selected_by_from_many": true
+    },
+    {
+      "name": "read_a",
+      "ast_parent_fullname": "using-namespace.cpp:<global>",
+      "ast_parent_type": "TYPE_DECL",
+      "code": "int A::read_a() const { return value; }",
+      "filename": "using-namespace.cpp",
+      "cfg": [
+        "digraph \"read_a\" {  \n\"146028888064\" [label = <(RETURN,return value;,return value;)<SUB>18</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.indirectFieldAccess,this-&gt;value)<SUB>18</SUB>> ]\n\"55834574848\" [label = <(FIELD_IDENTIFIER,value,value)<SUB>18</SUB>> ]\n\"111669149699\" [label = <(METHOD,read_a)<SUB>18</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>18</SUB>> ]\n  \"146028888064\" -> \"128849018882\" \n  \"30064771072\" -> \"146028888064\" \n  \"55834574848\" -> \"30064771072\" \n  \"111669149699\" -> \"55834574848\" \n}\n"
+      ],
+      "method_index": 2,
+      "is_external": false,
+      "start_line": 18,
+      "ddg": [
+        "digraph \"read_a\" {  \n\"111669149699\" [label = <(METHOD,read_a)<SUB>18</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>18</SUB>> ]\n\"115964116994\" [label = <(PARAM,this)<SUB>18</SUB>> ]\n\"146028888064\" [label = <(RETURN,return value;,return value;)<SUB>18</SUB>> ]\n  \"146028888064\" -> \"128849018882\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116994\" -> \"128849018882\"  [ label = \"this\"] \n  \"111669149699\" -> \"115964116994\" \n}\n"
+      ],
+      "cpg": {
+        "nodes": [
+          {
+            "id": 111669149699,
+            "kind": "METHOD",
+            "properties": {
+              "LINE_NUMBER_END": 18,
+              "AST_PARENT_TYPE": "TYPE_DECL",
+              "COLUMN_NUMBER_END": 39,
+              "SIGNATURE": "int()",
+              "COLUMN_NUMBER": 1,
+              "FULL_NAME": "N.A.read_a:int()",
+              "ORDER": 4,
+              "AST_PARENT_FULL_NAME": "using-namespace.cpp:<global>",
+              "NAME": "read_a",
+              "FILENAME": "using-namespace.cpp",
+              "CODE": "int A::read_a() const { return value; }",
+              "LINE_NUMBER": 18
+            }
+          },
+          {
+            "id": 115964116994,
+            "kind": "METHOD_PARAMETER_IN",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 18,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.A"
+            }
+          },
+          {
+            "id": 25769803779,
+            "kind": "BLOCK",
+            "properties": {
+              "TYPE_FULL_NAME": "void",
+              "COLUMN_NUMBER": 23,
+              "ORDER": 2,
+              "CODE": "{ return value; }",
+              "LINE_NUMBER": 18
+            }
+          },
+          {
+            "id": 146028888064,
+            "kind": "RETURN",
+            "properties": {
+              "ORDER": 1,
+              "CODE": "return value;",
+              "COLUMN_NUMBER": 25,
+              "LINE_NUMBER": 18
+            }
+          },
+          {
+            "id": 30064771072,
+            "kind": "CALL",
+            "properties": {
+              "DISPATCH_TYPE": "STATIC_DISPATCH",
+              "NAME": "<operator>.indirectFieldAccess",
+              "METHOD_FULL_NAME": "<operator>.indirectFieldAccess",
+              "TYPE_FULL_NAME": "ANY",
+              "COLUMN_NUMBER": 32,
+              "ORDER": 1,
+              "CODE": "this->value",
+              "LINE_NUMBER": 18
+            }
+          },
+          {
+            "id": 68719476736,
+            "kind": "IDENTIFIER",
+            "properties": {
+              "NAME": "this",
+              "TYPE_FULL_NAME": "N.A*",
+              "COLUMN_NUMBER": 32,
+              "ARGUMENT_INDEX": 1,
+              "ORDER": 1,
+              "CODE": "this",
+              "LINE_NUMBER": 18
+            }
+          },
+          {
+            "id": 55834574848,
+            "kind": "FIELD_IDENTIFIER",
+            "properties": {
+              "COLUMN_NUMBER": 32,
+              "ARGUMENT_INDEX": 2,
+              "ORDER": 2,
+              "CODE": "value",
+              "LINE_NUMBER": 18,
+              "CANONICAL_NAME": "value"
+            }
+          },
+          {
+            "id": 128849018882,
+            "kind": "METHOD_RETURN",
+            "properties": {
+              "COLUMN_NUMBER": 1,
+              "ORDER": 3,
+              "CODE": "RET",
+              "LINE_NUMBER": 18,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "int"
+            }
+          },
+          {
+            "id": 120259084290,
+            "kind": "METHOD_PARAMETER_OUT",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 18,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.A"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 111669149699,
+            "target": 115964116994,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149699,
+            "target": 25769803779,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149699,
+            "target": 128849018882,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149699,
+            "target": 120259084290,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149699,
+            "target": 68719476736,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 111669149699,
+            "target": 115964116994,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 111669149699,
+            "target": 68719476736,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 115964116994,
+            "target": 120259084290,
+            "kind": "PARAMETER_LINK",
+            "label": ""
+          },
+          {
+            "source": 115964116994,
+            "target": 120259084290,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116994,
+            "target": 120259084290,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116994,
+            "target": 30064771072,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116994,
+            "target": 68719476736,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116994,
+            "target": 128849018882,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 25769803779,
+            "target": 146028888064,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 146028888064,
+            "target": 30064771072,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 146028888064,
+            "target": 30064771072,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 146028888064,
+            "target": 128849018882,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 146028888064,
+            "target": 128849018882,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 30064771072,
+            "target": 68719476736,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 30064771072,
+            "target": 55834574848,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 30064771072,
+            "target": 68719476736,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 30064771072,
+            "target": 55834574848,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 30064771072,
+            "target": 146028888064,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 30064771072,
+            "target": 146028888064,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 68719476736,
+            "target": 55834574848,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 68719476736,
+            "target": 115964116994,
+            "kind": "REF",
+            "label": ""
+          },
+          {
+            "source": 55834574848,
+            "target": 30064771072,
+            "kind": "CFG",
+            "label": ""
+          }
+        ]
+      },
+      "end_line": 18,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.A.read_a:int()",
+      "normalized_cfg_nodes": 1,
+      "normalized_ddg_nodes": 4,
+      "selected_by_from_many": true
+    },
+    {
+      "name": "plain_a",
+      "ast_parent_fullname": "using-namespace.cpp:<global>",
+      "ast_parent_type": "TYPE_DECL",
+      "code": "int A::plain_a() { return value; }",
+      "filename": "using-namespace.cpp",
+      "cfg": [
+        "digraph \"plain_a\" {  \n\"146028888065\" [label = <(RETURN,return value;,return value;)<SUB>19</SUB>> ]\n\"111669149700\" [label = <(METHOD,plain_a)<SUB>19</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>19</SUB>> ]\n  \"146028888065\" -> \"128849018883\" \n  \"111669149700\" -> \"146028888065\" \n}\n"
+      ],
+      "method_index": 3,
+      "is_external": false,
+      "start_line": 19,
+      "ddg": [
+        "digraph \"plain_a\" {  \n\"111669149700\" [label = <(METHOD,plain_a)<SUB>19</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>19</SUB>> ]\n\"115964116995\" [label = <(PARAM,this)<SUB>19</SUB>> ]\n\"146028888065\" [label = <(RETURN,return value;,return value;)<SUB>19</SUB>> ]\n\"68719476737\" [label = <(IDENTIFIER,value,return value;)<SUB>19</SUB>> ]\n  \"146028888065\" -> \"128849018883\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116995\" -> \"128849018883\"  [ label = \"this\"] \n  \"111669149700\" -> \"115964116995\" \n  \"68719476737\" -> \"146028888065\"  [ label = \"value\"] \n  \"111669149700\" -> \"146028888065\" \n  \"111669149700\" -> \"68719476737\" \n}\n"
+      ],
+      "cpg": {
+        "nodes": [
+          {
+            "id": 111669149700,
+            "kind": "METHOD",
+            "properties": {
+              "LINE_NUMBER_END": 19,
+              "AST_PARENT_TYPE": "TYPE_DECL",
+              "COLUMN_NUMBER_END": 34,
+              "SIGNATURE": "int()",
+              "COLUMN_NUMBER": 1,
+              "FULL_NAME": "N.A.plain_a:int()",
+              "ORDER": 5,
+              "AST_PARENT_FULL_NAME": "using-namespace.cpp:<global>",
+              "NAME": "plain_a",
+              "FILENAME": "using-namespace.cpp",
+              "CODE": "int A::plain_a() { return value; }",
+              "LINE_NUMBER": 19
+            }
+          },
+          {
+            "id": 115964116995,
+            "kind": "METHOD_PARAMETER_IN",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 19,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.A"
+            }
+          },
+          {
+            "id": 25769803780,
+            "kind": "BLOCK",
+            "properties": {
+              "TYPE_FULL_NAME": "void",
+              "COLUMN_NUMBER": 18,
+              "ORDER": 2,
+              "CODE": "{ return value; }",
+              "LINE_NUMBER": 19
+            }
+          },
+          {
+            "id": 146028888065,
+            "kind": "RETURN",
+            "properties": {
+              "ORDER": 1,
+              "CODE": "return value;",
+              "COLUMN_NUMBER": 20,
+              "LINE_NUMBER": 19
+            }
+          },
+          {
+            "id": 68719476737,
+            "kind": "IDENTIFIER",
+            "properties": {
+              "NAME": "value",
+              "TYPE_FULL_NAME": "A*",
+              "COLUMN_NUMBER": 27,
+              "ORDER": 1,
+              "CODE": "value",
+              "LINE_NUMBER": 19
+            }
+          },
+          {
+            "id": 128849018883,
+            "kind": "METHOD_RETURN",
+            "properties": {
+              "COLUMN_NUMBER": 1,
+              "ORDER": 3,
+              "CODE": "RET",
+              "LINE_NUMBER": 19,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "int"
+            }
+          },
+          {
+            "id": 120259084291,
+            "kind": "METHOD_PARAMETER_OUT",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 19,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.A"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 111669149700,
+            "target": 115964116995,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149700,
+            "target": 25769803780,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149700,
+            "target": 128849018883,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149700,
+            "target": 120259084291,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149700,
+            "target": 68719476737,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 111669149700,
+            "target": 68719476737,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 111669149700,
+            "target": 115964116995,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 111669149700,
+            "target": 146028888065,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 115964116995,
+            "target": 120259084291,
+            "kind": "PARAMETER_LINK",
+            "label": ""
+          },
+          {
+            "source": 115964116995,
+            "target": 120259084291,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116995,
+            "target": 120259084291,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116995,
+            "target": 128849018883,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 25769803780,
+            "target": 146028888065,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 146028888065,
+            "target": 68719476737,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 146028888065,
+            "target": 68719476737,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 146028888065,
+            "target": 128849018883,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 146028888065,
+            "target": 128849018883,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 68719476737,
+            "target": 146028888065,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 68719476737,
+            "target": 146028888065,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          }
+        ]
+      },
+      "end_line": 19,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.A.plain_a:int()",
+      "normalized_cfg_nodes": 1,
+      "normalized_ddg_nodes": 5,
+      "selected_by_from_many": true
+    },
+    {
+      "name": "read_b",
+      "ast_parent_fullname": "using-namespace.cpp:<global>",
+      "ast_parent_type": "TYPE_DECL",
+      "code": "int B::read_b() const { return value; }",
+      "filename": "using-namespace.cpp",
+      "cfg": [
+        "digraph \"read_b\" {  \n\"146028888066\" [label = <(RETURN,return value;,return value;)<SUB>20</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.indirectFieldAccess,this-&gt;value)<SUB>20</SUB>> ]\n\"55834574849\" [label = <(FIELD_IDENTIFIER,value,value)<SUB>20</SUB>> ]\n\"111669149701\" [label = <(METHOD,read_b)<SUB>20</SUB>> ]\n\"128849018884\" [label = <(METHOD_RETURN,int)<SUB>20</SUB>> ]\n  \"146028888066\" -> \"128849018884\" \n  \"30064771073\" -> \"146028888066\" \n  \"55834574849\" -> \"30064771073\" \n  \"111669149701\" -> \"55834574849\" \n}\n"
+      ],
+      "method_index": 4,
+      "is_external": false,
+      "start_line": 20,
+      "ddg": [
+        "digraph \"read_b\" {  \n\"111669149701\" [label = <(METHOD,read_b)<SUB>20</SUB>> ]\n\"128849018884\" [label = <(METHOD_RETURN,int)<SUB>20</SUB>> ]\n\"115964116996\" [label = <(PARAM,this)<SUB>20</SUB>> ]\n\"146028888066\" [label = <(RETURN,return value;,return value;)<SUB>20</SUB>> ]\n  \"146028888066\" -> \"128849018884\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116996\" -> \"128849018884\"  [ label = \"this\"] \n  \"111669149701\" -> \"115964116996\" \n}\n"
+      ],
+      "cpg": {
+        "nodes": [
+          {
+            "id": 111669149701,
+            "kind": "METHOD",
+            "properties": {
+              "LINE_NUMBER_END": 20,
+              "AST_PARENT_TYPE": "TYPE_DECL",
+              "COLUMN_NUMBER_END": 39,
+              "SIGNATURE": "int()",
+              "COLUMN_NUMBER": 1,
+              "FULL_NAME": "N.B.read_b:int()",
+              "ORDER": 6,
+              "AST_PARENT_FULL_NAME": "using-namespace.cpp:<global>",
+              "NAME": "read_b",
+              "FILENAME": "using-namespace.cpp",
+              "CODE": "int B::read_b() const { return value; }",
+              "LINE_NUMBER": 20
+            }
+          },
+          {
+            "id": 115964116996,
+            "kind": "METHOD_PARAMETER_IN",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 20,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.B"
+            }
+          },
+          {
+            "id": 25769803781,
+            "kind": "BLOCK",
+            "properties": {
+              "TYPE_FULL_NAME": "void",
+              "COLUMN_NUMBER": 23,
+              "ORDER": 2,
+              "CODE": "{ return value; }",
+              "LINE_NUMBER": 20
+            }
+          },
+          {
+            "id": 146028888066,
+            "kind": "RETURN",
+            "properties": {
+              "ORDER": 1,
+              "CODE": "return value;",
+              "COLUMN_NUMBER": 25,
+              "LINE_NUMBER": 20
+            }
+          },
+          {
+            "id": 30064771073,
+            "kind": "CALL",
+            "properties": {
+              "DISPATCH_TYPE": "STATIC_DISPATCH",
+              "NAME": "<operator>.indirectFieldAccess",
+              "METHOD_FULL_NAME": "<operator>.indirectFieldAccess",
+              "TYPE_FULL_NAME": "ANY",
+              "COLUMN_NUMBER": 32,
+              "ORDER": 1,
+              "CODE": "this->value",
+              "LINE_NUMBER": 20
+            }
+          },
+          {
+            "id": 68719476738,
+            "kind": "IDENTIFIER",
+            "properties": {
+              "NAME": "this",
+              "TYPE_FULL_NAME": "N.B*",
+              "COLUMN_NUMBER": 32,
+              "ARGUMENT_INDEX": 1,
+              "ORDER": 1,
+              "CODE": "this",
+              "LINE_NUMBER": 20
+            }
+          },
+          {
+            "id": 55834574849,
+            "kind": "FIELD_IDENTIFIER",
+            "properties": {
+              "COLUMN_NUMBER": 32,
+              "ARGUMENT_INDEX": 2,
+              "ORDER": 2,
+              "CODE": "value",
+              "LINE_NUMBER": 20,
+              "CANONICAL_NAME": "value"
+            }
+          },
+          {
+            "id": 128849018884,
+            "kind": "METHOD_RETURN",
+            "properties": {
+              "COLUMN_NUMBER": 1,
+              "ORDER": 3,
+              "CODE": "RET",
+              "LINE_NUMBER": 20,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "int"
+            }
+          },
+          {
+            "id": 120259084292,
+            "kind": "METHOD_PARAMETER_OUT",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 20,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.B"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 111669149701,
+            "target": 115964116996,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149701,
+            "target": 25769803781,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149701,
+            "target": 128849018884,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149701,
+            "target": 120259084292,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149701,
+            "target": 68719476738,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 111669149701,
+            "target": 68719476738,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 111669149701,
+            "target": 115964116996,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 115964116996,
+            "target": 120259084292,
+            "kind": "PARAMETER_LINK",
+            "label": ""
+          },
+          {
+            "source": 115964116996,
+            "target": 68719476738,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116996,
+            "target": 30064771073,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116996,
+            "target": 120259084292,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116996,
+            "target": 120259084292,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116996,
+            "target": 128849018884,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 25769803781,
+            "target": 146028888066,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 146028888066,
+            "target": 30064771073,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 146028888066,
+            "target": 30064771073,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 146028888066,
+            "target": 128849018884,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 146028888066,
+            "target": 128849018884,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 30064771073,
+            "target": 68719476738,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 30064771073,
+            "target": 55834574849,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 30064771073,
+            "target": 68719476738,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 30064771073,
+            "target": 55834574849,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 30064771073,
+            "target": 146028888066,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 30064771073,
+            "target": 146028888066,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 68719476738,
+            "target": 55834574849,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 68719476738,
+            "target": 115964116996,
+            "kind": "REF",
+            "label": ""
+          },
+          {
+            "source": 55834574849,
+            "target": 30064771073,
+            "kind": "CFG",
+            "label": ""
+          }
+        ]
+      },
+      "end_line": 20,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.B.read_b:int()",
+      "normalized_cfg_nodes": 1,
+      "normalized_ddg_nodes": 4,
+      "selected_by_from_many": true
+    },
+    {
+      "name": "plain_b",
+      "ast_parent_fullname": "using-namespace.cpp:<global>",
+      "ast_parent_type": "TYPE_DECL",
+      "code": "int B::plain_b() { return value; }",
+      "filename": "using-namespace.cpp",
+      "cfg": [
+        "digraph \"plain_b\" {  \n\"146028888067\" [label = <(RETURN,return value;,return value;)<SUB>21</SUB>> ]\n\"111669149702\" [label = <(METHOD,plain_b)<SUB>21</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,int)<SUB>21</SUB>> ]\n  \"146028888067\" -> \"128849018885\" \n  \"111669149702\" -> \"146028888067\" \n}\n"
+      ],
+      "method_index": 5,
+      "is_external": false,
+      "start_line": 21,
+      "ddg": [
+        "digraph \"plain_b\" {  \n\"111669149702\" [label = <(METHOD,plain_b)<SUB>21</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,int)<SUB>21</SUB>> ]\n\"115964116997\" [label = <(PARAM,this)<SUB>21</SUB>> ]\n\"146028888067\" [label = <(RETURN,return value;,return value;)<SUB>21</SUB>> ]\n\"68719476739\" [label = <(IDENTIFIER,value,return value;)<SUB>21</SUB>> ]\n  \"146028888067\" -> \"128849018885\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116997\" -> \"128849018885\"  [ label = \"this\"] \n  \"111669149702\" -> \"115964116997\" \n  \"68719476739\" -> \"146028888067\"  [ label = \"value\"] \n  \"111669149702\" -> \"146028888067\" \n  \"111669149702\" -> \"68719476739\" \n}\n"
+      ],
+      "cpg": {
+        "nodes": [
+          {
+            "id": 111669149702,
+            "kind": "METHOD",
+            "properties": {
+              "LINE_NUMBER_END": 21,
+              "AST_PARENT_TYPE": "TYPE_DECL",
+              "COLUMN_NUMBER_END": 34,
+              "SIGNATURE": "int()",
+              "COLUMN_NUMBER": 1,
+              "FULL_NAME": "N.B.plain_b:int()",
+              "ORDER": 7,
+              "AST_PARENT_FULL_NAME": "using-namespace.cpp:<global>",
+              "NAME": "plain_b",
+              "FILENAME": "using-namespace.cpp",
+              "CODE": "int B::plain_b() { return value; }",
+              "LINE_NUMBER": 21
+            }
+          },
+          {
+            "id": 115964116997,
+            "kind": "METHOD_PARAMETER_IN",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 21,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.B"
+            }
+          },
+          {
+            "id": 25769803782,
+            "kind": "BLOCK",
+            "properties": {
+              "TYPE_FULL_NAME": "void",
+              "COLUMN_NUMBER": 18,
+              "ORDER": 2,
+              "CODE": "{ return value; }",
+              "LINE_NUMBER": 21
+            }
+          },
+          {
+            "id": 146028888067,
+            "kind": "RETURN",
+            "properties": {
+              "ORDER": 1,
+              "CODE": "return value;",
+              "COLUMN_NUMBER": 20,
+              "LINE_NUMBER": 21
+            }
+          },
+          {
+            "id": 68719476739,
+            "kind": "IDENTIFIER",
+            "properties": {
+              "NAME": "value",
+              "TYPE_FULL_NAME": "B*",
+              "COLUMN_NUMBER": 27,
+              "ORDER": 1,
+              "CODE": "value",
+              "LINE_NUMBER": 21
+            }
+          },
+          {
+            "id": 128849018885,
+            "kind": "METHOD_RETURN",
+            "properties": {
+              "COLUMN_NUMBER": 1,
+              "ORDER": 3,
+              "CODE": "RET",
+              "LINE_NUMBER": 21,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "int"
+            }
+          },
+          {
+            "id": 120259084293,
+            "kind": "METHOD_PARAMETER_OUT",
+            "properties": {
+              "NAME": "this",
+              "COLUMN_NUMBER": 1,
+              "ORDER": 0,
+              "INDEX": 0,
+              "CODE": "this",
+              "LINE_NUMBER": 21,
+              "EVALUATION_STRATEGY": "BY_VALUE",
+              "TYPE_FULL_NAME": "N.B"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 111669149702,
+            "target": 115964116997,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149702,
+            "target": 25769803782,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149702,
+            "target": 128849018885,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149702,
+            "target": 120259084293,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 111669149702,
+            "target": 68719476739,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 111669149702,
+            "target": 115964116997,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 111669149702,
+            "target": 68719476739,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 111669149702,
+            "target": 146028888067,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 115964116997,
+            "target": 120259084293,
+            "kind": "PARAMETER_LINK",
+            "label": ""
+          },
+          {
+            "source": 115964116997,
+            "target": 120259084293,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116997,
+            "target": 120259084293,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 115964116997,
+            "target": 128849018885,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 25769803782,
+            "target": 146028888067,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 146028888067,
+            "target": 68719476739,
+            "kind": "AST",
+            "label": ""
+          },
+          {
+            "source": 146028888067,
+            "target": 68719476739,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 146028888067,
+            "target": 128849018885,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 146028888067,
+            "target": 128849018885,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 68719476739,
+            "target": 146028888067,
+            "kind": "CFG",
+            "label": ""
+          },
+          {
+            "source": 68719476739,
+            "target": 146028888067,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          }
+        ]
+      },
+      "end_line": 21,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.B.plain_b:int()",
+      "normalized_cfg_nodes": 1,
+      "normalized_ddg_nodes": 5,
+      "selected_by_from_many": true
+    }
+  ]
+}
