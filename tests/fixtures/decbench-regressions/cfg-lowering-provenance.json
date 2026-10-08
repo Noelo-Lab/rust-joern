@@ -120,6 +120,102 @@
       "reference_sha256": "8588796f17852d80aa60117ba76428e3dfa263be84f011e2a4a6e1be21750d50",
       "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
       "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "scalar_labels_c": {
+      "source": "scalar_labels_c.c",
+      "reference": "scalar_labels_c.pyjoern.json",
+      "source_sha256": "134a825e696fd123a68b48124d3aae131cf1f716428878812d559cc2db365dc3",
+      "reference_sha256": "17347e12c422f94a06d972a4c34f84b3a4bee50ca5f4c3c675af164fb01e7b97",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "control_projection_c": {
+      "source": "control_projection_c.c",
+      "reference": "control_projection_c.pyjoern.json",
+      "source_sha256": "b6428ddd4d72d864ba83a444c7e98084566efb5014cdabe8311be762c73563ac",
+      "reference_sha256": "67701fe8fd5ef26d6d08a7298d1d8a461a869215d3990249de6b1bc934d7e46d",
+      "generator": "Original Joernv4.0.150 AST/CFG + iterative exact exporter projection + unchanged PyJoern4.0.150.4 normalization",
+      "capture": "Immutable original Joern/PyJoern oracle copied verbatim. Original DOT equality certified for iterative projection controls."
+    },
+    "scalar_labels_cpp": {
+      "source": "scalar_labels_cpp.cpp",
+      "reference": "scalar_labels_cpp.pyjoern.json",
+      "source_sha256": "134a825e696fd123a68b48124d3aae131cf1f716428878812d559cc2db365dc3",
+      "reference_sha256": "0d9187b24c0d3beed82449e0b6da515841d67076bdcd7dac7453fc4fc544336d",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "control_projection_cpp": {
+      "source": "control_projection_cpp.cpp",
+      "reference": "control_projection_cpp.pyjoern.json",
+      "source_sha256": "b6428ddd4d72d864ba83a444c7e98084566efb5014cdabe8311be762c73563ac",
+      "reference_sha256": "a513b4c568db0f5f4619ab03a9c19fb28da6cdeae9b54194ae68731b75b097e9",
+      "generator": "Original Joernv4.0.150 AST/CFG + iterative exact exporter projection + unchanged PyJoern4.0.150.4 normalization",
+      "capture": "Immutable original Joern/PyJoern oracle copied verbatim. Original DOT equality certified for iterative projection controls."
+    },
+    "scalar_for_labels_c": {
+      "source": "scalar_for_labels_c.c",
+      "reference": "scalar_for_labels_c.pyjoern.json",
+      "source_sha256": "a254df2c5289ef77f1b5641ccbc04f2a2dfad08ee1f441c2e22618c511b1c9cc",
+      "reference_sha256": "2c351bd2deca2b9608b1761146a8c57739dd3fb34177785d29e2b17ffd315844",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract/preprocessing agent; immutable reference copied verbatim."
+    },
+    "typedef_vla_bounds_c": {
+      "source": "typedef_vla_bounds_c.c",
+      "reference": "typedef_vla_bounds_c.pyjoern.json",
+      "source_sha256": "923b9d5133c598db70d18509d612f0460ae7e28f01c037e6c4aff8c03efa3a5b",
+      "reference_sha256": "c1b47a171558a7168d74d00a814ecb93812f6ec8b91598fcd984d5ecfad5f22d",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract/preprocessing agent; immutable reference copied verbatim."
+    },
+    "scalar_for_labels_cpp": {
+      "source": "scalar_for_labels_cpp.cpp",
+      "reference": "scalar_for_labels_cpp.pyjoern.json",
+      "source_sha256": "32bd98761062188724377320f69a88525c8e230efaf6692e096dcbc3ed69944a",
+      "reference_sha256": "78dc2e3ca6029d30684e0fd4dc667a372b6db364074a818c7701f86faf421009",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract/preprocessing agent; immutable reference copied verbatim."
+    },
+    "typedef_vla_bounds_cpp": {
+      "source": "typedef_vla_bounds_cpp.cpp",
+      "reference": "typedef_vla_bounds_cpp.pyjoern.json",
+      "source_sha256": "923b9d5133c598db70d18509d612f0460ae7e28f01c037e6c4aff8c03efa3a5b",
+      "reference_sha256": "17c81fce8ec5c4250c25f4dc33854951816536fc4e1758b0b11fb5592620166b",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract/preprocessing agent; immutable reference copied verbatim."
+    },
+    "grouped_declarator_control_c": {
+      "source": "grouped_declarator_control_c.c",
+      "reference": "grouped_declarator_control_c.pyjoern.json",
+      "source_sha256": "43795836f925c2cfde878ad8ff2889e3f39ed366cd56806aeec42dbb8f33f38e",
+      "reference_sha256": "96d249011d5805425ded4e1bc5bfd93a00bb1b49af64b759c1cf5fb85188e027",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by preprocessing agent; immutable reference copied verbatim."
+    },
+    "grouped_declarator_control_cpp": {
+      "source": "grouped_declarator_control_cpp.cpp",
+      "reference": "grouped_declarator_control_cpp.pyjoern.json",
+      "source_sha256": "43795836f925c2cfde878ad8ff2889e3f39ed366cd56806aeec42dbb8f33f38e",
+      "reference_sha256": "d7d3a803a0e152bd20b76c96a3c95d3ee0617e9332cd2e272ca4172de79e7107",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by preprocessing agent; immutable reference copied verbatim."
+    },
+    "method_ref_provenance_c": {
+      "source": "method_ref_provenance_c.c",
+      "reference": "method_ref_provenance_c.properties.json",
+      "source_sha256": "498d1c19882cb65886d7707e0b5a6031427abb26b2ce83622ebd0b9cd2ea45c9",
+      "reference_sha256": "b9e24eafc3144c6d16b5b096d3671be83b3ed0acb0aa1a9430be802ef8951560",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150 (read-only property exporter)",
+      "capture": "Unmodified original engine, isolated METHOD_REF property/REF target capture by contract agent; immutable JSON copied verbatim."
+    },
+    "method_ref_provenance_cpp": {
+      "source": "method_ref_provenance_cpp.cpp",
+      "reference": "method_ref_provenance_cpp.properties.json",
+      "source_sha256": "a5aaf6a1b3514a7589b1bc97a5c5bdfff85660d36eddaea34185d97c91e5f448",
+      "reference_sha256": "83fea0e7d08187f07dc4cd42769a3b69f3b5d98755378dfd3cf3c3c411ec282c",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150 (read-only property exporter)",
+      "capture": "Unmodified original engine, isolated METHOD_REF property/REF target capture by contract agent; immutable JSON copied verbatim."
     }
   }
 }

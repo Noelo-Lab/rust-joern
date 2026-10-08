@@ -1,0 +1,124 @@
+Ownership O0/base-passwd: 1 binaries, 48 functions; 0.6s
+Ownership O0/bash: 7 binaries, 2597 functions; 4.3s
+Ownership O0/betaflight: 1 binaries, 4018 functions; 11.1s
+Ownership O0/bzip2: 2 binaries, 120 functions; 0.2s
+Ownership O0/chibios: 1 binaries, 415 functions; 1.8s
+Ownership O0/cleanflight: 1 binaries, 2124 functions; 5.5s
+Ownership O0/coreutils: 98 binaries, 2660 functions; 11.7s
+Ownership O0/crazyflie: 2 binaries, 4330 functions; 10.4s
+Ownership O0/cronie: 3 binaries, 203 functions; 0.2s
+Ownership O0/dash: 1 binaries, 329 functions; 0.7s
+Ownership O0/dexter: 1 binaries, 61 functions; 0.1s
+Ownership O0/diffutils: 4 binaries, 172 functions; 0.6s
+Ownership O0/dpkg: 5 binaries, 354 functions; 1.8s
+Ownership O0/e2fsprogs: 1 binaries, 409 functions; 2.0s
+Ownership O0/findutils: 1 binaries, 313 functions; 0.7s
+Ownership O0/freertos: 1 binaries, 107 functions; 0.3s
+Ownership O0/gnutls: 9 binaries, 871 functions; 1.4s
+Ownership O0/grep: 1 binaries, 109 functions; 0.3s
+Ownership O0/gzip: 1 binaries, 150 functions; 0.2s
+Ownership O0/iproute2: 2 binaries, 762 functions; 1.9s
+Ownership O0/kmod: 1 binaries, 129 functions; 0.4s
+Ownership O0/libacl: 4 binaries, 142 functions; 0.2s
+Ownership O0/libbsd: 1 binaries, 67 functions; 0.3s
+Ownership O0/libedit: 1 binaries, 513 functions; 0.4s
+Ownership O0/libexpat: 1 binaries, 58 functions; 0.1s
+Ownership O0/libopencm3: 23 binaries, 1075 functions; 1.9s
+Ownership O0/libselinux: 1 binaries, 418 functions; 0.6s
+Ownership O0/minipig: 1 binaries, 3 functions; 0.1s
+Ownership O0/mirai: 1 binaries, 68 functions; 0.1s
+Ownership O0/mydoom: 1 binaries, 98 functions; 0.3s
+Ownership O0/nuttx: 1 binaries, 403 functions; 13.6s
+Ownership O0/openssh-portable: 12 binaries, 9193 functions; 9.1s
+Ownership O0/riot-os: 1 binaries, 71 functions; 0.4s
+Ownership O0/rsyslog: 1 binaries, 140 functions; 1.9s
+Ownership O0/shadow: 40 binaries, 312 functions; 3.6s
+Ownership O0/sysvinit: 14 binaries, 195 functions; 0.4s
+Ownership O0/tar: 1 binaries, 654 functions; 0.9s
+Ownership O0/x0r-usb: 1 binaries, 35 functions; 0.0s
+Ownership O0/zlib: 7 binaries, 779 functions; 0.7s
+Ownership O2/base-passwd: 1 binaries, 24 functions; 0.0s
+Ownership O2/bash: 7 binaries, 1603 functions; 5.3s
+Ownership O2/betaflight: 1 binaries, 4018 functions; 11.0s
+Ownership O2/bzip2: 2 binaries, 56 functions; 0.2s
+Ownership O2/chibios: 1 binaries, 311 functions; 1.5s
+Ownership O2/cleanflight: 1 binaries, 2124 functions; 5.3s
+Ownership O2/coreutils: 98 binaries, 1417 functions; 16.2s
+Ownership O2/crazyflie: 2 binaries, 2686 functions; 11.5s
+Ownership O2/cronie: 3 binaries, 145 functions; 0.3s
+Ownership O2/dash: 1 binaries, 212 functions; 0.9s
+Ownership O2/dexter: 1 binaries, 48 functions; 0.2s
+Ownership O2/diffutils: 4 binaries, 97 functions; 1.0s
+Ownership O2/dpkg: 5 binaries, 236 functions; 2.6s
+Ownership O2/e2fsprogs: 1 binaries, 226 functions; 2.5s
+Ownership O2/findutils: 1 binaries, 196 functions; 1.1s
+Ownership O2/freertos: 1 binaries, 72 functions; 0.3s
+Ownership O2/gnutls: 9 binaries, 620 functions; 2.2s
+Ownership O2/grep: 1 binaries, 56 functions; 0.5s
+Ownership O2/gzip: 1 binaries, 107 functions; 0.2s
+Ownership O2/iproute2: 2 binaries, 384 functions; 3.1s
+Ownership O2/kmod: 1 binaries, 50 functions; 0.7s
+Ownership O2/libacl: 4 binaries, 107 functions; 0.3s
+Ownership O2/libbsd: 1 binaries, 32 functions; 0.2s
+Ownership O2/libedit: 1 binaries, 403 functions; 0.7s
+Ownership O2/libexpat: 1 binaries, 45 functions; 0.2s
+Ownership O2/libopencm3: 23 binaries, 708 functions; 2.1s
+Ownership O2/libselinux: 1 binaries, 326 functions; 0.9s
+Ownership O2/minipig: 1 binaries, 3 functions; 0.1s
+Ownership O2/mirai: 1 binaries, 46 functions; 0.2s
+Ownership O2/mydoom: 1 binaries, 51 functions; 0.2s
+Ownership O2/nuttx: 1 binaries, 273 functions; 14.2s
+Ownership O2/openssh-portable: 12 binaries, 6528 functions; 13.3s
+Ownership O2/riot-os: 1 binaries, 71 functions; 0.4s
+Ownership O2/rsyslog: 1 binaries, 90 functions; 2.9s
+Ownership O2/shadow: 40 binaries, 131 functions; 5.3s
+Ownership O2/sysvinit: 14 binaries, 122 functions; 0.5s
+Ownership O2/tar: 1 binaries, 388 functions; 1.3s
+Ownership O2/u-boot: 1 binaries, 1582 functions; 13.0s
+Ownership O2/x0r-usb: 1 binaries, 14 functions; 0.1s
+Ownership O2/zlib: 7 binaries, 591 functions; 1.2s
+{
+  "binaries": 513,
+  "named_functions": 60704,
+  "binary_statuses": {
+    "ok": 513
+  },
+  "published_binary_hash_matches": 513,
+  "project_input_errors": 0,
+  "requested_option_contracts": {
+    "preprocessed_cfg_only": 7772
+  },
+  "reference_availability": {
+    "body": 57499,
+    "absent": 3205
+  },
+  "published_statuses": {
+    "match": 56725,
+    "extra": 2017,
+    "both_absent": 1188,
+    "topology_mismatch": 247,
+    "missing": 527
+  },
+  "profiles": {
+    "default_strict": {
+      "statuses": {
+        "match": 57499,
+        "both_absent": 3205
+      },
+      "reference_body_statuses": {
+        "match": 57499
+      },
+      "selected_tu_differences": 0
+    },
+    "permissive_fallback": {
+      "statuses": {
+        "match": 57499,
+        "both_absent": 3205
+      },
+      "reference_body_statuses": {
+        "match": 57499
+      },
+      "selected_tu_differences": 0
+    }
+  }
+}

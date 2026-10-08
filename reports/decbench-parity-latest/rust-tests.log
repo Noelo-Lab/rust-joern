@@ -1,0 +1,152 @@
+   Compiling rust-joern v0.1.0 (/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/build)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.01s
+     Running unittests src/lib.rs (workspace/parity-rounds/target/debug/deps/rust_joern-307f04090be37d99)
+
+running 132 tests
+test dataflow::tests::normalized_access_paths_and_default_summaries ... ok
+test dataflow::tests::branch_definitions_reach_return_and_assignment_flows_to_lhs ... ok
+test lexer::tests::directive_names_are_exact_and_conditionals_require_preparation ... ok
+test lexer::tests::crlf_continuations_do_not_expose_directive_contents_as_code ... ok
+test lexer::tests::keeps_lines_and_literal_contents ... ok
+test lexer::tests::raw_strings_and_longest_operators ... ok
+test lexer::tests::prepared_self_recursive_member_macro_remains_an_ordinary_call ... ok
+test lexer::tests::raw_used_macros_are_explicit_diagnostics ... ok
+test lexer::tests::retained_compiler_directives_preserve_original_offsets ... ok
+test lexer::tests::retained_macro_arguments_use_tokens_and_keep_continued_definition_spans ... ok
+test dataflow::tests::optional_sets_and_repeated_pass_do_not_change_graph ... ok
+test lexer::tests::unused_and_identity_macros_do_not_require_expansion ... ok
+test lexer::tests::retained_macro_helpers_follow_active_definitions_and_cdt_argument_clones ... ok
+test normalize::tests::branch_removes_only_the_unmerged_method_return_sink ... ok
+test normalize::tests::copying_a_merged_source_drops_its_explicit_flag ... ok
+test normalize::tests::field_identifiers_are_visible ... ok
+test normalize::tests::literal_conditions_remain_invisible_and_edges_are_deduplicated ... ok
+test normalize::tests::linear_chain_retains_order_and_inferred_flags ... ok
+test normalize::tests::invisible_cycles_terminate_and_unreachable_edges_survive ... ok
+test normalize::tests::multiple_method_return_sinks_are_retained ... ok
+test normalize::tests::method_refs_follow_pyjoerns_method_prefix_flag ... ok
+test normalize::tests::two_node_cycles_merge_into_self_loops ... ok
+test parser::declaration_tests::an_unsized_array_modifier_disables_all_allocation_bounds ... ok
+test parser::declaration_tests::attributed_unknown_function_pointer_is_a_declaration ... ok
+test parser::declaration_tests::array_allocation_and_deallocation_operator_headers_keep_exception_specs ... ok
+test parser::declaration_tests::anonymous_record_initializer_and_enum_alias_preserve_later_bodies ... ok
+test parser::declaration_tests::attributes_before_local_declaration_keep_initializers ... ok
+test parser::declaration_tests::c_record_tags_do_not_classify_function_calls_as_declarations ... ok
+test parser::declaration_tests::c_symbol_definition_replaces_array_parameter_declaration ... ok
+test parser::declaration_tests::block_scope_prototypes_emit_method_stubs_without_local_initializers ... ok
+test parser::declaration_tests::call_shaped_assignment_lhs_recovers_a_grouped_declarator ... ok
+test parser::declaration_tests::cdt_noreturn_problem_recovery_depends_on_declaration_order ... ok
+test parser::declaration_tests::cdt_noreturn_recovery_uses_c_header_line_boundaries ... ok
+test parser::declaration_tests::const_first_knr_parameters_keep_all_function_bodies ... ok
+test parser::declaration_tests::constructors_without_return_specifiers_survive_declarations ... ok
+test parser::declaration_tests::cpp_keyword_spelling_in_c_parameter_does_not_hide_later_definitions ... ok
+test parser::declaration_tests::cdt_problem_headers_keep_duplicate_specifier_definitions ... ok
+test parser::declaration_tests::emitted_tag_type_properties_omit_reserved_prefix ... ok
+test parser::declaration_tests::cpp_duplicate_function_bindings_follow_problem_fullname_fallback ... ok
+test parser::declaration_tests::cpp_method_bindings_keep_cv_overloads_and_qualified_repeated_definitions ... ok
+test parser::declaration_tests::elaborated_return_declarations_follow_cdt_type_declaration_conversion ... ok
+test parser::declaration_tests::genuine_type_bindings_govern_ambiguous_address_casts ... ok
+test parser::declaration_tests::file_scope_assembly_preserves_following_method_and_asm_symbol_alias ... ok
+test parser::declaration_tests::cxx_binding_names_linkage_and_implicit_this_follow_cdt ... ok
+test parser::declaration_tests::global_initializers_and_array_bounds_preserve_builtin_macro_trees ... ok
+test parser::declaration_tests::inferred_typenames_do_not_turn_object_assignment_into_declarations ... ok
+test parser::declaration_tests::global_assertion_operands_do_not_create_function_bindings ... ok
+test parser::declaration_tests::first_function_pointer_uses_cdt_binding_conversion_and_ignores_siblings ... ok
+test parser::declaration_tests::leading_attributes_do_not_move_cdt_noreturn_recovery_to_a_new_line ... ok
+test parser::declaration_tests::cdt_problem_attributes_recover_later_methods_with_language_specific_rules ... ok
+test parser::declaration_tests::repeated_prototypes_keep_the_first_registered_declaration ... ok
+test parser::declaration_tests::local_typedef_array_bounds_keep_alias_and_executable_expression ... ok
+test parser::declaration_tests::retained_macro_descriptors_only_follow_executable_member_calls ... ok
+test parser::declaration_tests::unnamed_declared_parameters_keep_empty_binding_names ... ok
+test parser::declaration_tests::grouped_declarators_keep_definitions_and_exclude_pointer_objects ... ok
+test parser::expression_port_tests::assembly_is_explicit_opaque_cdt_node ... ok
+test parser::declaration_tests::recovered_assembly_declarations_keep_separate_block_boundaries ... ok
+test parser::declaration_tests::malformed_function_header_recovery_keeps_later_definitions ... ok
+test parser::declaration_tests::top_level_declarations_convert_each_function_declarator ... ok
+test parser::expression_port_tests::ambiguous_casts_use_real_typedef_bindings_and_object_shadowing ... ok
+test parser::expression_port_tests::following_cast_disambiguates_unknown_type_alias ... ok
+test parser::expression_port_tests::gnu_initializer_designators_are_assignment_blocks ... ok
+test parser::expression_port_tests::terminal_problem_label_keeps_closing_brace_for_enclosing_block ... ok
+test parser::expression_port_tests::nested_designators_repeat_operand_as_cdt_assignments ... ok
+test parser::declaration_tests::orphan_assignments_bind_global_variables_without_reusing_method_locals ... ok
+test parser::expression_port_tests::microsoft_assembly_recovers_cdt_compound_boundary ... ok
+test parser::tests::knr_definitions_use_parameter_declarations ... ok
+test parser::tests::cannot_silently_drop_control_flow ... ok
+test parser::declaration_tests::record_member_names_do_not_shadow_typedefs_outside_the_record ... ok
+test parser::expression_port_tests::c_qualified_names_follow_problem_recovery_context ... ok
+test parser::expression_port_tests::lambda_methods_keep_tu_names_and_parent_context ... ok
+test parser::declaration_tests::object_initializers_and_array_bounds_do_not_hide_following_functions ... ok
+test parser::declaration_tests::record_attributes_and_grouped_arrays_do_not_create_methods ... ok
+test parser::tests::arrays_default_parameters_and_operator_methods ... ok
+test parser::expression_port_tests::ordinary_type_arguments_recover_whole_problem_statements ... ok
+test parser::declaration_tests::using_declaration_resolves_method_owner_and_removes_stub ... ok
+test parser::declaration_tests::recovered_assembly_tails_have_c_implicit_declarations ... ok
+test parser::declaration_tests::typedef_function_parameters_are_types_without_executable_expressions ... ok
+test parser::expression_port_tests::valid_cast_sizeof_alias_and_builtin_arguments_remain_executable ... ok
+test parser::declaration_tests::recovered_c_assembly_tails_allow_function_shaped_initializers ... ok
+test parser::declaration_tests::named_type_function_pointer_fields_are_objects ... ok
+test parser::declaration_tests::void_and_function_pointer_parameters_preserve_cdt_properties ... ok
+test parser::declaration_tests::recovered_assembly_tail_parameter_names_do_not_become_types ... ok
+test parser::declaration_tests::plain_first_declarator_keeps_later_function_pointer_initializer ... ok
+test parser::tests::parentheses_keep_operand_source_spans ... ok
+test parser::expression_port_tests::cpp_invalid_condition_recovers_reference_function_declaration ... ok
+test parser::expression_port_tests::indirect_calls_retain_cast_and_dereference_receiver ... ok
+test parser::declaration_tests::typedef_grouped_name_recovery_distinguishes_new_and_bound_objects ... ok
+test parser::tests::namespace_methods_and_cpp_conditions ... ok
+test parser::declaration_tests::object_shadowing_typedef_keeps_mutations_and_identifier_condition ... ok
+test parser::declaration_tests::typeof_operand_identifiers_do_not_become_declared_types ... ok
+test parser::declaration_tests::template_named_return_specifiers_cannot_follow_a_primitive_type ... ok
+test parser::tests::precedence_and_statement_expressions ... ok
+test parser::expression_port_tests::invalid_abstract_pointer_expression_preserves_valid_types_and_calls ... ok
+test parser::tests::sizeof_keeps_call_operands_in_logical_expression ... ok
+test parser::tests::unknown_types_gnu_ternary_and_computed_goto ... ok
+test parser::tests::preprocessed_types_pointers_and_control_flow ... ok
+test parser::tests::unknown_parenthesized_identifier_remains_binary_operand ... ok
+test parser::declaration_tests::qualified_parameter_type_problem_declarations_recover_following_methods ... ok
+test builder::tests::missing_goto_targets_follow_joerns_unwired_recovery ... ok
+test parser::declaration_tests::operator_definitions_replace_matching_declaration_stubs ... ok
+test parser::tests::unknown_calls_with_address_arguments_are_expressions ... ok
+test builder::tests::nested_designators_preserve_joerns_initializer_flow ... ok
+test builder::tests::terminal_labels_follow_cdt_recovery ... ok
+test dataflow::tests::native_base_parameter_outputs_and_cfg_are_independent_of_dataflow_toggle ... ok
+test builder::tests::returns_under_nested_try_ancestors_keep_expression_fringe ... ok
+test builder::tests::omitted_for_slots_follow_joerns_ast_child_orders ... ok
+test builder::tests::inline_assembly_has_a_visible_unknown_node_without_parse_failure ... ok
+test builder::tests::multiline_method_refs_follow_original_dot_lifting ... ok
+test builder::tests::empty_try_body_preserves_original_entry_roles ... ok
+test builder::tests::cpp_qualified_names_follow_joerns_field_access_ast ... ok
+test lexer::tests::retained_macro_metadata_preserves_cfg_and_raw_macro_uses_fail_strictly ... ok
+test dataflow::tests::explicit_cpp_language_controls_summaries_for_c_named_inputs ... ok
+test builder::tests::scalar_labels_follow_joerns_control_child_selection ... ok
+test builder::tests::scalar_for_labels_follow_joerns_sibling_slot_selection ... ok
+test builder::tests::comma_statement_expressions_preserve_visible_joins ... ok
+test dataflow::tests::native_frontend_distinguishes_internal_body_from_empty_and_prototype_calls ... ok
+test builder::tests::local_function_pointer_declarations_follow_cdt_recovery ... ok
+test builder::tests::typedef_array_bounds_preserve_original_allocations ... ok
+test builder::tests::method_references_preserve_unique_and_contextual_bindings ... ok
+test builder::tests::grouped_declarators_keep_cdt_scalar_control_children ... ok
+test builder::tests::condition_lists_and_type_specifiers_match_original_projection ... ok
+test builder::tests::array_bounds_are_allocated_before_initializers ... ok
+test builder::tests::builtin_macros_preserve_inlined_expansion_paths ... ok
+test builder::tests::control_and_expression_graphs_match_original_joern ... ok
+test builder::tests::cdt_object_and_function_macros_keep_original_control_flow ... ok
+test dataflow::tests::native_builtin_macro_callers_and_stub_methods_match_original_dataflow ... ok
+test dataflow::tests::native_c_frontend_matches_original_cfg_bindings_ddg_and_rd_sets ... ok
+test dataflow::tests::original_joern_displayed_ddg_matches_by_expression_role ... ok
+test dataflow::tests::original_joern_c_cpp_solver_snapshots_match_by_expression_role ... ok
+test dataflow::tests::native_frontend_displayed_ddg_matches_original_c_and_cpp ... ok
+test dataflow::tests::displayed_ddg_hidden_loop_paths_fit_a_small_worker_stack ... ok
+
+test result: ok. 132 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running unittests src/main.rs (workspace/parity-rounds/target/debug/deps/rust_joern-7e50d8ee2978620b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests rust_joern
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

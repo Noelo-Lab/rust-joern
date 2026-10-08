@@ -18,6 +18,11 @@ from pathlib import Path
 
 import networkx as nx
 
+try:
+    from orjson import loads as _loads
+except ImportError:
+    _loads = json.loads
+
 __version__ = "0.1.0"
 __all__ = ["Analysis", "Block", "Function", "Nop", "Statement", "parse_code", "parse_source"]
 
@@ -156,6 +161,12 @@ class Function:
         return _property_graph(data) if data is not None and not self._no_ddg else None
 
     @cached_property
+    def ddg_projection(self) -> nx.MultiDiGraph | None:
+        """Joern's displayed DDG, alongside the raw reaching-definition graph."""
+        data = self.raw.get("ddg_projection")
+        return _property_graph(data) if data is not None and not self._no_ddg else None
+
+    @cached_property
     def ast(self) -> nx.MultiDiGraph | None:
         return None if self._no_ast else _property_graph(self.raw["cpg"], "AST")
 
@@ -210,7 +221,7 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
     if not pointer:
         raise RuntimeError("Rust Joern returned a null result")
     try:
-        data = json.loads(ctypes.string_at(pointer))
+        data = _loads(ctypes.string_at(pointer))
     finally:
         native.rust_joern_free(pointer)
     if "error" in data:
@@ -266,13 +277,21 @@ def parse_source(
             source = _preprocess_decompilation(source.decode("utf-8", errors="replace")).encode("utf-8")
         analysis = _analyze(source, filename, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
                             strict=strict, preprocessed=preprocessed)
+        # FastParser's per-(FULL_NAME, FILE) toMap exports the last method,
+        # once for each original occurrence. Keep all native methods in Analysis.
+        exported = {
+            (raw["fullname"], raw["filename"]): Function(
+                raw, no_metadata=no_metadata, no_cfg=no_cfg, no_ddg=no_ddg, no_ast=no_ast,
+            ) for raw in analysis["functions"]
+        }
         for raw in analysis["functions"]:
-            function = Function(raw, no_metadata=no_metadata, no_cfg=no_cfg, no_ddg=no_ddg, no_ast=no_ast)
-            if function.name.startswith(blacklist) or not function.name or (not no_cfg and not function.cfg):
+            function = exported[(raw["fullname"], raw["filename"])]
+            if (function.name.startswith(blacklist) or not function.name or not function.filename
+                    or (not no_cfg and not function.cfg)):
                 continue
-            key = (function.name, str(function.filename)) if path.is_dir() else function.name
+            key = (function.name, str(function.filename))
             previous = result.get(key)
             if previous is not None and previous.cfg is not None and function.cfg is not None and len(function.cfg) < len(previous.cfg):
                 continue
             result[key] = function
-    return result
+    return result if path.is_dir() else {name: function for (name, _), function in result.items()}

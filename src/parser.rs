@@ -2,7 +2,9 @@
 //! Unsupported executable syntax is reported, rather than silently dropping its CFG.
 use std::collections::{HashMap, HashSet};
 
-use crate::lexer::{Token, TokenKind, lex_preprocessed};
+use crate::lexer::{
+    RetainedMacroInvocation, Token, TokenKind, lex_preprocessed, lex_preprocessed_with_macros,
+};
 use crate::syntax::*;
 
 #[cfg(test)]
@@ -11,7 +13,8 @@ pub fn parse(source: &str, cpp: bool) -> TranslationUnit {
 }
 
 pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> TranslationUnit {
-    let (tokens, diagnostics) = lex_preprocessed(source, preprocessed);
+    let (tokens, diagnostics, retained_macro_invocations) =
+        lex_preprocessed_with_macros(source, preprocessed);
     let limit = tokens.len();
     let mut parser = Parser {
         source,
@@ -31,22 +34,41 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         asm_problem_recovery: false,
         in_function_body: false,
         function_declarations: Vec::new(),
+        global_expressions: Vec::new(),
         macro_expansion: false,
+        current_method: String::new(),
+        lambda_counter: 0,
+        defined_cpp_methods: HashSet::new(),
+        lambda_ast_parent: String::new(),
+        retained_macro_invocations,
+        retained_macro_call_ends: HashSet::new(),
     };
     let mut functions = Vec::new();
     parser.translation_scope("", &mut functions);
     functions.append(&mut parser.function_declarations);
     // Joern collects declarations separately, and emits only those without a
     // matching definition after visiting every translation-unit declaration.
-    let definitions: HashSet<_> = functions.iter()
+    let definitions: HashSet<_> = functions
+        .iter()
         .filter(|f| !matches!(f.body.kind, StmtKind::Empty))
         .map(|f| f.full_name.clone())
         .collect();
-    functions.retain(|f| !matches!(f.body.kind, StmtKind::Empty)
-        || !definitions.contains(&f.full_name));
+    let mut declarations = HashSet::new();
+    functions.retain(|f| {
+        !matches!(f.body.kind, StmtKind::Empty)
+            || !definitions.contains(&f.full_name) && declarations.insert(f.full_name.clone())
+    });
     functions.sort_by_key(|f| matches!(f.body.kind, StmtKind::Empty));
+    let retained_macro_calls = parser
+        .retained_macro_invocations
+        .into_iter()
+        .filter(|event| parser.retained_macro_call_ends.contains(&event.callee_end))
+        .map(|event| event.descriptor)
+        .collect();
     TranslationUnit {
         functions,
+        global_expressions: parser.global_expressions,
+        retained_macro_calls,
         diagnostics: parser.diagnostics,
     }
 }
@@ -57,9 +79,21 @@ mod expression_port_tests {
 
     #[test]
     fn indirect_calls_retain_cast_and_dereference_receiver() {
-        let unit = parse("typedef void code(void); int f(int *p) { (*(code *)(p))(); return *p; }", false);
+        let unit = parse(
+            "typedef void code(void); int f(int *p) { (*(code *)(p))(); return *p; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions.iter().find(|f| f.name == "f").unwrap().body.kind else { panic!() };
+        let StmtKind::Block(body) = &unit
+            .functions
+            .iter()
+            .find(|f| f.name == "f")
+            .unwrap()
+            .body
+            .kind
+        else {
+            panic!()
+        };
         assert!(matches!(&body[0].kind, StmtKind::Expression(Expr {
             kind: ExprKind::Call { callee, .. }, ..
         }) if matches!(&callee.kind, ExprKind::Unary {op, argument,..} if op == "*" && matches!(argument.kind, ExprKind::Cast {..}))));
@@ -67,48 +101,92 @@ mod expression_port_tests {
 
     #[test]
     fn nested_designators_repeat_operand_as_cdt_assignments() {
-        let unit = parse("struct B { int n; }; struct A { struct B b; }; int f(void) { struct A a = { .b.n = 3 }; return 0; }", false);
+        let unit = parse(
+            "struct B { int n; }; struct A { struct B b; }; int f(void) { struct A a = { .b.n = 3 }; return 0; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-        let StmtKind::Declaration(declarations) = &body[0].kind else { panic!() };
-        let ExprKind::ArrayInitializer(values) = &declarations[0].initializer.as_ref().unwrap().kind else { panic!() };
-        let ExprKind::Block(assignments) = &values[0].kind else { panic!() };
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        let StmtKind::Declaration(declarations) = &body[0].kind else {
+            panic!()
+        };
+        let ExprKind::ArrayInitializer(values) =
+            &declarations[0].initializer.as_ref().unwrap().kind
+        else {
+            panic!()
+        };
+        let ExprKind::Block(assignments) = &values[0].kind else {
+            panic!()
+        };
         assert_eq!(assignments.len(), 2);
         for (assignment, name) in assignments.iter().zip(["b", "n"]) {
-            assert!(matches!(&assignment.kind, ExprKind::Binary {op, left, right} if op == "=" && matches!(&left.kind, ExprKind::Identifier(n) if n == name) && matches!(&right.kind, ExprKind::Literal(n) if n == "3")));
+            assert!(
+                matches!(&assignment.kind, ExprKind::Binary {op, left, right} if op == "=" && matches!(&left.kind, ExprKind::Identifier(n) if n == name) && matches!(&right.kind, ExprKind::Literal(n) if n == "3"))
+            );
         }
     }
 
     #[test]
     fn terminal_problem_label_keeps_closing_brace_for_enclosing_block() {
-        let unit = parse("int f(int n) { while (n--) { goto end; end: } return n; } int g(void) { return 1; }", false);
+        let unit = parse(
+            "int f(int n) { while (n--) { goto end; end: } return n; } int g(void) { return 1; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions.len(), 2);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
         assert_eq!(body.len(), 2);
         assert!(matches!(body[1].kind, StmtKind::Return(_)));
     }
 
     #[test]
     fn assembly_is_explicit_opaque_cdt_node() {
-        let unit = parse("void f(void) { __asm__ __volatile__(\"x\" : : : \"memory\"); asm goto(\"y\" : : : : end); end: ; }", false);
+        let unit = parse(
+            "void f(void) { __asm__ __volatile__(\"x\" : : : \"memory\"); asm goto(\"y\" : : : : end); end: ; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
         for statement in &body[..2] {
-            assert!(matches!(&statement.kind, StmtKind::Expression(Expr {kind: ExprKind::Assembly(_),..})));
+            assert!(matches!(
+                &statement.kind,
+                StmtKind::Expression(Expr {
+                    kind: ExprKind::Assembly(_),
+                    ..
+                })
+            ));
         }
     }
 
     #[test]
     fn following_cast_disambiguates_unknown_type_alias() {
-        let unit = parse("int f(int n) { return (outer_type)(inner_type)(long double)n; }", false);
+        let unit = parse(
+            "int f(int n) { return (outer_type)(inner_type)(long double)n; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-        let StmtKind::Return(Some(expression)) = &body[0].kind else { panic!() };
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        let StmtKind::Return(Some(expression)) = &body[0].kind else {
+            panic!()
+        };
         let mut expression = expression;
         for name in ["outer_type", "inner_type", "long double"] {
-            let ExprKind::Cast {type_name,argument} = &expression.kind else {panic!("{expression:?}")};
-            assert_eq!(type_name,name);
+            let ExprKind::Cast {
+                type_name,
+                argument,
+            } = &expression.kind
+            else {
+                panic!("{expression:?}")
+            };
+            assert_eq!(type_name, name);
             expression = argument;
         }
         assert!(matches!(&expression.kind,ExprKind::Identifier(name) if name == "n"));
@@ -116,39 +194,208 @@ mod expression_port_tests {
 
     #[test]
     fn gnu_initializer_designators_are_assignment_blocks() {
-        let unit = parse("struct A {int x;}; int f(void) { struct A a={ x: 1 }; int b[8] = { [1 ... 3] = 7 }; return 0; }",false);
-        assert!(unit.diagnostics.is_empty(), "{:?}",unit.diagnostics);
-        let StmtKind::Block(body)=&unit.functions[0].body.kind else {panic!()};
-        let StmtKind::Declaration(declarations)=&body[1].kind else {panic!()};
-        let ExprKind::ArrayInitializer(values)=&declarations[0].initializer.as_ref().unwrap().kind else {panic!()};
-        let ExprKind::Block(assignments)=&values[0].kind else {panic!()};
-        assert!(matches!(&assignments[0].kind,ExprKind::Binary {left,..} if matches!(&left.kind,ExprKind::ArrayInitializer(bounds) if bounds.len()==2)));
+        let unit = parse(
+            "struct A {int x;}; int f(void) { struct A a={ x: 1 }; int b[8] = { [1 ... 3] = 7 }; return 0; }",
+            false,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        let StmtKind::Declaration(declarations) = &body[1].kind else {
+            panic!()
+        };
+        let ExprKind::ArrayInitializer(values) =
+            &declarations[0].initializer.as_ref().unwrap().kind
+        else {
+            panic!()
+        };
+        let ExprKind::Block(assignments) = &values[0].kind else {
+            panic!()
+        };
+        assert!(
+            matches!(&assignments[0].kind,ExprKind::Binary {left,..} if matches!(&left.kind,ExprKind::ArrayInitializer(bounds) if bounds.len()==2))
+        );
     }
 
     #[test]
     fn microsoft_assembly_recovers_cdt_compound_boundary() {
-        let source="int f(int x) { x++; __asm { mov eax, ebx } x+=2; return x; } int g(void) {return 1;}";
-        for cpp in [false,true] {
-            let unit=parse(source,cpp);
-            assert!(unit.diagnostics.is_empty(),"{:?}",unit.diagnostics);
-            assert_eq!(unit.functions.len(),2);
-            let StmtKind::Block(body)=&unit.functions[0].body.kind else {panic!()};
-            assert_eq!(body.len(),2);
-            assert!(matches!(&body[0].kind,StmtKind::Expression(Expr {kind:ExprKind::Unary {op,..},..}) if op=="++"));
-            assert!(matches!(body[1].kind,StmtKind::Problem));
-            assert_eq!(unit.functions[0].span.end,source.find(" } x+=2").unwrap()+2);
+        let source =
+            "int f(int x) { x++; __asm { mov eax, ebx } x+=2; return x; } int g(void) {return 1;}";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert_eq!(unit.functions.len(), 2);
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            assert_eq!(body.len(), 2);
+            assert!(
+                matches!(&body[0].kind,StmtKind::Expression(Expr {kind:ExprKind::Unary {op,..},..}) if op=="++")
+            );
+            assert!(matches!(body[1].kind, StmtKind::Problem));
+            assert_eq!(
+                unit.functions[0].span.end,
+                source.find(" } x+=2").unwrap() + 2
+            );
         }
     }
 
     #[test]
     fn c_qualified_names_follow_problem_recovery_context() {
-        let unit=parse("int f(int x) { ::global=x; if (::global && x) return 1; return ::foo(x); }",false);
-        assert!(unit.diagnostics.is_empty(),"{:?}",unit.diagnostics);
-        let StmtKind::Block(body)=&unit.functions[0].body.kind else {panic!()};
-        assert_eq!(body.len(),3);
-        assert!(matches!(body[0].kind,StmtKind::Problem));
-        assert!(matches!(&body[1].kind,StmtKind::If {condition,..} if matches!(&condition.kind,ExprKind::Problem(text) if text=="::global && x")));
-        assert!(matches!(body[2].kind,StmtKind::Problem));
+        let unit = parse(
+            "int f(int x) { ::global=x; if (::global && x) return 1; return ::foo(x); }",
+            false,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert_eq!(body.len(), 3);
+        assert!(matches!(body[0].kind, StmtKind::Problem));
+        assert!(
+            matches!(&body[1].kind,StmtKind::If {condition,..} if matches!(&condition.kind,ExprKind::Problem(text) if text=="::global && x"))
+        );
+        assert!(matches!(body[2].kind, StmtKind::Problem));
+    }
+
+    #[test]
+    fn ambiguous_casts_use_real_typedef_bindings_and_object_shadowing() {
+        let unit = parse(
+            "typedef int T; void decl(Unbound x); int f(int T,int x){return (T)&x;} int g(int x){return (Unbound)&x;} int h(int x){return (T)&x;}",
+            false,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        for name in ["f", "g", "h"] {
+            let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+            let StmtKind::Block(body) = &function.body.kind else {
+                panic!()
+            };
+            let StmtKind::Return(Some(expression)) = &body[0].kind else {
+                panic!()
+            };
+            if name == "h" {
+                assert!(matches!(expression.kind, ExprKind::Cast { .. }));
+            } else {
+                assert!(matches!(&expression.kind,ExprKind::Binary{op,..} if op=="&"));
+            }
+        }
+    }
+
+    #[test]
+    fn ordinary_type_arguments_recover_whole_problem_statements() {
+        let source = "typedef int T; int f(int ap,int n){ n=arbitrary(ap,long long); int a=0,b=arbitrary(ap,char*); if(n)n=arbitrary(ap,T*); while(n)n=arbitrary(ap,); return arbitrary(ap,int); }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            assert_eq!(body.len(), 5);
+            assert!(body.iter().all(|s| matches!(s.kind, StmtKind::Problem)));
+        }
+    }
+
+    #[test]
+    fn valid_cast_sizeof_alias_and_builtin_arguments_remain_executable() {
+        let source = "typedef int T; int f(int ap,int n){ n=arbitrary(ap,T); n=arbitrary(ap,(long long)n); n=arbitrary(ap,sizeof(long long)); n=__builtin_va_arg(ap,int); return n; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            assert_eq!(body.len(), 5);
+            assert!(
+                body[..4]
+                    .iter()
+                    .all(|s| matches!(s.kind, StmtKind::Expression(_)))
+            );
+        }
+    }
+
+    #[test]
+    fn cpp_invalid_condition_recovers_reference_function_declaration() {
+        let source = "int f(int ap,int n){ if(n&&arbitrary(ap,long long)) return 1; return 2; }";
+        let unit = parse(source, true);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert!(
+            unit.functions
+                .iter()
+                .any(|f| f.name == "arbitrary" && f.return_type == "n&&")
+        );
+        let unit = parse(source, false);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert!(!unit.functions.iter().any(|f| f.name == "arbitrary"));
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(
+            matches!(&body[0].kind,StmtKind::If {condition,..} if matches!(condition.kind,ExprKind::Problem(_)))
+        );
+    }
+
+    #[test]
+    fn lambda_methods_keep_tu_names_and_parent_context() {
+        let unit = parse(
+            "int outer(int x){auto f=[x](int y){auto g=[y](){return 2;};return x+y;};return f(x);} int next(int x){return [x](int y) mutable noexcept -> int {return x+y;}(x);}",
+            true,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        for (name, parent, fullname, signature) in [
+            (
+                "<lambda>0",
+                "outer:int(int)",
+                "outer:int(int).<lambda>0",
+                "ANY(int)",
+            ),
+            (
+                "<lambda>1",
+                "outer:int(int).<lambda>0",
+                "outer:int(int).<lambda>1",
+                "ANY()",
+            ),
+            (
+                "<lambda>2",
+                "next:int(int)",
+                "next:int(int).<lambda>2",
+                "ANY(int)",
+            ),
+        ] {
+            let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+            assert_eq!(function.lambda_parent.as_deref(), Some(parent));
+            assert_eq!(function.full_name, fullname);
+            assert_eq!(function.return_type, "ANY");
+            assert_eq!(function.signature, signature);
+        }
+        let outer = unit.functions.iter().find(|f| f.name == "outer").unwrap();
+        let StmtKind::Block(body) = &outer.body.kind else {
+            panic!()
+        };
+        let StmtKind::Declaration(declarations) = &body[0].kind else {
+            panic!()
+        };
+        assert!(
+            matches!(&declarations[0].initializer.as_ref().unwrap().kind,ExprKind::Lambda {signature,return_type,..} if signature=="int(int)"&&return_type=="int")
+        );
+    }
+
+    #[test]
+    fn invalid_abstract_pointer_expression_preserves_valid_types_and_calls() {
+        let source = "typedef int T; int f(int *p){p=(T*__madeup*)p; if((T*__madeup*)p) return 1; p=(T**)p; __ptr32(p); return 0;}";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            assert!(matches!(body[0].kind, StmtKind::Problem));
+            assert!(
+                matches!(&body[1].kind,StmtKind::If {condition,..} if matches!(condition.kind,ExprKind::Problem(_)))
+            );
+            assert!(matches!(body[2].kind, StmtKind::Expression(_)));
+            assert!(matches!(body[3].kind, StmtKind::Expression(_)));
+        }
     }
 }
 
@@ -170,7 +417,14 @@ struct Parser<'a> {
     asm_problem_recovery: bool,
     in_function_body: bool,
     function_declarations: Vec<Function>,
+    global_expressions: Vec<Expr>,
     macro_expansion: bool,
+    current_method: String,
+    lambda_counter: usize,
+    defined_cpp_methods: HashSet<String>,
+    lambda_ast_parent: String,
+    retained_macro_invocations: Vec<RetainedMacroInvocation>,
+    retained_macro_call_ends: HashSet<usize>,
 }
 
 struct Header {
@@ -304,14 +558,23 @@ impl Parser<'_> {
             if matches!(self.peek(), "asm" | "__asm" | "__asm__") {
                 let start = self.pos;
                 self.pos += 1;
-                while matches!(self.peek(), "volatile" | "__volatile" | "__volatile__" | "inline" | "goto") {
+                while matches!(
+                    self.peek(),
+                    "volatile" | "__volatile" | "__volatile__" | "inline" | "goto"
+                ) {
                     self.pos += 1;
                 }
-                if matches!(self.peek(), "(" | "{") && let Some(close) = self.matching(self.pos, self.limit) {
+                if matches!(self.peek(), "(" | "{")
+                    && let Some(close) = self.matching(self.pos, self.limit)
+                {
                     self.pos = close + 1;
                     self.eat(";");
                 } else {
-                    self.diagnose(start, self.pos, "cannot recover assembly declaration operand");
+                    self.diagnose(
+                        start,
+                        self.pos,
+                        "cannot recover assembly declaration operand",
+                    );
                 }
                 continue;
             }
@@ -361,24 +624,53 @@ impl Parser<'_> {
                 cursor = body;
             }
             if self.text(cursor) == ";" {
+                if matches!(self.text(start), "static_assert" | "_Static_assert") {
+                    // These are assertions, not declarations with a grouped
+                    // function declarator inside their type-id operands.
+                    if (start..cursor).any(|i| {
+                        matches!(
+                            self.text(i),
+                            "__builtin_va_arg"
+                                | "__builtin_offsetof"
+                                | "__builtin_types_compatible_p"
+                                | "__offsetof__"
+                        )
+                    }) {
+                        let expression = self.expression_range(start, cursor);
+                        self.global_expressions.push(expression);
+                    }
+                    self.pos = cursor + 1;
+                    continue;
+                }
                 // CDT's elaborated-type declaration path creates declarator
                 // locals, including function declarators, rather than methods.
                 let elaborated = (start..self.specifier_end(start, cursor))
                     .any(|i| matches!(self.text(i), "struct" | "union" | "enum" | "class"));
                 self.remember_types(start, cursor);
+                if !is_typedef {
+                    self.collect_global_expressions(start, cursor);
+                }
                 if !is_typedef && !elaborated {
                     // A simple declaration shares its specifiers across every
                     // declarator; Joern converts each function declarator.
                     let base_end = self.specifier_end(start, cursor);
                     let base_type = self.clean_type(start, base_end);
-                    for (a, b) in self.split_ranges(base_end, cursor, ",") {
-                        if let Some(mut header) = self.function_header(a, b) {
-                            let declarator_type = header.return_type.take()
-                                .unwrap_or_else(|| self.clean_type(a, header.name_start));
-                            header.return_type = Some(format!("{base_type}{declarator_type}"));
-                            self.add_function(start, cursor, header, prefix, false, functions);
-                        } else if let (Some(name), _) = self.declarator_name(a, b) {
-                            self.variables.insert(self.text(name).to_string());
+                    if let Some(header) = header.filter(|h| h.name_start < base_end) {
+                        // A C++ constructor has no return decl-specifier;
+                        // specifier recovery may consume its class-name token.
+                        self.add_function(start, cursor, header, prefix, false, functions);
+                    } else {
+                        for (a, b) in self.split_ranges(base_end, cursor, ",") {
+                            if let Some(mut header) = self.function_header(a, b) {
+                                let declarator_type = header
+                                    .return_type
+                                    .take()
+                                    .unwrap_or_else(|| self.clean_type(a, header.name_start));
+                                header.return_type = Some(format!("{base_type}{declarator_type}"));
+                                self.add_function(start, cursor, header, prefix, false, functions);
+                            } else if let (Some(name), _) = self.declarator_name(a, b) {
+                                self.variables.insert(self.text(name).to_string());
+                            }
                         }
                     }
                 } else {
@@ -435,17 +727,24 @@ impl Parser<'_> {
                         self.class_scopes.insert(nested.clone());
                     }
                     let previous_linkage = self.extern_c;
+                    let outer_variables = class.map(|_| self.variables.clone());
                     if self.cpp && linkage {
                         self.extern_c = self.text(start + 1) == "\"C\"";
                     }
                     self.pos = cursor + 1;
                     self.translation_scope(&nested, functions);
                     self.extern_c = previous_linkage;
+                    if let Some(variables) = outer_variables {
+                        self.variables = variables;
+                    }
                     self.expect("}");
                     // Names after an anonymous record, including typedef aliases.
                     let after = self.pos;
                     if class.is_some() {
                         self.pos = self.declaration_end(after);
+                        if !is_typedef {
+                            self.collect_global_expressions(after, self.pos);
+                        }
                         for (a, b) in self.split_ranges(after, self.pos, ",") {
                             if let (Some(name), _) = self.declarator_name(a, b) {
                                 if is_typedef {
@@ -460,15 +759,27 @@ impl Parser<'_> {
                     }
                 } else if let Some(close) = self.matching(cursor, self.limit) {
                     // Aggregate initializer, enum, or non-executable record data.
-                    if !(start..cursor).any(|i| matches!(self.text(i), "=" | "enum")) {
+                    if !(start..cursor).any(|i| matches!(self.text(i), "=" | "enum"))
+                        && !self.cdt_problem_function_header(start, cursor)
+                    {
                         self.diagnose(
                             start,
                             close + 1,
                             "unrecognized top-level brace; possible omitted function definition",
                         );
                     }
-                    self.pos = self.declaration_end(close + 1);
-                    self.remember_types(start, self.pos);
+                    let aggregate = (start..cursor).any(|i| matches!(self.text(i), "=" | "enum"));
+                    self.pos = if aggregate {
+                        self.declaration_end(close + 1)
+                    } else {
+                        close + 1
+                    };
+                    if aggregate {
+                        self.remember_types(start, self.pos);
+                        if !is_typedef {
+                            self.collect_global_expressions(start, self.pos);
+                        }
+                    }
                     self.eat(";");
                 } else {
                     self.diagnose(cursor, cursor + 1, "unclosed top-level brace");
@@ -482,11 +793,21 @@ impl Parser<'_> {
         }
     }
 
+    fn record_retained_macro_call(&mut self, callee: &Expr, _arguments: &[Expr]) {
+        if !self.retained_macro_invocations.is_empty()
+            && matches!(callee.kind, ExprKind::Member { .. })
+        {
+            self.retained_macro_call_ends.insert(callee.span.end);
+        }
+    }
+
     fn declaration_end(&self, start: usize) -> usize {
         let mut i = start;
         while i < self.limit && !matches!(self.text(i), ";" | "}") {
             if matches!(self.text(i), "(" | "[" | "{") {
-                i = self.matching(i, self.limit).map_or(i + 1, |close| close + 1);
+                i = self
+                    .matching(i, self.limit)
+                    .map_or(i + 1, |close| close + 1);
             } else {
                 i += 1;
             }
@@ -496,9 +817,14 @@ impl Parser<'_> {
 
     fn knr_body_start(&self, header: &Header) -> Option<usize> {
         let parameters = self.split_ranges(header.parameters_start, header.parameters_end, ",");
-        if parameters.is_empty() || parameters.iter().any(|&(a, b)| b != a + 1
-            || self.tokens[a].kind != TokenKind::Identifier
-            || type_word(self.text(a)) || qualifier(self.text(a))) {
+        if parameters.is_empty()
+            || parameters.iter().any(|&(a, b)| {
+                b != a + 1
+                    || self.tokens[a].kind != TokenKind::Identifier
+                    || type_word(self.text(a))
+                    || qualifier(self.text(a))
+            })
+        {
             return None;
         }
         let mut from = header.parameters_end + 1;
@@ -519,9 +845,16 @@ impl Parser<'_> {
                 return None;
             }
             let base_end = self.specifier_end(from, end);
-            if base_end == from || base_end == end || self.split_ranges(base_end, end, ",").iter()
-                .any(|&(a, b)| self.declarator_name(a, b).0
-                    .is_none_or(|name| !parameters.iter().any(|&(p, _)| self.text(p) == self.text(name)))) {
+            if base_end == from
+                || base_end == end
+                || self.split_ranges(base_end, end, ",").iter().any(|&(a, b)| {
+                    self.declarator_name(a, b).0.is_none_or(|name| {
+                        !parameters
+                            .iter()
+                            .any(|&(p, _)| self.text(p) == self.text(name))
+                    })
+                })
+            {
                 return None;
             }
             declared = true;
@@ -534,7 +867,8 @@ impl Parser<'_> {
         if (start..end).any(|i| self.text(i) == "=") {
             return None;
         }
-        let introducer = (start..end).find(|i| matches!(self.text(*i), "struct" | "class" | "union"))?;
+        let introducer =
+            (start..end).find(|i| matches!(self.text(*i), "struct" | "class" | "union"))?;
         let mut after = introducer + 1;
         while let Some(next) = self.skip_attribute(after, end) {
             after = next;
@@ -556,7 +890,8 @@ impl Parser<'_> {
 
     fn function_header(&self, start: usize, end: usize) -> Option<Header> {
         if matches!(self.text(start), "static_assert" | "_Static_assert")
-            || (self.cpp && self.text(start) == "using") {
+            || (self.cpp && self.text(start) == "using")
+        {
             return None;
         }
         if let Some(header) = self.grouped_function_header(start, end) {
@@ -604,8 +939,10 @@ impl Parser<'_> {
             let close = self.matching(i, end)?;
             // A typedef followed by a grouped object declarator is not an
             // implicit function name (e.g. byte (mask)[8]).
-            if i == start + 1 && self.explicit_types.contains(self.text(start))
-                && (!self.cpp || self.text(close + 1) == "[") {
+            if i == start + 1
+                && self.explicit_types.contains(self.text(start))
+                && (!self.cpp || self.text(close + 1) == "[")
+            {
                 i = close + 1;
                 continue;
             }
@@ -624,7 +961,8 @@ impl Parser<'_> {
                 && self.text(name_start - 2) == "operator"
             {
                 name_start -= 2;
-            } else if self.text(name_start) == "]" && name_start >= start + 3
+            } else if self.text(name_start) == "]"
+                && name_start >= start + 3
                 && self.text(name_start - 1) == "["
                 && matches!(self.text(name_start - 2), "new" | "delete")
                 && self.text(name_start - 3) == "operator"
@@ -654,7 +992,10 @@ impl Parser<'_> {
             if self.split_ranges(i + 1, close, ",").iter().any(|(a, b)| {
                 a < b
                     && (self.tokens[*a].kind == TokenKind::Literal
-                        || matches!(self.text(*a), "{" | "+" | "-" | "!" | "~" | "*" | "&" | "&&"))
+                        || matches!(
+                            self.text(*a),
+                            "{" | "+" | "-" | "!" | "~" | "*" | "&" | "&&"
+                        ))
             }) {
                 i = close + 1;
                 continue;
@@ -687,7 +1028,9 @@ impl Parser<'_> {
     fn grouped_function_header(&self, start: usize, end: usize) -> Option<Header> {
         let base_end = self.specifier_end(start, end);
         let mut group = base_end;
-        while group < end && (matches!(self.text(group), "*" | "&" | "&&") || qualifier(self.text(group))) {
+        while group < end
+            && (matches!(self.text(group), "*" | "&" | "&&") || qualifier(self.text(group)))
+        {
             group += 1;
         }
         if self.text(group) != "(" {
@@ -699,8 +1042,10 @@ impl Parser<'_> {
         } else {
             let (name, suffix) = self.declarator_name(group + 1, close);
             let name = name?;
-            if suffix != close || (group + 1..name).any(|i| matches!(self.text(i), "*" | "&" | "&&"))
-                || self.text(close + 1) != "(" {
+            if suffix != close
+                || (group + 1..name).any(|i| matches!(self.text(i), "*" | "&" | "&&"))
+                || self.text(close + 1) != "("
+            {
                 return None;
             }
             let mut name_start = name;
@@ -750,7 +1095,9 @@ impl Parser<'_> {
             // The original CDT version recovers these as problem declarations;
             // Joern's declaration conversion emits no method for them.
             if definition {
-                self.pos = self.matching(body_start, self.limit).map_or(self.limit, |close| close + 1);
+                self.pos = self
+                    .matching(body_start, self.limit)
+                    .map_or(self.limit, |close| close + 1);
             }
             return;
         }
@@ -761,7 +1108,48 @@ impl Parser<'_> {
         {
             return_start = close + 1;
         }
-        let return_type = header.return_type.clone().unwrap_or_else(|| self.clean_type(return_start, header.name_start));
+        let original_return_start = return_start;
+        let base_end = self.specifier_end(return_start, header.name_start);
+        let primitive_return = (return_start..base_end).any(|i| type_word(self.text(i)));
+        if (!self.cpp && self.text(base_end) == "<")
+            || (primitive_return
+                && self
+                    .tokens
+                    .get(base_end)
+                    .is_some_and(|t| t.kind == TokenKind::Identifier)
+                && self.text(base_end + 1) == "<"
+                && base_end < header.name_start)
+        {
+            // CDT cannot combine a primitive return specifier with a second
+            // template-like named specifier; C also has no template type-ids.
+            if definition {
+                self.pos = self
+                    .matching(body_start, self.limit)
+                    .map_or(self.limit, |close| close + 1);
+            }
+            return;
+        }
+        while return_start + 1 < header.name_start
+            && self.tokens[return_start].kind == TokenKind::Identifier
+            && self.tokens[return_start + 1].kind == TokenKind::Identifier
+            && !self.explicit_types.contains(self.text(return_start))
+            && !type_word(self.text(return_start))
+            && !qualifier(self.text(return_start))
+            && !type_word(self.text(return_start + 1))
+            && !qualifier(self.text(return_start + 1))
+        {
+            // CDT emits a leading unbound specifier as a global problem node
+            // and recovers the final named return type as a real definition.
+            return_start += 1;
+        }
+        let return_type = if return_start != original_return_start {
+            self.clean_type(return_start, header.name_start)
+        } else {
+            header
+                .return_type
+                .clone()
+                .unwrap_or_else(|| self.clean_type(return_start, header.name_start))
+        };
         let return_type = if return_type.is_empty() {
             if self.cpp {
                 "void".into()
@@ -811,6 +1199,107 @@ impl Parser<'_> {
                 .collect::<Vec<_>>()
                 .join(",")
         );
+        let lexical_name = header
+            .name
+            .rsplit("::")
+            .next()
+            .unwrap_or(&header.name)
+            .to_string();
+        let name = if let Some(operator) = lexical_name.strip_prefix("operator") {
+            if definition {
+                operator.to_string()
+            } else {
+                format!("operator {operator}")
+            }
+        } else {
+            lexical_name
+        };
+        let resolved_name = if let Some((owner, method)) = header.name.split_once("::") {
+            self.imports.get(owner).map_or_else(
+                || header.name.clone(),
+                |qualified| format!("{qualified}::{method}"),
+            )
+        } else {
+            header.name.clone()
+        };
+        let qualified_name = if prefix.is_empty() {
+            resolved_name
+        } else {
+            format!("{prefix}::{resolved_name}")
+        };
+        let extern_c = self.cpp
+            && (self.extern_c
+                || (start..header.name_start)
+                    .any(|i| self.text(i) == "extern" && self.text(i + 1) == "\"C\"")
+                || self.extern_c_names.contains(&qualified_name));
+        if extern_c {
+            self.extern_c_names.insert(qualified_name.clone());
+        }
+        let mut implicit_this = (self.cpp && definition)
+            .then(|| {
+                qualified_name
+                    .rsplit_once("::")
+                    .filter(|(owner, _)| self.class_scopes.contains(*owner))
+                    .map(|(owner, _)| owner.replace("::", "."))
+            })
+            .flatten();
+        let binding_signature = self.cpp.then(|| {
+            let parameter_types = self
+                .split_ranges(header.parameters_start, header.parameters_end, ",")
+                .into_iter()
+                .filter(|(a, b)| a < b)
+                .map(|(a, b)| self.binding_parameter_type(a, b))
+                .filter(|t| t != "void" && t != "...")
+                .collect::<Vec<_>>()
+                .join(",");
+            format!("{}({parameter_types})", self.binding_type(&return_type))
+        });
+        let duplicate_binding = if definition && self.cpp && !header.name.contains("::") {
+            let mut qualifiers = String::new();
+            let mut cursor = header.parameters_end + 1;
+            while cursor < body_start {
+                if let Some(after) = self.skip_attribute(cursor, body_start) {
+                    cursor = after;
+                    continue;
+                }
+                if matches!(self.text(cursor), "(" | "[") {
+                    cursor = self
+                        .matching(cursor, body_start)
+                        .map_or(body_start, |close| close + 1);
+                } else {
+                    if matches!(self.text(cursor), "const" | "volatile" | "&" | "&&") {
+                        qualifiers.push_str(self.text(cursor));
+                    }
+                    cursor += 1;
+                }
+            }
+            !self.defined_cpp_methods.insert(format!(
+                "{qualified_name}:{}:{qualifiers}",
+                binding_signature.as_deref().unwrap_or_default()
+            ))
+        } else {
+            false
+        };
+        if duplicate_binding {
+            implicit_this = None;
+        }
+        let full_name = if duplicate_binding {
+            format!("{}:<unresolvedSignature>", header.name.replace("::", "."))
+        } else if self.cpp && !extern_c {
+            format!(
+                "{}:{}",
+                qualified_name.replace("::", "."),
+                binding_signature.as_deref().unwrap_or_default()
+            )
+        } else if extern_c {
+            qualified_name
+                .rsplit("::")
+                .next()
+                .unwrap_or(&qualified_name)
+                .to_string()
+        } else {
+            qualified_name
+        };
         for parameter in &parameters {
             self.variables.insert(parameter.name.clone());
         }
@@ -823,8 +1312,12 @@ impl Parser<'_> {
             );
         }
         self.pos = body_start;
+        let old_method = std::mem::replace(&mut self.current_method, full_name.clone());
+        let old_ast_parent = std::mem::replace(&mut self.lambda_ast_parent, full_name.clone());
         self.in_function_body = definition;
-        let original_body_end = definition.then(|| self.matching(body_start, self.limit)).flatten();
+        let original_body_end = definition
+            .then(|| self.matching(body_start, self.limit))
+            .flatten();
         self.asm_problem_recovery = false;
         let body = if definition {
             self.statement()
@@ -835,58 +1328,19 @@ impl Parser<'_> {
             }
         };
         let end = if definition { self.pos } else { body_start + 1 };
-        if self.asm_problem_recovery && let Some(body_end) = original_body_end {
+        if self.asm_problem_recovery
+            && let Some(body_end) = original_body_end
+        {
             // CDT closes the enclosing compound at a problem assembly brace.
             // The balanced source body still delimits recovery of later methods.
+            self.asm_tail_declarations(end, body_end);
             self.pos = body_end + 1;
         }
         self.variables = old_variables;
         self.in_function_body = old_body_context;
+        self.current_method = old_method;
+        self.lambda_ast_parent = old_ast_parent;
         self.variables.insert(header.name.clone());
-        let lexical_name = header
-            .name
-            .rsplit("::")
-            .next()
-            .unwrap_or(&header.name)
-            .to_string();
-        let name = if let Some(operator) = lexical_name.strip_prefix("operator") {
-            if definition { operator.to_string() } else { format!("operator {operator}") }
-        } else {
-            lexical_name
-        };
-        let resolved_name = if let Some((owner, method)) = header.name.split_once("::") {
-            self.imports.get(owner).map_or_else(|| header.name.clone(), |qualified| format!("{qualified}::{method}"))
-        } else {
-            header.name
-        };
-        let qualified_name = if prefix.is_empty() {
-            resolved_name
-        } else {
-            format!("{prefix}::{resolved_name}")
-        };
-        let extern_c = self.cpp && (self.extern_c
-            || (start..header.name_start).any(|i| self.text(i) == "extern" && self.text(i + 1) == "\"C\"")
-            || self.extern_c_names.contains(&qualified_name));
-        if extern_c {
-            self.extern_c_names.insert(qualified_name.clone());
-        }
-        let implicit_this = (self.cpp && definition).then(|| {
-            qualified_name.rsplit_once("::")
-                .filter(|(owner, _)| self.class_scopes.contains(*owner))
-                .map(|(owner, _)| owner.replace("::", "."))
-        }).flatten();
-        let full_name = if self.cpp && !extern_c {
-            let parameter_types = self.split_ranges(header.parameters_start, header.parameters_end, ",")
-                .into_iter().filter(|(a,b)| a < b)
-                .map(|(a,b)| self.binding_parameter_type(a,b))
-                .filter(|t| t != "void" && t != "...")
-                .collect::<Vec<_>>().join(",");
-            format!("{}:{}({parameter_types})", qualified_name.replace("::", "."), self.binding_type(&return_type))
-        } else if extern_c {
-            qualified_name.rsplit("::").next().unwrap_or(&qualified_name).to_string()
-        } else {
-            qualified_name
-        };
         functions.push(Function {
             name,
             full_name,
@@ -894,6 +1348,7 @@ impl Parser<'_> {
             signature,
             extern_c,
             implicit_this,
+            lambda_parent: None,
             parameters,
             body,
             span: self.span(start, end),
@@ -901,19 +1356,210 @@ impl Parser<'_> {
     }
 
     fn cdt_problem_declaration(&self, start: usize, end: usize) -> bool {
+        let mut specifier_start = start;
+        while let Some(after) = self.skip_attribute(specifier_start, end) {
+            specifier_start = after;
+        }
         (start..end).any(|i| {
             (self.text(i) == "_Noreturn"
-                && (self.cpp || self.tokens[start].span.line == self.tokens[i + 1].span.line))
+                && (self.cpp
+                    || self.tokens[specifier_start].span.line == self.tokens[i + 1].span.line))
+                || self.text(i) == "@"
+                || (!self.cpp && self.text(i) == "::")
                 || (!self.cpp && self.text(i) == "[" && self.text(i + 1) == "[")
                 || (matches!(self.text(i), "__attribute__" | "__attribute")
-                    && self.text(i + 1) == "(" && self.text(i + 2) == "("
-                    && self.text(i + 3) == ")" && self.text(i + 4) == ")")
+                    && self.text(i + 1) == "("
+                    && self.text(i + 2) == "("
+                    && self.text(i + 3) == ")"
+                    && self.text(i + 4) == ")")
         })
+    }
+
+    fn cdt_problem_function_header(&self, start: usize, end: usize) -> bool {
+        let mut cursor = start;
+        while cursor < end {
+            if let Some(after) = self.skip_attribute(cursor, end) {
+                cursor = after;
+                continue;
+            }
+            if self.text(cursor) == "@"
+                && (!self.cpp
+                    || (start..end)
+                        .find(|i| self.text(*i) == "(")
+                        .is_some_and(|open| (open..end).any(|i| self.text(i) == "@")))
+            {
+                return true;
+            }
+            if self.tokens[cursor].kind == TokenKind::Identifier && self.text(cursor + 1) == "[" {
+                let mut suffix = cursor + 1;
+                while self.text(suffix) == "[" {
+                    let Some(close) = self.matching(suffix, end) else {
+                        break;
+                    };
+                    suffix = close + 1;
+                }
+                // C and C++ cannot define an array of functions. The old
+                // CDT parser recovers its entire brace body as a problem.
+                if self.text(suffix) == "(" {
+                    return true;
+                }
+            }
+            if self.text(cursor) == "("
+                && let Some(close) = self.matching(cursor, end)
+            {
+                cursor = close + 1;
+            } else {
+                cursor += 1;
+            }
+        }
+        false
+    }
+
+    fn asm_tail_declarations(&mut self, start: usize, end: usize) {
+        if self.cpp {
+            return;
+        }
+        let saved_limit = self.limit;
+        self.limit = end;
+        self.pos = start;
+        let mut recovered_variables = HashSet::new();
+        while self.pos < end {
+            let start = self.pos;
+            if self.tokens[start].kind == TokenKind::Identifier && self.text(start + 1) == "=" {
+                // Assignment-shaped orphan declarations create global C
+                // variable bindings, unlike locals from the truncated body.
+                recovered_variables.insert(self.text(start).to_string());
+            }
+            if matches!(self.text(start), "asm" | "__asm" | "__asm__")
+                && self.text(start + 1) == "{"
+                && let Some(close) = self.matching(start + 1, end)
+            {
+                // A problem assembly declaration ends at its own brace, not
+                // the semicolon of the next recovered declaration.
+                self.pos = close + 1;
+                self.eat(";");
+                continue;
+            }
+            if self.tokens[start].kind == TokenKind::Identifier
+                && self.text(start + 1) == "("
+                && !recovered_variables.contains(self.text(start))
+                && !type_word(self.text(start))
+                && !qualifier(self.text(start))
+                && !matches!(
+                    self.text(start),
+                    "if" | "while"
+                        | "for"
+                        | "switch"
+                        | "sizeof"
+                        | "_Alignof"
+                        | "alignof"
+                        | "__alignof__"
+                        | "return"
+                        | "asm"
+                        | "__asm"
+                        | "__asm__"
+                )
+                && let Some(close) = self.matching(start + 1, end)
+                && matches!(self.text(close + 1), ";" | "=")
+            {
+                let declaration_end = self.declaration_end(close + 1);
+                if self.text(declaration_end) != ";" {
+                    break;
+                }
+                let ranges = self.split_ranges(start + 2, close, ",");
+                if ranges.iter().all(|&(a, b)| {
+                    a == b
+                        || b == a + 1
+                            && self.tokens[a].kind == TokenKind::Identifier
+                            && !type_word(self.text(a))
+                            && !qualifier(self.text(a))
+                }) {
+                    // These are recovered K&R parameter names, not named type
+                    // specifiers. Sending them through parameters() would leak
+                    // each argument spelling into the translation-unit types.
+                    let parameters: Vec<_> = ranges
+                        .into_iter()
+                        .filter(|(a, b)| a < b)
+                        .map(|(a, b)| Parameter {
+                            name: self.raw(a, b),
+                            type_name: "ANY".into(),
+                            function_pointer: false,
+                            span: self.span(a, b),
+                        })
+                        .collect();
+                    let name = self.text(start).to_string();
+                    self.variables.insert(name.clone());
+                    self.function_declarations.push(Function {
+                        full_name: name.clone(),
+                        name,
+                        return_type: "ANY".into(),
+                        signature: format!("ANY({})", vec!["ANY"; parameters.len()].join(",")),
+                        extern_c: false,
+                        implicit_this: None,
+                        lambda_parent: None,
+                        parameters,
+                        body: Stmt {
+                            kind: StmtKind::Empty,
+                            span: self.span(declaration_end, declaration_end),
+                        },
+                        span: self.span(start, declaration_end + 1),
+                    });
+                    self.pos = declaration_end + 1;
+                    continue;
+                }
+            }
+            self.pos = self.problem_statement_end(start).max(start + 1);
+        }
+        self.limit = saved_limit;
+    }
+
+    fn collect_global_expressions(&mut self, start: usize, end: usize) {
+        let base_end = self.specifier_end(start, end);
+        for (a, b) in self.split_ranges(base_end, end, ",") {
+            let mut cursor = a;
+            let mut ranges = Vec::new();
+            while cursor < b {
+                if self.text(cursor) == "=" {
+                    ranges.push((cursor + 1, b));
+                    break;
+                }
+                if matches!(self.text(cursor), "(" | "[" | "{") {
+                    let Some(close) = self.matching(cursor, b) else {
+                        break;
+                    };
+                    if self.text(cursor) == "[" {
+                        ranges.push((cursor + 1, close));
+                    }
+                    if self.text(cursor) == "{" {
+                        ranges.push((cursor, b));
+                        break;
+                    }
+                    cursor = close + 1;
+                } else {
+                    cursor += 1;
+                }
+            }
+            for (a, b) in ranges {
+                if (a..b).any(|i| {
+                    matches!(
+                        self.text(i),
+                        "__builtin_va_arg"
+                            | "__builtin_offsetof"
+                            | "__builtin_types_compatible_p"
+                            | "__offsetof__"
+                    )
+                }) {
+                    let expression = self.expression_range(a, b);
+                    self.global_expressions.push(expression);
+                }
+            }
+        }
     }
 
     fn remember_types(&mut self, start: usize, end: usize) {
         for i in start..end {
-            if self.cpp && matches!(self.text(i), "struct" | "union" | "enum" | "class")
+            if self.cpp
+                && matches!(self.text(i), "struct" | "union" | "enum" | "class")
                 && self
                     .tokens
                     .get(i + 1)
@@ -926,10 +1572,18 @@ impl Parser<'_> {
         if self.text(start) == "using" && self.text(start + 2) == "=" {
             self.types.insert(self.text(start + 1).to_string());
             self.explicit_types.insert(self.text(start + 1).to_string());
-            self.type_aliases.insert(self.text(start + 1).to_string(), self.clean_type(start + 3, end));
+            self.type_aliases.insert(
+                self.text(start + 1).to_string(),
+                self.clean_type(start + 3, end),
+            );
         }
-        if self.cpp && self.text(start) == "using" && self.text(start + 1) != "namespace"
-            && self.text(start + 2) != "=" && end > start + 2 && self.text(end - 2) == "::" {
+        if self.cpp
+            && self.text(start) == "using"
+            && self.text(start + 1) != "namespace"
+            && self.text(start + 2) != "="
+            && end > start + 2
+            && self.text(end - 2) == "::"
+        {
             let name = self.text(end - 1).to_string();
             let qualified = (start + 1..end).map(|i| self.text(i)).collect::<String>();
             self.imports.insert(name, qualified);
@@ -941,7 +1595,10 @@ impl Parser<'_> {
                 if let (Some(name), _) = self.declarator_name(a, b) {
                     self.types.insert(self.text(name).to_string());
                     self.explicit_types.insert(self.text(name).to_string());
-                    self.type_aliases.insert(self.text(name).to_string(), self.declarator_type(start, base_end, Some(name), b));
+                    self.type_aliases.insert(
+                        self.text(name).to_string(),
+                        self.declarator_type(start, base_end, Some(name), b),
+                    );
                 }
             }
         }
@@ -974,7 +1631,8 @@ impl Parser<'_> {
                 // function-pointer declarator or its parameter list.
                 let mut type_name = self.clean_type(a, base_end);
                 let mut i = base_end;
-                while i < b && (matches!(self.text(i), "*" | "&" | "&&") || qualifier(self.text(i))) {
+                while i < b && (matches!(self.text(i), "*" | "&" | "&&") || qualifier(self.text(i)))
+                {
                     if matches!(self.text(i), "*" | "&" | "&&") {
                         type_name.push_str(self.text(i));
                     }
@@ -1001,24 +1659,43 @@ impl Parser<'_> {
         let base_end = self.specifier_end(start, end);
         let (name, suffix) = self.declarator_name(base_end, end);
         let mut group = base_end;
-        while group < end && (matches!(self.text(group), "*" | "&" | "&&") || qualifier(self.text(group))) {
+        while group < end
+            && (matches!(self.text(group), "*" | "&" | "&&") || qualifier(self.text(group)))
+        {
             group += 1;
         }
         let grouped = self.text(group) == "(";
         let pointer = if grouped {
             (group + 1..name.unwrap_or(group + 1))
                 .filter(|i| matches!(self.text(*i), "*" | "&" | "&&"))
-                .map(|i| self.text(i)).collect::<String>()
-        } else { String::new() };
+                .map(|i| self.text(i))
+                .collect::<String>()
+        } else {
+            String::new()
+        };
         if self.text(suffix) == "(" {
             let close = self.matching(suffix, end).unwrap_or(end);
-            let parameters = self.split_ranges(suffix + 1, close, ",").into_iter()
-                .filter(|(a,b)| a < b).map(|(a,b)| self.binding_parameter_type(a,b))
-                .filter(|t| t != "void" && t != "...").collect::<Vec<_>>().join(",");
-            let return_type = format!("{}{}", self.clean_type(start, base_end),
-                (base_end..group).filter(|i| matches!(self.text(*i), "*" | "&" | "&&"))
-                    .map(|i| self.text(i)).collect::<String>());
-            return format!("{}({})({parameters})", self.binding_type(&return_type), if pointer.is_empty() {"*"} else {&pointer});
+            let parameters = self
+                .split_ranges(suffix + 1, close, ",")
+                .into_iter()
+                .filter(|(a, b)| a < b)
+                .map(|(a, b)| self.binding_parameter_type(a, b))
+                .filter(|t| t != "void" && t != "...")
+                .collect::<Vec<_>>()
+                .join(",");
+            let return_type = format!(
+                "{}{}",
+                self.clean_type(start, base_end),
+                (base_end..group)
+                    .filter(|i| matches!(self.text(*i), "*" | "&" | "&&"))
+                    .map(|i| self.text(i))
+                    .collect::<String>()
+            );
+            return format!(
+                "{}({})({parameters})",
+                self.binding_type(&return_type),
+                if pointer.is_empty() { "*" } else { &pointer }
+            );
         }
         if self.text(suffix) == "[" {
             let mut after = suffix;
@@ -1027,11 +1704,17 @@ impl Parser<'_> {
             }
             let base = self.binding_type(&self.clean_type(start, base_end));
             if grouped {
-                return format!("{base}({pointer}){}", self.raw(suffix, after).replace(' ', ""));
+                return format!(
+                    "{base}({pointer}){}",
+                    self.raw(suffix, after).replace(' ', "")
+                );
             }
             let first_end = self.matching(suffix, end).map_or(after, |close| close + 1);
-            return if first_end == after { format!("{base}*") }
-                else { format!("{base}(*){}", self.raw(first_end, after).replace(' ', "")) };
+            return if first_end == after {
+                format!("{base}*")
+            } else {
+                format!("{base}(*){}", self.raw(first_end, after).replace(' ', ""))
+            };
         }
         self.binding_type(&self.declarator_type(start, base_end, name, end))
     }
@@ -1041,15 +1724,21 @@ impl Parser<'_> {
         for _ in 0..16 {
             let split = raw.find(['*', '&', '[', '(']).unwrap_or(raw.len());
             let base = raw[..split].trim();
-            let Some(alias) = self.type_aliases.get(base) else { break };
+            let Some(alias) = self.type_aliases.get(base) else {
+                break;
+            };
             let replaced = format!("{alias}{}", &raw[split..]);
-            if replaced == raw { break; }
+            if replaced == raw {
+                break;
+            }
             raw = replaced;
         }
         let split = raw.find(['*', '&', '[', '(']).unwrap_or(raw.len());
         let mut base = raw[..split].trim().to_string();
         for keyword in ["struct ", "class ", "union ", "enum ", "const "] {
-            if let Some(rest) = base.strip_prefix(keyword) { base = rest.to_string(); }
+            if let Some(rest) = base.strip_prefix(keyword) {
+                base = rest.to_string();
+            }
         }
         base = match base.as_str() {
             "signed" | "signed int" => "int".into(),
@@ -1062,14 +1751,21 @@ impl Parser<'_> {
             "unsigned long long" => "unsigned long long int".into(),
             _ => base,
         };
-        if !base.split_whitespace().all(type_word) && !self.explicit_types.contains(&base)
-            && !self.class_scopes.contains(&base) && !base.contains("::") {
+        if !base.split_whitespace().all(type_word)
+            && !self.explicit_types.contains(&base)
+            && !self.class_scopes.contains(&base)
+            && !base.contains("::")
+        {
             return "ANY".into();
         }
         let mut result = format!("{base}{}", &raw[split..]);
         if result.starts_with("unsigned ") || result.starts_with("volatile ") {
             let space = result.find(' ').unwrap();
-            result = format!("{}{}", &result[..=space], result[space + 1..].replace(' ', ""));
+            result = format!(
+                "{}{}",
+                &result[..=space],
+                result[space + 1..].replace(' ', "")
+            );
         } else if result.contains(['*', '[']) {
             result = result.replace(' ', "");
         } else if raw[split..].contains('&') {
@@ -1145,7 +1841,10 @@ impl Parser<'_> {
                 continue;
             }
             let t = self.text(i);
-            if i > start && self.text(i - 1) == "extern" && self.tokens[i].kind == TokenKind::Literal {
+            if i > start
+                && self.text(i - 1) == "extern"
+                && self.tokens[i].kind == TokenKind::Literal
+            {
                 i += 1;
                 continue;
             }
@@ -1230,6 +1929,20 @@ impl Parser<'_> {
         (None, i)
     }
 
+    fn nested_declarator(&self, start: usize, end: usize) -> bool {
+        let mut i = start;
+        while i < end {
+            if let Some(after) = self.skip_attribute(i, end) {
+                i = after;
+            } else if matches!(self.text(i), "*" | "&" | "&&") || qualifier(self.text(i)) {
+                i += 1;
+            } else {
+                break;
+            }
+        }
+        self.text(i) == "("
+    }
+
     fn clean_type(&self, start: usize, end: usize) -> String {
         let mut pieces = Vec::new();
         let mut i = start;
@@ -1239,7 +1952,10 @@ impl Parser<'_> {
                 continue;
             }
             let t = self.text(i);
-            if i > start && self.text(i - 1) == "extern" && self.tokens[i].kind == TokenKind::Literal {
+            if i > start
+                && self.text(i - 1) == "extern"
+                && self.tokens[i].kind == TokenKind::Literal
+            {
                 i += 1;
                 continue;
             }
@@ -1263,6 +1979,9 @@ impl Parser<'_> {
                     | "__thiscall"
                     | "__noreturn"
                     | "_Noreturn"
+                    | "struct"
+                    | "class"
+                    | "enum"
                     | "__restrict"
                     | "__restrict__"
                     | "restrict"
@@ -1322,12 +2041,21 @@ impl Parser<'_> {
             return Vec::new();
         }
         let base_end = self.specifier_end(start, end);
-        self.remember_inferred_type(start, base_end);
+        let is_typedef = (start..base_end).any(|i| self.text(i) == "typedef");
+        let (_, first_suffix) = self.declarator_name(base_end, end);
+        // An ambiguous grouped object declaration does not establish a type
+        // binding for its leading spelling, which may name a later callee.
+        if !self.nested_declarator(base_end, end) || self.text(first_suffix) == "(" {
+            self.remember_inferred_type(start, base_end);
+        }
         let ranges = self.split_ranges(base_end, end, ",");
-        if self.in_function_body && let Some(&(a, b)) = ranges.first() {
+        if self.in_function_body
+            && let Some(&(a, b)) = ranges.first()
+        {
             let (name, suffix) = self.declarator_name(a, b);
             let header = self.function_header(a, b);
-            let function_pointer = self.text(a) == "(" && self.text(suffix) == "("
+            let function_pointer = self.text(a) == "("
+                && self.text(suffix) == "("
                 && (a..suffix).any(|i| matches!(self.text(i), "*" | "&" | "&&"));
             if self.text(suffix) == "(" && (header.is_some() || function_pointer) {
                 // AstForStatementsCreator routes a function-shaped first
@@ -1352,8 +2080,14 @@ impl Parser<'_> {
                     let name = self.text(name).to_string();
                     self.variables.insert(name.clone());
                     return vec![Declaration {
-                        name, type_name, initializer: None, dimensions: Vec::new(),
-                        problem: self.cpp, span: self.span(a, b),
+                        name,
+                        type_name,
+                        initializer: None,
+                        dimensions: Vec::new(),
+                        problem: self.cpp,
+                        is_typedef: false,
+                        nested_declarator: true,
+                        span: self.span(a, b),
                     }];
                 }
             }
@@ -1417,7 +2151,10 @@ impl Parser<'_> {
                 }
             }
             let dimensions = if valid_dimensions {
-                dimension_ranges.into_iter().map(|(a, b)| self.expression_range(a, b)).collect()
+                dimension_ranges
+                    .into_iter()
+                    .map(|(a, b)| self.expression_range(a, b))
+                    .collect()
             } else {
                 Vec::new()
             };
@@ -1430,13 +2167,17 @@ impl Parser<'_> {
                 self.expression_range(init, init_end)
             });
             let type_name = self.declarator_type(start, base_end, Some(name_index), b);
-            self.variables.insert(name.clone());
+            if !is_typedef {
+                self.variables.insert(name.clone());
+            }
             result.push(Declaration {
                 name,
                 type_name,
                 initializer,
                 dimensions,
                 problem: false,
+                is_typedef,
+                nested_declarator: self.nested_declarator(a, b),
                 span: self.span(a, b),
             });
         }
@@ -1445,17 +2186,74 @@ impl Parser<'_> {
 
     fn looks_declaration(&self, start: usize, end: usize) -> bool {
         let t = self.text(start);
-        if (self.cpp || t != "[") && let Some(after) = self.skip_attribute(start, end) {
+        if (self.cpp || t != "[")
+            && let Some(after) = self.skip_attribute(start, end)
+        {
             return self.looks_declaration(after, end);
         }
         if t == "__extension__" {
             return self.looks_declaration(start + 1, end);
         }
+        if start < end
+            && self.tokens[start].kind == TokenKind::Identifier
+            && self.text(start + 1) == "("
+            && let Some(close) = self.matching(start + 1, end)
+            && let (Some(name), after) = self.declarator_name(start + 2, close)
+            && after == close
+            && !type_word(self.text(name))
+            && !qualifier(self.text(name))
+        {
+            if self.text(close + 1) == "=" {
+                // C resolves T(x)=value as a declaration even when T binds
+                // to a function. C++ instead chooses a call expression when
+                // the grouped name already has an object binding.
+                return type_word(t)
+                    || qualifier(t)
+                    || !self.cpp
+                    || !self.variables.contains(self.text(name));
+            }
+            if close + 1 == end
+                && self.variables.contains(self.text(name))
+                && !type_word(t)
+                && !qualifier(t)
+            {
+                // Even a real typedef does not turn T(existing_object) into
+                // a new local in the original ambiguous-statement recovery.
+                return false;
+            }
+        }
         // A typedef and an object may share a spelling after CDT recovery.
         // Assignment, member selection and subscripting still start expressions.
-        if start + 1 < end && matches!(self.text(start + 1), "=" | "." | "->" | "["
-            | "++" | "--" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
-            | "+" | "-" | "/" | "%" | "==" | "!=" | "<=" | ">=" | "||" | "?") {
+        if start + 1 < end
+            && matches!(
+                self.text(start + 1),
+                "=" | "."
+                    | "->"
+                    | "["
+                    | "++"
+                    | "--"
+                    | "+="
+                    | "-="
+                    | "*="
+                    | "/="
+                    | "%="
+                    | "&="
+                    | "|="
+                    | "^="
+                    | "<<="
+                    | ">>="
+                    | "+"
+                    | "-"
+                    | "/"
+                    | "%"
+                    | "=="
+                    | "!="
+                    | "<="
+                    | ">="
+                    | "||"
+                    | "?"
+            )
+        {
             return false;
         }
         if start + 1 == end && self.variables.contains(t) {
@@ -1536,15 +2334,24 @@ impl Parser<'_> {
                 self.pos += 1;
                 StmtKind::Empty
             }
-            "[" if self.cpp && self.text(start+1)=="[" => {
-                while let Some(after)=self.skip_attribute(self.pos,self.limit) {
-                    self.pos=after;
+            "[" if self.cpp && self.text(start + 1) == "[" => {
+                while let Some(after) = self.skip_attribute(self.pos, self.limit) {
+                    self.pos = after;
                 }
                 return self.statement();
             }
             "if" => {
                 self.pos += 1;
                 self.eat("constexpr");
+                if !self.at("(") {
+                    // CDT recovers a missing if-condition across the next
+                    // complete statement, without turning it into a condition.
+                    self.pos = self.problem_statement_end(self.pos);
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                }
                 let condition = self.condition();
                 let consequence = Box::new(self.statement());
                 let alternative = if self.eat("else") {
@@ -1552,8 +2359,10 @@ impl Parser<'_> {
                 } else {
                     None
                 };
-                if matches!(consequence.kind,StmtKind::Problem)
-                    || alternative.as_ref().is_some_and(|s| matches!(s.kind,StmtKind::Problem))
+                if matches!(consequence.kind, StmtKind::Problem)
+                    || alternative
+                        .as_ref()
+                        .is_some_and(|s| matches!(s.kind, StmtKind::Problem))
                 {
                     StmtKind::Problem
                 } else {
@@ -1568,7 +2377,7 @@ impl Parser<'_> {
                 self.pos += 1;
                 let condition = self.condition();
                 let body = Box::new(self.statement());
-                if matches!(body.kind,StmtKind::Problem) {
+                if matches!(body.kind, StmtKind::Problem) {
                     StmtKind::Problem
                 } else {
                     StmtKind::While { condition, body }
@@ -1577,23 +2386,38 @@ impl Parser<'_> {
             "do" => {
                 self.pos += 1;
                 let body = Box::new(self.statement());
-                if self.asm_problem_recovery && matches!(body.kind,StmtKind::Block(_)) && !self.at("while") {
+                if self.asm_problem_recovery
+                    && matches!(body.kind, StmtKind::Block(_))
+                    && !self.at("while")
+                {
                     // A brace-assembly problem prematurely closes the do
                     // body. CDT drops that incomplete do and recovers across
                     // the following statement, then resumes in its parent.
-                    self.pos=self.problem_statement_end(self.pos);
-                    return Stmt {kind:StmtKind::Problem,span:self.span(start,self.pos)};
+                    self.pos = self.problem_statement_end(self.pos);
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
                 }
-                if matches!(body.kind,StmtKind::Problem) && !self.at("while") {
-                    return Stmt {kind:StmtKind::Problem,span:self.span(start,self.pos)};
+                if matches!(body.kind, StmtKind::Problem) && !self.at("while") {
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
                 }
                 self.expect("while");
                 let condition = self.condition();
                 self.expect(";");
-                if matches!(body.kind,StmtKind::Problem) {
+                if matches!(body.kind, StmtKind::Problem) {
                     // After a bad scalar body CDT recovers the trailing
                     // while as a new statement, with an empty body.
-                    StmtKind::While {body:Box::new(Stmt {kind:StmtKind::Empty,span:body.span.clone()}),condition}
+                    StmtKind::While {
+                        body: Box::new(Stmt {
+                            kind: StmtKind::Empty,
+                            span: body.span.clone(),
+                        }),
+                        condition,
+                    }
                 } else {
                     StmtKind::DoWhile { body, condition }
                 }
@@ -1602,7 +2426,20 @@ impl Parser<'_> {
             "switch" => {
                 self.pos += 1;
                 let condition = self.condition();
-                let body = Box::new(self.statement());
+                let body = if matches!(self.peek(), "case" | "default") {
+                    let body_start = self.pos;
+                    let mut statements = Vec::new();
+                    while matches!(self.peek(), "case" | "default") {
+                        statements.push(self.statement());
+                    }
+                    statements.push(self.statement());
+                    Box::new(Stmt {
+                        kind: StmtKind::Block(statements),
+                        span: self.span(body_start, self.pos),
+                    })
+                } else {
+                    Box::new(self.statement())
+                };
                 StmtKind::Switch { condition, body }
             }
             "case" => {
@@ -1648,7 +2485,10 @@ impl Parser<'_> {
                 let throwing = self.at("throw");
                 self.pos += 1;
                 let end = self.statement_end(self.pos);
-                if self.c_qualification_problem(self.pos, end) || self.c_attribute_problem(self.pos,end) {
+                if self.c_qualification_problem(self.pos, end)
+                    || self.c_attribute_problem(self.pos, end)
+                    || self.ordinary_call_problem(self.pos, end)
+                {
                     self.pos = end;
                     self.finish_statement(start);
                     return Stmt {
@@ -1718,7 +2558,11 @@ impl Parser<'_> {
                         self.pos += 1;
                     }
                 } else {
-                    self.diagnose(start, self.pos, "assembly declaration requires an operand block");
+                    self.diagnose(
+                        start,
+                        self.pos,
+                        "assembly declaration requires an operand block",
+                    );
                 }
                 if braced {
                     self.eat(";");
@@ -1742,8 +2586,15 @@ impl Parser<'_> {
                     StmtKind::Problem
                 } else {
                     let statement = Box::new(self.statement());
-                    if matches!(statement.kind,StmtKind::Problem) {
+                    if matches!(statement.kind, StmtKind::Problem) {
                         StmtKind::Problem
+                    } else if matches!(&statement.kind, StmtKind::Sequence(statements)
+                        if statements.first().is_some_and(|s| matches!(s.kind, StmtKind::Problem)))
+                    {
+                        // A recovered problem child cannot bind this label.
+                        // Following recovered statements belong to the outer
+                        // compound statement, rather than to the label.
+                        return *statement;
                     } else {
                         StmtKind::Label { name, statement }
                     }
@@ -1751,14 +2602,46 @@ impl Parser<'_> {
             }
             _ => {
                 let end = self.statement_end(self.pos);
-                if self.c_qualification_problem(self.pos, end) || self.c_attribute_problem(self.pos,end) {
+                let mut attributes_end = self.pos;
+                if matches!(self.peek(), "__attribute__" | "__attribute") {
+                    while let Some(after) = self.skip_attribute(attributes_end, end) {
+                        attributes_end = after;
+                    }
+                }
+                if attributes_end > self.pos && attributes_end == end {
+                    self.pos = end;
+                    self.finish_statement(start);
+                    if self.cpp {
+                        StmtKind::Empty
+                    } else {
+                        StmtKind::Problem
+                    }
+                } else if self.c_qualification_problem(self.pos, end)
+                    || self.c_attribute_problem(self.pos, end)
+                {
                     self.pos = end;
                     self.finish_statement(start);
                     StmtKind::Problem
-                } else if self.looks_declaration(self.pos, end) {
+                } else if self.looks_declaration(self.pos, end)
+                    || (attributes_end > self.pos && {
+                        let base_end = self.specifier_end(self.pos, end);
+                        let (name, suffix) = self.declarator_name(base_end, end);
+                        self.text(base_end) == "("
+                            && suffix == end
+                            && name
+                                .is_some_and(|i| !expression_type_keyword(self.text(i), self.cpp))
+                    })
+                {
+                    if self.declaration_expression_problem(self.pos, end) {
+                        self.pos = end;
+                        self.finish_statement(start);
+                        return Stmt {
+                            kind: StmtKind::Problem,
+                            span: self.span(start, self.pos),
+                        };
+                    }
                     self.remember_types(self.pos, end);
-                    let alias =
-                        (self.pos..end).any(|i| matches!(self.text(i), "typedef" | "using"));
+                    let alias = (self.pos..end).any(|i| self.text(i) == "using");
                     let declarations = if alias {
                         Vec::new()
                     } else {
@@ -1771,6 +2654,10 @@ impl Parser<'_> {
                     } else {
                         StmtKind::Declaration(declarations)
                     }
+                } else if self.ordinary_call_problem(self.pos, end) {
+                    self.pos = end;
+                    self.finish_statement(start);
+                    StmtKind::Problem
                 } else {
                     let expression = self.expression(0);
                     if !self.at(";") && !matches!(self.peek(), "}" | "") {
@@ -1831,13 +2718,24 @@ impl Parser<'_> {
             .unwrap_or(self.limit);
         let ranges = self.split_ranges(start, end, ";");
         let declaration_end = ranges[0].1;
+        let recovered_prototype = self.cpp
+            && self.ordinary_call_problem(start, declaration_end)
+            && self
+                .function_header(start, declaration_end)
+                .is_some_and(|header| {
+                    let base_end = self.specifier_end(start, declaration_end);
+                    base_end < header.name_start
+                        && (base_end..header.name_start).all(|i| {
+                            matches!(self.text(i), "*" | "&" | "&&") || qualifier(self.text(i))
+                        })
+                });
         let condition_declaration = self.cpp
-            && self.looks_declaration(start, declaration_end)
-            && {
-                let base_end = self.specifier_end(start, declaration_end);
-                let (_, after_name) = self.declarator_name(base_end, declaration_end);
-                matches!(self.text(after_name), "=" | "{")
-            };
+            && (recovered_prototype
+                || (self.looks_declaration(start, declaration_end) && {
+                    let base_end = self.specifier_end(start, declaration_end);
+                    let (_, after_name) = self.declarator_name(base_end, declaration_end);
+                    matches!(self.text(after_name), "=" | "{")
+                }));
         let expression = if condition_declaration {
             let first = self.declarations_range(start, ranges[0].1);
             let declaration = Stmt {
@@ -1890,6 +2788,8 @@ impl Parser<'_> {
                         initializer: None,
                         dimensions: Vec::new(),
                         problem: false,
+                        is_typedef: false,
+                        nested_declarator: false,
                         span: self.span(range[0].0, range[0].1),
                     }
                 } else {
@@ -1912,24 +2812,30 @@ impl Parser<'_> {
         if clauses.len() != 3 {
             self.diagnose(inside, end, "for header must have three clauses");
         }
-        if let Some(problem) = clauses.iter().rposition(|&(a,b)| self.c_qualification_problem(a,b)) {
+        if let Some(problem) = clauses
+            .iter()
+            .rposition(|&(a, b)| self.c_qualification_problem(a, b))
+        {
             // CDT's expression-error recovery crosses the invalid for header
             // up to its last problem clause. Later clauses survive as plain
             // expression statements; the for control structure and body do
             // not. Retain that recovery rather than inventing loop edges.
-            let mut statements = Vec::new();
-            for &(a,b) in &clauses[problem+1..] {
+            let mut statements = vec![Stmt {
+                kind: StmtKind::Problem,
+                span: self.span(start, clauses[problem].1),
+            }];
+            for &(a, b) in &clauses[problem + 1..] {
                 if a < b {
                     statements.push(Stmt {
-                        kind: StmtKind::Expression(self.expression_range(a,b)),
-                        span: self.span(a,b),
+                        kind: StmtKind::Expression(self.expression_range(a, b)),
+                        span: self.span(a, b),
                     });
                 }
             }
             self.pos = self.problem_statement_end(end.saturating_add(1));
             return Stmt {
                 kind: StmtKind::Sequence(statements),
-                span: self.span(start,self.pos),
+                span: self.span(start, self.pos),
             };
         }
         let initializer = clauses.first().filter(|(a, b)| a < b).map(|(a, b)| {
@@ -1966,7 +2872,7 @@ impl Parser<'_> {
     }
 
     fn expression_range(&mut self, start: usize, end: usize) -> Expr {
-        if self.c_qualification_problem(start, end) {
+        if self.c_qualification_problem(start, end) || self.ordinary_call_problem(start, end) {
             return Expr {
                 kind: ExprKind::Problem(self.raw(start, end)),
                 span: self.span(start, end),
@@ -1985,19 +2891,25 @@ impl Parser<'_> {
     }
 
     fn c_qualification_problem(&self, start: usize, end: usize) -> bool {
-        if self.cpp {
-            return false;
-        }
         let mut i = start;
         while i < end {
-            if self.text(i) == "::" || (self.text(i)=="_Generic" && self.text(i+1)=="(") {
+            if let Some(after) = self.lambda_end(i, end) {
+                i = after;
+                continue;
+            }
+            if self.text(i) == "@"
+                || (!self.cpp
+                    && (self.text(i) == "::"
+                        || (self.text(i) == "_Generic" && self.text(i + 1) == "(")))
+            {
                 return true;
             }
             // A GNU statement-expression has its own recovery boundaries.
             // An invalid inner statement does not turn the enclosing
             // expression into a problem expression.
             if self.text(i) == "{"
-                && i > start && self.text(i-1) == "("
+                && i > start
+                && self.text(i - 1) == "("
                 && let Some(close) = self.matching(i, end)
             {
                 i = close + 1;
@@ -2008,15 +2920,265 @@ impl Parser<'_> {
         false
     }
 
+    fn ordinary_call_problem(&self, start: usize, end: usize) -> bool {
+        let mut i = start;
+        while i < end {
+            if let Some(after) = self.lambda_end(i, end) {
+                i = after;
+                continue;
+            }
+            if self.text(i) == "("
+                && let Some(close) = self.matching(i, end)
+                && close > i + 1
+                && matches!(
+                    self.text(close - 1),
+                    "*" | "&"
+                        | "&&"
+                        | "+"
+                        | "-"
+                        | "/"
+                        | "%"
+                        | "|"
+                        | "||"
+                        | "^"
+                        | "="
+                        | "?"
+                        | "."
+                        | "->"
+                        | "::"
+                )
+                && !(i > start
+                    && matches!(
+                        self.text(i - 1),
+                        "__builtin_va_arg"
+                            | "__builtin_offsetof"
+                            | "__builtin_types_compatible_p"
+                            | "__offsetof__"
+                    ))
+                && !self.is_type_range(i + 1, close)
+            {
+                // A malformed abstract declarator is neither a cast type-id
+                // nor a complete grouped expression. CDT recovers its entire
+                // expression container, as for an invalid call argument.
+                return true;
+            }
+            if self.text(i) == "{"
+                && i > start
+                && self.text(i - 1) == "("
+                && let Some(close) = self.matching(i, end)
+            {
+                i = close + 1;
+                continue;
+            }
+            if self.text(i) == "("
+                && i > start
+                && let Some(close) = self.matching(i, end)
+            {
+                let callee = self.text(i - 1);
+                let previous_cast = callee == ")"
+                    && (start..i).rev().any(|open| {
+                        self.text(open) == "("
+                            && self.matching(open, end) == Some(i - 1)
+                            && self.is_cast(open + 1, i - 1)
+                    });
+                if close + 1 < end
+                    && self.is_cast(i + 1, close)
+                    && (self.tokens[i - 1].kind != TokenKind::Identifier
+                        && !matches!(callee, ")" | "]")
+                        || previous_cast)
+                {
+                    i = close + 1;
+                    continue;
+                }
+                if matches!(
+                    callee,
+                    "__builtin_va_arg"
+                        | "__builtin_offsetof"
+                        | "__builtin_types_compatible_p"
+                        | "__offsetof__"
+                        | "__attribute__"
+                        | "__attribute"
+                        | "__declspec"
+                ) || (matches!(
+                    callee,
+                    "sizeof"
+                        | "alignof"
+                        | "_Alignof"
+                        | "__alignof__"
+                        | "__alignof"
+                        | "typeof"
+                        | "__typeof__"
+                        | "__typeof"
+                        | "decltype"
+                ) && self.is_type_range(i + 1, close))
+                {
+                    i = close + 1;
+                    continue;
+                }
+                if self.tokens[i - 1].kind == TokenKind::Identifier || matches!(callee, ")" | "]") {
+                    if !self.cpp && expression_type_keyword(callee, false) {
+                        return true;
+                    }
+                    if close > i + 1
+                        && self
+                            .split_ranges(i + 1, close, ",")
+                            .into_iter()
+                            .any(|(a, b)| self.call_argument_problem(a, b))
+                    {
+                        return true;
+                    }
+                }
+            }
+            if i == start
+                && self.text(i) == "("
+                && let Some(close) = self.matching(i, end)
+                && close + 1 < end
+                && self.is_cast(i + 1, close)
+            {
+                i = close + 1;
+            } else {
+                i += 1;
+            }
+        }
+        false
+    }
+
+    fn lambda_end(&self, start: usize, end: usize) -> Option<usize> {
+        if !self.cpp || self.text(start) != "[" {
+            return None;
+        }
+        let mut i = self.matching(start, end)? + 1;
+        if self.text(i) == "(" {
+            i = self.matching(i, end)? + 1;
+        }
+        while matches!(
+            self.text(i),
+            "mutable" | "constexpr" | "consteval" | "noexcept"
+        ) {
+            let noexcept = self.text(i) == "noexcept";
+            i += 1;
+            if noexcept && self.text(i) == "(" {
+                i = self.matching(i, end)? + 1;
+            }
+        }
+        while let Some(after) = self.skip_attribute(i, end) {
+            i = after;
+        }
+        if self.text(i) == "->" {
+            i += 1;
+            while i < end && self.text(i) != "{" {
+                i = if self.text(i) == "(" {
+                    self.matching(i, end)? + 1
+                } else {
+                    i + 1
+                };
+            }
+        }
+        (self.text(i) == "{")
+            .then(|| self.matching(i, end).map(|close| close + 1))
+            .flatten()
+    }
+
+    fn call_argument_problem(&self, mut start: usize, mut end: usize) -> bool {
+        while self.text(start) == "(" && self.matching(start, end) == Some(end.saturating_sub(1)) {
+            start += 1;
+            end = end.saturating_sub(1);
+        }
+        if start >= end {
+            return true;
+        }
+        let first = self.text(start);
+        if expression_type_keyword(first, self.cpp) {
+            // C++ has functional casts to a simple type; a bare type-id is
+            // never an ordinary call argument. Typedef spellings themselves
+            // remain identifier expressions, as in CDT.
+            if !(self.cpp && type_word(first) && matches!(self.text(start + 1), "(" | "{")) {
+                return true;
+            }
+        }
+        matches!(
+            self.text(end - 1),
+            "*" | "&"
+                | "&&"
+                | "+"
+                | "-"
+                | "/"
+                | "%"
+                | "!"
+                | "~"
+                | "^"
+                | "|"
+                | "||"
+                | "="
+                | "?"
+                | ":"
+                | "."
+                | "->"
+                | "::"
+        )
+    }
+
+    fn declaration_expression_problem(&self, start: usize, end: usize) -> bool {
+        let base_end = self.specifier_end(start, end);
+        for (a, b) in self.split_ranges(base_end, end, ",") {
+            let (_, mut i) = self.declarator_name(a, b);
+            while i < b {
+                if let Some(after) = self.skip_attribute(i, b) {
+                    i = after;
+                    continue;
+                }
+                match self.text(i) {
+                    "=" | "{" => {
+                        if self.ordinary_call_problem(i + usize::from(self.text(i) == "="), b) {
+                            return true;
+                        }
+                        break;
+                    }
+                    "[" => {
+                        if let Some(close) = self.matching(i, b) {
+                            if self.ordinary_call_problem(i + 1, close) {
+                                return true;
+                            }
+                            i = close + 1;
+                        } else {
+                            break;
+                        }
+                    }
+                    "(" => {
+                        let close = self.matching(i, b).unwrap_or(b.saturating_sub(1));
+                        if self.cpp
+                            && self.function_header(a, b).is_none()
+                            && self.ordinary_call_problem(i + 1, close)
+                        {
+                            return true;
+                        }
+                        i = close + 1;
+                    }
+                    _ => i += 1,
+                }
+            }
+        }
+        false
+    }
+
     fn c_attribute_problem(&self, start: usize, end: usize) -> bool {
-        if self.cpp {return false;}
-        let mut i=start;
-        while i<end {
-            if self.text(i)=="[" && self.text(i+1)=="[" {return true;}
-            if self.text(i)=="{" && i>start && self.text(i-1)=="("
-                && let Some(close)=self.matching(i,end) {
-                i=close+1;
-            } else {i+=1;}
+        if self.cpp {
+            return false;
+        }
+        let mut i = start;
+        while i < end {
+            if self.text(i) == "[" && self.text(i + 1) == "[" {
+                return true;
+            }
+            if self.text(i) == "{"
+                && i > start
+                && self.text(i - 1) == "("
+                && let Some(close) = self.matching(i, end)
+            {
+                i = close + 1;
+            } else {
+                i += 1;
+            }
         }
         false
     }
@@ -2026,29 +3188,38 @@ impl Parser<'_> {
             return self.limit;
         }
         match self.text(start) {
-            "{" | "<%" => self.matching(start,self.limit).map_or(self.limit,|n| n+1),
+            "{" | "<%" => self
+                .matching(start, self.limit)
+                .map_or(self.limit, |n| n + 1),
             "if" | "while" | "for" | "switch" => {
                 let keyword = self.text(start);
-                let open = start+1+usize::from(self.text(start+1)=="constexpr");
-                let Some(close) = self.matching(open,self.limit) else {return self.limit};
-                let mut end = self.problem_statement_end(close+1);
-                if keyword == "if" && self.text(end)=="else" {
-                    end = self.problem_statement_end(end+1);
+                let open = start + 1 + usize::from(self.text(start + 1) == "constexpr");
+                let Some(close) = self.matching(open, self.limit) else {
+                    return self.limit;
+                };
+                let mut end = self.problem_statement_end(close + 1);
+                if keyword == "if" && self.text(end) == "else" {
+                    end = self.problem_statement_end(end + 1);
                 }
                 end
             }
             "do" => {
-                let body_end = self.problem_statement_end(start+1);
-                if self.text(body_end)=="while" {
-                    self.matching(body_end+1,self.limit).map_or(self.limit,|n| n+1+usize::from(self.text(n+1)==";"))
-                } else {body_end}
+                let body_end = self.problem_statement_end(start + 1);
+                if self.text(body_end) == "while" {
+                    self.matching(body_end + 1, self.limit)
+                        .map_or(self.limit, |n| n + 1 + usize::from(self.text(n + 1) == ";"))
+                } else {
+                    body_end
+                }
             }
-            _ if self.tokens[start].kind == TokenKind::Identifier && self.text(start+1)==":" => {
-                self.problem_statement_end(start+2)
+            _ if self.tokens[start].kind == TokenKind::Identifier
+                && self.text(start + 1) == ":" =>
+            {
+                self.problem_statement_end(start + 2)
             }
             _ => {
-                let end=self.statement_end(start);
-                end+usize::from(self.text(end)==";")
+                let end = self.statement_end(start);
+                end + usize::from(self.text(end) == ";")
             }
         }
     }
@@ -2070,10 +3241,16 @@ impl Parser<'_> {
             if minimum <= 15 && op == "(" {
                 if !self.macro_expansion
                     && let ExprKind::Identifier(name) = &left.kind
-                    && matches!(name.as_str(), "__builtin_va_arg" | "__builtin_offsetof" | "__builtin_types_compatible_p" | "__offsetof__")
-                    && let Some(call) = self.builtin_macro_call(name.clone(),start)
+                    && matches!(
+                        name.as_str(),
+                        "__builtin_va_arg"
+                            | "__builtin_offsetof"
+                            | "__builtin_types_compatible_p"
+                            | "__offsetof__"
+                    )
+                    && let Some(call) = self.builtin_macro_call(name.clone(), start)
                 {
-                    left=call;
+                    left = call;
                     continue;
                 }
                 self.pos += 1;
@@ -2086,11 +3263,15 @@ impl Parser<'_> {
                     }
                 }
                 self.expect(")");
-                if matches!(left.kind,ExprKind::Identifier(_))
-                    && self.span(start,start+1).start < left.span.start
+                self.record_retained_macro_call(&left, &arguments);
+                if matches!(left.kind, ExprKind::Identifier(_))
+                    && self.span(start, start + 1).start < left.span.start
                 {
-                    let span=left.span.clone();
-                    left=Expr {kind:ExprKind::Bracketed(Box::new(left)),span};
+                    let span = left.span.clone();
+                    left = Expr {
+                        kind: ExprKind::Bracketed(Box::new(left)),
+                        span,
+                    };
                 }
                 left = Expr {
                     kind: ExprKind::Call {
@@ -2116,7 +3297,9 @@ impl Parser<'_> {
             }
             if minimum <= 15 && matches!(op.as_str(), "." | "->") {
                 self.pos += 1;
-                if self.cpp {self.eat("template");}
+                if self.cpp {
+                    self.eat("template");
+                }
                 let name = self.peek().to_string();
                 if !name.is_empty() {
                     self.pos += 1;
@@ -2208,7 +3391,7 @@ impl Parser<'_> {
         if ranges.len() != arity {
             return None;
         }
-        let arguments: Vec<_> = ranges.iter().map(|&(a,b)| self.raw(a,b)).collect();
+        let arguments: Vec<_> = ranges.iter().map(|&(a, b)| self.raw(a, b)).collect();
         let expansion = match name.as_str() {
             // CDT's type-id signature renders typeof's operand as 'typeof'.
             // The unparenthesized first argument preserves replacement-list
@@ -2216,10 +3399,13 @@ impl Parser<'_> {
             "__builtin_va_arg" => format!("*(typeof *){}", arguments[0]),
             "__builtin_offsetof" if self.cpp => format!(
                 "reinterpret_cast<size_t>(&reinterpret_cast<const volatile char &>(static_cast<{}*>(0)->{}))",
-                arguments[0], arguments[1]),
+                arguments[0], arguments[1]
+            ),
             "__builtin_offsetof" => format!("((size_t)&(({} *)0)->{})", arguments[0], arguments[1]),
             "__builtin_types_compatible_p" => format!(
-                "__builtin_types_compatible_p(sizeof({}),sizeof({}))", arguments[0], arguments[1]),
+                "__builtin_types_compatible_p(sizeof({}),sizeof({}))",
+                arguments[0], arguments[1]
+            ),
             "__offsetof__" => format!("({})", arguments[0]),
             _ => return None,
         };
@@ -2228,28 +3414,68 @@ impl Parser<'_> {
         Some(self.expanded_macro(name, arity, &ranges, &expansion, span))
     }
 
-    fn expanded_macro(&mut self, name: String, arity: usize, arguments: &[(usize,usize)], replacement: &str, span: Span) -> Expr {
+    fn expanded_macro(
+        &mut self,
+        name: String,
+        arity: usize,
+        arguments: &[(usize, usize)],
+        replacement: &str,
+        span: Span,
+    ) -> Expr {
         let (tokens, diagnostics) = lex_preprocessed(replacement, true);
         let limit = tokens.len();
         let mut parser = Parser {
-            source: replacement, tokens, pos: 0, limit, cpp: self.cpp,
-            diagnostics, types: self.types.clone(), explicit_types: self.explicit_types.clone(), type_aliases: self.type_aliases.clone(), variables: self.variables.clone(),
-            imports: self.imports.clone(), extern_c: self.extern_c, extern_c_names:self.extern_c_names.clone(), class_scopes:self.class_scopes.clone(), asm_problem_recovery: false,
-            in_function_body: self.in_function_body, function_declarations: Vec::new(),
+            source: replacement,
+            tokens,
+            pos: 0,
+            limit,
+            cpp: self.cpp,
+            diagnostics,
+            types: self.types.clone(),
+            explicit_types: self.explicit_types.clone(),
+            type_aliases: self.type_aliases.clone(),
+            variables: self.variables.clone(),
+            imports: self.imports.clone(),
+            extern_c: self.extern_c,
+            extern_c_names: self.extern_c_names.clone(),
+            class_scopes: self.class_scopes.clone(),
+            asm_problem_recovery: false,
+            in_function_body: self.in_function_body,
+            function_declarations: Vec::new(),
+            global_expressions: Vec::new(),
             // The replacement for types_compatible_p contains its own name;
             // a disabled macro is not expanded a second time by CDT.
             macro_expansion: true,
+            current_method: self.current_method.clone(),
+            lambda_counter: self.lambda_counter,
+            defined_cpp_methods: self.defined_cpp_methods.clone(),
+            lambda_ast_parent: self.lambda_ast_parent.clone(),
+            retained_macro_invocations: Vec::new(),
+            retained_macro_call_ends: HashSet::new(),
         };
         let mut expansion = parser.expression(0);
         if parser.pos < parser.limit {
-            parser.diagnose(parser.pos, parser.limit, "unparsed builtin macro expansion tokens");
+            parser.diagnose(
+                parser.pos,
+                parser.limit,
+                "unparsed builtin macro expansion tokens",
+            );
         }
         for diagnostic in &mut parser.diagnostics {
             diagnostic.span = span.clone();
         }
         self.diagnostics.append(&mut parser.diagnostics);
+        self.lambda_counter = parser.lambda_counter;
+        for mut function in parser.function_declarations {
+            generated_statement(&mut function.body, replacement, &span);
+            function.span = span.clone();
+            for parameter in &mut function.parameters {
+                parameter.span = span.clone();
+            }
+            self.function_declarations.push(function);
+        }
         let mut cloned = Vec::new();
-        for &(a,b) in arguments {
+        for &(a, b) in arguments {
             let code: String = (a..b).map(|i| self.text(i)).collect();
             if let Some(mut expression) = expanded_argument(&expansion, replacement, &code) {
                 generated_expression(&mut expression, replacement, &span);
@@ -2258,7 +3484,12 @@ impl Parser<'_> {
         }
         generated_expression(&mut expansion, replacement, &span);
         Expr {
-            kind: ExprKind::MacroCall { name, arguments: cloned, expansion: Box::new(expansion), arity },
+            kind: ExprKind::MacroCall {
+                name,
+                arguments: cloned,
+                expansion: Box::new(expansion),
+                arity,
+            },
             span,
         }
     }
@@ -2272,17 +3503,24 @@ impl Parser<'_> {
         }
         .to_string();
         let kind = match token.as_str() {
+            "[" if self.cpp => return self.lambda_expression(start),
             "__null" if !self.macro_expansion => {
-                self.pos+=1;
-                let replacement=if self.cpp {"0"} else {"(void *)0"};
-                return self.expanded_macro(token,0,&[],replacement,self.span(start,self.pos));
+                self.pos += 1;
+                let replacement = if self.cpp { "0" } else { "(void *)0" };
+                return self.expanded_macro(token, 0, &[], replacement, self.span(start, self.pos));
             }
             "__imag__" | "__real__" if !self.macro_expansion => {
-                self.pos+=1;
-                let operand_start=self.pos;
+                self.pos += 1;
+                let operand_start = self.pos;
                 self.expression(14);
-                let replacement=format!("(int){}",self.raw(operand_start,self.pos));
-                return self.expanded_macro(token,0,&[],&replacement,self.span(start,self.pos));
+                let replacement = format!("(int){}", self.raw(operand_start, self.pos));
+                return self.expanded_macro(
+                    token,
+                    0,
+                    &[],
+                    &replacement,
+                    self.span(start, self.pos),
+                );
             }
             "__extension__" => {
                 self.pos += 1;
@@ -2303,7 +3541,9 @@ impl Parser<'_> {
                     let close = close.unwrap();
                     let type_name = if self.macro_expansion {
                         macro_type_code(&self.raw(start + 1, close))
-                    } else { self.clean_type(start + 1, close) };
+                    } else {
+                        self.clean_type(start + 1, close)
+                    };
                     self.pos = close + 1;
                     let argument = self.expression(14);
                     ExprKind::Cast {
@@ -2314,11 +3554,16 @@ impl Parser<'_> {
                     let inner = self.expression(0);
                     self.expect(")");
                     // CDT's bracketed-primary conversion retains only the operand AST.
-                    return if self.macro_expansion || matches!(inner.kind,ExprKind::List(_)) {
+                    return if self.macro_expansion || matches!(inner.kind, ExprKind::List(_)) {
                         // Expanded parent CODE still contains these brackets,
                         // although their operand has no extra CPG AST vertex.
-                        Expr {span:inner.span.clone(),kind:ExprKind::Bracketed(Box::new(inner))}
-                    } else {inner};
+                        Expr {
+                            span: inner.span.clone(),
+                            kind: ExprKind::Bracketed(Box::new(inner)),
+                        }
+                    } else {
+                        inner
+                    };
                 }
             }
             "{" => {
@@ -2342,10 +3587,15 @@ impl Parser<'_> {
                             if self.eat(".") {
                                 let field = self.pos;
                                 if self.pos < self.limit
-                                    && self.tokens[self.pos].kind == TokenKind::Identifier {
+                                    && self.tokens[self.pos].kind == TokenKind::Identifier
+                                {
                                     self.pos += 1;
                                 } else {
-                                    self.diagnose(field, field + 1, "field designator requires a name");
+                                    self.diagnose(
+                                        field,
+                                        field + 1,
+                                        "field designator requires a name",
+                                    );
                                 }
                                 designators.push(Expr {
                                     kind: ExprKind::Identifier(self.raw(field, self.pos)),
@@ -2369,14 +3619,17 @@ impl Parser<'_> {
                         // CDT's GNU array designator permits omission of '='.
                         self.eat("=");
                         let value = self.expression(1);
-                        let assignments = designators.into_iter().map(|target| Expr {
-                            kind: ExprKind::Binary {
-                                op: "=".into(),
-                                left: Box::new(target),
-                                right: Box::new(value.clone()),
-                            },
-                            span: self.span(before, self.pos),
-                        }).collect();
+                        let assignments = designators
+                            .into_iter()
+                            .map(|target| Expr {
+                                kind: ExprKind::Binary {
+                                    op: "=".into(),
+                                    left: Box::new(target),
+                                    right: Box::new(value.clone()),
+                                },
+                                span: self.span(before, self.pos),
+                            })
+                            .collect();
                         values.push(Expr {
                             kind: ExprKind::Block(assignments),
                             span: self.span(before, self.pos),
@@ -2396,7 +3649,9 @@ impl Parser<'_> {
             }
             "++" | "--" | "+" | "-" | "*" | "&" | "!" | "~" | "&&" | "sizeof" | "alignof"
             | "_Alignof" | "__alignof__" | "__alignof" | "typeof" | "__typeof__" | "noexcept"
-            | "delete" | "throw" if self.cpp || !matches!(token.as_str(),"delete"|"throw"|"noexcept") => {
+            | "delete" | "throw"
+                if self.cpp || !matches!(token.as_str(), "delete" | "throw" | "noexcept") =>
+            {
                 self.pos += 1;
                 if token == "delete" && self.eat("[") {
                     self.expect("]");
@@ -2421,10 +3676,27 @@ impl Parser<'_> {
                     // specifier: an abstract pointer is not an operand, and a
                     // typeof's internal expression is not evaluated here.
                     let specifier = self.specifier_end(open + 1, end);
-                    let typeof_specifier = matches!(self.text(open+1),"typeof"|"__typeof__"|"__typeof"|"decltype");
-                    let argument_end = if typeof_specifier { open + 2 } else { specifier };
+                    let typeof_specifier = matches!(
+                        self.text(open + 1),
+                        "typeof" | "__typeof__" | "__typeof" | "decltype"
+                    );
+                    let argument_end = if typeof_specifier {
+                        open + 2
+                    } else {
+                        specifier
+                    };
+                    let type_name = self.clean_type(open + 1, argument_end);
+                    let type_name = type_name
+                        .strip_prefix("struct ")
+                        .or_else(|| type_name.strip_prefix("union "))
+                        .or_else(|| type_name.strip_prefix("enum "))
+                        .unwrap_or(&type_name)
+                        .to_string();
                     let argument = Expr {
-                        kind: ExprKind::Identifier(self.clean_type(open + 1, argument_end)),
+                        kind: ExprKind::TypeSpecifier {
+                            code: self.raw(open + 1, argument_end),
+                            type_name,
+                        },
                         span: self.span(open + 1, argument_end),
                     };
                     self.pos = end + 1;
@@ -2444,7 +3716,9 @@ impl Parser<'_> {
                 let close = self.angle_close(start + 1, self.limit).unwrap_or(start + 1);
                 let type_name = if self.macro_expansion {
                     macro_type_code(&self.raw(start + 2, close))
-                } else {self.clean_type(start + 2, close)};
+                } else {
+                    self.clean_type(start + 2, close)
+                };
                 self.pos = close + 1;
                 self.expect("(");
                 let argument = self.expression(0);
@@ -2487,7 +3761,11 @@ impl Parser<'_> {
                     arguments,
                 }
             }
-            "::" if self.tokens.get(start + 1).is_some_and(|t| t.kind == TokenKind::Identifier) => {
+            "::" if self
+                .tokens
+                .get(start + 1)
+                .is_some_and(|t| t.kind == TokenKind::Identifier) =>
+            {
                 self.pos += 2;
                 while self.eat("::") {
                     self.eat("template");
@@ -2549,6 +3827,109 @@ impl Parser<'_> {
         }
     }
 
+    fn lambda_expression(&mut self, start: usize) -> Expr {
+        let Some(capture_end) = self.matching(start, self.limit) else {
+            self.diagnose(start, start + 1, "unterminated lambda capture list");
+            self.pos += 1;
+            return Expr {
+                kind: ExprKind::Unknown(self.raw(start, self.pos)),
+                span: self.span(start, self.pos),
+            };
+        };
+        self.pos = capture_end + 1;
+        let (parameters, binding_parameters) = if self.at("(") {
+            let open = self.pos;
+            let end = self
+                .matching(open, self.limit)
+                .unwrap_or(self.limit.saturating_sub(1));
+            let parameters = self.parameters(open + 1, end);
+            let bindings = self
+                .split_ranges(open + 1, end, ",")
+                .into_iter()
+                .filter(|(a, b)| a < b)
+                .map(|(a, b)| self.binding_parameter_type(a, b))
+                .filter(|t| t != "void" && t != "...")
+                .collect::<Vec<_>>();
+            self.pos = end + 1;
+            (parameters, bindings)
+        } else {
+            (Vec::new(), Vec::new())
+        };
+        while matches!(
+            self.peek(),
+            "mutable" | "constexpr" | "consteval" | "noexcept"
+        ) {
+            let noexcept = self.at("noexcept");
+            self.pos += 1;
+            if noexcept && self.at("(") {
+                self.pos = self
+                    .matching(self.pos, self.limit)
+                    .map_or(self.pos + 1, |n| n + 1);
+            }
+        }
+        while let Some(after) = self.skip_attribute(self.pos, self.limit) {
+            self.pos = after;
+        }
+        let explicit_return = if self.eat("->") {
+            let return_start = self.pos;
+            while self.pos < self.limit && !self.at("{") {
+                self.pos += 1;
+            }
+            Some(self.binding_type(&self.clean_type(return_start, self.pos)))
+        } else {
+            None
+        };
+        if !self.at("{") {
+            self.diagnose(start, self.pos, "lambda requires a compound body");
+            return Expr {
+                kind: ExprKind::Unknown(self.raw(start, self.pos)),
+                span: self.span(start, self.pos),
+            };
+        }
+        let name = format!("<lambda>{}", self.lambda_counter);
+        self.lambda_counter += 1;
+        let parent = self.current_method.clone();
+        let full_name = format!("{}.{name}", self.lambda_ast_parent);
+        let old_method = std::mem::replace(&mut self.current_method, full_name.clone());
+        let old_variables = self.variables.clone();
+        self.variables
+            .extend(parameters.iter().map(|p| p.name.clone()));
+        let body = self.statement();
+        self.variables = old_variables;
+        self.current_method = old_method;
+        let return_type = explicit_return
+            .unwrap_or_else(|| self.binding_type(&lambda_return_type(&body, &parameters)));
+        let signature = format!("{return_type}({})", binding_parameters.join(","));
+        let span = self.span(start, self.pos);
+        self.function_declarations.push(Function {
+            name,
+            full_name: full_name.clone(),
+            return_type: "ANY".into(),
+            signature: format!(
+                "ANY({})",
+                parameters
+                    .iter()
+                    .map(|p| p.type_name.as_str())
+                    .collect::<Vec<_>>()
+                    .join(",")
+            ),
+            extern_c: false,
+            implicit_this: None,
+            lambda_parent: Some(parent),
+            parameters,
+            body,
+            span: span.clone(),
+        });
+        Expr {
+            kind: ExprKind::Lambda {
+                full_name,
+                signature,
+                return_type,
+            },
+            span,
+        }
+    }
+
     fn can_start_expression(&self, i: usize) -> bool {
         if i >= self.limit {
             return false;
@@ -2598,6 +3979,11 @@ impl Parser<'_> {
             return false;
         }
         let first = self.text(start);
+        if first == "__extension__" {
+            // CDT's predefined extension marker has an empty replacement;
+            // it does not make the following statement-expression a type-id.
+            return self.is_type_range(start + 1, end);
+        }
         // A type-id begins with a declaration specifier, never with an
         // expression's dereference or parenthesized operand. In particular,
         // '(*(code *)(p))()' must retain its pointer-call receiver.
@@ -2661,6 +4047,16 @@ impl Parser<'_> {
                 i = after;
                 continue;
             }
+            if matches!(
+                self.text(i),
+                "typeof" | "__typeof" | "__typeof__" | "decltype"
+            ) {
+                i += 1;
+                if self.text(i) == "(" {
+                    i = self.matching(i, end).map_or(end, |close| close + 1);
+                }
+                continue;
+            }
             if !self.cpp && matches!(self.text(i), "struct" | "union" | "enum") {
                 i += 2;
                 continue;
@@ -2685,114 +4081,404 @@ impl Parser<'_> {
 // original macro call's source. This also governs which original arguments
 // MacroHandler can find and clone in the expansion AST.
 fn expanded_code(expression: &Expr, source: &str) -> String {
-    let code = |e: &Expr| if let ExprKind::Bracketed(inner)=&e.kind {
-        format!("({})",expanded_code(inner,source))
-    } else {expanded_code(e, source)};
+    let code = |e: &Expr| {
+        if let ExprKind::Bracketed(inner) = &e.kind {
+            format!("({})", expanded_code(inner, source))
+        } else {
+            expanded_code(e, source)
+        }
+    };
     match &expression.kind {
         ExprKind::Identifier(name) | ExprKind::Literal(name) => name.clone(),
-        ExprKind::Binary {op,left,right} => format!("{} {op} {}",code(left),code(right)),
-        ExprKind::Conditional {condition,consequence,alternative} => format!("{} ? {} : {}",code(condition),code(consequence),code(alternative)),
-        ExprKind::Cast {type_name,argument} => format!("({}){}",macro_type_code(type_name),code(argument)),
-        ExprKind::Unary {op,argument,postfix} => {
-            if *postfix {format!("{}{op}",code(argument))}
-            else if matches!(op.as_str(),"sizeof"|"alignof"|"_Alignof"|"__alignof__"|"__alignof"|"typeof"|"__typeof__") {
-                let raw=&source[expression.span.start..expression.span.end];
-                let value = if matches!(&argument.kind,ExprKind::Identifier(n) if n=="typeof"||n=="__typeof__"||n=="decltype") {
+        ExprKind::TypeSpecifier { code, .. } => code.clone(),
+        ExprKind::Binary { op, left, right } => format!("{} {op} {}", code(left), code(right)),
+        ExprKind::Conditional {
+            condition,
+            consequence,
+            alternative,
+        } => format!(
+            "{} ? {} : {}",
+            code(condition),
+            code(consequence),
+            code(alternative)
+        ),
+        ExprKind::Cast {
+            type_name,
+            argument,
+        } => format!("({}){}", macro_type_code(type_name), code(argument)),
+        ExprKind::Unary {
+            op,
+            argument,
+            postfix,
+        } => {
+            if *postfix {
+                format!("{}{op}", code(argument))
+            } else if matches!(
+                op.as_str(),
+                "sizeof"
+                    | "alignof"
+                    | "_Alignof"
+                    | "__alignof__"
+                    | "__alignof"
+                    | "typeof"
+                    | "__typeof__"
+            ) {
+                let raw = &source[expression.span.start..expression.span.end];
+                let value = if !matches!(argument.kind, ExprKind::TypeSpecifier { .. })
+                    || matches!(&argument.kind,ExprKind::TypeSpecifier {code,..} if code=="typeof"||code=="__typeof__"||code=="decltype")
+                {
                     code(argument)
-                } else if !matches!(argument.kind,ExprKind::Identifier(_)) {
-                    code(argument)
-                } else if let Some(inner)=raw.strip_prefix(op).and_then(|s| s.trim().strip_prefix('(')).and_then(|s| s.strip_suffix(')')) {
+                } else if let Some(inner) = raw
+                    .strip_prefix(op)
+                    .and_then(|s| s.trim().strip_prefix('('))
+                    .and_then(|s| s.strip_suffix(')'))
+                {
                     macro_type_code(inner)
-                } else {code(argument)};
+                } else {
+                    code(argument)
+                };
                 format!("{op} ({value})")
-            } else {format!("{op}{}",code(argument))}
+            } else {
+                format!("{op}{}", code(argument))
+            }
         }
-        ExprKind::Call {callee,arguments} => format!("{}({})",code(callee),arguments.iter().map(code).collect::<Vec<_>>().join(", ")),
-        ExprKind::Bracketed(inner) => expanded_code(inner,source),
-        ExprKind::Generated {code,..} => code.clone(),
-        ExprKind::Member {base,name,indirect} => format!("{}{}{name}",code(base),if *indirect {"->"}else{"."}),
-        ExprKind::Index {base,index} => format!("{}[{}]",code(base),code(index)),
-        ExprKind::List(values)|ExprKind::Block(values) => values.iter().map(code).collect::<Vec<_>>().join(", "),
-        ExprKind::ArrayInitializer(values) => format!("{{{}}}",values.iter().map(code).collect::<Vec<_>>().join(", ")),
+        ExprKind::Call { callee, arguments } => format!(
+            "{}({})",
+            code(callee),
+            arguments.iter().map(code).collect::<Vec<_>>().join(", ")
+        ),
+        ExprKind::Bracketed(inner) => expanded_code(inner, source),
+        ExprKind::Generated { code, .. } => code.clone(),
+        ExprKind::Member {
+            base,
+            name,
+            indirect,
+        } => format!("{}{}{name}", code(base), if *indirect { "->" } else { "." }),
+        ExprKind::Index { base, index } => format!("{}[{}]", code(base), code(index)),
+        ExprKind::List(values) | ExprKind::Block(values) => {
+            values.iter().map(code).collect::<Vec<_>>().join(", ")
+        }
+        ExprKind::ArrayInitializer(values) => format!(
+            "{{{}}}",
+            values.iter().map(code).collect::<Vec<_>>().join(", ")
+        ),
         _ => source[expression.span.start..expression.span.end].into(),
     }
 }
 
 fn macro_type_code(type_name: &str) -> String {
-    let type_name=type_name.trim();
-    let type_name=type_name.strip_prefix("struct ").or_else(||type_name.strip_prefix("union ")).or_else(||type_name.strip_prefix("enum ")).unwrap_or(type_name);
-    type_name.replace('*'," *").replace('&'," &").split_whitespace().collect::<Vec<_>>().join(" ")
+    let type_name = type_name.trim();
+    let type_name = type_name
+        .strip_prefix("struct ")
+        .or_else(|| type_name.strip_prefix("union "))
+        .or_else(|| type_name.strip_prefix("enum "))
+        .unwrap_or(type_name);
+    type_name
+        .replace('*', " *")
+        .replace('&', " &")
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
 }
 
 fn expanded_argument(expression: &Expr, source: &str, argument: &str) -> Option<Expr> {
-    if expanded_code(expression,source)==argument {
+    if expanded_code(expression, source) == argument {
         return Some(expression.clone());
     }
     let children: Vec<&Expr> = match &expression.kind {
-        ExprKind::Unary {argument,..}|ExprKind::Cast {argument,..}|ExprKind::Bracketed(argument)|ExprKind::Generated {expression:argument,..} => vec![argument],
-        ExprKind::Binary {left,right,..} => vec![left,right],
-        ExprKind::Conditional {condition,consequence,alternative} => vec![condition,consequence,alternative],
+        ExprKind::Unary { argument, .. }
+        | ExprKind::Cast { argument, .. }
+        | ExprKind::Bracketed(argument)
+        | ExprKind::Generated {
+            expression: argument,
+            ..
+        } => vec![argument],
+        ExprKind::Binary { left, right, .. } => vec![left, right],
+        ExprKind::Conditional {
+            condition,
+            consequence,
+            alternative,
+        } => vec![condition, consequence, alternative],
         // Static call names and FIELD_IDENTIFIERs have no expression AST.
-        ExprKind::Call {arguments,..} => arguments.iter().collect(),
-        ExprKind::Member {base,..} => vec![base],
-        ExprKind::Index {base,index} => vec![base,index],
-        ExprKind::List(values)|ExprKind::Block(values)|ExprKind::ArrayInitializer(values) => values.iter().collect(),
+        ExprKind::Call { arguments, .. } => arguments.iter().collect(),
+        ExprKind::Member { base, .. } => vec![base],
+        ExprKind::Index { base, index } => vec![base, index],
+        ExprKind::List(values) | ExprKind::Block(values) | ExprKind::ArrayInitializer(values) => {
+            values.iter().collect()
+        }
         _ => Vec::new(),
     };
-    children.into_iter().find_map(|child| expanded_argument(child,source,argument))
+    children
+        .into_iter()
+        .find_map(|child| expanded_argument(child, source, argument))
 }
 
 fn generated_expression(expression: &mut Expr, source: &str, span: &Span) {
-    let code=expanded_code(expression,source);
+    let code = expanded_code(expression, source);
     match &mut expression.kind {
-        ExprKind::Unary {argument,..}|ExprKind::Bracketed(argument)|ExprKind::Generated {expression:argument,..} => generated_expression(argument,source,span),
-        ExprKind::Cast {argument,type_name} => {
-            *type_name=macro_type_code(type_name);
-            generated_expression(argument,source,span);
+        ExprKind::Unary { argument, .. }
+        | ExprKind::Bracketed(argument)
+        | ExprKind::Generated {
+            expression: argument,
+            ..
+        } => generated_expression(argument, source, span),
+        ExprKind::Cast {
+            argument,
+            type_name,
+        } => {
+            *type_name = macro_type_code(type_name);
+            generated_expression(argument, source, span);
         }
-        ExprKind::Binary {left,right,..} => {generated_expression(left,source,span);generated_expression(right,source,span);}
-        ExprKind::Conditional {condition,consequence,alternative} => {generated_expression(condition,source,span);generated_expression(consequence,source,span);generated_expression(alternative,source,span);}
-        ExprKind::Call {callee,arguments} => {
-            if matches!(callee.kind,ExprKind::Identifier(_)) {callee.span=span.clone();}
-            else {generated_expression(callee,source,span);}
-            for argument in arguments {generated_expression(argument,source,span);}
+        ExprKind::Binary { left, right, .. } => {
+            generated_expression(left, source, span);
+            generated_expression(right, source, span);
         }
-        ExprKind::MacroCall {arguments,expansion,..} => {for argument in arguments {generated_expression(argument,source,span);}generated_expression(expansion,source,span);}
-        ExprKind::Member {base,..} => generated_expression(base,source,span),
-        ExprKind::Index {base,index} => {generated_expression(base,source,span);generated_expression(index,source,span);}
-        ExprKind::List(values)|ExprKind::Block(values)|ExprKind::ArrayInitializer(values) => for value in values {generated_expression(value,source,span);},
-        ExprKind::Statement(statement) => generated_statement(statement,source,span),
+        ExprKind::Conditional {
+            condition,
+            consequence,
+            alternative,
+        } => {
+            generated_expression(condition, source, span);
+            generated_expression(consequence, source, span);
+            generated_expression(alternative, source, span);
+        }
+        ExprKind::Call { callee, arguments } => {
+            if matches!(callee.kind, ExprKind::Identifier(_)) {
+                callee.span = span.clone();
+            } else {
+                generated_expression(callee, source, span);
+            }
+            for argument in arguments {
+                generated_expression(argument, source, span);
+            }
+        }
+        ExprKind::MacroCall {
+            arguments,
+            expansion,
+            ..
+        } => {
+            for argument in arguments {
+                generated_expression(argument, source, span);
+            }
+            generated_expression(expansion, source, span);
+        }
+        ExprKind::Member { base, .. } => generated_expression(base, source, span),
+        ExprKind::Index { base, index } => {
+            generated_expression(base, source, span);
+            generated_expression(index, source, span);
+        }
+        ExprKind::List(values) | ExprKind::Block(values) | ExprKind::ArrayInitializer(values) => {
+            for value in values {
+                generated_expression(value, source, span);
+            }
+        }
+        ExprKind::Statement(statement) => generated_statement(statement, source, span),
         _ => (),
     }
-    let kind=std::mem::replace(&mut expression.kind,ExprKind::Unknown(String::new()));
-    expression.kind=ExprKind::Generated {expression:Box::new(Expr {kind,span:span.clone()}),code};
-    expression.span=span.clone();
+    let kind = std::mem::replace(&mut expression.kind, ExprKind::Unknown(String::new()));
+    expression.kind = ExprKind::Generated {
+        expression: Box::new(Expr {
+            kind,
+            span: span.clone(),
+        }),
+        code,
+    };
+    expression.span = span.clone();
 }
 
 fn generated_statement(statement: &mut Stmt, source: &str, span: &Span) {
     match &mut statement.kind {
-        StmtKind::Block(statements)|StmtKind::Sequence(statements) => for statement in statements {generated_statement(statement,source,span);},
-        StmtKind::Expression(expression) => generated_expression(expression,source,span),
-        StmtKind::Declaration(declarations) => for declaration in declarations {
-            declaration.span=span.clone();
-            if let Some(expression)=&mut declaration.initializer {generated_expression(expression,source,span);}
-            for expression in &mut declaration.dimensions {generated_expression(expression,source,span);}
-        },
-        StmtKind::If {condition,consequence,alternative} => {generated_expression(condition,source,span);generated_statement(consequence,source,span);if let Some(statement)=alternative {generated_statement(statement,source,span);}},
-        StmtKind::While {condition,body}|StmtKind::Switch {condition,body}|StmtKind::DoWhile {condition,body} => {generated_expression(condition,source,span);generated_statement(body,source,span);},
-        StmtKind::For {initializer,condition,update,body} => {
-            if let Some(statement)=initializer {generated_statement(statement,source,span);}
-            for expression in [condition,update].into_iter().flatten() {generated_expression(expression,source,span);}
-            generated_statement(body,source,span);
-        },
-        StmtKind::RangeFor {declaration,iterable,body} => {declaration.span=span.clone();generated_expression(iterable,source,span);generated_statement(body,source,span);},
-        StmtKind::Case(expression)|StmtKind::Return(expression)|StmtKind::Throw(expression) => if let Some(expression)=expression {generated_expression(expression,source,span);},
-        StmtKind::Label {statement,..} => generated_statement(statement,source,span),
-        StmtKind::Try {body,catches} => {generated_statement(body,source,span);for statement in catches {generated_statement(statement,source,span);}},
-        StmtKind::Unknown(expressions) => for expression in expressions {generated_expression(expression,source,span);},
+        StmtKind::Block(statements) | StmtKind::Sequence(statements) => {
+            for statement in statements {
+                generated_statement(statement, source, span);
+            }
+        }
+        StmtKind::Expression(expression) => generated_expression(expression, source, span),
+        StmtKind::Declaration(declarations) => {
+            for declaration in declarations {
+                declaration.span = span.clone();
+                if let Some(expression) = &mut declaration.initializer {
+                    generated_expression(expression, source, span);
+                }
+                for expression in &mut declaration.dimensions {
+                    generated_expression(expression, source, span);
+                }
+            }
+        }
+        StmtKind::If {
+            condition,
+            consequence,
+            alternative,
+        } => {
+            generated_expression(condition, source, span);
+            generated_statement(consequence, source, span);
+            if let Some(statement) = alternative {
+                generated_statement(statement, source, span);
+            }
+        }
+        StmtKind::While { condition, body }
+        | StmtKind::Switch { condition, body }
+        | StmtKind::DoWhile { condition, body } => {
+            generated_expression(condition, source, span);
+            generated_statement(body, source, span);
+        }
+        StmtKind::For {
+            initializer,
+            condition,
+            update,
+            body,
+        } => {
+            if let Some(statement) = initializer {
+                generated_statement(statement, source, span);
+            }
+            for expression in [condition, update].into_iter().flatten() {
+                generated_expression(expression, source, span);
+            }
+            generated_statement(body, source, span);
+        }
+        StmtKind::RangeFor {
+            declaration,
+            iterable,
+            body,
+        } => {
+            declaration.span = span.clone();
+            generated_expression(iterable, source, span);
+            generated_statement(body, source, span);
+        }
+        StmtKind::Case(expression) | StmtKind::Return(expression) | StmtKind::Throw(expression) => {
+            if let Some(expression) = expression {
+                generated_expression(expression, source, span);
+            }
+        }
+        StmtKind::Label { statement, .. } => generated_statement(statement, source, span),
+        StmtKind::Try { body, catches } => {
+            generated_statement(body, source, span);
+            for statement in catches {
+                generated_statement(statement, source, span);
+            }
+        }
+        StmtKind::Unknown(expressions) => {
+            for expression in expressions {
+                generated_expression(expression, source, span);
+            }
+        }
         _ => (),
     }
-    statement.span=span.clone();
+    statement.span = span.clone();
+}
+
+fn lambda_return_type(body: &Stmt, parameters: &[Parameter]) -> String {
+    fn expression_type(expression: &Expr, parameters: &[Parameter]) -> String {
+        let infer = |e: &Expr| expression_type(e, parameters);
+        match &expression.kind {
+            ExprKind::Identifier(name) => parameters
+                .iter()
+                .find(|p| &p.name == name)
+                .map_or("ANY".into(), |p| p.type_name.clone()),
+            ExprKind::Literal(value) => {
+                if value.starts_with('"') {
+                    "const char*".into()
+                } else if value.starts_with('\'') {
+                    "char".into()
+                } else if value.contains('.') {
+                    "double".into()
+                } else {
+                    "int".into()
+                }
+            }
+            ExprKind::Cast { type_name, .. } => type_name.clone(),
+            ExprKind::Bracketed(inner)
+            | ExprKind::Generated {
+                expression: inner, ..
+            } => infer(inner),
+            ExprKind::Unary { op, argument, .. } => match op.as_str() {
+                "!" => "bool".into(),
+                "&" => format!("{}*", infer(argument)),
+                "*" => infer(argument).strip_suffix('*').unwrap_or("ANY").into(),
+                _ => infer(argument),
+            },
+            ExprKind::Binary { op, left, right } => {
+                if matches!(
+                    op.as_str(),
+                    "==" | "!=" | "<" | ">" | "<=" | ">=" | "&&" | "||"
+                ) {
+                    "bool".into()
+                } else {
+                    let left = infer(left);
+                    let right = infer(right);
+                    if left == "ANY" { right } else { left }
+                }
+            }
+            ExprKind::Conditional {
+                consequence,
+                alternative,
+                ..
+            } => {
+                let first = infer(consequence);
+                if first == "ANY" {
+                    infer(alternative)
+                } else {
+                    first
+                }
+            }
+            ExprKind::List(values) | ExprKind::Block(values) => {
+                values.last().map_or("void".into(), infer)
+            }
+            _ => "ANY".into(),
+        }
+    }
+    fn returns(body: &Stmt, parameters: &[Parameter], types: &mut Vec<String>) {
+        match &body.kind {
+            StmtKind::Return(expression) => types.push(
+                expression
+                    .as_ref()
+                    .map_or("void".into(), |e| expression_type(e, parameters)),
+            ),
+            StmtKind::Block(statements) | StmtKind::Sequence(statements) => {
+                for s in statements {
+                    returns(s, parameters, types);
+                }
+            }
+            StmtKind::If {
+                consequence,
+                alternative,
+                ..
+            } => {
+                returns(consequence, parameters, types);
+                if let Some(s) = alternative {
+                    returns(s, parameters, types);
+                }
+            }
+            StmtKind::While { body, .. }
+            | StmtKind::DoWhile { body, .. }
+            | StmtKind::For { body, .. }
+            | StmtKind::RangeFor { body, .. }
+            | StmtKind::Switch { body, .. }
+            | StmtKind::Label {
+                statement: body, ..
+            } => returns(body, parameters, types),
+            StmtKind::Try { body, catches } => {
+                returns(body, parameters, types);
+                for s in catches {
+                    returns(s, parameters, types);
+                }
+            }
+            _ => (),
+        }
+    }
+    let mut types = Vec::new();
+    returns(body, parameters, &mut types);
+    types
+        .iter()
+        .find(|t| t.as_str() != "ANY")
+        .cloned()
+        .unwrap_or_else(|| {
+            if types.is_empty() {
+                "void".into()
+            } else {
+                "ANY".into()
+            }
+        })
 }
 
 fn qualifier(t: &str) -> bool {
@@ -2830,6 +4516,27 @@ fn qualifier(t: &str) -> bool {
             | "__noreturn"
             | "_Noreturn"
     )
+}
+
+fn expression_type_keyword(t: &str, cpp: bool) -> bool {
+    (type_word(t)
+        && (cpp || !matches!(t, "bool" | "wchar_t" | "char8_t" | "char16_t" | "char32_t")))
+        || matches!(
+            t,
+            "struct"
+                | "union"
+                | "enum"
+                | "const"
+                | "volatile"
+                | "restrict"
+                | "__const"
+                | "__const__"
+                | "__volatile"
+                | "__volatile__"
+                | "__restrict"
+                | "__restrict__"
+        )
+        || (cpp && matches!(t, "class" | "typename"))
 }
 
 fn type_word(t: &str) -> bool {
@@ -2911,10 +4618,115 @@ mod declaration_tests {
     use super::*;
 
     #[test]
-    fn const_first_knr_parameters_keep_all_function_bodies() {
-        let unit = parse("struct global { int p; int x; }; int first(p) const char *p; { if (*p) return 1; return 0; } int second(x) int x; { return x; }", false);
+    fn recovered_assembly_tail_parameter_names_do_not_become_types() {
+        let unit = parse(
+            "int broken(int v10) { __asm { nop } orphan(v10); } int after(int x) { int (*v10)(int); v10(x); v10(x); return x; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["first", "second"]);
+        let orphan = unit.functions.iter().find(|f| f.name == "orphan").unwrap();
+        assert_eq!(orphan.signature, "ANY(ANY)");
+        assert_eq!(orphan.parameters[0].name, "v10");
+        assert_eq!(orphan.parameters[0].type_name, "ANY");
+        let after = unit.functions.iter().find(|f| f.name == "after").unwrap();
+        let StmtKind::Block(body) = &after.body.kind else {
+            panic!()
+        };
+        assert!(body[1..3].iter().all(|s| matches!(
+            s.kind,
+            StmtKind::Expression(Expr {
+                kind: ExprKind::Call { .. },
+                ..
+            })
+        )));
+    }
+
+    #[test]
+    fn call_shaped_assignment_lhs_recovers_a_grouped_declarator() {
+        let source = "int declared_get(int); int f(int x) { get(x)=x+1; declared_get(x)=x+2; get(x); return x; } int after(int x) { get(x); declared_get(x); return x; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let method = unit.functions.iter().find(|f| f.name == "f").unwrap();
+            let StmtKind::Block(body) = &method.body.kind else {
+                panic!()
+            };
+            if cpp {
+                assert!(body[..2].iter().all(|s| matches!(&s.kind, StmtKind::Expression(Expr {kind:ExprKind::Binary{op,..},..}) if op == "=")));
+            } else {
+                assert!(
+                    matches!(&body[0].kind, StmtKind::Declaration(values) if values[0].name == "x" && values[0].type_name == "get" && values[0].initializer.is_some())
+                );
+                assert!(
+                    matches!(&body[1].kind, StmtKind::Declaration(values) if values[0].name == "x" && values[0].type_name == "declared_get" && values[0].initializer.is_some())
+                );
+            }
+            assert!(matches!(
+                &body[2].kind,
+                StmtKind::Expression(Expr {
+                    kind: ExprKind::Call { .. },
+                    ..
+                })
+            ));
+            let after = unit.functions.iter().find(|f| f.name == "after").unwrap();
+            let StmtKind::Block(body) = &after.body.kind else {
+                panic!()
+            };
+            assert!(body[..2].iter().all(|s| matches!(
+                &s.kind,
+                StmtKind::Expression(Expr {
+                    kind: ExprKind::Call { .. },
+                    ..
+                })
+            )));
+        }
+    }
+
+    #[test]
+    fn typedef_grouped_name_recovery_distinguishes_new_and_bound_objects() {
+        let source = "typedef int T; int f(int x) { T(y)=x; T(x); return x; } int loop(int x) { while(x)T(x)=1;return x; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let method = unit.functions.iter().find(|f| f.name == "f").unwrap();
+            let StmtKind::Block(body) = &method.body.kind else {
+                panic!()
+            };
+            assert!(
+                matches!(&body[0].kind, StmtKind::Declaration(values) if values[0].name == "y" && values[0].nested_declarator)
+            );
+            assert!(matches!(
+                &body[1].kind,
+                StmtKind::Expression(Expr {
+                    kind: ExprKind::Call { .. },
+                    ..
+                })
+            ));
+            let method = unit.functions.iter().find(|f| f.name == "loop").unwrap();
+            let StmtKind::Block(body) = &method.body.kind else {
+                panic!()
+            };
+            let StmtKind::While { body, .. } = &body[0].kind else {
+                panic!()
+            };
+            assert_eq!(matches!(body.kind, StmtKind::Declaration(_)), !cpp);
+        }
+    }
+
+    #[test]
+    fn const_first_knr_parameters_keep_all_function_bodies() {
+        let unit = parse(
+            "struct global { int p; int x; }; int first(p) const char *p; { if (*p) return 1; return 0; } int second(x) int x; { return x; }",
+            false,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["first", "second"]
+        );
         assert_eq!(unit.functions[0].parameters[0].name, "p");
         assert_eq!(unit.functions[0].parameters[0].type_name, "char*");
         assert!(matches!(unit.functions[0].body.kind, StmtKind::Block(_)));
@@ -2922,7 +4734,10 @@ mod declaration_tests {
 
     #[test]
     fn object_initializers_and_array_bounds_do_not_hide_following_functions() {
-        let unit = parse("struct item { int value; }; static struct item configuration = { 0 }; static char options[2 * sizeof(configuration)]; int after(int x) { if (x) return 1; return 0; }", false);
+        let unit = parse(
+            "struct item { int value; }; static struct item configuration = { 0 }; static char options[2 * sizeof(configuration)]; int after(int x) { if (x) return 1; return 0; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions.len(), 1);
         assert_eq!(unit.functions[0].name, "after");
@@ -2930,7 +4745,10 @@ mod declaration_tests {
 
     #[test]
     fn anonymous_record_initializer_and_enum_alias_preserve_later_bodies() {
-        let unit = parse("static const struct { int x; } pairs[] = { { 1 }, { 2 } }; typedef enum { first, second } Choice; int f(Choice x) { if (x) return 1; return 0; }", false);
+        let unit = parse(
+            "static const struct { int x; } pairs[] = { { 1 }, { 2 } }; typedef enum { first, second } Choice; int f(Choice x) { if (x) return 1; return 0; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions.len(), 1);
         assert_eq!(unit.functions[0].name, "f");
@@ -2939,7 +4757,10 @@ mod declaration_tests {
 
     #[test]
     fn typedef_function_parameters_are_types_without_executable_expressions() {
-        let unit = parse("typedef long read_fn(void *cookie, char *buf, unsigned long count); typedef void (*callback_fn)(int); int f(read_fn *reader, callback_fn callback) { callback(1); return 0; }", true);
+        let unit = parse(
+            "typedef long read_fn(void *cookie, char *buf, unsigned long count); typedef void (*callback_fn)(int); int f(read_fn *reader, callback_fn callback) { callback(1); return 0; }",
+            true,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions.len(), 1);
         assert_eq!(unit.functions[0].parameters[0].type_name, "read_fn*");
@@ -2947,31 +4768,71 @@ mod declaration_tests {
 
     #[test]
     fn elaborated_return_declarations_follow_cdt_type_declaration_conversion() {
-        let unit = parse("struct item; struct item *declaration(void); struct item *definition(void) { return 0; } int ordinary(void); int ordinary(void) { return 1; }", false);
+        let unit = parse(
+            "struct item; struct item *declaration(void); struct item *definition(void) { return 0; } int ordinary(void); int ordinary(void) { return 1; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["definition", "ordinary"]);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["definition", "ordinary"]
+        );
     }
 
     #[test]
     fn operator_definitions_replace_matching_declaration_stubs() {
-        let unit = parse(include_str!("../tests/fixtures/decbench-regressions/cpp_operator_definitions.cpp"), true);
+        let unit = parse(
+            include_str!("../tests/fixtures/decbench-regressions/cpp_operator_definitions.cpp"),
+            true,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["==", "!=", "="]);
-        let declarations = parse(include_str!("../tests/fixtures/decbench-regressions/cpp_operator_declarations.cpp"), true);
-        assert_eq!(declarations.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["operator ==", "operator !=", "operator ="]);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["==", "!=", "="]
+        );
+        let declarations = parse(
+            include_str!("../tests/fixtures/decbench-regressions/cpp_operator_declarations.cpp"),
+            true,
+        );
+        assert_eq!(
+            declarations
+                .functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["operator ==", "operator !=", "operator ="]
+        );
     }
 
     #[test]
     fn inferred_typenames_do_not_turn_object_assignment_into_declarations() {
-        let unit = parse("typedef int array; int f(void) { array = 1; array[0] = 2; array.member = 3; return 0; }", false);
+        let unit = parse(
+            "typedef int array; int f(void) { array = 1; array[0] = 2; array.member = 3; return 0; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-        assert!(body[..3].iter().all(|s| matches!(s.kind, StmtKind::Expression(_))));
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(
+            body[..3]
+                .iter()
+                .all(|s| matches!(s.kind, StmtKind::Expression(_)))
+        );
     }
 
     #[test]
     fn named_type_function_pointer_fields_are_objects() {
-        let unit = parse("typedef long size; struct callbacks { size (*read)(int); size (*write)(int); }; size (*global_callback)(int); size f(int x) { return x; }", true);
+        let unit = parse(
+            "typedef long size; struct callbacks { size (*read)(int); size (*write)(int); }; size (*global_callback)(int); size f(int x) { return x; }",
+            true,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions.len(), 1);
         assert_eq!(unit.functions[0].name, "f");
@@ -2979,15 +4840,21 @@ mod declaration_tests {
 
     #[test]
     fn using_declaration_resolves_method_owner_and_removes_stub() {
-        let unit = parse("namespace n { struct A { int f(); }; } using n::A; int A::f() { return 0; }", true);
+        let unit = parse(
+            "namespace n { struct A { int f(); }; } using n::A; int A::f() { return 0; }",
+            true,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions.len(), 1);
-        assert_eq!(unit.functions[0].full_name, "n::A::f");
+        assert_eq!(unit.functions[0].full_name, "n.A.f:int()");
     }
 
     #[test]
     fn c_symbol_definition_replaces_array_parameter_declaration() {
-        let unit = parse("int f(int values[]); int f(int *values) { return values[0]; }", false);
+        let unit = parse(
+            "int f(int values[]); int f(int *values) { return values[0]; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions.len(), 1);
         assert!(matches!(unit.functions[0].body.kind, StmtKind::Block(_)));
@@ -2995,9 +4862,18 @@ mod declaration_tests {
 
     #[test]
     fn file_scope_assembly_preserves_following_method_and_asm_symbol_alias() {
-        let unit = parse("__asm__(\".section .text\"); __asm { nop } int declared(void) __asm__(\"symbol\"); int f(void) { return 0; }", false);
+        let unit = parse(
+            "__asm__(\".section .text\"); __asm { nop } int declared(void) __asm__(\"symbol\"); int f(void) { return 0; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["f", "declared"]);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["f", "declared"]
+        );
     }
 
     #[test]
@@ -3006,8 +4882,19 @@ mod declaration_tests {
         for cpp in [false, true] {
             let unit = parse(source, cpp);
             assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-            let names = unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>();
-            assert_eq!(names, if cpp { vec!["cpp_only", "after", "valid"] } else { vec!["after", "valid"] });
+            let names = unit
+                .functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>();
+            assert_eq!(
+                names,
+                if cpp {
+                    vec!["cpp_only", "after", "valid"]
+                } else {
+                    vec!["after", "valid"]
+                }
+            );
         }
     }
 
@@ -3017,33 +4904,66 @@ mod declaration_tests {
         for cpp in [false, true] {
             let unit = parse(source, cpp);
             assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-            assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["prefix", "gnu", "after"]);
+            assert_eq!(
+                unit.functions
+                    .iter()
+                    .map(|f| f.name.as_str())
+                    .collect::<Vec<_>>(),
+                ["prefix", "gnu", "after"]
+            );
         }
     }
 
     #[test]
     fn attributes_before_local_declaration_keep_initializers() {
-        for source in ["int f(int x) { __attribute__((unused)) int value = x + 1; return value; }", "int f(int x) { [[__maybe_unused__]] int value = x + 1; return value; }"] {
+        for source in [
+            "int f(int x) { __attribute__((unused)) int value = x + 1; return value; }",
+            "int f(int x) { [[__maybe_unused__]] int value = x + 1; return value; }",
+        ] {
             let unit = parse(source, true);
             assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-            let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-            assert!(matches!(&body[0].kind, StmtKind::Declaration(values) if values[0].initializer.is_some()));
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            assert!(
+                matches!(&body[0].kind, StmtKind::Declaration(values) if values[0].initializer.is_some())
+            );
         }
     }
 
     #[test]
     fn c_record_tags_do_not_classify_function_calls_as_declarations() {
-        let unit = parse("struct sigaction { int value; }; int f(int x) { struct sigaction state; sigaction(x, 0, &state); return x; }", false);
+        let unit = parse(
+            "struct sigaction { int value; }; int f(int x) { struct sigaction state; sigaction(x, 0, &state); return x; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-        assert!(matches!(body[1].kind, StmtKind::Expression(Expr { kind: ExprKind::Call {..}, .. })));
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(matches!(
+            body[1].kind,
+            StmtKind::Expression(Expr {
+                kind: ExprKind::Call { .. },
+                ..
+            })
+        ));
     }
 
     #[test]
     fn array_allocation_and_deallocation_operator_headers_keep_exception_specs() {
-        let unit = parse("void *operator new[](unsigned long size) { return 0; } void operator delete[](void *ptr) throw() { release(ptr); }", true);
+        let unit = parse(
+            "void *operator new[](unsigned long size) { return 0; } void operator delete[](void *ptr) throw() { release(ptr); }",
+            true,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["new[]", "delete[]"]);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["new[]", "delete[]"]
+        );
     }
 
     #[test]
@@ -3052,9 +4972,21 @@ mod declaration_tests {
         for cpp in [false, true] {
             let unit = parse(source, cpp);
             assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-            assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["f", "start", "first"]);
-            assert!(unit.functions[1..].iter().all(|f| matches!(f.body.kind, StmtKind::Empty)));
-            let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
+            assert_eq!(
+                unit.functions
+                    .iter()
+                    .map(|f| f.name.as_str())
+                    .collect::<Vec<_>>(),
+                ["f", "start", "first"]
+            );
+            assert!(
+                unit.functions[1..]
+                    .iter()
+                    .all(|f| matches!(f.body.kind, StmtKind::Empty))
+            );
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
             assert!(matches!(&body[0].kind, StmtKind::Declaration(values) if values.is_empty()));
         }
     }
@@ -3064,7 +4996,13 @@ mod declaration_tests {
         let source = "typedef int Number; Number (*callback)(int); static inline Number (*arrays(void))[4] { return 0; } int (digit)(int x) { return x; } static int (inside(int x)) { return x; } void (handler)(void) { return; }";
         let unit = parse(source, false);
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["arrays", "digit", "inside", "handler"]);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["arrays", "digit", "inside", "handler"]
+        );
         assert_eq!(unit.functions[0].return_type, "Number*[4]");
         assert_eq!(unit.functions[1].parameters[0].name, "x");
     }
@@ -3079,19 +5017,50 @@ mod declaration_tests {
 
     #[test]
     fn cpp_keyword_spelling_in_c_parameter_does_not_hide_later_definitions() {
-        let unit = parse("struct block { int value; }; static struct block *using_blocks(struct block *using[2]) { return using[0]; } int after(int x) { if (x) return 1; return 0; }", false);
+        let unit = parse(
+            "struct block { int value; }; static struct block *using_blocks(struct block *using[2]) { return using[0]; } int after(int x) { if (x) return 1; return 0; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["using_blocks", "after"]);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["using_blocks", "after"]
+        );
     }
 
     #[test]
     fn object_shadowing_typedef_keeps_mutations_and_identifier_condition() {
-        let unit = parse("typedef int count; int f(int count) { count--; count -= 1; if (count) return 1; return 0; }", false);
+        let unit = parse(
+            "typedef int count; int f(int count) { count--; count -= 1; if (count) return 1; return 0; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-        assert!(matches!(body[0].kind, StmtKind::Expression(Expr {kind: ExprKind::Unary {postfix:true,..},..})));
-        assert!(matches!(&body[1].kind, StmtKind::Expression(Expr {kind: ExprKind::Binary {op,..},..}) if op == "-="));
-        assert!(matches!(body[2].kind, StmtKind::If { condition:Expr {kind:ExprKind::Identifier(_),..},..}));
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(matches!(
+            body[0].kind,
+            StmtKind::Expression(Expr {
+                kind: ExprKind::Unary { postfix: true, .. },
+                ..
+            })
+        ));
+        assert!(
+            matches!(&body[1].kind, StmtKind::Expression(Expr {kind: ExprKind::Binary {op,..},..}) if op == "-=")
+        );
+        assert!(matches!(
+            body[2].kind,
+            StmtKind::If {
+                condition: Expr {
+                    kind: ExprKind::Identifier(_),
+                    ..
+                },
+                ..
+            }
+        ));
     }
 
     #[test]
@@ -3100,8 +5069,12 @@ mod declaration_tests {
         for cpp in [false, true] {
             let unit = parse(source, cpp);
             assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-            let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-            let StmtKind::Declaration(values) = &body[0].kind else { panic!() };
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            let StmtKind::Declaration(values) = &body[0].kind else {
+                panic!()
+            };
             assert_eq!(values.len(), 1);
             assert_eq!(values[0].name, "pointer");
             assert!(values[0].initializer.is_none());
@@ -3111,10 +5084,17 @@ mod declaration_tests {
 
     #[test]
     fn plain_first_declarator_keeps_later_function_pointer_initializer() {
-        let unit = parse("void f(int x) { int first = call(), (*pointer)(int) = x ? target : second; }", false);
+        let unit = parse(
+            "void f(int x) { int first = call(), (*pointer)(int) = x ? target : second; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-        let StmtKind::Declaration(values) = &body[0].kind else { panic!() };
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        let StmtKind::Declaration(values) = &body[0].kind else {
+            panic!()
+        };
         assert_eq!(values.len(), 2);
         assert!(values.iter().all(|d| d.initializer.is_some() && !d.problem));
     }
@@ -3123,36 +5103,63 @@ mod declaration_tests {
     fn an_unsized_array_modifier_disables_all_allocation_bounds() {
         let unit = parse("void f(int n) { extern int values[][n + 1]; }", false);
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-        let StmtKind::Declaration(values) = &body[0].kind else { panic!() };
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        let StmtKind::Declaration(values) = &body[0].kind else {
+            panic!()
+        };
         assert!(values[0].dimensions.is_empty());
     }
 
     #[test]
     fn genuine_type_bindings_govern_ambiguous_address_casts() {
         let inferred = parse("int f(uint32_t n) { return (uint32_t)&target; }", false);
-        let declared = parse("typedef unsigned int uint32_t; int f(uint32_t n) { return (uint32_t)&target; }", false);
+        let declared = parse(
+            "typedef unsigned int uint32_t; int f(uint32_t n) { return (uint32_t)&target; }",
+            false,
+        );
         for unit in [&inferred, &declared] {
             assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         }
-        let StmtKind::Block(inferred_body) = &inferred.functions[0].body.kind else { panic!() };
-        let StmtKind::Block(declared_body) = &declared.functions[0].body.kind else { panic!() };
-        assert!(matches!(&inferred_body[0].kind, StmtKind::Return(Some(e)) if matches!(&e.kind, ExprKind::Binary {op,..} if op=="&")));
-        assert!(matches!(&declared_body[0].kind, StmtKind::Return(Some(e)) if matches!(e.kind, ExprKind::Cast {..})));
+        let StmtKind::Block(inferred_body) = &inferred.functions[0].body.kind else {
+            panic!()
+        };
+        let StmtKind::Block(declared_body) = &declared.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(
+            matches!(&inferred_body[0].kind, StmtKind::Return(Some(e)) if matches!(&e.kind, ExprKind::Binary {op,..} if op=="&"))
+        );
+        assert!(
+            matches!(&declared_body[0].kind, StmtKind::Return(Some(e)) if matches!(e.kind, ExprKind::Cast {..}))
+        );
     }
 
     #[test]
     fn top_level_declarations_convert_each_function_declarator() {
-        let unit = parse("void first(void), second(int); char *third(void), *fourth(int);", false);
+        let unit = parse(
+            "void first(void), second(int); char *third(void), *fourth(int);",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        assert_eq!(unit.functions.iter().map(|f| f.name.as_str()).collect::<Vec<_>>(), ["first", "second", "third", "fourth"]);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["first", "second", "third", "fourth"]
+        );
         assert_eq!(unit.functions[2].return_type, "char*");
         assert_eq!(unit.functions[3].return_type, "char*");
     }
 
     #[test]
     fn record_attributes_and_grouped_arrays_do_not_create_methods() {
-        let unit = parse("typedef unsigned char byte; struct __attribute__((aligned(8))) R { byte (mask)[8]; }; int after(void) { return 0; }", false);
+        let unit = parse(
+            "typedef unsigned char byte; struct __attribute__((aligned(8))) R { byte (mask)[8]; }; int after(void) { return 0; }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions.len(), 1);
         assert_eq!(unit.functions[0].name, "after");
@@ -3160,17 +5167,27 @@ mod declaration_tests {
 
     #[test]
     fn attributed_unknown_function_pointer_is_a_declaration() {
-        let unit = parse("int f(void) { LONG (__attribute__((__stdcall__)) *query)(HANDLE handle); return query(0); }", false);
+        let unit = parse(
+            "int f(void) { LONG (__attribute__((__stdcall__)) *query)(HANDLE handle); return query(0); }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
-        let StmtKind::Block(body) = &unit.functions[0].body.kind else { panic!() };
-        let StmtKind::Declaration(values) = &body[0].kind else { panic!() };
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        let StmtKind::Declaration(values) = &body[0].kind else {
+            panic!()
+        };
         assert_eq!(values[0].name, "query");
         assert_eq!(values.len(), 1);
     }
 
     #[test]
     fn void_and_function_pointer_parameters_preserve_cdt_properties() {
-        let unit = parse("int empty(void) { return 0; } int f(int (*call)(char *), char *p) { return call(p); }", false);
+        let unit = parse(
+            "int empty(void) { return 0; } int f(int (*call)(char *), char *p) { return call(p); }",
+            false,
+        );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions[0].signature, "int(void)");
         assert_eq!(unit.functions[0].parameters[0].type_name, "void");
@@ -3179,6 +5196,429 @@ mod declaration_tests {
         assert!(unit.functions[1].parameters[0].function_pointer);
         assert_eq!(unit.functions[1].parameters[1].type_name, "char*");
         assert!(!unit.functions[1].parameters[1].function_pointer);
+    }
+
+    #[test]
+    fn cxx_binding_names_linkage_and_implicit_this_follow_cdt() {
+        let source = "typedef unsigned long Size; using Num = int; extern \"C\" { int cfun(void *); } int cfun(void *p) { return 0; } extern \"C\" int single(void) { return 1; } namespace N { struct S { static int stat(int x) { return x; } int decl(void); }; int S::decl(void) { return 1; } int local(Num n) { return n; } } int alias(Size n) { return 1; } int arrays(int a[4], int b[][3]) { return a[0]; } int fp(int (*f)(int), int x) { return f(x); }";
+        let unit = parse(source, true);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.full_name.as_str())
+                .collect::<Vec<_>>(),
+            [
+                "cfun",
+                "single",
+                "N.S.stat:int(int)",
+                "N.S.decl:int()",
+                "N.local:int(int)",
+                "alias:int(unsigned longint)",
+                "arrays:int(int*,int(*)[3])",
+                "fp:int(int(*)(int),int)"
+            ]
+        );
+        assert!(unit.functions[0].extern_c && unit.functions[1].extern_c);
+        assert_eq!(unit.functions[2].implicit_this.as_deref(), Some("N.S"));
+        assert_eq!(unit.functions[3].implicit_this.as_deref(), Some("N.S"));
+        assert!(unit.functions[4].implicit_this.is_none());
+        assert_eq!(unit.functions[4].signature, "int(Num)");
+    }
+
+    #[test]
+    fn cdt_noreturn_recovery_uses_c_header_line_boundaries() {
+        let source = "extern _Noreturn void same_line(void); extern\n_Noreturn void before_keyword(void); extern _Noreturn\nvoid after_keyword(void); static\n_Noreturn\nvoid definition(void) { return; } int after(void) { return 0; }";
+        let c = parse(source, false);
+        let cpp = parse(source, true);
+        assert!(c.diagnostics.is_empty() && cpp.diagnostics.is_empty());
+        assert_eq!(
+            c.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["definition", "after", "before_keyword", "after_keyword"]
+        );
+        assert_eq!(
+            cpp.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["after"]
+        );
+        assert_eq!(c.functions[0].return_type, "void");
+    }
+
+    #[test]
+    fn emitted_tag_type_properties_omit_reserved_prefix() {
+        let unit = parse(
+            "struct Box { int x; }; int fields(struct Box *box) { return box->x; }",
+            false,
+        );
+        assert!(unit.diagnostics.is_empty());
+        assert_eq!(unit.functions[0].signature, "int(Box*)");
+        assert_eq!(unit.functions[0].parameters[0].type_name, "Box*");
+    }
+
+    #[test]
+    fn recovered_assembly_tails_have_c_implicit_declarations() {
+        let source = include_str!(
+            "../tests/fixtures/decbench-regressions/microsoft_asm_orphan_declarations.c"
+        );
+        let c = parse(source, false);
+        let cpp = parse(source, true);
+        assert!(c.diagnostics.is_empty() && cpp.diagnostics.is_empty());
+        let mut names = c
+            .functions
+            .iter()
+            .map(|f| f.name.as_str())
+            .collect::<Vec<_>>();
+        names.sort_unstable();
+        assert_eq!(
+            names,
+            [
+                "after_arguments",
+                "after_do",
+                "after_nested",
+                "after_simple",
+                "asm_tail_arguments",
+                "asm_tail_do",
+                "asm_tail_nested",
+                "asm_tail_simple",
+                "nested_outer",
+                "other",
+                "tail_variable",
+                "tail_zero",
+                "undeclared"
+            ]
+        );
+        assert_eq!(cpp.functions.len(), 8);
+        let other = c.functions.iter().find(|f| f.name == "other").unwrap();
+        assert_eq!(other.signature, "ANY(ANY)");
+        assert_eq!(other.parameters[0].name, "x");
+        assert_eq!(other.span.line, 5);
+        assert_eq!(other.span.end_line, 5);
+        assert_eq!(c.functions[0].span.end_line, 3);
+    }
+
+    #[test]
+    fn global_initializers_and_array_bounds_preserve_builtin_macro_trees() {
+        let unit = parse(
+            "struct S { int x; }; unsigned offset = __builtin_offsetof(struct S, x); char bounds[1 + __builtin_types_compatible_p(int,int)]; int ordinary(void) { return 0; }",
+            false,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert_eq!(unit.functions.len(), 1);
+        assert_eq!(unit.global_expressions.len(), 2);
+        assert!(
+            matches!(&unit.global_expressions[0].kind, ExprKind::MacroCall {name, arity:2,..} if name=="__builtin_offsetof")
+        );
+        assert!(
+            matches!(&unit.global_expressions[1].kind, ExprKind::Binary {right,..} if matches!(&right.kind,ExprKind::MacroCall {name,arity:2,..} if name=="__builtin_types_compatible_p"))
+        );
+    }
+
+    #[test]
+    fn record_member_names_do_not_shadow_typedefs_outside_the_record() {
+        let unit = parse(
+            "typedef unsigned short u16; union values { u16 u16; }; int f(void *p) { return *(u16*)p; }",
+            false,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(
+            matches!(&body[0].kind,StmtKind::Return(Some(e)) if matches!(&e.kind,ExprKind::Unary {argument,..} if matches!(argument.kind,ExprKind::Cast {..})))
+        );
+    }
+
+    #[test]
+    fn malformed_function_header_recovery_keeps_later_definitions() {
+        let unit = parse(
+            "int broken@<eax>(int x) { return x; } int after(int x) { if (x) return 1; return 0; }",
+            false,
+        );
+        assert!(unit.diagnostics.is_empty());
+        assert!(unit.functions.iter().any(|f| f.name == "after"));
+        assert!(!unit.functions.iter().any(|f| f.name == "broken"));
+    }
+
+    #[test]
+    fn cdt_problem_headers_keep_duplicate_specifier_definitions() {
+        let source = "int registers@<eax>(int x@<eax>) { return x; } int after_register(int x) { return x; } unknown_type duplicated_type *duplicate(int x) { return x; } int after_duplicate(int x) { return x; } unknown_type *array[8](int x) { return x; } int after_array(int x) { return x; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert_eq!(
+                unit.functions
+                    .iter()
+                    .map(|f| f.name.as_str())
+                    .collect::<Vec<_>>(),
+                [
+                    "after_register",
+                    "duplicate",
+                    "after_duplicate",
+                    "after_array"
+                ]
+            );
+        }
+    }
+
+    #[test]
+    fn constructors_without_return_specifiers_survive_declarations() {
+        let unit = parse(
+            "namespace n { class S { public: S(); S(const S&); virtual ~S(); }; }",
+            true,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["S", "S", "~S"]
+        );
+        assert!(unit.functions.iter().all(|f| f.implicit_this.is_none()));
+    }
+
+    #[test]
+    fn global_assertion_operands_do_not_create_function_bindings() {
+        let source = "void declaration(time_t value); _Static_assert(((time_t)0)<=1,\"range\"); int f(void) { return (time_t)0; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert_eq!(
+                unit.functions
+                    .iter()
+                    .map(|f| f.name.as_str())
+                    .collect::<Vec<_>>(),
+                ["f", "declaration"]
+            );
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            assert!(
+                matches!(&body[0].kind, StmtKind::Return(Some(e)) if matches!(&e.kind, ExprKind::Cast {type_name,..} if type_name=="time_t"))
+            );
+        }
+    }
+
+    #[test]
+    fn local_typedef_array_bounds_keep_alias_and_executable_expression() {
+        let source = "int g(int); int f(int n) { typedef char T[n&&g(n)?1:-1]; return *(T*)0; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            let StmtKind::Declaration(declarations) = &body[0].kind else {
+                panic!()
+            };
+            assert_eq!(declarations.len(), 1);
+            assert!(declarations[0].is_typedef);
+            assert_eq!(declarations[0].name, "T");
+            assert_eq!(declarations[0].dimensions.len(), 1);
+            assert!(
+                matches!(&declarations[0].dimensions[0].kind, ExprKind::Conditional {condition,..} if matches!(&condition.kind, ExprKind::Binary {op,..} if op=="&&"))
+            );
+            assert!(
+                matches!(&body[1].kind, StmtKind::Return(Some(e)) if matches!(&e.kind, ExprKind::Unary {argument,..} if matches!(&argument.kind, ExprKind::Cast {type_name,..} if type_name=="T*")))
+            );
+        }
+    }
+
+    #[test]
+    fn typeof_operand_identifiers_do_not_become_declared_types() {
+        let source = "int f(int x) { __typeof__(x) copy=x; return __extension__({x>0?1:-1;}); }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            assert!(
+                matches!(&body[1].kind, StmtKind::Return(Some(e)) if matches!(&e.kind, ExprKind::Statement(s) if matches!(&s.kind, StmtKind::Block(statements) if matches!(&statements[0].kind, StmtKind::Expression(Expr {kind:ExprKind::Conditional{..},..})))))
+            );
+        }
+    }
+
+    #[test]
+    fn qualified_parameter_type_problem_declarations_recover_following_methods() {
+        let source =
+            include_str!("../tests/fixtures/decbench-regressions/qualified_parameter_types.c");
+        let c = parse(source, false);
+        let cpp = parse(source, true);
+        assert!(c.diagnostics.is_empty() && cpp.diagnostics.is_empty());
+        assert_eq!(c.functions.len(), 4);
+        assert!(c.functions.iter().all(|f| f.name.starts_with("after_")));
+        assert_eq!(cpp.functions.len(), 8);
+    }
+
+    #[test]
+    fn recovered_c_assembly_tails_allow_function_shaped_initializers() {
+        let source = include_str!("../tests/fixtures/decbench-regressions/asm_tail_assignments.c");
+        let c = parse(source, false);
+        let cpp = parse(source, true);
+        assert!(c.diagnostics.is_empty() && cpp.diagnostics.is_empty());
+        for (name, parameter_count) in [("tail_identifier", 1), ("tail_zero", 0)] {
+            let method = c.functions.iter().find(|f| f.name == name).unwrap();
+            assert!(matches!(method.body.kind, StmtKind::Empty));
+            assert_eq!(method.parameters.len(), parameter_count);
+        }
+        assert!(!c.functions.iter().any(|f| f.name == "tail_number"));
+        assert!(!cpp.functions.iter().any(|f| f.name.starts_with("tail_")));
+    }
+
+    #[test]
+    fn leading_attributes_do_not_move_cdt_noreturn_recovery_to_a_new_line() {
+        let source = "__attribute__((format(printf,1,2)))\nstatic _Noreturn void problem(const char *format,...) { return; } int after(void) { return 1; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert_eq!(
+                unit.functions
+                    .iter()
+                    .map(|f| f.name.as_str())
+                    .collect::<Vec<_>>(),
+                ["after"]
+            );
+        }
+    }
+
+    #[test]
+    fn recovered_assembly_declarations_keep_separate_block_boundaries() {
+        let source =
+            include_str!("../tests/fixtures/decbench-regressions/asm_repeated_projection.c");
+        let unit = parse(source, false);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        for name in [
+            "top_first",
+            "top_second",
+            "top_third",
+            "second_inside",
+            "after_inner",
+        ] {
+            assert!(
+                unit.functions
+                    .iter()
+                    .any(|f| f.name == name && matches!(f.body.kind, StmtKind::Empty)),
+                "{name}"
+            );
+        }
+    }
+
+    #[test]
+    fn orphan_assignments_bind_global_variables_without_reusing_method_locals() {
+        let source =
+            include_str!("../tests/fixtures/decbench-regressions/asm_recovered_controls.c");
+        let unit = parse(source, false);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert!(unit.functions.iter().any(|f| f.name == "undeclared"));
+        assert!(!unit.functions.iter().any(|f| matches!(
+            f.name.as_str(),
+            "value" | "pointer" | "after_if" | "assign_if" | "after_loop" | "assign_loop"
+        )));
+    }
+
+    #[test]
+    fn template_named_return_specifiers_cannot_follow_a_primitive_type() {
+        let source = "void unknown<R1,R2> problem(int x){return;} unknown<R1,R2> named(int x){return x;} int after(void){return 0;}";
+        let c = parse(source, false);
+        let cpp = parse(source, true);
+        assert!(c.diagnostics.is_empty() && cpp.diagnostics.is_empty());
+        assert_eq!(
+            c.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["after"]
+        );
+        assert_eq!(
+            cpp.functions
+                .iter()
+                .map(|f| f.name.as_str())
+                .collect::<Vec<_>>(),
+            ["named", "after"]
+        );
+    }
+
+    #[test]
+    fn cpp_duplicate_function_bindings_follow_problem_fullname_fallback() {
+        let unit = parse(
+            "namespace N { int f(int x){return x;} int f(int x){return x;} int f(double x){return 0;} } extern \"C\" {int g(int x){return x;} int g(int x){return x;}} long h(int x){return x;} int h(int x){return x;}",
+            true,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.full_name.as_str())
+                .collect::<Vec<_>>(),
+            [
+                "N.f:int(int)",
+                "f:<unresolvedSignature>",
+                "N.f:int(double)",
+                "g",
+                "g:<unresolvedSignature>",
+                "h:long int(int)",
+                "h:int(int)"
+            ]
+        );
+    }
+
+    #[test]
+    fn cpp_method_bindings_keep_cv_overloads_and_qualified_repeated_definitions() {
+        let unit = parse(
+            "struct S {int f(int x){return x;} int f(int x){return x;} int cv(void){return 1;} int cv(void) const{return 2;} int ref(void)&{return 1;} int ref(void)&&{return 2;} int outside(int);}; int S::outside(int x){return x;} int S::outside(int x){return x;}",
+            true,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|f| f.full_name.as_str())
+                .collect::<Vec<_>>(),
+            [
+                "S.f:int(int)",
+                "f:<unresolvedSignature>",
+                "S.cv:int()",
+                "S.cv:int()",
+                "S.ref:int()",
+                "S.ref:int()",
+                "S.outside:int(int)",
+                "S.outside:int(int)"
+            ]
+        );
+        assert!(unit.functions[1].implicit_this.is_none());
+    }
+
+    #[test]
+    fn repeated_prototypes_keep_the_first_registered_declaration() {
+        let unit = parse("int f(int first); int f(int second);", false);
+        assert!(unit.diagnostics.is_empty());
+        assert_eq!(unit.functions.len(), 1);
+        assert_eq!(unit.functions[0].parameters[0].name, "first");
+    }
+
+    #[test]
+    fn retained_macro_descriptors_only_follow_executable_member_calls() {
+        let source = "#define mirror(x) env->ops->mirror(env,x)\nextern __typeof__(env->ops->mirror(env,9)) declaration; void f(void) { env->ops->mirror(env,5); }\n";
+        let unit = parse_preprocessed(source, false, true);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert_eq!(unit.retained_macro_calls.len(), 1);
+        let call = &unit.retained_macro_calls[0];
+        assert_eq!(call.name, "mirror");
+        assert_eq!(call.formal_arity, 1);
+        assert_eq!(call.parameter_count, 1);
+        assert_eq!(call.definition_span.line, 1);
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(
+            matches!(&body[0].kind,StmtKind::Expression(Expr {kind:ExprKind::Call {arguments,..},..}) if arguments.len()==2)
+        );
     }
 }
 
@@ -3242,7 +5682,7 @@ mod tests {
         );
         assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
         assert_eq!(unit.functions.len(), 2);
-        assert_eq!(unit.functions[0].full_name, "n::A::f");
+        assert_eq!(unit.functions[0].full_name, "n.A.f:int(int)");
         assert_eq!(unit.functions[1].return_type, "T");
     }
 

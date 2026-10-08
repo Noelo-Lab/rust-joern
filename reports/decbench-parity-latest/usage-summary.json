@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "manifest": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/manifest.json",
+  "available_cases": 8808,
+  "selected_cases": 8808,
+  "checked_cases": 8808,
+  "complete": true,
+  "complete_selected_scope": true,
+  "resumed_cases": 0,
+  "abort": null,
+  "run_fingerprint": "db2e7a74f84387a145efe801d1f0c27833e34d34e9d186df8108c23875d58ade",
+  "statuses": {
+    "ok": 8808
+  },
+  "metric_excluded_cases": 10,
+  "coverage": {
+    "O0/ida": 256,
+    "O0/kuna": 256,
+    "O0/source": 3763,
+    "O2/ida": 257,
+    "O2/kuna": 257,
+    "O2/source": 4019
+  },
+  "seconds": 142.49033030401915,
+  "native_library": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/librust_joern.so",
+    "sha256": "ae7bdb3584b8b36fdfd2ccb2b6e92dcfacd3acb4fc192df044effeebe71ff7b2"
+  },
+  "native_source_sha256": "e492f0dd2b4c8dba279c523a1f7c3ba289090d54e91d0e9e5a140d1bf060be53",
+  "json_decoder": {
+    "module": "orjson",
+    "version": "3.13.0",
+    "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+    "artifacts": [
+      {
+        "path": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/site/orjson/__init__.py",
+        "sha256": "7a3a05b1281b65aa5054c35387fbe5bc99305bf94b9ec7774a6cd4a6f5b148f5"
+      },
+      {
+        "path": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/site/orjson/orjson.cpython-314-x86_64-linux-gnu.so",
+        "sha256": "4bee75dab47d388fdc3a0d21facc332fe7ed44cd2ea492be27841bd62b7ce8dd"
+      }
+    ]
+  },
+  "source_build_fingerprint": "69d9a4c8b426bb8be4288ea2f8d9c98aba0a297a7e1fe0a3840e5bf666009023",
+  "snapshot_verified": true,
+  "build_provenance": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/build-provenance.json",
+  "required_candidate_options": {
+    "strict": true,
+    "data_flow": false,
+    "preprocessed": true
+  },
+  "required_python_view_proof": true,
+  "function_selection_contract": "last_fullname_filename_then_largest_name_filename_later_tie",
+  "worker_config": {
+    "workers": 8,
+    "start_method": "spawn",
+    "rayon_threads": 2,
+    "cache_disabled": true
+  },
+  "python_view_proof": {
+    "primary": {
+      "functions_checked": 4082028,
+      "blocks_checked": 6826425,
+      "Nop": 8023456,
+      "Statement": 16136409,
+      "method_ref_overrides": 985,
+      "selection_verified": 8808,
+      "extractor_verified": 8808,
+      "fullname_file_groups": 4082005,
+      "fullname_file_shadowed": 23,
+      "blacklisted": 0,
+      "empty_cfg": 0,
+      "smaller_duplicate_skipped": 12,
+      "later_tie_winner": 59,
+      "larger_winner": 4
+    },
+    "fallback": {
+      "functions_checked": 0,
+      "blocks_checked": 0,
+      "Nop": 0,
+      "Statement": 0,
+      "method_ref_overrides": 0,
+      "selection_verified": 0,
+      "extractor_verified": 0,
+      "fullname_file_groups": 0,
+      "fullname_file_shadowed": 0,
+      "blacklisted": 0,
+      "empty_cfg": 0,
+      "smaller_duplicate_skipped": 0,
+      "later_tie_winner": 0,
+      "larger_winner": 0
+    }
+  },
+  "timing_notes": "native_seconds includes C ABI/JSON decoding; preparation includes temp-file I/O/cleanup; graph_materialization excludes separate proof overhead; fallback timings are secondary; resumed case measurements are retained from their original actual extractor calls",
+  "case_records": "Per-case JSON files at <case-id>.json under this directory"
+}

@@ -39,7 +39,8 @@ class NativeCorpusTests(unittest.TestCase):
                     "input": corpus.freeze(self.source), "case_ids": ["first", "second"],
                     "references": [{"artifact": corpus.freeze(self.reference), "case_ids": ["first", "second"]}]}
         self.analysis = {"diagnostics": [{"severity": "error", "message": "unsupported executable syntax"}],
-                         "functions": [{"name": "body", "start_line": 1, "end_line": 1,
+                         "functions": [{"name": "body", "fullname": "body", "filename": "input.c",
+                             "start_line": 1, "end_line": 1,
                              "cpg": {"nodes": [{"id": 7, "kind": "METHOD_REF"}, {"id": 9, "kind": "CALL"}]},
                              "cfg": {"nodes": [
                                  {"id": 7, "statements": [7], "is_entrypoint": True, "is_exitpoint": False},

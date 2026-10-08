@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "kind": "actual_decbench_extraction_original_exporter_recovery_certification",
+  "usage_run": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/run.json",
+    "sha256": "79b95c26b7ef1973162cf47ae716a2ce8361a5fe345dea81cb1748ddce42dc9d"
+  },
+  "usage_summary": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/summary.json",
+    "sha256": "dea16b1ebd72296259531fb08d3d66b5058dd1ff6f7e9452ce794e81f80d1760"
+  },
+  "recovery_manifest": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/raw-recovery-manifest.json",
+    "sha256": "c7e310d19477f0945d0c0cdb0139d7858f09e5912c52493695ea2fe376601a57"
+  },
+  "native_library": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/librust_joern.so",
+    "sha256": "ae7bdb3584b8b36fdfd2ccb2b6e92dcfacd3acb4fc192df044effeebe71ff7b2"
+  },
+  "source_build_fingerprint": "69d9a4c8b426bb8be4288ea2f8d9c98aba0a297a7e1fe0a3840e5bf666009023",
+  "json_decoder": {
+    "module": "orjson",
+    "version": "3.13.0",
+    "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+    "artifacts": [
+      {
+        "path": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/site/orjson/__init__.py",
+        "sha256": "7a3a05b1281b65aa5054c35387fbe5bc99305bf94b9ec7774a6cd4a6f5b148f5"
+      },
+      {
+        "path": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/site/orjson/orjson.cpython-314-x86_64-linux-gnu.so",
+        "sha256": "4bee75dab47d388fdc3a0d21facc332fe7ed44cd2ea492be27841bd62b7ce8dd"
+      }
+    ]
+  },
+  "qualified_failures": 0,
+  "case_weighted_function_statuses": {
+    "match": 2609
+  },
+  "files": [
+    {
+      "case_id": "O0/nuttx/source/lib_wcwidth.i",
+      "prepared_sha256": "94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa",
+      "candidate": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O0/nuttx/source/lib_wcwidth.i.json",
+        "sha256": "0d75c58f8c81af8e9c31905e219d2479a54a3e26bc023d96c86bfe1ee661f6bb"
+      },
+      "recovered_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/nuttx.iterative.pyjoern.json",
+        "sha256": "3bea778599761eab393d989871ed55df63129393c4db57c869361b7cd995aa6c"
+      },
+      "function_statuses": {
+        "match": 841
+      },
+      "requested_options": {
+        "strict": true,
+        "data_flow": false,
+        "preprocessed": true
+      },
+      "strict_available": true,
+      "diagnostics": [],
+      "raw_cached_functions": 0,
+      "original_cached_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/references/c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.pyjoern.json",
+        "sha256": "c20a69e21ef8bbceacc0cb5f6a6a0474a476b285e96a516d90ea92cbe375ee28"
+      },
+      "divergences": []
+    },
+    {
+      "case_id": "O0/cleanflight/source/arm_common_tables.i",
+      "prepared_sha256": "060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b",
+      "candidate": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O0/cleanflight/source/arm_common_tables.i.json",
+        "sha256": "6f5afea0dff08ffe9c0c344e3111e404d9d71dcc682034b66d1b4f1b8c7cedde"
+      },
+      "recovered_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight.iterative.pyjoern.json",
+        "sha256": "acede192dd25a124f1a76ba3315c4a2bc30d9e072d4ef715416ff1709c3e8e7c"
+      },
+      "function_statuses": {
+        "match": 402
+      },
+      "requested_options": {
+        "strict": true,
+        "data_flow": false,
+        "preprocessed": true
+      },
+      "strict_available": true,
+      "diagnostics": [],
+      "raw_cached_functions": 0,
+      "original_cached_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/references/c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.pyjoern.json",
+        "sha256": "960d77a0e051f71e9018aeefca6f22d4060960c000442136afe660931a3fac92"
+      },
+      "divergences": []
+    },
+    {
+      "case_id": "O2/cleanflight/source/arm_common_tables.i",
+      "prepared_sha256": "060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b",
+      "candidate": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O2/cleanflight/source/arm_common_tables.i.json",
+        "sha256": "3f7469b92bded89515eee7c63158d69da51b0b9b45554f5c0236da4838cbfb62"
+      },
+      "recovered_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight.iterative.pyjoern.json",
+        "sha256": "acede192dd25a124f1a76ba3315c4a2bc30d9e072d4ef715416ff1709c3e8e7c"
+      },
+      "function_statuses": {
+        "match": 402
+      },
+      "requested_options": {
+        "strict": true,
+        "data_flow": false,
+        "preprocessed": true
+      },
+      "strict_available": true,
+      "diagnostics": [],
+      "raw_cached_functions": 0,
+      "original_cached_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/references/c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.pyjoern.json",
+        "sha256": "960d77a0e051f71e9018aeefca6f22d4060960c000442136afe660931a3fac92"
+      },
+      "divergences": []
+    },
+    {
+      "case_id": "O0/crazyflie/source/arm_common_tables.i",
+      "prepared_sha256": "4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b",
+      "candidate": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O0/crazyflie/source/arm_common_tables.i.json",
+        "sha256": "4318db1242ef09a00c0454cd7e2485c0cd6c61e58d8dcccf85044df19f71ce89"
+      },
+      "recovered_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie.iterative.pyjoern.json",
+        "sha256": "52dea3ac26c3ce021eddc0211fd26b92af61bb10d8c0baf2386b03c00190dfe0"
+      },
+      "function_statuses": {
+        "match": 482
+      },
+      "requested_options": {
+        "strict": true,
+        "data_flow": false,
+        "preprocessed": true
+      },
+      "strict_available": true,
+      "diagnostics": [],
+      "raw_cached_functions": 0,
+      "original_cached_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/references/c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.pyjoern.json",
+        "sha256": "73c920041696f1027a78f305b73778b3fd659b7d911f60cbcc8cb333eb562d93"
+      },
+      "divergences": []
+    },
+    {
+      "case_id": "O2/crazyflie/source/arm_common_tables.i",
+      "prepared_sha256": "4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b",
+      "candidate": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O2/crazyflie/source/arm_common_tables.i.json",
+        "sha256": "8fe133ca79de00eab4b7418235811db6fe1edc4b81af3ca25d410dd06710459c"
+      },
+      "recovered_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie.iterative.pyjoern.json",
+        "sha256": "52dea3ac26c3ce021eddc0211fd26b92af61bb10d8c0baf2386b03c00190dfe0"
+      },
+      "function_statuses": {
+        "match": 482
+      },
+      "requested_options": {
+        "strict": true,
+        "data_flow": false,
+        "preprocessed": true
+      },
+      "strict_available": true,
+      "diagnostics": [],
+      "raw_cached_functions": 0,
+      "original_cached_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/references/c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.pyjoern.json",
+        "sha256": "73c920041696f1027a78f305b73778b3fd659b7d911f60cbcc8cb333eb562d93"
+      },
+      "divergences": []
+    }
+  ],
+  "criteria": [
+    "same prepared input SHA-256",
+    "all function names",
+    "exact directed CFG isomorphism",
+    "entry and exit roles",
+    "DecBench degeneracy",
+    "strict extraction without diagnostics"
+  ],
+  "notes": [
+    "Independent comparison of actual DecBench-returned graphs to separately recovered original graphs.",
+    "Original cached references, candidate files and ordinary full-corpus comparator remain unchanged.",
+    "Only the five previously certified original exporter failures receive supplemental comparisons."
+  ]
+}

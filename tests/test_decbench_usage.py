@@ -3,6 +3,7 @@
 import hashlib
 import importlib.util
 import json
+from collections import Counter
 from pathlib import Path
 import subprocess
 import sys
@@ -35,6 +36,7 @@ class DecBenchUsageTests(unittest.TestCase):
         )
         record = json.loads((root / "output" / f"{case['id']}.json").read_text())
         summary = json.loads((root / "output/summary.json").read_text())
+        self.assertEqual(summary["json_decoder"], json.loads((root / "output/run.json").read_bytes())["json_decoder"])
         return result, record, summary
 
     def test_exact_preparation_and_timed_in_memory_graphs(self):
@@ -54,6 +56,11 @@ class DecBenchUsageTests(unittest.TestCase):
         self.assertTrue(summary["complete"])
         self.assertEqual(summary["native_library"]["sha256"], record["native_library_sha256"])
         self.assertEqual(summary["worker_config"]["start_method"], "spawn")
+        import rust_joern
+        self.assertEqual(summary["json_decoder"]["module"], rust_joern._loads.__module__)
+        self.assertTrue(summary["json_decoder"]["artifacts"])
+        for artifact in summary["json_decoder"]["artifacts"]:
+            self.assertEqual(artifact["sha256"], hashlib.sha256(Path(artifact["path"]).read_bytes()).hexdigest())
 
     def test_strict_failure_keeps_secondary_graphs_and_diagnostics(self):
         prepared = 'int f(void) { co_await work(); return 0; }\n'
@@ -100,6 +107,27 @@ class DecBenchUsageTests(unittest.TestCase):
         self.assertNotIn("shared", right)
         self.assertEqual(len(right["own"]), 3)
         self.assertTrue(all(_is_isomorphic(left[name], right[name]) for name in left))
+
+    def test_raw_view_proof_rejects_wrong_marker_class_and_role(self):
+        import rust_joern
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from check_decbench_usage import verify_graph
+
+        cfg = {"nodes": [{"id": 0, "statements": [0], "is_entrypoint": True, "is_exitpoint": False}], "edges": []}
+        nodes = [{"id": 0, "kind": "METHOD_REF", "cfg_nop": False, "code": "f", "line": 1}]
+        graph = rust_joern.Function._cfg(cfg, nodes)
+        counters = Counter()
+        verify_graph(cfg, nodes, graph, counters)
+        self.assertEqual(counters["method_ref_overrides"], 1)
+        block, = graph
+        block.is_entrypoint = False
+        with self.assertRaisesRegex(ValueError, "entry/exit"):
+            verify_graph(cfg, nodes, graph, Counter())
+        block.is_entrypoint = True
+        block.statements = (rust_joern.Nop(0, "METHOD_REF", "f", 1),)
+        with self.assertRaisesRegex(ValueError, "statement class"):
+            verify_graph(cfg, nodes, graph, Counter())
 
 
 if __name__ == "__main__":

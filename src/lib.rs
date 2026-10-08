@@ -6,7 +6,9 @@ mod normalize;
 mod parser;
 mod syntax;
 
-use graph::{Analysis, Diagnostic, Edge, FunctionGraph, Node, Options, PropertyGraph};
+use graph::{
+    Analysis, Diagnostic, Edge, ExternalReference, FunctionGraph, Node, Options, PropertyGraph,
+};
 use rayon::prelude::*;
 use std::collections::{BTreeMap, HashMap};
 use std::ffi::{CStr, CString, c_char};
@@ -25,7 +27,9 @@ pub fn analyze(source: &str, filename: &str, options: &Options) -> Result<Analys
     };
     let preprocessed = options.preprocessed
         || matches!(
-            std::path::Path::new(filename).extension().and_then(|s| s.to_str()),
+            std::path::Path::new(filename)
+                .extension()
+                .and_then(|s| s.to_str()),
             Some("i" | "ii")
         );
     let unit = parser::parse_preprocessed(source, cpp, preprocessed);
@@ -75,9 +79,50 @@ pub fn analyze(source: &str, filename: &str, options: &Options) -> Result<Analys
             .join("\n"));
     }
     let mut functions: Vec<_> = built.into_iter().map(|(f, _)| f).collect();
-    append_macro_methods(&mut functions);
-    functions.par_iter_mut().for_each(dataflow::decorate_parameters);
+    bind_lambda_captures(&unit.functions, &mut functions);
+    let global = (!unit.global_expressions.is_empty()).then(|| {
+        let function = syntax::Function {
+            name: "<global>".into(),
+            full_name: "<global>".into(),
+            return_type: "void".into(),
+            signature: "void()".into(),
+            extern_c: false,
+            implicit_this: None,
+            lambda_parent: None,
+            parameters: Vec::new(),
+            body: syntax::Stmt {
+                kind: syntax::StmtKind::Sequence(
+                    unit.global_expressions
+                        .iter()
+                        .map(|expression| syntax::Stmt {
+                            span: expression.span.clone(),
+                            kind: syntax::StmtKind::Expression(expression.clone()),
+                        })
+                        .collect(),
+                ),
+                span: syntax::Span::default(),
+            },
+            span: syntax::Span::default(),
+        };
+        builder::build(&function, source, filename, &known_functions, cpp, &methods)
+            .0
+            .cpg
+    });
+    append_macro_methods(
+        &mut functions,
+        global.as_ref(),
+        &unit.retained_macro_calls,
+        filename,
+    );
+    functions
+        .par_iter_mut()
+        .for_each(dataflow::decorate_parameters);
     if options.data_flow || options.reaching_definitions {
+        let all_internal_methods = unit
+            .functions
+            .iter()
+            .map(|function| function.full_name.clone())
+            .collect();
         let internal_methods = functions
             .iter()
             .filter(|function| {
@@ -89,9 +134,15 @@ pub fn analyze(source: &str, filename: &str, options: &Options) -> Result<Analys
             })
             .map(|function| function.fullname.clone())
             .collect();
-        functions
-            .par_iter_mut()
-            .for_each(|f| dataflow::apply_with_context(f, options.reaching_definitions, &internal_methods, cpp));
+        functions.par_iter_mut().for_each(|f| {
+            dataflow::apply_with_context(f, options.reaching_definitions, &internal_methods, cpp);
+            f.ddg_projection = Some(dataflow::project_ddg(
+                f,
+                &internal_methods,
+                &all_internal_methods,
+                cpp,
+            ));
+        });
         diagnostics.push(Diagnostic {
             filename: filename.into(),
             line: 0,
@@ -109,33 +160,81 @@ pub fn analyze(source: &str, filename: &str, options: &Options) -> Result<Analys
 
 /// Joern's base pass creates external methods for CDT's predefined macros.
 /// Their missing METHOD_RETURN line also changes PyJoern's boundary lifting.
-fn append_macro_methods(functions: &mut Vec<FunctionGraph>) {
+fn append_macro_methods(
+    functions: &mut Vec<FunctionGraph>,
+    global: Option<&PropertyGraph>,
+    retained: &[syntax::RetainedMacroCall],
+    filename: &str,
+) {
     let mut macros = BTreeMap::new();
-    for function in functions.iter() {
-        for call in function.cpg.nodes.iter().filter(|node| node.kind == "CALL") {
-            let Some(fullname) = call.method_full_name.as_deref() else {
-                continue;
-            };
-            let Some((name, arity)) = fullname
-                .strip_prefix(":-1:-1:")
-                .and_then(|identity| identity.rsplit_once(':'))
-            else {
-                continue;
-            };
-            if arity.parse::<usize>().is_err() {
-                continue;
-            }
-            let parameters = function
-                .cpg
-                .edges
+    let mut calls: Vec<_> = functions
+        .iter()
+        .map(|function| &function.cpg)
+        .chain(global)
+        .flat_map(|graph| {
+            graph
+                .nodes
                 .iter()
-                .filter(|edge| edge.kind == "ARGUMENT" && edge.source == call.id)
-                .count();
-            macros.insert(fullname.to_owned(), (name.to_owned(), parameters));
+                .filter(|node| {
+                    node.kind == "CALL"
+                        && node
+                            .method_full_name
+                            .as_deref()
+                            .is_some_and(|name| name.starts_with(":-1:-1:"))
+                })
+                .map(move |node| (node, graph))
+        })
+        .collect();
+    calls.sort_by_key(|(call, _)| call.start_byte);
+    for (call, graph) in calls {
+        let Some(fullname) = call.method_full_name.as_deref() else {
+            continue;
+        };
+        let Some((name, arity)) = fullname
+            .strip_prefix(":-1:-1:")
+            .and_then(|identity| identity.rsplit_once(':'))
+        else {
+            continue;
+        };
+        if arity.parse::<usize>().is_err() {
+            continue;
         }
+        let parameters = graph
+            .edges
+            .iter()
+            .filter(|edge| edge.kind == "ARGUMENT" && edge.source == call.id)
+            .count();
+        macros.insert(
+            fullname.to_owned(),
+            (name.to_owned(), parameters, String::new(), -1, -1),
+        );
     }
-    for (fullname, (name, parameters)) in macros {
-        if functions.iter().any(|function| function.fullname == fullname) {
+    let macro_file = std::path::Path::new(filename)
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or(filename);
+    for call in retained {
+        let start = call.definition_span.line as i64;
+        let end = call.definition_span.end_line as i64;
+        macros.insert(
+            format!(
+                "{macro_file}:{start}:{end}:{}:{}",
+                call.name, call.formal_arity
+            ),
+            (
+                call.name.clone(),
+                call.parameter_count,
+                macro_file.into(),
+                start,
+                end,
+            ),
+        );
+    }
+    for (fullname, (name, parameters, filename, start_line, end_line)) in macros {
+        if functions
+            .iter()
+            .any(|function| function.fullname == fullname)
+        {
             continue;
         }
         let mut cpg = PropertyGraph::default();
@@ -147,6 +246,7 @@ fn append_macro_methods(functions: &mut Vec<FunctionGraph>) {
                 code,
                 name,
                 method_full_name: None,
+                external_ref: None,
                 cfg_nop,
                 type_name: (kind != "METHOD").then(|| "ANY".into()),
                 line,
@@ -156,10 +256,22 @@ fn append_macro_methods(functions: &mut Vec<FunctionGraph>) {
             });
             id
         };
-        let method = node("METHOD", String::new(), Some(name.clone()), -1, Some(true));
+        let method = node(
+            "METHOD",
+            String::new(),
+            Some(name.clone()),
+            start_line,
+            Some(true),
+        );
         for index in 1..=parameters {
             let parameter = format!("p{index}");
-            node("METHOD_PARAMETER_IN", parameter.clone(), Some(parameter), 0, None);
+            node(
+                "METHOD_PARAMETER_IN",
+                parameter.clone(),
+                Some(parameter),
+                0,
+                None,
+            );
         }
         node("BLOCK", String::new(), None, 0, None);
         let ret = node("METHOD_RETURN", "RET".into(), None, 0, Some(false));
@@ -181,16 +293,122 @@ fn append_macro_methods(functions: &mut Vec<FunctionGraph>) {
         functions.push(FunctionGraph {
             name,
             fullname,
-            filename: String::new(),
+            filename,
             return_type: String::new(),
             signature: String::new(),
-            start_line: -1,
-            end_line: -1,
+            start_line,
+            end_line,
             cpg,
             cfg,
             ddg: None,
+            ddg_projection: None,
             reaching_definitions: None,
         });
+    }
+}
+
+/// CDT converts lambda bodies while the surrounding lexical scopes are still
+/// active. Its own parameter scope is already popped at that point. Retain
+/// cross-method references explicitly because node IDs are local to each CPG.
+fn bind_lambda_captures(syntax: &[syntax::Function], functions: &mut [FunctionGraph]) {
+    for (index, lambda) in syntax.iter().enumerate() {
+        if lambda.lambda_parent.is_none() {
+            continue;
+        }
+        let mut ancestors: Vec<_> = syntax
+            .iter()
+            .enumerate()
+            .filter(|(parent, function)| {
+                *parent != index
+                    && function.span.start <= lambda.span.start
+                    && function.span.end >= lambda.span.end
+                    && (function.span.start < lambda.span.start
+                        || function.span.end > lambda.span.end)
+            })
+            .collect();
+        ancestors.sort_by_key(|(_, function)| {
+            std::cmp::Reverse(function.span.end - function.span.start)
+        });
+        let mut bindings = HashMap::new();
+        for (parent_index, parent) in ancestors {
+            let graph = &functions[parent_index].cpg;
+            let Some(call) = graph
+                .nodes
+                .iter()
+                .filter(|node| {
+                    node.kind == "METHOD_REF"
+                        && node.start_byte <= lambda.span.start
+                        && node.end_byte >= lambda.span.end
+                })
+                .min_by_key(|node| node.end_byte - node.start_byte)
+            else {
+                continue;
+            };
+            let mut parents = vec![None; graph.nodes.len()];
+            for edge in &graph.edges {
+                if edge.kind == "AST" {
+                    parents[edge.target as usize] = Some(edge.source as usize);
+                }
+            }
+            let mut scopes = Vec::new();
+            let mut current = Some(call.id as usize);
+            while let Some(id) = current {
+                scopes.push(id);
+                current = parents[id];
+            }
+            for &scope in scopes.iter().rev() {
+                for node in &graph.nodes {
+                    let visible = node.kind == "METHOD_PARAMETER_IN"
+                        && parent.lambda_parent.is_none()
+                        && scope == 0
+                        || node.kind == "LOCAL"
+                            && node.start_byte <= call.start_byte
+                            && parents[node.id as usize] == Some(scope);
+                    if visible && let Some(name) = &node.name {
+                        bindings.insert(
+                            name.clone(),
+                            (
+                                ExternalReference {
+                                    method_full_name: functions[parent_index].fullname.clone(),
+                                    node: node.id,
+                                },
+                                node.type_name.clone(),
+                            ),
+                        );
+                    }
+                }
+            }
+        }
+        let graph = &mut functions[index].cpg;
+        let referenced: std::collections::HashSet<_> = graph
+            .edges
+            .iter()
+            .filter(|edge| edge.kind == "REF")
+            .map(|edge| edge.source)
+            .collect();
+        let mut changed_kind = false;
+        for node in &mut graph.nodes {
+            if !matches!(node.kind.as_str(), "IDENTIFIER" | "METHOD_REF")
+                || referenced.contains(&node.id)
+            {
+                continue;
+            }
+            if let Some((target, type_name)) =
+                node.name.as_ref().and_then(|name| bindings.get(name))
+            {
+                node.external_ref = Some(target.clone());
+                node.type_name.clone_from(type_name);
+                if node.kind == "METHOD_REF" {
+                    node.kind = "IDENTIFIER".into();
+                    node.method_full_name = None;
+                    node.cfg_nop = None;
+                    changed_kind = true;
+                }
+            }
+        }
+        if changed_kind {
+            functions[index].cfg = normalize::normalize(&functions[index].cpg);
+        }
     }
 }
 

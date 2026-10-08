@@ -3,6 +3,12 @@ use serde::{Deserialize, Serialize};
 pub type NodeId = u32;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ExternalReference {
+    pub method_full_name: String,
+    pub node: NodeId,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Node {
     pub id: NodeId,
     pub kind: String,
@@ -11,6 +17,8 @@ pub struct Node {
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub method_full_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub external_ref: Option<ExternalReference>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub cfg_nop: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -70,6 +78,8 @@ pub struct FunctionGraph {
     pub cfg: Cfg,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub ddg: Option<PropertyGraph>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ddg_projection: Option<PropertyGraph>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reaching_definitions: Option<Vec<DefinitionSet>>,
 }

@@ -1,0 +1,19 @@
+Compared 500/8808 files; CFG differences {}
+Compared 1000/8808 files; CFG differences {'extra': 402}
+Compared 1500/8808 files; CFG differences {'extra': 884}
+Compared 2000/8808 files; CFG differences {'extra': 884}
+Compared 2500/8808 files; CFG differences {'extra': 884}
+Compared 3000/8808 files; CFG differences {'extra': 884}
+Compared 3500/8808 files; CFG differences {'extra': 1725}
+Compared 4000/8808 files; CFG differences {'extra': 1725}
+Compared 4500/8808 files; CFG differences {'extra': 1725}
+Compared 5000/8808 files; CFG differences {'extra': 2127}
+Compared 5500/8808 files; CFG differences {'extra': 2127}
+Compared 6000/8808 files; CFG differences {'extra': 2609}
+Compared 6500/8808 files; CFG differences {'extra': 2609}
+Compared 7000/8808 files; CFG differences {'extra': 2609}
+Compared 7500/8808 files; CFG differences {'extra': 2609}
+Compared 8000/8808 files; CFG differences {'extra': 2609}
+Compared 8500/8808 files; CFG differences {'extra': 2609}
+Compared 8808/8808 files; CFG differences {'extra': 2609}
+{"files": 8808, "statuses": {"match": 8803, "divergent": 5}, "cfg_differences": {"extra": 2609}}

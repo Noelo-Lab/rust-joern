@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "command": [
+    "/home/mahaloz/.virtualenvs/decbench/bin/python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "environment": {
+    "PYTHONPATH": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/site:/home/mahaloz/github/rust-joern/python:/home/mahaloz/github/rust-joern/scripts",
+    "RUST_JOERN_LIBRARY": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/librust_joern.so",
+    "RAYON_NUM_THREADS": "2"
+  },
+  "exit_code": 0,
+  "wall_seconds": 2.490245229913853,
+  "test_count": 84,
+  "runtime_artifacts": {
+    "/home/mahaloz/github/rust-joern/python/rust_joern/__init__.py": "66fda7d3b6f75faac0c4305deeae4c7e513da76baa69081c5d9064054dafcc7a",
+    "/home/mahaloz/github/rust-joern/pyproject.toml": "a46eb44d0917836e3037d51f23b6efe8951cb0d6feacf31d5b0e8668c1cd1982",
+    "/home/mahaloz/github/rust-joern/scripts/check_decbench_usage.py": "91734deb83f601daf2f3d6a2ea411268acb770aba90ceb2213e66eeda6e01035",
+    "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/librust_joern.so": "ae7bdb3584b8b36fdfd2ccb2b6e92dcfacd3acb4fc192df044effeebe71ff7b2"
+  },
+  "decoder": {
+    "module": "orjson",
+    "version": "3.13.0",
+    "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+    "artifacts": [
+      {
+        "path": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/site/orjson/__init__.py",
+        "sha256": "7a3a05b1281b65aa5054c35387fbe5bc99305bf94b9ec7774a6cd4a6f5b148f5"
+      },
+      {
+        "path": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/site/orjson/orjson.cpython-314-x86_64-linux-gnu.so",
+        "sha256": "4bee75dab47d388fdc3a0d21facc332fe7ed44cd2ea492be27841bd62b7ce8dd"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/round08-validation/python-tests.log",
+      "sha256": "dd8c4ddb38ce2bb978475a14f42710bc9513fe63d1ca82239765336656f37827"
+    },
+    {
+      "path": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/round08-validation/forced-fallback.json",
+      "sha256": "2d68fbfe2ac454adec7b6514c258f0102ef94cb93ae3f3fd4e68f0c8292d923c"
+    }
+  ]
+}

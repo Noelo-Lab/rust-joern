@@ -38,8 +38,9 @@ from DDG/CPG parity.
 
 ## Python API
 
-Build the library above, then install the thin wrapper (`pip install -e .`) or use
-`PYTHONPATH=python`. It requires NetworkX for the graph view; the Rust core does not.
+Build the library above, then install the thin wrapper (`pip install -e .`).
+NetworkX supplies graph views and orjson decodes native results. Direct
+`PYTHONPATH=python` usage also works with NetworkX alone, using standard JSON.
 
 ```python
 from rust_joern import parse_code, parse_source
@@ -56,6 +57,7 @@ cfg = functions["f"].cfg
 flow = parse_code("int f(int x) { int y=x; return y; }",
                   data_flow=True, reaching_definitions=True)
 ddg = flow.functions[0].ddg
+displayed_ddg = flow.functions[0].ddg_projection
 sets = flow.functions[0].reaching_definitions
 ```
 
@@ -111,43 +113,46 @@ decompiler output. The oracle runs in an isolated subprocess with the replacemen
 import path removed. See `scripts/compare_pyjoern.py --help`. Frozen references
 can be written with `--save-reference-dir PATH` for later comparisons.
 
-The reference fixtures were generated with PyJoern 4.0.150.4 and Joern 4.0.150.
-The focused comparison matches all 48 reference graphs; the two original DecBench
-source inputs match all 65 graphs (six function bodies and 59 declarations).
-The IDA `bzip2recover` decompilation from the same DecBench run also matches all
-13 function graphs after DecBench's original preparation. The local combined
-report is `workspace/first-version-comparison.json`: 126 matches, no divergences,
-and no candidate diagnostics. These are bounded smoke checks, not a claim of
-parity on the entire dataset. DDG/CPG output is available, but its full parity
-with Joern has not been established.
+Frozen fixtures come from unchanged PyJoern 4.0.150.4 and Joern 4.0.150.
 Actual DecBench input provenance and upstream fixture licenses are retained in
-`tests/fixtures/decbench`. These initial fixtures do not establish corpus parity.
+`tests/fixtures/decbench`. Additional original snapshots cover C/C++ declarations,
+parser recovery, expressions, function references, CFG projection and selection.
 
 ## O0/O2 corpus audit
 
-The [initial audit](reports/decbench-parity/README.md) records the original native
-snapshot before the conversion fixes, covering all 8,808 files:
-1,447 fully match, 1,405 extract successfully but diverge, and 5,956 fail strict
-extraction. All references are available and every graph comparison completed.
-The port does not yet have corpus parity. Eleven reduced failures retain original
-snapshots and now pass strict tests; no divergence is waived.
+The [latest audit](reports/decbench-parity-latest/README.md) records the final
+frozen build against `full_run_address_2026-09-11`: all **8,808 inputs**
+(6,377 unique prepared inputs), including O0/O2 source, IDA and Kuna output.
+The raw cache comparison has **8,803 exact matches**, zero strict extraction
+failures, zero missing functions and zero differing CFGs. The remaining five
+cases have empty original references; isolated original Joern recaptures on
+these exact inputs reproduce recursive DOT exporter stack overflows.
+Separately recovered original graphs match all 2,609 function occurrences in
+those five cases, giving **8,808/8,808 CFG matches**.
 
-A subsequent frozen build compared all 8,808 cases (6,377 unique prepared inputs)
-in 95.79 seconds: 6,616 complete matches, 1,375 divergent files, and 817 strict
-failures. Its function differences are 4,585 missing, 2,649 extra, and 976
-divergent, down from 115,636 differences in the initial audit. Generation timings
-and complete mismatch graphs are retained in
-`workspace/parity-rounds/round-03/direct`. This direct C ABI round measures native
-analysis/serialization plus Python JSON decoding; it excludes DecBench preparation
-and graph object materialization. Eight workers each use two Rayon threads.
-Successful unique-input native calls have median 51.27 ms and p95 144.00 ms.
+Recovery changes only traversal of existing original CFG edges; it preserves
+original parsing, graph construction, DOT labels and PyJoern normalization.
+It was checked against 892 byte-identical original DOT exports. Original cached
+references and raw differences remain unchanged. The certificate is separate
+and applies only to the five proven exporter failures.
 
-Generation took 296.17 seconds with eight workers, including strict attempts,
-permissive retries, preparation and result writing. Every file has measured CFG
-analysis and end-to-end times in [the CSV](reports/decbench-parity/files.csv).
-The [summary](reports/decbench-parity/summary.json) separates failed attempts,
-successful extractions, matching files and permissive retries. The source-owner
-audit also covers all 513 published binaries and 60,704 named functions.
+The direct native audit completed in **101.14 seconds** with eight workers and
+two Rayon threads per worker. It measures native analysis/serialization plus
+standard Python JSON decoding and comparison, excluding DecBench preparation
+and graph materialization. The actual DecBench extraction audit completed in
+**142.49 seconds**, including preparation, graph construction and audit checks.
+Its native call median/p95 is **51.60/141.98 ms**, and its complete extraction
+median/p95 is **87.26/250.35 ms**. Per-file CFG timings and source
+ownership results are linked from the latest report.
+
+The actual Python/DecBench path also matches all inputs. Real DWARF ownership
+checks cover **513 binaries and 60,704 named functions**: all **57,499 available
+original source bodies** match, with zero selected-TU differences. The same
+3,205 names have no source body on either side. Older published per-binary JSON
+has separate snapshot/selection differences, retained in the audit evidence.
+
+The [initial audit](reports/decbench-parity/README.md) retains the earlier build
+and its failures for comparison. Its numbers describe that historical snapshot.
 
 The full audit inventories every compiled `.i`/`.ii` and IDA/Kuna `.c` input in
 the canonical results tree. Source references are loaded from the original
@@ -178,20 +183,29 @@ The historical source cache has no CFG-generation timing, so that field remains
 null. Fresh reference timings include original PyJoern JVM startup and lifting.
 Checks return a nonzero status when differences are recorded.
 
-The report includes `summary.json`, per-file `files.csv`, and compressed JSONL
-records for every function and divergence. Degenerate graphs are counted
-separately from nondegenerate functions. Reduced known failures and their exact
-original snapshots are under `tests/fixtures/decbench-regressions`; all eleven
-reduced cases now pass strict comparison. No divergence is waived by the corpus
-comparator.
+The report includes raw and recovered-reference summaries, per-file `files.csv`,
+compressed function comparisons, binary ownership records, timings, build
+fingerprints and artifact hashes. Degenerate graphs are counted separately.
+No ordinary corpus comparison tolerates a divergence.
 
 ## Focused checks
 
 ```sh
 cargo test
 cargo clippy --all-targets -- -D warnings
-PYTHONPATH=python /home/mahaloz/.virtualenvs/decbench/bin/python tests/test_python.py -v
+PYTHONPATH=python:workspace/decbench-parity/tools /home/mahaloz/.virtualenvs/decbench/bin/python -m unittest discover -s tests -p 'test_*.py' -v
 ```
+
+The Rust suite includes comparisons against all 60 original data-flow fixture
+methods: CFG/reference edges, raw DDG, displayed DDG and reaching-definition
+sets. These establish the supported intraprocedural behavior; the full DecBench
+corpus audit establishes CFG parity. The corpus does not exercise or certify the
+entire Joern CPG schema or interprocedural data flow.
+
+The final check has 132 passing Rust tests and 84 passing Python tests;
+formatting and Clippy pass. C/C++ JSON and CFG/DDG/CPG DOT exports are checked.
+The runtime consists of nine Rust files and the thin Python wrapper. The
+rewrite removes 2,209 old files; the old frontends and JVM build are unnecessary.
 
 The original Joern checkout is retained in git history at
 `82456558d52ea127e005a74391ca06e3f16b17a6`; the conversion reference for this session

@@ -29,7 +29,7 @@ class CfgViewTests(unittest.TestCase):
             with self.subTest(cfg=cfg), self.assertRaises(ValueError):
                 roundtrip(cfg)
 
-    def test_cached_analysis_replays_exact_selection_and_markers_through_extractor(self):
+    def test_cached_analysis_replays_export_order_and_markers_through_extractor(self):
         import rust_joern
         from decbench.publish.cfg_export import relabel_cfg
         from decbench.utils.cfg import extract_cfgs_from_source
@@ -40,18 +40,22 @@ class CfgViewTests(unittest.TestCase):
         shim = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(shim)
 
-        def function(name, markers):
+        def function(name, markers, fullname=None, filename="replay.c"):
             nodes = [{"id": i, "kind": "METHOD_REF", "cfg_nop": marker, "code": name, "line": 1}
                      for i, marker in enumerate(markers)]
-            return {"name": name, "fullname": name, "filename": "replay.c", "signature": name,
+            return {"name": name, "fullname": fullname or name, "filename": filename, "signature": name,
                     "return_type": "int", "start_line": 1, "end_line": 1, "cpg": {"nodes": nodes, "edges": []},
                     "cfg": {"nodes": [{"id": i, "statements": [i], "is_entrypoint": True,
                                        "is_exitpoint": i == len(nodes) - 1} for i in range(len(nodes))],
                             "edges": [[i, i + 1] for i in range(len(nodes) - 1)]}}
 
         analysis = {"schema_version": 1, "diagnostics": [], "functions": [
-            function("largest", [True]), function("largest", [True, False]), function("largest", [False]),
-            function("tie", [True]), function("tie", [False]),
+            function("last", [True]), function("last", [True, False]), function("last", [False]),
+            function("largest", [True, False], "largest:int(int)"),
+            function("largest", [False], "largest:int(int,int)"),
+            function("tie", [True], "tie:int(int)"), function("tie", [False], "tie:int(long)"),
+            function("tie", [True], "tie:int(int)"),
+            function("synthetic_macro", [False], filename=""),
             function("", [True]), function("JUMPOUT_stub", [False]), function("empty_cfg", []),
         ]}
         expected = candidate_functions(analysis)
@@ -65,11 +69,14 @@ class CfgViewTests(unittest.TestCase):
         self.assertTrue(replay.call_args.kwargs["strict"])
         self.assertTrue(replay.call_args.kwargs["preprocessed"])
         self.assertFalse(replay.call_args.kwargs["data_flow"])
-        self.assertEqual(set(graphs), {"largest", "tie"})
+        self.assertEqual(set(graphs), {"last", "largest", "tie", "synthetic_macro"})
+        self.assertEqual(len(graphs["last"]), 1)
         self.assertEqual(len(graphs["largest"]), 2)
-        statement, = next(iter(graphs["tie"])).statements
+        statement, = next(iter(graphs["last"])).statements
         self.assertEqual(type(statement).__name__, "Statement")
         self.assertEqual(statement.kind, "METHOD_REF")
+        statement, = next(iter(graphs["tie"])).statements
+        self.assertEqual(type(statement).__name__, "Nop")
         actual = {}
         for name, graph in graphs.items():
             nodes, edges, _, entry, exit_, degenerate = relabel_cfg(graph)

@@ -245,15 +245,7 @@ pub fn apply_with_context(
         match edge.kind.as_str() {
             "AST" => graph.ast[a].push(b),
             "ARGUMENT" => {
-                let position = edge
-                    .label
-                    .as_deref()
-                    .and_then(|s| s.parse().ok())
-                    .unwrap_or(graph.args[a].len() as i32 + 1);
-                graph.args[a].push((position, b));
-                if call(&nodes[a]) {
-                    graph.parent_call[b] = Some((a, position));
-                }
+                graph.add_argument(a, b, edge);
             }
             "CFG" => {
                 cfg_next[a].push(b);
@@ -539,6 +531,202 @@ pub fn apply_with_context(
     function.cpg.edges.extend(edges);
 }
 
+/// Joern's displayed DDG is a projection of REACHING_DEF: hidden arguments
+/// are bypassed, expression arguments are grouped under their surrounding
+/// call, and member-access calls are omitted. Keep the raw DDG separately.
+/// `all_internal_methods` includes declared prototypes and empty definitions;
+/// EdgeValidator instead uses only the non-stub subset.
+pub fn project_ddg(
+    function: &FunctionGraph,
+    internal_nonstub_methods: &HashSet<String>,
+    all_internal_methods: &HashSet<String>,
+    cpp: bool,
+) -> PropertyGraph {
+    let nodes = &function.cpg.nodes;
+    let index: HashMap<_, _> = nodes.iter().enumerate().map(|(i, n)| (n.id, i)).collect();
+    let Some(entry) = nodes.iter().position(|n| n.kind == "METHOD") else {
+        return PropertyGraph::default();
+    };
+    let mut graph = Graph {
+        nodes,
+        internal_methods: internal_nonstub_methods,
+        cpp,
+        ast: vec![Vec::new(); nodes.len()],
+        args: vec![Vec::new(); nodes.len()],
+        parent_call: vec![None; nodes.len()],
+    };
+    let mut incoming = vec![Vec::new(); nodes.len()];
+    for edge in &function.cpg.edges {
+        let (Some(&a), Some(&b)) = (index.get(&edge.source), index.get(&edge.target)) else {
+            continue;
+        };
+        match edge.kind.as_str() {
+            "AST" => graph.ast[a].push(b),
+            "ARGUMENT" => graph.add_argument(a, b, edge),
+            "REACHING_DEF" => incoming[b].push((a, edge.label.clone().unwrap_or_default())),
+            _ => {}
+        }
+    }
+    // ContainsEdgePass visits the AST breadth-first, stopping at nested scope
+    // roots. Parameters and method returns are not CONTAINS destinations.
+    let mut visible = vec![entry];
+    visible.extend(nodes.iter().position(|n| n.kind == "METHOD_RETURN"));
+    visible.extend(
+        nodes
+            .iter()
+            .enumerate()
+            .filter(|(_, n)| input(n))
+            .map(|(i, _)| i),
+    );
+    let mut queue = VecDeque::from([entry]);
+    while let Some(parent) = queue.pop_front() {
+        for &child in &graph.ast[parent] {
+            let node = &nodes[child];
+            if (expression(node) || matches!(node.kind.as_str(), "RETURN" | "METHOD"))
+                && !matches!(node.kind.as_str(), "CONTROL_STRUCTURE" | "JUMP_TARGET")
+            {
+                visible.push(child);
+            }
+            if !matches!(node.kind.as_str(), "METHOD" | "TYPE_DECL" | "FILE") {
+                queue.push_back(child);
+            }
+        }
+    }
+    let mut projection = DdgProjection {
+        graph: &graph,
+        all_internal_methods,
+        incoming,
+        cache: vec![None; nodes.len()],
+        visited: vec![false; nodes.len()],
+    };
+    let mut edges = Vec::new();
+    let mut referenced = HashSet::new();
+    for &target in &visible {
+        for (source, label) in projection.expand(target) {
+            referenced.extend([source, target]);
+            let (source, target) = (
+                graph.surrounding_call(source),
+                graph.surrounding_call(target),
+            );
+            if source != target
+                && !(call(&nodes[source]) && member(name(&nodes[source])))
+                && !(call(&nodes[target]) && member(name(&nodes[target])))
+            {
+                edges.push(Edge {
+                    source: nodes[source].id,
+                    target: nodes[target].id,
+                    kind: "DDG".into(),
+                    label: (!label.is_empty()).then_some(label),
+                });
+            }
+        }
+    }
+    let mut seen = HashSet::new();
+    let nodes = visible
+        .into_iter()
+        .filter(|i| referenced.contains(i))
+        .map(|i| graph.surrounding_call(i))
+        .filter(|&i| !(call(&nodes[i]) && member(name(&nodes[i]))))
+        .filter(|&i| seen.insert(i))
+        .map(|i| nodes[i].clone())
+        .collect();
+    let mut seen = HashSet::new();
+    edges.retain(|e| seen.insert(e.clone()));
+    PropertyGraph { nodes, edges }
+}
+
+struct DdgProjection<'g, 'n> {
+    graph: &'g Graph<'n>,
+    all_internal_methods: &'g HashSet<String>,
+    incoming: Vec<Vec<(usize, String)>>,
+    cache: Vec<Option<Vec<(usize, String)>>>,
+    visited: Vec<bool>,
+}
+
+struct ProjectionFrame {
+    target: usize,
+    result: Vec<(usize, String)>,
+    invisible: VecDeque<usize>,
+}
+
+impl DdgProjection<'_, '_> {
+    fn expand(&mut self, target: usize) -> Vec<(usize, String)> {
+        if let Some(result) = &self.cache[target] {
+            return result.clone();
+        }
+        self.visited[target] = true;
+        let mut stack = vec![self.frame(target)];
+        while let Some(frame) = stack.last_mut() {
+            if let Some(source) = frame.invisible.pop_front() {
+                if let Some(result) = &self.cache[source] {
+                    frame.result.extend(result.iter().cloned());
+                } else if !self.visited[source] {
+                    self.visited[source] = true;
+                    stack.push(self.frame(source));
+                }
+            } else {
+                let mut frame = stack.pop().unwrap();
+                let mut seen = HashSet::new();
+                frame.result.retain(|e| seen.insert(e.clone()));
+                self.visited[frame.target] = false;
+                if let Some(parent) = stack.last_mut() {
+                    parent.result.extend(frame.result.iter().cloned());
+                }
+                self.cache[frame.target] = Some(frame.result);
+            }
+        }
+        self.cache[target].as_ref().unwrap().clone()
+    }
+
+    fn frame(&self, target: usize) -> ProjectionFrame {
+        let mut result = Vec::new();
+        let mut invisible = VecDeque::new();
+        for (source, label) in &self.incoming[target] {
+            let source = *source;
+            if self.graph.nodes[source].kind == "METHOD" {
+                result.push((source, label.clone()));
+            } else if source != target && self.graph.valid_edge(source, target) {
+                let g = self.graph;
+                let visible = if expression(&g.nodes[source]) && expression(&g.nodes[target]) {
+                    if g.parent_call[source].map(|(p, _)| p)
+                        == g.parent_call[target].map(|(p, _)| p)
+                    {
+                        let semantic_exists =
+                            g.parent_call[source].is_some_and(|(p, _)| g.semantic(p).is_some());
+                        let internal = g.parent_call[source].is_some_and(|(p, _)| {
+                            g.nodes[p]
+                                .method_full_name
+                                .as_deref()
+                                .or_else(|| (!g.cpp).then(|| name(&g.nodes[p])))
+                                .is_some_and(|n| self.all_internal_methods.contains(n))
+                        });
+                        semantic_exists && g.defined(source) || !internal
+                    } else {
+                        g.defined(source)
+                    }
+                } else {
+                    true
+                };
+                if visible
+                    && !matches!(
+                        g.nodes[source].kind.as_str(),
+                        "CONTROL_STRUCTURE" | "JUMP_TARGET"
+                    )
+                {
+                    result.push((source, label.clone()));
+                } else {
+                    invisible.push_back(source);
+                }
+            }
+        }
+        ProjectionFrame {
+            target,
+            result,
+            invisible,
+        }
+    }
+}
+
 fn reverse_postorder(entry: usize, next: &[Vec<usize>]) -> Vec<usize> {
     let mut seen = vec![false; next.len()];
     let mut result = Vec::new();
@@ -569,6 +757,24 @@ struct Graph<'a> {
     parent_call: Vec<Option<(usize, i32)>>,
 }
 impl Graph<'_> {
+    fn add_argument(&mut self, source: usize, target: usize, edge: &Edge) {
+        let position = edge
+            .label
+            .as_deref()
+            .and_then(|s| s.parse().ok())
+            .unwrap_or(self.args[source].len() as i32 + 1);
+        self.args[source].push((position, target));
+        if call(&self.nodes[source]) {
+            self.parent_call[target] = Some((source, position));
+        }
+    }
+    fn surrounding_call(&self, at: usize) -> usize {
+        if expression(&self.nodes[at]) {
+            self.parent_call[at].map(|(p, _)| p).unwrap_or(at)
+        } else {
+            at
+        }
+    }
     fn semantic(&self, at: usize) -> Option<Semantic> {
         let node = &self.nodes[at];
         match node.method_full_name.as_deref() {
@@ -1026,6 +1232,246 @@ mod tests {
     struct Oracle {
         methods: Vec<FunctionGraph>,
         internal_methods: HashMap<String, HashSet<String>>,
+    }
+
+    #[derive(serde::Deserialize)]
+    struct ProjectionOracle {
+        methods: Vec<ProjectionMethod>,
+        all_internal_methods: HashMap<String, HashSet<String>>,
+    }
+
+    #[derive(serde::Deserialize)]
+    struct ProjectionMethod {
+        filename: String,
+        fullname: String,
+        nodes: Vec<u32>,
+        edges: Vec<Edge>,
+    }
+
+    fn projection_oracles() -> (Oracle, ProjectionOracle) {
+        let mut oracle: Oracle = serde_json::from_str(include_str!(
+            "../tests/fixtures/dataflow/joern-4.0.150.json"
+        ))
+        .unwrap();
+        let builtins: Oracle = serde_json::from_str(include_str!(
+            "../tests/fixtures/dataflow/joern-4.0.150-builtins.json"
+        ))
+        .unwrap();
+        oracle.methods.extend(builtins.methods);
+        oracle.internal_methods.extend(builtins.internal_methods);
+        let projection = serde_json::from_str(include_str!(
+            "../tests/fixtures/dataflow/joern-4.0.150-ddg-projection.json"
+        ))
+        .unwrap();
+        (oracle, projection)
+    }
+
+    fn assert_projection(
+        actual: &FunctionGraph,
+        projected: &PropertyGraph,
+        expected: &FunctionGraph,
+        reference: &ProjectionMethod,
+    ) {
+        let (actual_keys, expected_keys) = (ast_keys(actual), ast_keys(expected));
+        let nodes: BTreeSet<_> = projected
+            .nodes
+            .iter()
+            .map(|n| &actual_keys[&n.id])
+            .collect();
+        let reference_nodes: BTreeSet<_> = reference
+            .nodes
+            .iter()
+            .map(|id| &expected_keys[id])
+            .collect();
+        assert_eq!(
+            nodes, reference_nodes,
+            "displayed DDG nodes {}",
+            expected.fullname
+        );
+        let edges = |edges: &[Edge], keys: &HashMap<u32, String>| -> BTreeSet<_> {
+            edges
+                .iter()
+                .map(|e| {
+                    (
+                        keys[&e.source].clone(),
+                        keys[&e.target].clone(),
+                        e.label.clone().unwrap_or_default(),
+                    )
+                })
+                .collect()
+        };
+        assert_eq!(
+            edges(&projected.edges, &actual_keys),
+            edges(&reference.edges, &expected_keys),
+            "displayed DDG edges {}",
+            expected.fullname,
+        );
+        assert!(projected.edges.iter().all(|e| e.kind == "DDG"));
+    }
+
+    #[test]
+    fn original_joern_displayed_ddg_matches_by_expression_role() {
+        let (oracle, projection) = projection_oracles();
+        assert_eq!(projection.methods.len(), 60);
+        for reference in &projection.methods {
+            let expected = oracle
+                .methods
+                .iter()
+                .find(|f| f.filename == reference.filename && f.fullname == reference.fullname)
+                .unwrap();
+            let mut actual = expected.clone();
+            let ids: HashMap<_, _> = actual
+                .cpg
+                .nodes
+                .iter()
+                .enumerate()
+                .map(|(i, n)| (n.id, 99_001 + i as u32 * 11))
+                .collect();
+            for node in &mut actual.cpg.nodes {
+                node.id = ids[&node.id];
+            }
+            for edge in &mut actual.cpg.edges {
+                edge.source = ids[&edge.source];
+                edge.target = ids[&edge.target];
+            }
+            let projected = project_ddg(
+                &actual,
+                &oracle.internal_methods[&reference.filename],
+                &projection.all_internal_methods[&reference.filename],
+                reference.filename.ends_with(".cpp"),
+            );
+            assert_projection(&actual, &projected, expected, reference);
+        }
+    }
+
+    #[test]
+    fn native_frontend_displayed_ddg_matches_original_c_and_cpp() {
+        let (oracle, projection) = projection_oracles();
+        let mut count = 0;
+        for (filename, source) in [
+            ("flow.c", include_str!("../tests/fixtures/dataflow/flow.c")),
+            (
+                "semantics.c",
+                include_str!("../tests/fixtures/dataflow/semantics.c"),
+            ),
+            (
+                "extra.cpp",
+                include_str!("../tests/fixtures/dataflow/extra.cpp"),
+            ),
+            (
+                "builtins.c",
+                include_str!("../tests/fixtures/dataflow/builtins.c"),
+            ),
+        ] {
+            let analysis = crate::analyze(
+                source,
+                filename,
+                &crate::graph::Options {
+                    data_flow: true,
+                    reaching_definitions: true,
+                    ..Default::default()
+                },
+            )
+            .unwrap();
+            for reference in projection.methods.iter().filter(|f| {
+                f.filename == filename || filename == "builtins.c" && f.filename.is_empty()
+            }) {
+                let expected = oracle
+                    .methods
+                    .iter()
+                    .find(|f| f.filename == reference.filename && f.fullname == reference.fullname)
+                    .unwrap();
+                let actual = analysis
+                    .functions
+                    .iter()
+                    .find(|f| f.fullname == expected.fullname)
+                    .unwrap_or_else(|| panic!("missing {}", expected.fullname));
+                assert_native_dataflow(actual, expected);
+                assert_projection(
+                    actual,
+                    actual.ddg_projection.as_ref().expect("DDG projection"),
+                    expected,
+                    reference,
+                );
+                if let Some((parent_name, _)) = actual.fullname.rsplit_once(".<lambda>") {
+                    let parent = analysis
+                        .functions
+                        .iter()
+                        .find(|f| f.fullname == parent_name)
+                        .unwrap();
+                    let (actual_keys, expected_keys) = (ast_keys(actual), ast_keys(expected));
+                    for expected_node in
+                        expected.cpg.nodes.iter().filter(|n| n.kind == "IDENTIFIER")
+                    {
+                        let node = actual
+                            .cpg
+                            .nodes
+                            .iter()
+                            .find(|n| actual_keys[&n.id] == expected_keys[&expected_node.id])
+                            .unwrap();
+                        assert_eq!(
+                            node.type_name, expected_node.type_name,
+                            "lambda {}",
+                            node.code
+                        );
+                        if name(node) == "x" {
+                            let target = node.external_ref.as_ref().expect("captured x provenance");
+                            assert_eq!(target.method_full_name, parent.fullname);
+                            let binding = parent
+                                .cpg
+                                .nodes
+                                .iter()
+                                .find(|n| n.id == target.node)
+                                .unwrap();
+                            assert!(input(binding));
+                            assert_eq!(name(binding), "x");
+                        } else if name(node) == "y" {
+                            assert!(
+                                node.external_ref.is_none(),
+                                "original lambda parameter scope is popped before its body"
+                            );
+                        }
+                    }
+                }
+                count += 1;
+            }
+        }
+        assert_eq!(count, 60);
+    }
+
+    #[test]
+    fn displayed_ddg_hidden_loop_paths_fit_a_small_worker_stack() {
+        let source = format!(
+            "int f(int x) {{ x+2; while(x) {{ {} }} return x; }}",
+            "x+1;".repeat(512)
+        );
+        let function = crate::analyze(
+            &source,
+            "hidden-loop.c",
+            &crate::graph::Options {
+                data_flow: true,
+                ..Default::default()
+            },
+        )
+        .unwrap()
+        .functions
+        .remove(0);
+        // A loop back edge creates a hidden chain through the read-only `x`
+        // arguments. Re-expanding it must not use one Rust stack frame per read.
+        let projected = std::thread::Builder::new()
+            .stack_size(128 * 1024)
+            .spawn(move || project_ddg(&function, &HashSet::new(), &HashSet::new(), false))
+            .unwrap()
+            .join()
+            .unwrap();
+        assert_eq!(projected.nodes.iter().filter(|n| call(n)).count(), 513);
+        assert!(
+            projected
+                .edges
+                .iter()
+                .any(|e| e.label.as_deref() == Some("x"))
+        );
+        assert!(projected.edges.iter().all(|e| e.kind == "DDG"));
     }
 
     // IDs vary across Joern and Rust, so compare expression/operator/argument
@@ -1501,6 +1947,7 @@ mod tests {
             code: code.into(),
             name: (!symbol.is_empty()).then(|| symbol.into()),
             method_full_name: None,
+            external_ref: None,
             cfg_nop: None,
             type_name: None,
             line: 1,
@@ -1575,6 +2022,7 @@ mod tests {
             cpg: graph,
             cfg: Cfg::default(),
             ddg: None,
+            ddg_projection: None,
             reaching_definitions: None,
         }
     }

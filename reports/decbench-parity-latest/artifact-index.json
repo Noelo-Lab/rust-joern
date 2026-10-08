@@ -1,0 +1,916 @@
+[
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/build-provenance.json",
+    "original_sha256": "5ab9cc64e6470b2a2716497ef1fc0d71819e4c67e7cd80e8d264742d54757f0e",
+    "bytes": 1164,
+    "bundled": "build-provenance.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/root-artifact-verification.json",
+    "original_sha256": "70d4d8d396a98ad72a201445e04c3d95e82076673a6e9e88cf492667a761a821",
+    "bytes": 1708,
+    "bundled": "root-artifact-verification.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/direct/summary.json",
+    "original_sha256": "9764642792d1e7819ef02b0cbe0b36c0b4c7e5f98cfb6412b14cbb43ec676471",
+    "bytes": 6478,
+    "bundled": "direct-summary.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/direct/run.json",
+    "original_sha256": "5aee3b2dbf58ea96fd7249d776c66369720aeebc94d907c815420f4773a699e6",
+    "bytes": 2930988,
+    "bundled": "direct-run.json.gz",
+    "encoding": "gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/direct/cases.jsonl.gz",
+    "original_sha256": "f97f19f1db1a89f65f81ea08684527c57fc71be5cda3b1efb786d75bde7aa76f",
+    "bytes": 1491302,
+    "bundled": "direct-cases.jsonl.gz",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/direct/failures.jsonl.gz",
+    "original_sha256": "8b552a3ae1b59edb3caeb3b651c074330f8f1c82dd51b2275fec7a507aa58210",
+    "bytes": 15099,
+    "bundled": "direct-failures.jsonl.gz",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/summary.json",
+    "original_sha256": "dea16b1ebd72296259531fb08d3d66b5058dd1ff6f7e9452ce794e81f80d1760",
+    "bytes": 3406,
+    "bundled": "usage-summary.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/run.json",
+    "original_sha256": "79b95c26b7ef1973162cf47ae716a2ce8361a5fe345dea81cb1748ddce42dc9d",
+    "bytes": 4591166,
+    "bundled": "usage-run.json.gz",
+    "encoding": "gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/actual-comparison/summary.json",
+    "original_sha256": "19e55c105472ec3f2ef3d2c6fa480eb2e689cc749addca927975096a8fb89105",
+    "bytes": 50622,
+    "bundled": "actual-summary.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/actual-comparison/files.csv",
+    "original_sha256": "25afeea27118560324ef9240bf639875f2a0464a995a76a6c47bd66f3cf6361e",
+    "bytes": 2785130,
+    "bundled": "files.csv",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/actual-comparison/files.jsonl.gz",
+    "original_sha256": "cf72b1e6fd9345c4794ee1df87afdc5d68c7f2b423abdbc3fc4903ca0d5e9144",
+    "bytes": 2020633,
+    "bundled": "files.jsonl.gz",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/actual-comparison/divergences.jsonl.gz",
+    "original_sha256": "3c7ca0b71564c034d46add859c421edee8786b4c4fa7bd3995d1123b6148f21d",
+    "bytes": 23768,
+    "bundled": "raw-divergences.jsonl.gz",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/ownership.json",
+    "original_sha256": "be120ee55b73d9d4ef4763b561c0a54467e583bb431a85b9ac58c26d92e449c1",
+    "bytes": 54298201,
+    "bundled": "ownership.json.gz",
+    "encoding": "gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/recovery-certification.json",
+    "original_sha256": "c7014da31196b3915bf8d04293d702ecdb563b7256042a5b6ca68cff90c27b23",
+    "bytes": 24563,
+    "bundled": "recovery-certification.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/actual-recovery-certification.json",
+    "original_sha256": "4c9e6e8c3a2c8af2589790730bb3edbc50d97aa4e02cc86e7ce8a23d1f9d736b",
+    "bytes": 8519,
+    "bundled": "actual-recovery-certification.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/rust-tests.log",
+    "original_sha256": "e48dd676f52ae7f1146fdf7521b9d85b15ba0077271c5632ef5362af894de978",
+    "bytes": 12701,
+    "bundled": "rust-tests.log",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/clippy.log",
+    "original_sha256": "6d9a1a5a52f40f0b145aa67a057285b7717f2050ec7093a4b63724e7bfabd396",
+    "bytes": 176,
+    "bundled": "clippy.log",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/root-release-build.log",
+    "original_sha256": "a3ee66feab500b145a7117ec7868cdb544454aa1d337791c10ad105d3d2d4f06",
+    "bytes": 128,
+    "bundled": "release-build.log",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage.log",
+    "original_sha256": "d90e9301a67cb63bc62e2a96b62d8823793ff62fd0ce48dbb20301a184c411ef",
+    "bytes": 4686,
+    "bundled": "usage.log",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/actual-comparison.log",
+    "original_sha256": "73e423c8f1b007e412834a89d6b8d2dca238818b041e37f45dae4a59a3f9fbc2",
+    "bytes": 1122,
+    "bundled": "comparison.log",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/ownership.log",
+    "original_sha256": "33c53e453ed4703dda1bb63840368a4fadb2f1e6ff01c3b1cb4809ca52526fa7",
+    "bytes": 5181,
+    "bundled": "ownership.log",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/raw-recovery-manifest.json",
+    "original_sha256": "c7e310d19477f0945d0c0cdb0139d7858f09e5912c52493695ea2fe376601a57",
+    "bytes": 51601,
+    "bundled": "recovery-manifest.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/manifest.json",
+    "original_sha256": "986e297e6645d1a8172105312f3fd3214bac21412880869092248c6dbde3d956",
+    "bytes": 10149303,
+    "bundled": "manifest.json.gz",
+    "encoding": "gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/references/capture-summary.json",
+    "original_sha256": "557b659603cd893a206eeac38997ce5a681899d0cd23e31054104ca995a2463c",
+    "bytes": 2450124,
+    "bundled": "oracle-captures.json.gz",
+    "encoding": "gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/benchmark-report.json",
+    "original_sha256": "9976cadc0d52d0448ae34a6fb5b6893902a80056d6b3bde3ec48b4cb0c52dfbe",
+    "bytes": 12455,
+    "bundled": "decoder-benchmark.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/round08-validation/report.json",
+    "original_sha256": "6062f232941cea127a5d072f177a8e188cca54d1e60f351a59d7dc73e6c45d80",
+    "bytes": 2206,
+    "bundled": "python-validation.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/round08-validation/python-tests.log",
+    "original_sha256": "dd8c4ddb38ce2bb978475a14f42710bc9513fe63d1ca82239765336656f37827",
+    "bytes": 14225,
+    "bundled": "python-tests.log",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/profiling/decoder/round08-validation/forced-fallback.json",
+    "original_sha256": "2d68fbfe2ac454adec7b6514c258f0102ef94cb93ae3f3fd4e68f0c8292d923c",
+    "bytes": 905,
+    "bundled": "decoder-fallback.json",
+    "encoding": "identity"
+  },
+  {
+    "original": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/cleanflight/compiled/arm_common_tables.i",
+    "original_sha256": "71121cbd5326517a08d8aa3627286b5e76633335c482acef5712a4dfac867f59",
+    "bytes": 1149351,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "71121cbd5326517a08d8aa3627286b5e76633335c482acef5712a4dfac867f59-arm_common_tables.i",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/crazyflie/compiled/arm_common_tables.i",
+    "original_sha256": "5c3633f501bf31440678415c4eeb9cdc834a4553ef1d0746b23b35f6d001f40d",
+    "bytes": 4620540,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "5c3633f501bf31440678415c4eeb9cdc834a4553ef1d0746b23b35f6d001f40d-arm_common_tables.i",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/nuttx/compiled/lib_wcwidth.i",
+    "original_sha256": "5a67ec2636fb3c749bfcda7ce4b90f21b666613984c1f05e743abbbbf07bdc28",
+    "bytes": 124333,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "5a67ec2636fb3c749bfcda7ce4b90f21b666613984c1f05e743abbbbf07bdc28-lib_wcwidth.i",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O2/cleanflight/compiled/arm_common_tables.i",
+    "original_sha256": "36a11a2cfe359b2bddcc6f023bc95d466088fe6c2f97be02fd55b04f13d93bd2",
+    "bytes": 1149351,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "36a11a2cfe359b2bddcc6f023bc95d466088fe6c2f97be02fd55b04f13d93bd2-arm_common_tables.i",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O2/crazyflie/compiled/arm_common_tables.i",
+    "original_sha256": "e88fd9592aeb2b211cfc9bf81d710e7d7cc4ffabc2982c0072af8f510c389022",
+    "bytes": 4620539,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e88fd9592aeb2b211cfc9bf81d710e7d7cc4ffabc2982c0072af8f510c389022-arm_common_tables.i",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/ged_src/v1/by_content/060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.pkl",
+    "original_sha256": "bfce13fc2f13ad950016bb48ccbbbd04ce13be07c748476dde1f940fcdfa0d52",
+    "bytes": 5,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "bfce13fc2f13ad950016bb48ccbbbd04ce13be07c748476dde1f940fcdfa0d52-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.pkl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/ged_src/v1/by_content/4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.pkl",
+    "original_sha256": "bfce13fc2f13ad950016bb48ccbbbd04ce13be07c748476dde1f940fcdfa0d52",
+    "bytes": 5,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "bfce13fc2f13ad950016bb48ccbbbd04ce13be07c748476dde1f940fcdfa0d52-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.pkl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/ged_src/v1/by_content/94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.pkl",
+    "original_sha256": "bfce13fc2f13ad950016bb48ccbbbd04ce13be07c748476dde1f940fcdfa0d52",
+    "bytes": 5,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "bfce13fc2f13ad950016bb48ccbbbd04ce13be07c748476dde1f940fcdfa0d52-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.pkl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/scripts/compare_pyjoern.py",
+    "original_sha256": "3856cc379e1b4d8049c47720864aa4f3400d5a1a8afe52cd925e7084ef0c8c9f",
+    "bytes": 15655,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "3856cc379e1b4d8049c47720864aa4f3400d5a1a8afe52cd925e7084ef0c8c9f-compare_pyjoern.py",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/scripts/compare_recovered_references.py",
+    "original_sha256": "4479fd31dc3562761a9b61ec7224cff6e1dac4dd9e9dfdfff0f64a1a53ca5d4c",
+    "bytes": 9414,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "4479fd31dc3562761a9b61ec7224cff6e1dac4dd9e9dfdfff0f64a1a53ca5d4c-compare_recovered_references.py",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/manifest.json",
+    "original_sha256": "986e297e6645d1a8172105312f3fd3214bac21412880869092248c6dbde3d956",
+    "bytes": 10149303,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "986e297e6645d1a8172105312f3fd3214bac21412880869092248c6dbde3d956-manifest.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/prepared/c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.c",
+    "original_sha256": "060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b",
+    "bytes": 1058853,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.c",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/prepared/c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.c",
+    "original_sha256": "4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b",
+    "bytes": 4519900,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.c",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/prepared/c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.c",
+    "original_sha256": "94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa",
+    "bytes": 95654,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa-c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.c",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/references/c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.pyjoern.json",
+    "original_sha256": "960d77a0e051f71e9018aeefca6f22d4060960c000442136afe660931a3fac92",
+    "bytes": 561,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "960d77a0e051f71e9018aeefca6f22d4060960c000442136afe660931a3fac92-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/references/c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.pyjoern.json",
+    "original_sha256": "73c920041696f1027a78f305b73778b3fd659b7d911f60cbcc8cb333eb562d93",
+    "bytes": 561,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "73c920041696f1027a78f305b73778b3fd659b7d911f60cbcc8cb333eb562d93-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/references/c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.pyjoern.json",
+    "original_sha256": "c20a69e21ef8bbceacc0cb5f6a6a0474a476b285e96a516d90ea92cbe375ee28",
+    "bytes": 561,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "c20a69e21ef8bbceacc0cb5f6a6a0474a476b285e96a516d90ea92cbe375ee28-c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/direct/inputs/c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.json.gz",
+    "original_sha256": "96cfe3ace45cb9c36ea8a68618c84f4d5e611b7e459319037bfdb4ae3ae33f6f",
+    "bytes": 7054,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "96cfe3ace45cb9c36ea8a68618c84f4d5e611b7e459319037bfdb4ae3ae33f6f-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.json.gz",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/direct/inputs/c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.json.gz",
+    "original_sha256": "228052e8b18eb4344313409e3e39f7ba18e3123759cec4d3d39b9b944cbc0d0d",
+    "bytes": 8566,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "228052e8b18eb4344313409e3e39f7ba18e3123759cec4d3d39b9b944cbc0d0d-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.json.gz",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/direct/inputs/c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.json.gz",
+    "original_sha256": "8d0a4ca629c21404c7cac6c9e8445cf915aee201fefb49a4ff04a2e305488160",
+    "bytes": 13334,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "8d0a4ca629c21404c7cac6c9e8445cf915aee201fefb49a4ff04a2e305488160-c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.json.gz",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O0/cleanflight/source/arm_common_tables.i.json",
+    "original_sha256": "6f5afea0dff08ffe9c0c344e3111e404d9d71dcc682034b66d1b4f1b8c7cedde",
+    "bytes": 71605,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "6f5afea0dff08ffe9c0c344e3111e404d9d71dcc682034b66d1b4f1b8c7cedde-arm_common_tables.i.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O0/crazyflie/source/arm_common_tables.i.json",
+    "original_sha256": "4318db1242ef09a00c0454cd7e2485c0cd6c61e58d8dcccf85044df19f71ce89",
+    "bytes": 85940,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "4318db1242ef09a00c0454cd7e2485c0cd6c61e58d8dcccf85044df19f71ce89-arm_common_tables.i.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O0/nuttx/source/lib_wcwidth.i.json",
+    "original_sha256": "0d75c58f8c81af8e9c31905e219d2479a54a3e26bc023d96c86bfe1ee661f6bb",
+    "bytes": 140561,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "0d75c58f8c81af8e9c31905e219d2479a54a3e26bc023d96c86bfe1ee661f6bb-lib_wcwidth.i.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O2/cleanflight/source/arm_common_tables.i.json",
+    "original_sha256": "3f7469b92bded89515eee7c63158d69da51b0b9b45554f5c0236da4838cbfb62",
+    "bytes": 71608,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "3f7469b92bded89515eee7c63158d69da51b0b9b45554f5c0236da4838cbfb62-arm_common_tables.i.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage/O2/crazyflie/source/arm_common_tables.i.json",
+    "original_sha256": "8fe133ca79de00eab4b7418235811db6fe1edc4b81af3ca25d410dd06710459c",
+    "bytes": 85940,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "8fe133ca79de00eab4b7418235811db6fe1edc4b81af3ca25d410dd06710459c-arm_common_tables.i.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/RawCfg.sc",
+    "original_sha256": "2d7640a64177f85645b95618aee476a638fc573566a34643813f0cfa09d8537a",
+    "bytes": 4502,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "2d7640a64177f85645b95618aee476a638fc573566a34643813f0cfa09d8537a-RawCfg.sc",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/RawCfgFast.sc",
+    "original_sha256": "1afd74ec49b907cf9e112f7d35a9ab5d7d6c4328c2ce4282b73eef9d65f6953a",
+    "bytes": 4650,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "1afd74ec49b907cf9e112f7d35a9ab5d7d6c4328c2ce4282b73eef9d65f6953a-RawCfgFast.sc",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/capture_raw_cfg.py",
+    "original_sha256": "56b2a22323f4581ac268ba5df050f1d3ba94debb97b4f7bf37ab625b654864c8",
+    "bytes": 3790,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "56b2a22323f4581ac268ba5df050f1d3ba94debb97b4f7bf37ab625b654864c8-capture_raw_cfg.py",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/capture_raw_cfg_fast.py",
+    "original_sha256": "aae7c0778e9aa2464666376fe98426b0b6743d465cfba1698e501fd2d0b173b7",
+    "bytes": 3794,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "aae7c0778e9aa2464666376fe98426b0b6743d465cfba1698e501fd2d0b173b7-capture_raw_cfg_fast.py",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b-64m.json",
+    "original_sha256": "672b5eb10412a84dd7b9277202346ac2111e469324c64b4b4b179c19caa77a9c",
+    "bytes": 165331,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "672b5eb10412a84dd7b9277202346ac2111e469324c64b4b4b179c19caa77a9c-cleanflight-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b-64m.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b-64m.stderr.txt",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855-cleanflight-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b-64m.stderr.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b-64m.stdout.txt",
+    "original_sha256": "5ae774f17044339eb85734d2649387e0e881be511100ec8ee31e65666f0e42e0",
+    "bytes": 172406,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "5ae774f17044339eb85734d2649387e0e881be511100ec8ee31e65666f0e42e0-cleanflight-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b-64m.stdout.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b-default.json",
+    "original_sha256": "5447264f57465437f31417a09b641ba60a3f00d1402dce206c86717c912a0d37",
+    "bytes": 423893,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "5447264f57465437f31417a09b641ba60a3f00d1402dce206c86717c912a0d37-cleanflight-c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b-default.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight.fast.raw-cfg.jsonl",
+    "original_sha256": "e7377af8aa35cd4b0ca2b4a0ac7d71df0edb70a6a8d241fc734074461f26dfd7",
+    "bytes": 12387143,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e7377af8aa35cd4b0ca2b4a0ac7d71df0edb70a6a8d241fc734074461f26dfd7-cleanflight.fast.raw-cfg.jsonl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight.fast.raw-cfg.jsonl.metadata.json",
+    "original_sha256": "351e27e4dcd436c7ee39b02ba684e9131642c4572ebc2fcb6b3da58bbb217ba1",
+    "bytes": 4064,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "351e27e4dcd436c7ee39b02ba684e9131642c4572ebc2fcb6b3da58bbb217ba1-cleanflight.fast.raw-cfg.jsonl.metadata.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight.iterative.pyjoern.json",
+    "original_sha256": "acede192dd25a124f1a76ba3315c4a2bc30d9e072d4ef715416ff1709c3e8e7c",
+    "bytes": 278441,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "acede192dd25a124f1a76ba3315c4a2bc30d9e072d4ef715416ff1709c3e8e7c-cleanflight.iterative.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight.raw-cfg.jsonl.metadata.json",
+    "original_sha256": "0cbe3f79f501aada38e56b2a0ac1151130383df73a3ff44fc660bfc1d50d25db",
+    "bytes": 96591,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "0cbe3f79f501aada38e56b2a0ac1151130383df73a3ff44fc660bfc1d50d25db-cleanflight.raw-cfg.jsonl.metadata.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-asm-tail.iterative.pyjoern.json",
+    "original_sha256": "e49b4b80b9b572d8e2aa68c9e1018511ea6210d2bcb244ea7d8358dc1a593861",
+    "bytes": 7463,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e49b4b80b9b572d8e2aa68c9e1018511ea6210d2bcb244ea7d8358dc1a593861-control-asm-tail.iterative.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-asm-tail.raw-cfg.jsonl",
+    "original_sha256": "1aa7d06b2fdb117d0cdac164363436fe6916474547187c5100e82c19aaca456a",
+    "bytes": 32985,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "1aa7d06b2fdb117d0cdac164363436fe6916474547187c5100e82c19aaca456a-control-asm-tail.raw-cfg.jsonl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-asm-tail.raw-cfg.jsonl.metadata.json",
+    "original_sha256": "9550fb216888da3a71688447365eb89ad93b72eb0333bd991d3d7936a0b6c2f5",
+    "bytes": 3934,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "9550fb216888da3a71688447365eb89ad93b72eb0333bd991d3d7936a0b6c2f5-control-asm-tail.raw-cfg.jsonl.metadata.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-projection-c-fast.iterative.pyjoern.json",
+    "original_sha256": "0e508a46367831bf411be6c4f3d6cca9d2ee7815e02cca2278a7fe82e3de4f04",
+    "bytes": 8338,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "0e508a46367831bf411be6c4f3d6cca9d2ee7815e02cca2278a7fe82e3de4f04-control-projection-c-fast.iterative.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-projection-c-fast.raw-cfg.jsonl",
+    "original_sha256": "3df6289f414216dcc04417d3ba20c83b9f12ec4b956b7ced37a5691b8d9b841a",
+    "bytes": 49753,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "3df6289f414216dcc04417d3ba20c83b9f12ec4b956b7ced37a5691b8d9b841a-control-projection-c-fast.raw-cfg.jsonl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-projection-c-fast.raw-cfg.jsonl.metadata.json",
+    "original_sha256": "e795bf90971c43e09b78948ebdeaff3bccc9ba93ef36c4cd6f48b242e91efc6c",
+    "bytes": 3977,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e795bf90971c43e09b78948ebdeaff3bccc9ba93ef36c4cd6f48b242e91efc6c-control-projection-c-fast.raw-cfg.jsonl.metadata.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-projection-c.iterative.pyjoern.json",
+    "original_sha256": "67701fe8fd5ef26d6d08a7298d1d8a461a869215d3990249de6b1bc934d7e46d",
+    "bytes": 8330,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "67701fe8fd5ef26d6d08a7298d1d8a461a869215d3990249de6b1bc934d7e46d-control-projection-c.iterative.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-projection-c.raw-cfg.jsonl",
+    "original_sha256": "3df6289f414216dcc04417d3ba20c83b9f12ec4b956b7ced37a5691b8d9b841a",
+    "bytes": 49753,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "3df6289f414216dcc04417d3ba20c83b9f12ec4b956b7ced37a5691b8d9b841a-control-projection-c.raw-cfg.jsonl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-projection-c.raw-cfg.jsonl.metadata.json",
+    "original_sha256": "de712179d75b8497e38cfc3401f6a9f573b05bcfd2af683fea80504ee72a83ac",
+    "bytes": 3954,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "de712179d75b8497e38cfc3401f6a9f573b05bcfd2af683fea80504ee72a83ac-control-projection-c.raw-cfg.jsonl.metadata.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-projection-cpp.iterative.pyjoern.json",
+    "original_sha256": "a513b4c568db0f5f4619ab03a9c19fb28da6cdeae9b54194ae68731b75b097e9",
+    "bytes": 8460,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "a513b4c568db0f5f4619ab03a9c19fb28da6cdeae9b54194ae68731b75b097e9-control-projection-cpp.iterative.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-projection-cpp.raw-cfg.jsonl",
+    "original_sha256": "58d747a15e494d7e3e95861c9b934d9d9435239574d01ec03d24350445e83ea0",
+    "bytes": 49880,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "58d747a15e494d7e3e95861c9b934d9d9435239574d01ec03d24350445e83ea0-control-projection-cpp.raw-cfg.jsonl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/control-projection-cpp.raw-cfg.jsonl.metadata.json",
+    "original_sha256": "2693633cec7475e374cb0af8b992bd89c92eae798d98ca338b122f962c5d7e5e",
+    "bytes": 3960,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "2693633cec7475e374cb0af8b992bd89c92eae798d98ca338b122f962c5d7e5e-control-projection-cpp.raw-cfg.jsonl.metadata.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-1g.json",
+    "original_sha256": "2d0dd23c322db82d180a7606afdaf108fe481213e14bac5760b71fea215bd195",
+    "bytes": 458460,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "2d0dd23c322db82d180a7606afdaf108fe481213e14bac5760b71fea215bd195-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-1g.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-1g.stderr.txt",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-1g.stderr.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-1g.stdout.txt",
+    "original_sha256": "ecf8c251d6947269c4579db2c36be1763ceca9f19c1bca52993a9b115ed5b989",
+    "bytes": 456405,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "ecf8c251d6947269c4579db2c36be1763ceca9f19c1bca52993a9b115ed5b989-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-1g.stdout.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-256m.json",
+    "original_sha256": "23714b72a1f96d8768b69b7cedb8eb22b6b48deb9e639212981962690d4fd663",
+    "bytes": 458475,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "23714b72a1f96d8768b69b7cedb8eb22b6b48deb9e639212981962690d4fd663-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-256m.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-256m.stderr.txt",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-256m.stderr.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-256m.stdout.txt",
+    "original_sha256": "c8e55e9c7c88ef2b5e74c79d8de3d2e4e3cf750d0a14343f634d83d36010aff9",
+    "bytes": 456416,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "c8e55e9c7c88ef2b5e74c79d8de3d2e4e3cf750d0a14343f634d83d36010aff9-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-256m.stdout.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-64m.json",
+    "original_sha256": "50fd8db40dc541f81a0e8c356ef29688d317937523af0fdce1857e4128bcf3c7",
+    "bytes": 458467,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "50fd8db40dc541f81a0e8c356ef29688d317937523af0fdce1857e4128bcf3c7-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-64m.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-64m.stderr.txt",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-64m.stderr.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-64m.stdout.txt",
+    "original_sha256": "e11a449ac9117ac36e7b4244112bb808b5a5b45342613bd65298e008c36e5df3",
+    "bytes": 456410,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e11a449ac9117ac36e7b4244112bb808b5a5b45342613bd65298e008c36e5df3-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-64m.stdout.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-default.json",
+    "original_sha256": "be65e801db7c77c92ea84dbd4b9eb48e3f99c4a6c7c3748ae13daff5354b3aca",
+    "bytes": 458585,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "be65e801db7c77c92ea84dbd4b9eb48e3f99c4a6c7c3748ae13daff5354b3aca-crazyflie-c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b-default.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie-raw-threads.txt",
+    "original_sha256": "af4917d405b7ccec0aef99adeddc1eb3a25ffa3f5b2f3fa56da7dbddcbb39f43",
+    "bytes": 79471,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "af4917d405b7ccec0aef99adeddc1eb3a25ffa3f5b2f3fa56da7dbddcbb39f43-crazyflie-raw-threads.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie.fast.raw-cfg.jsonl",
+    "original_sha256": "64739e09d774a55ac7605ff5ceae955f621c6ae56bc09a358028243d7fd1dc95",
+    "bytes": 28886374,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "64739e09d774a55ac7605ff5ceae955f621c6ae56bc09a358028243d7fd1dc95-crazyflie.fast.raw-cfg.jsonl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie.fast.raw-cfg.jsonl.metadata.json",
+    "original_sha256": "879aae1f10cc1d25004bd05acdec6b8063f87f4adbabece48a4d55a965a1162d",
+    "bytes": 4059,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "879aae1f10cc1d25004bd05acdec6b8063f87f4adbabece48a4d55a965a1162d-crazyflie.fast.raw-cfg.jsonl.metadata.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie.iterative.pyjoern.json",
+    "original_sha256": "52dea3ac26c3ce021eddc0211fd26b92af61bb10d8c0baf2386b03c00190dfe0",
+    "bytes": 324355,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "52dea3ac26c3ce021eddc0211fd26b92af61bb10d8c0baf2386b03c00190dfe0-crazyflie.iterative.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie.raw-cfg.jsonl.metadata.json",
+    "original_sha256": "1f16677f30a7398bd4265bd7084574047ca38ff0de3048e914b31de430256057",
+    "bytes": 5483,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "1f16677f30a7398bd4265bd7084574047ca38ff0de3048e914b31de430256057-crazyflie.raw-cfg.jsonl.metadata.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/iterative-references-vs-round04-05.json",
+    "original_sha256": "2b9f92f52520ed85f29d225a17faea2d4c6cc616f70f01756e60c4532de8f167",
+    "bytes": 5785,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "2b9f92f52520ed85f29d225a17faea2d4c6cc616f70f01756e60c4532de8f167-iterative-references-vs-round04-05.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/nuttx-c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa-64m.json",
+    "original_sha256": "73967e1c90e6c59e6c2d50625ddffa395fc90a77492bfb33495ba4d16f50252f",
+    "bytes": 212305,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "73967e1c90e6c59e6c2d50625ddffa395fc90a77492bfb33495ba4d16f50252f-nuttx-c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa-64m.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/nuttx-c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa-64m.stderr.txt",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855-nuttx-c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa-64m.stderr.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/nuttx-c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa-64m.stdout.txt",
+    "original_sha256": "5a466e8351f31b1ca7999ba81ae3ac613cac9dd8aa80465b47cf4411e229223a",
+    "bytes": 228700,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "5a466e8351f31b1ca7999ba81ae3ac613cac9dd8aa80465b47cf4411e229223a-nuttx-c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa-64m.stdout.txt",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/nuttx-full-exception.json",
+    "original_sha256": "71c8fcf078d47c8c48c7b666736b8d113b0c3809e554831cc2e094b331deef61",
+    "bytes": 590276,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "71c8fcf078d47c8c48c7b666736b8d113b0c3809e554831cc2e094b331deef61-nuttx-full-exception.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/nuttx.iterative.pyjoern.json",
+    "original_sha256": "3bea778599761eab393d989871ed55df63129393c4db57c869361b7cd995aa6c",
+    "bytes": 444354,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "3bea778599761eab393d989871ed55df63129393c4db57c869361b7cd995aa6c-nuttx.iterative.pyjoern.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/nuttx.raw-cfg.jsonl",
+    "original_sha256": "37d3fe5068932fd09133b08a91f314bbf938a8eb07e80d9e074845bcd92fa821",
+    "bytes": 2183601,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "37d3fe5068932fd09133b08a91f314bbf938a8eb07e80d9e074845bcd92fa821-nuttx.raw-cfg.jsonl",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/nuttx.raw-cfg.jsonl.metadata.json",
+    "original_sha256": "2d4da10924a7fed31498171aa44146e6187a5aedc9ab10f4ab9a4e106df3c904",
+    "bytes": 4032,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "2d4da10924a7fed31498171aa44146e6187a5aedc9ab10f4ab9a4e106df3c904-nuttx.raw-cfg.jsonl.metadata.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/original-v4.0.150-CfgGenerator.scala",
+    "original_sha256": "16c995c13b3c1470a1886c650ae0eb1023080bbb2718cbfe27e95c1d36f3dd52",
+    "bytes": 2067,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "16c995c13b3c1470a1886c650ae0eb1023080bbb2718cbfe27e95c1d36f3dd52-original-v4.0.150-CfgGenerator.scala",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/project_raw_cfg.py",
+    "original_sha256": "d4cfb3730d547d0e324f262fef83976959009488234087a68b8d571434337e75",
+    "bytes": 6731,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "d4cfb3730d547d0e324f262fef83976959009488234087a68b8d571434337e75-project_raw_cfg.py",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/stack-recovery-audit-round05.json",
+    "original_sha256": "da4e8072a085f536b3af213c05a813bd98fd83839907c001ee949af43acc1a99",
+    "bytes": 35465,
+    "archive": "recovery-evidence.tar.gz",
+    "member": "da4e8072a085f536b3af213c05a813bd98fd83839907c001ee949af43acc1a99-stack-recovery-audit-round05.json",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/Cargo.toml",
+    "original_sha256": "716cca371a47cc629f0b1c1f8eeb7abde19b3c1aa5f351811fe26d1e56bbbf21",
+    "bytes": 442,
+    "archive": "runtime-source.tar.gz",
+    "member": "Cargo.toml",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/Cargo.lock",
+    "original_sha256": "90d77a95af72c909726899bf17d646f09929ef74433446cdee1c6b680a4727ca",
+    "bytes": 4054,
+    "archive": "runtime-source.tar.gz",
+    "member": "Cargo.lock",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/pyproject.toml",
+    "original_sha256": "a46eb44d0917836e3037d51f23b6efe8951cb0d6feacf31d5b0e8668c1cd1982",
+    "bytes": 500,
+    "archive": "runtime-source.tar.gz",
+    "member": "pyproject.toml",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/python/rust_joern/__init__.py",
+    "original_sha256": "66fda7d3b6f75faac0c4305deeae4c7e513da76baa69081c5d9064054dafcc7a",
+    "bytes": 12027,
+    "archive": "runtime-source.tar.gz",
+    "member": "python/rust_joern/__init__.py",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/compat/pyjoern/__init__.py",
+    "original_sha256": "ed368600bfa8d14b9baf0877fb1a9164fa1e597e4c1c9572452b6cfe03e774b5",
+    "bytes": 894,
+    "archive": "runtime-source.tar.gz",
+    "member": "compat/pyjoern/__init__.py",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/src/builder.rs",
+    "original_sha256": "ad0ddb8d83c07c2d4a05643d44e65c21ece470f8c8773768c85e654edb8ac22d",
+    "bytes": 86107,
+    "archive": "runtime-source.tar.gz",
+    "member": "src/builder.rs",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/src/dataflow.rs",
+    "original_sha256": "20c620662c10945b0688fc3cc37699848a92f2dce9f83ede860c49c5551ff30a",
+    "bytes": 73194,
+    "archive": "runtime-source.tar.gz",
+    "member": "src/dataflow.rs",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/src/graph.rs",
+    "original_sha256": "1e1a9137fd14543eb1fd4472b130b345dd4d74046c72d8757a0cc348347ef692",
+    "bytes": 2980,
+    "archive": "runtime-source.tar.gz",
+    "member": "src/graph.rs",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/src/lexer.rs",
+    "original_sha256": "f2f5cdeef5167372a2fae778bceb9d9463237209a7d03ffd5d9721351db58f36",
+    "bytes": 28760,
+    "archive": "runtime-source.tar.gz",
+    "member": "src/lexer.rs",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/src/lib.rs",
+    "original_sha256": "5aee59ecb4bd886e4222cd68d1c2a125d3ffac75c61e0d1aa85ccf1a21831bc9",
+    "bytes": 16459,
+    "archive": "runtime-source.tar.gz",
+    "member": "src/lib.rs",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/src/main.rs",
+    "original_sha256": "9bdd1453c673b0209c54194421f642601caa503f30811cde327d4efce5d20944",
+    "bytes": 6798,
+    "archive": "runtime-source.tar.gz",
+    "member": "src/main.rs",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/src/normalize.rs",
+    "original_sha256": "3c5d690f3fd78d19623ec2a33c08622ab4e28d022f851a7c5073596e9d3e23e4",
+    "bytes": 15893,
+    "archive": "runtime-source.tar.gz",
+    "member": "src/normalize.rs",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/src/parser.rs",
+    "original_sha256": "e8c531cb37a138375de80d858b5dac56ff94a10867a1d577ddc6631436122e42",
+    "bytes": 226005,
+    "archive": "runtime-source.tar.gz",
+    "member": "src/parser.rs",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/src/syntax.rs",
+    "original_sha256": "3634722af72fa7c33b0a0249a42f85633068426c2202bec36f80c6c23b47f7ab",
+    "bytes": 4985,
+    "archive": "runtime-source.tar.gz",
+    "member": "src/syntax.rs",
+    "encoding": "tar-gzip"
+  },
+  {
+    "original": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/actual-comparison/functions.jsonl.gz",
+    "original_sha256": "c877dac7d8e1e68f01d792750eed171a593488742e75ee95c4e33978d93c9a88",
+    "bytes": 25817229,
+    "bundled": null
+  }
+]

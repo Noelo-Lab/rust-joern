@@ -15,6 +15,8 @@ pub struct Function {
     pub signature: String,
     pub extern_c: bool,
     pub implicit_this: Option<String>,
+    /// Lambda bodies are converted in their enclosing method's lexical scope.
+    pub lambda_parent: Option<String>,
     pub parameters: Vec<Parameter>,
     pub body: Stmt,
     pub span: Span,
@@ -29,6 +31,14 @@ pub struct Parameter {
 }
 
 #[derive(Clone, Debug)]
+pub struct RetainedMacroCall {
+    pub name: String,
+    pub definition_span: Span,
+    pub formal_arity: usize,
+    pub parameter_count: usize,
+}
+
+#[derive(Clone, Debug)]
 pub struct Declaration {
     pub name: String,
     pub type_name: String,
@@ -36,6 +46,12 @@ pub struct Declaration {
     pub dimensions: Vec<Expr>,
     /// CDT's function-declarator path cannot convert a C++ variable binding.
     pub problem: bool,
+    /// A typedef declarator creates a type declaration, while its array bounds
+    /// still participate in Joern's allocation lowering.
+    pub is_typedef: bool,
+    /// Initializer conversion reads the outer declarator's name, which is
+    /// empty when the actual local name belongs to a parenthesized declarator.
+    pub nested_declarator: bool,
     pub span: Span,
 }
 
@@ -48,6 +64,11 @@ pub struct Expr {
 #[derive(Clone, Debug)]
 pub enum ExprKind {
     Identifier(String),
+    /// A type-id operand uses a decl-specifier identifier, never a method ref.
+    TypeSpecifier {
+        code: String,
+        type_name: String,
+    },
     Literal(String),
     Unary {
         op: String,
@@ -67,6 +88,11 @@ pub enum ExprKind {
     Call {
         callee: Box<Expr>,
         arguments: Vec<Expr>,
+    },
+    Lambda {
+        full_name: String,
+        signature: String,
+        return_type: String,
     },
     /// A bracketed identifier used as a call receiver, rather than a bare name.
     Bracketed(Box<Expr>),
@@ -176,5 +202,7 @@ pub struct ParseDiagnostic {
 #[derive(Clone, Debug, Default)]
 pub struct TranslationUnit {
     pub functions: Vec<Function>,
+    pub global_expressions: Vec<Expr>,
+    pub retained_macro_calls: Vec<RetainedMacroCall>,
     pub diagnostics: Vec<ParseDiagnostic>,
 }

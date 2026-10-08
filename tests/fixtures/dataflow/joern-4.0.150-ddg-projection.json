@@ -1,0 +1,4092 @@
+{
+  "generator": "Original Joern4.0.150 DdgGenerator (unmodified PyJoern4.0.150.4)",
+  "all_internal_methods": {
+    "flow.c": [
+      "flow.c:<global>",
+      "copy",
+      "branch",
+      "loop",
+      "firstwhile",
+      "compound",
+      "nested",
+      "sized",
+      "fields",
+      "arrays",
+      "address",
+      "shifted",
+      "casted",
+      "indirect",
+      "globals",
+      "conditional",
+      "dead",
+      "statement",
+      "shortcircuit",
+      "multi",
+      "noret",
+      "shadows",
+      "uncertain",
+      "side",
+      "sink",
+      "<includes>:<global>"
+    ],
+    "semantics.c": [
+      "semantics.c:<global>",
+      "empty",
+      "body",
+      "calls",
+      "nested_items",
+      "concat",
+      "blockpath",
+      "strncat",
+      "sink",
+      "prototype",
+      "<includes>:<global>"
+    ],
+    "extra.cpp": [
+      "lambda:int(int).<lambda>0",
+      "extra.cpp:<global>",
+      "c_semantics:int(int)",
+      "N.abs:int(int)",
+      "N.n:int(int)",
+      "S.abs:int(int)",
+      "S.use:int(int)",
+      "method:int(S*,int)",
+      "q:int(int)",
+      "lambda:int(int)",
+      "aliases:int(int*,int)",
+      "offsets:int(int*,int)",
+      "addr:int(int)",
+      "ref:int(int &)",
+      "distinct:int(B,int)",
+      "structs:int(B,int)",
+      "unknown_index:int(int*,int,int,int)",
+      "constant_index:int(int*,int)",
+      "abs:int(int)",
+      "free:void(void*)",
+      "<includes>:<global>"
+    ],
+    "builtins.c": [
+      "builtins.c:<global>",
+      "offset",
+      "vararg",
+      "compatible",
+      "transparent",
+      "<includes>:<global>"
+    ],
+    "": [
+      "builtins.c:<global>",
+      "offset",
+      "vararg",
+      "compatible",
+      "transparent",
+      "<includes>:<global>"
+    ]
+  },
+  "methods": [
+    {
+      "filename": "flow.c",
+      "fullname": "copy",
+      "nodes": [
+        0,
+        9,
+        1,
+        4,
+        7,
+        8
+      ],
+      "edges": [
+        {
+          "source": 7,
+          "target": 9,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "DDG",
+          "label": "y = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 8,
+          "target": 7,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "branch",
+      "nodes": [
+        0,
+        19,
+        1,
+        17,
+        5,
+        18,
+        9,
+        14
+      ],
+      "edges": [
+        {
+          "source": 17,
+          "target": 19,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 5,
+          "target": 19,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 5,
+          "target": 19,
+          "kind": "DDG",
+          "label": "x > 0"
+        },
+        {
+          "source": 14,
+          "target": 19,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 14,
+          "target": 19,
+          "kind": "DDG",
+          "label": "y = 2"
+        },
+        {
+          "source": 9,
+          "target": 19,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 9,
+          "target": 19,
+          "kind": "DDG",
+          "label": "y = 1"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 18,
+          "target": 17,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 9,
+          "target": 18,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 14,
+          "target": 18,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 18,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 14,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "loop",
+      "nodes": [
+        0,
+        19,
+        1,
+        4,
+        17,
+        8,
+        18,
+        12,
+        15
+      ],
+      "edges": [
+        {
+          "source": 17,
+          "target": 19,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 19,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 19,
+          "kind": "DDG",
+          "label": "y = 0"
+        },
+        {
+          "source": 8,
+          "target": 19,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 8,
+          "target": 19,
+          "kind": "DDG",
+          "label": "x > 0"
+        },
+        {
+          "source": 12,
+          "target": 19,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 12,
+          "target": 19,
+          "kind": "DDG",
+          "label": "y += x"
+        },
+        {
+          "source": 15,
+          "target": 19,
+          "kind": "DDG",
+          "label": "x--"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 18,
+          "target": 17,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 12,
+          "target": 18,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 18,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 18,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 15,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "DDG"
+        },
+        {
+          "source": 8,
+          "target": 12,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 12,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 15,
+          "kind": "DDG"
+        },
+        {
+          "source": 8,
+          "target": 15,
+          "kind": "DDG",
+          "label": "x"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "firstwhile",
+      "nodes": [
+        0,
+        11,
+        1,
+        9,
+        4,
+        7,
+        10
+      ],
+      "edges": [
+        {
+          "source": 9,
+          "target": 11,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "x > 0"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 10,
+          "target": 9,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 10,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 10,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 7,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "compound",
+      "nodes": [
+        0,
+        9,
+        1,
+        2,
+        4,
+        7,
+        8
+      ],
+      "edges": [
+        {
+          "source": 7,
+          "target": 9,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "DDG",
+          "label": "x += y"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 8,
+          "target": 7,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "nested",
+      "nodes": [
+        0,
+        7,
+        1,
+        3,
+        4,
+        5
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 7,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 5,
+          "target": 7,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 7,
+          "kind": "DDG",
+          "label": "sink(x)"
+        },
+        {
+          "source": 4,
+          "target": 7,
+          "kind": "DDG",
+          "label": "sink(sink(x))"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "sink(sink(x))"
+        },
+        {
+          "source": 5,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "sized",
+      "nodes": [
+        0,
+        10,
+        1,
+        4,
+        8,
+        9,
+        6
+      ],
+      "edges": [
+        {
+          "source": 8,
+          "target": 10,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 10,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 6,
+          "target": 10,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 10,
+          "kind": "DDG",
+          "label": "y = sizeof(x)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 9,
+          "target": 8,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "fields",
+      "nodes": [
+        0,
+        13,
+        1,
+        2,
+        4,
+        9
+      ],
+      "edges": [
+        {
+          "source": 9,
+          "target": 13,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 13,
+          "kind": "DDG",
+          "label": "b"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "b->value"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "b->value = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "arrays",
+      "nodes": [
+        0,
+        14,
+        1,
+        2,
+        3,
+        5,
+        10
+      ],
+      "edges": [
+        {
+          "source": 10,
+          "target": 14,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 14,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 2,
+          "target": 14,
+          "kind": "DDG",
+          "label": "i"
+        },
+        {
+          "source": 5,
+          "target": 14,
+          "kind": "DDG",
+          "label": "p[i]"
+        },
+        {
+          "source": 5,
+          "target": 14,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 5,
+          "target": 14,
+          "kind": "DDG",
+          "label": "p[i] = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 3,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "address",
+      "nodes": [
+        0,
+        11,
+        1,
+        4,
+        8
+      ],
+      "edges": [
+        {
+          "source": 8,
+          "target": 11,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 11,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "&x"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "*p = &x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "shifted",
+      "nodes": [
+        0,
+        12,
+        1,
+        4,
+        9,
+        6
+      ],
+      "edges": [
+        {
+          "source": 9,
+          "target": 12,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "q"
+        },
+        {
+          "source": 6,
+          "target": 12,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "p + 1"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "*q = p + 1"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 6,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "casted",
+      "nodes": [
+        0,
+        12,
+        1,
+        4,
+        9,
+        6
+      ],
+      "edges": [
+        {
+          "source": 9,
+          "target": 12,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 6,
+          "target": 12,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "(int *)x"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "*p = (int *)x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 6,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "indirect",
+      "nodes": [
+        0,
+        8,
+        1,
+        2,
+        4,
+        5,
+        6
+      ],
+      "edges": [
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 8,
+          "kind": "DDG",
+          "label": "f"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "f(x)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 5,
+          "target": 4,
+          "kind": "DDG",
+          "label": "f(x)"
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "globals",
+      "nodes": [
+        0,
+        8,
+        1,
+        3,
+        6,
+        7
+      ],
+      "edges": [
+        {
+          "source": 6,
+          "target": 8,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "kind": "DDG",
+          "label": "global"
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "kind": "DDG",
+          "label": "global = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 7,
+          "target": 6,
+          "kind": "DDG",
+          "label": "global"
+        },
+        {
+          "source": 3,
+          "target": 7,
+          "kind": "DDG",
+          "label": "global"
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "conditional",
+      "nodes": [
+        0,
+        14,
+        1,
+        2,
+        3,
+        6,
+        12,
+        13,
+        8
+      ],
+      "edges": [
+        {
+          "source": 12,
+          "target": 14,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 6,
+          "target": 14,
+          "kind": "DDG",
+          "label": "a"
+        },
+        {
+          "source": 8,
+          "target": 14,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 8,
+          "target": 14,
+          "kind": "DDG",
+          "label": "z"
+        },
+        {
+          "source": 8,
+          "target": 14,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 6,
+          "target": 14,
+          "kind": "DDG",
+          "label": "x ? y : z"
+        },
+        {
+          "source": 6,
+          "target": 14,
+          "kind": "DDG",
+          "label": "a = x ? y : z"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 6,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "DDG"
+        },
+        {
+          "source": 3,
+          "target": 6,
+          "kind": "DDG",
+          "label": "z"
+        },
+        {
+          "source": 13,
+          "target": 12,
+          "kind": "DDG",
+          "label": "a"
+        },
+        {
+          "source": 6,
+          "target": 13,
+          "kind": "DDG",
+          "label": "a"
+        },
+        {
+          "source": 0,
+          "target": 13,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 8,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "DDG"
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "kind": "DDG",
+          "label": "z"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "dead",
+      "nodes": [
+        0,
+        8,
+        1,
+        3,
+        4
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 8,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "statement",
+      "nodes": [
+        0,
+        16,
+        1,
+        4,
+        14,
+        15,
+        8,
+        13,
+        10
+      ],
+      "edges": [
+        {
+          "source": 14,
+          "target": 16,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "kind": "DDG",
+          "label": "t"
+        },
+        {
+          "source": 10,
+          "target": 16,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "kind": "DDG",
+          "label": "x + 1"
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "kind": "DDG",
+          "label": "t = x + 1"
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "kind": "DDG",
+          "label": "y = ({ int t = x + 1; t; })"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 8,
+          "target": 4,
+          "kind": "DDG",
+          "label": "t"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 15,
+          "target": 14,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 15,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 15,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 13,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 10,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 10,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "shortcircuit",
+      "nodes": [
+        0,
+        12,
+        1,
+        2,
+        5,
+        10,
+        11,
+        7
+      ],
+      "edges": [
+        {
+          "source": 10,
+          "target": 12,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 5,
+          "target": 12,
+          "kind": "DDG",
+          "label": "z"
+        },
+        {
+          "source": 7,
+          "target": 12,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 7,
+          "target": 12,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 5,
+          "target": 12,
+          "kind": "DDG",
+          "label": "x && y"
+        },
+        {
+          "source": 5,
+          "target": 12,
+          "kind": "DDG",
+          "label": "z = x && y"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 7,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 7,
+          "target": 5,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 11,
+          "target": 10,
+          "kind": "DDG",
+          "label": "z"
+        },
+        {
+          "source": 5,
+          "target": 11,
+          "kind": "DDG",
+          "label": "z"
+        },
+        {
+          "source": 0,
+          "target": 11,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 7,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 7,
+          "kind": "DDG",
+          "label": "y"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "multi",
+      "nodes": [
+        0,
+        12,
+        1,
+        10,
+        4,
+        11,
+        8,
+        9
+      ],
+      "edges": [
+        {
+          "source": 10,
+          "target": 12,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 8,
+          "target": 12,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "x > 0"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 11,
+          "target": 10,
+          "kind": "DDG",
+          "label": "7"
+        },
+        {
+          "source": 0,
+          "target": 10,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 11,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 9,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "noret",
+      "nodes": [
+        0,
+        8,
+        1,
+        2,
+        4,
+        5
+      ],
+      "edges": [
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x + y"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "sink(x + y)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "DDG",
+          "label": "y"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "shadows",
+      "nodes": [
+        0,
+        17,
+        1,
+        4,
+        7,
+        15,
+        9,
+        12,
+        16
+      ],
+      "edges": [
+        {
+          "source": 15,
+          "target": 17,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 9,
+          "target": 17,
+          "kind": "DDG",
+          "label": "x = 2"
+        },
+        {
+          "source": 12,
+          "target": 17,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 12,
+          "target": 17,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 12,
+          "target": 17,
+          "kind": "DDG",
+          "label": "y = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "DDG"
+        },
+        {
+          "source": 16,
+          "target": 15,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "DDG"
+        },
+        {
+          "source": 9,
+          "target": 12,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 12,
+          "kind": "DDG"
+        },
+        {
+          "source": 12,
+          "target": 16,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 16,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "uncertain",
+      "nodes": [
+        0,
+        8,
+        1,
+        4,
+        5
+      ],
+      "edges": [
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "y + x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 5,
+          "target": 4,
+          "kind": "DDG",
+          "label": "y + x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "side",
+      "nodes": [
+        0,
+        3,
+        1
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "flow.c",
+      "fullname": "sink",
+      "nodes": [
+        0,
+        3,
+        1
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "semantics.c",
+      "fullname": "empty",
+      "nodes": [
+        0,
+        4,
+        1,
+        2
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "semantics.c",
+      "fullname": "body",
+      "nodes": [
+        0,
+        8,
+        1,
+        2,
+        4,
+        5
+      ],
+      "edges": [
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x + y"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "sink(x + y)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "DDG",
+          "label": "y"
+        }
+      ]
+    },
+    {
+      "filename": "semantics.c",
+      "fullname": "calls",
+      "nodes": [
+        0,
+        15,
+        1,
+        2,
+        4,
+        7,
+        10,
+        13,
+        14
+      ],
+      "edges": [
+        {
+          "source": 13,
+          "target": 15,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 15,
+          "kind": "DDG",
+          "label": "prototype(x, y)"
+        },
+        {
+          "source": 7,
+          "target": 15,
+          "kind": "DDG",
+          "label": "empty(x, y)"
+        },
+        {
+          "source": 10,
+          "target": 15,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 10,
+          "target": 15,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 10,
+          "target": 15,
+          "kind": "DDG",
+          "label": "body(x, y)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 14,
+          "target": 13,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 7,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 7,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 7,
+          "target": 10,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 10,
+          "kind": "DDG"
+        },
+        {
+          "source": 7,
+          "target": 10,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 10,
+          "target": 14,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 14,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "semantics.c",
+      "fullname": "nested_items",
+      "nodes": [
+        0,
+        18,
+        1,
+        2,
+        3,
+        5,
+        12
+      ],
+      "edges": [
+        {
+          "source": 12,
+          "target": 18,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 18,
+          "kind": "DDG",
+          "label": "b"
+        },
+        {
+          "source": 2,
+          "target": 18,
+          "kind": "DDG",
+          "label": "i"
+        },
+        {
+          "source": 5,
+          "target": 18,
+          "kind": "DDG",
+          "label": "b->items[i]"
+        },
+        {
+          "source": 5,
+          "target": 18,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 5,
+          "target": 18,
+          "kind": "DDG",
+          "label": "b->items[i] = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 3,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "semantics.c",
+      "fullname": "concat",
+      "nodes": [
+        0,
+        10,
+        1,
+        2,
+        3,
+        5,
+        6
+      ],
+      "edges": [
+        {
+          "source": 5,
+          "target": 10,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 6,
+          "target": 10,
+          "kind": "DDG",
+          "label": "a"
+        },
+        {
+          "source": 6,
+          "target": 10,
+          "kind": "DDG",
+          "label": "b"
+        },
+        {
+          "source": 6,
+          "target": 10,
+          "kind": "DDG",
+          "label": "n"
+        },
+        {
+          "source": 6,
+          "target": 10,
+          "kind": "DDG",
+          "label": "strncat(a, b, n)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 6,
+          "target": 5,
+          "kind": "DDG",
+          "label": "strncat(a, b, n)"
+        },
+        {
+          "source": 1,
+          "target": 6,
+          "kind": "DDG",
+          "label": "a"
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 6,
+          "kind": "DDG",
+          "label": "b"
+        }
+      ]
+    },
+    {
+      "filename": "semantics.c",
+      "fullname": "blockpath",
+      "nodes": [
+        0,
+        14,
+        1,
+        2,
+        4,
+        10,
+        7
+      ],
+      "edges": [
+        {
+          "source": 10,
+          "target": 14,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 14,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 4,
+          "target": 14,
+          "kind": "DDG",
+          "label": "({ p; })[0]"
+        },
+        {
+          "source": 4,
+          "target": 14,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 14,
+          "kind": "DDG",
+          "label": "({ p; })[0] = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "semantics.c",
+      "fullname": "strncat",
+      "nodes": [
+        0,
+        5,
+        1,
+        2,
+        3
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 5,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "DDG"
+        },
+        {
+          "source": 3,
+          "target": 5,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "semantics.c",
+      "fullname": "sink",
+      "nodes": [
+        0,
+        3,
+        1
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "semantics.c",
+      "fullname": "prototype",
+      "nodes": [
+        0,
+        4,
+        1,
+        2
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "lambda:int(int).<lambda>0",
+      "nodes": [
+        0,
+        8,
+        1,
+        3,
+        4
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 8,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x + y"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "x + y"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "y"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "c_semantics:int(int)",
+      "nodes": [
+        0,
+        10,
+        1,
+        3,
+        7,
+        8,
+        4
+      ],
+      "edges": [
+        {
+          "source": 7,
+          "target": 10,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 3,
+          "target": 10,
+          "kind": "DDG",
+          "label": "(void*)x"
+        },
+        {
+          "source": 3,
+          "target": 10,
+          "kind": "DDG",
+          "label": "free((void*)x)"
+        },
+        {
+          "source": 8,
+          "target": 10,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 8,
+          "target": 10,
+          "kind": "DDG",
+          "label": "abs(x)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 8,
+          "target": 7,
+          "kind": "DDG",
+          "label": "abs(x)"
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "N.abs:int(int)",
+      "nodes": [
+        0,
+        5,
+        1,
+        3,
+        4
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 5,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "N.n:int(int)",
+      "nodes": [
+        0,
+        6,
+        1,
+        3,
+        4
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 6,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 6,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 6,
+          "kind": "DDG",
+          "label": "abs(x)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "abs(x)"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "S.abs:int(int)",
+      "nodes": [
+        0,
+        6,
+        1,
+        2,
+        4,
+        5
+      ],
+      "edges": [
+        {
+          "source": 4,
+          "target": 6,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 6,
+          "kind": "DDG",
+          "label": "this"
+        },
+        {
+          "source": 2,
+          "target": 6,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 5,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "S.use:int(int)",
+      "nodes": [
+        0,
+        7,
+        1,
+        2,
+        4,
+        5
+      ],
+      "edges": [
+        {
+          "source": 4,
+          "target": 7,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 7,
+          "kind": "DDG",
+          "label": "this"
+        },
+        {
+          "source": 5,
+          "target": 7,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 5,
+          "target": 7,
+          "kind": "DDG",
+          "label": "abs(x)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 5,
+          "target": 4,
+          "kind": "DDG",
+          "label": "abs(x)"
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "method:int(S*,int)",
+      "nodes": [
+        0,
+        8,
+        1,
+        2,
+        4,
+        5
+      ],
+      "edges": [
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "s"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "DDG",
+          "label": "s->abs(x)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 5,
+          "target": 4,
+          "kind": "DDG",
+          "label": "s->abs(x)"
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "kind": "DDG",
+          "label": "s"
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "DDG",
+          "label": "x"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "q:int(int)",
+      "nodes": [
+        0,
+        6,
+        1,
+        3,
+        4
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 6,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 6,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 6,
+          "kind": "DDG",
+          "label": "N::abs(x)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "N::abs(x)"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "lambda:int(int)",
+      "nodes": [
+        0,
+        11,
+        1,
+        4,
+        7,
+        8,
+        9
+      ],
+      "edges": [
+        {
+          "source": 7,
+          "target": 11,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "f"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "f = [x](int y) { return x + y; }"
+        },
+        {
+          "source": 8,
+          "target": 11,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 8,
+          "target": 11,
+          "kind": "DDG",
+          "label": "f(x)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 8,
+          "target": 7,
+          "kind": "DDG",
+          "label": "f(x)"
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "aliases:int(int*,int)",
+      "nodes": [
+        0,
+        12,
+        1,
+        2,
+        4,
+        8
+      ],
+      "edges": [
+        {
+          "source": 8,
+          "target": 12,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 12,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "*p"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 12,
+          "kind": "DDG",
+          "label": "*p = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "offsets:int(int*,int)",
+      "nodes": [
+        0,
+        14,
+        1,
+        2,
+        4,
+        9,
+        11
+      ],
+      "edges": [
+        {
+          "source": 9,
+          "target": 14,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 14,
+          "kind": "DDG",
+          "label": "p[1]"
+        },
+        {
+          "source": 4,
+          "target": 14,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 14,
+          "kind": "DDG",
+          "label": "p[1] = x"
+        },
+        {
+          "source": 11,
+          "target": 14,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 11,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "p[1]"
+        },
+        {
+          "source": 0,
+          "target": 11,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "addr:int(int)",
+      "nodes": [
+        0,
+        7,
+        1,
+        3
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 7,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 7,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "ref:int(int &)",
+      "nodes": [
+        0,
+        11,
+        1,
+        4,
+        7,
+        9,
+        10
+      ],
+      "edges": [
+        {
+          "source": 9,
+          "target": 11,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "&y = x"
+        },
+        {
+          "source": 7,
+          "target": 11,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 7,
+          "target": 11,
+          "kind": "DDG",
+          "label": "y++"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 10,
+          "target": 9,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 7,
+          "kind": "DDG",
+          "label": "y"
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 10,
+          "kind": "DDG"
+        },
+        {
+          "source": 1,
+          "target": 10,
+          "kind": "DDG",
+          "label": "x"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "distinct:int(B,int)",
+      "nodes": [
+        0,
+        13,
+        1,
+        2,
+        4,
+        9
+      ],
+      "edges": [
+        {
+          "source": 9,
+          "target": 13,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 13,
+          "kind": "DDG",
+          "label": "b"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "b.a"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "b.a = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "structs:int(B,int)",
+      "nodes": [
+        0,
+        13,
+        1,
+        2,
+        4,
+        9
+      ],
+      "edges": [
+        {
+          "source": 9,
+          "target": 13,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 13,
+          "kind": "DDG",
+          "label": "b"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "b.a"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "b.a = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "unknown_index:int(int*,int,int,int)",
+      "nodes": [
+        0,
+        15,
+        1,
+        2,
+        3,
+        4,
+        6,
+        11
+      ],
+      "edges": [
+        {
+          "source": 11,
+          "target": 15,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 15,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 2,
+          "target": 15,
+          "kind": "DDG",
+          "label": "i"
+        },
+        {
+          "source": 3,
+          "target": 15,
+          "kind": "DDG",
+          "label": "j"
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "kind": "DDG",
+          "label": "p[i]"
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "kind": "DDG",
+          "label": "p[i] = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 6,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "constant_index:int(int*,int)",
+      "nodes": [
+        0,
+        13,
+        1,
+        2,
+        4,
+        9
+      ],
+      "edges": [
+        {
+          "source": 9,
+          "target": 13,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 13,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "p[0]"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "p[0] = x"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "abs:int(int)",
+      "nodes": [
+        0,
+        3,
+        1
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "extra.cpp",
+      "fullname": "free:void(void*)",
+      "nodes": [
+        0,
+        3,
+        1
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 3,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "builtins.c",
+      "fullname": "offset",
+      "nodes": [
+        0,
+        13,
+        1,
+        3,
+        4,
+        6,
+        9
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 13,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 1,
+          "target": 13,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "DDG",
+          "label": "__builtin_offsetof(struct Pair, y)"
+        },
+        {
+          "source": 6,
+          "target": 13,
+          "kind": "DDG",
+          "label": "size_t"
+        },
+        {
+          "source": 6,
+          "target": 13,
+          "kind": "DDG",
+          "label": "((Pair *)0)->y"
+        },
+        {
+          "source": 6,
+          "target": 13,
+          "kind": "DDG",
+          "label": "(size_t) & ((Pair *)0)->y"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "__builtin_offsetof(struct Pair, y)"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "builtins.c",
+      "fullname": "vararg",
+      "nodes": [
+        0,
+        11,
+        1,
+        3,
+        4,
+        8
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 11,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "kind": "DDG",
+          "label": "__builtin_va_arg(p, int)"
+        },
+        {
+          "source": 8,
+          "target": 11,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "__builtin_va_arg(p, int)"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "p"
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "builtins.c",
+      "fullname": "compatible",
+      "nodes": [
+        0,
+        15,
+        1,
+        3,
+        4,
+        6,
+        10,
+        13
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 15,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 15,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "kind": "DDG",
+          "label": "int"
+        },
+        {
+          "source": 4,
+          "target": 15,
+          "kind": "DDG",
+          "label": "__builtin_types_compatible_p(int, int)"
+        },
+        {
+          "source": 13,
+          "target": 15,
+          "kind": "DDG",
+          "label": "int"
+        },
+        {
+          "source": 10,
+          "target": 15,
+          "kind": "DDG",
+          "label": "__builtin_types_compatible_p(sizeof (int), sizeof (int))"
+        },
+        {
+          "source": 4,
+          "target": 15,
+          "kind": "DDG",
+          "label": "x + __builtin_types_compatible_p(int, int)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "x + __builtin_types_compatible_p(int, int)"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 6,
+          "target": 4,
+          "kind": "DDG",
+          "label": "int"
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "builtins.c",
+      "fullname": "transparent",
+      "nodes": [
+        0,
+        8,
+        1,
+        3,
+        4,
+        7
+      ],
+      "edges": [
+        {
+          "source": 3,
+          "target": 8,
+          "kind": "DDG",
+          "label": "<RET>"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "DDG",
+          "label": "__offsetof__(x)"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "DDG",
+          "label": "__offsetof__(x)"
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "x"
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "",
+      "fullname": ":-1:-1:__builtin_offsetof:2",
+      "nodes": [],
+      "edges": []
+    },
+    {
+      "filename": "",
+      "fullname": ":-1:-1:__builtin_va_arg:2",
+      "nodes": [
+        0,
+        3,
+        1
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 3,
+          "kind": "DDG",
+          "label": "p1"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "",
+      "fullname": ":-1:-1:__builtin_types_compatible_p:2",
+      "nodes": [
+        0,
+        4,
+        1,
+        2
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "DDG",
+          "label": "p1"
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "DDG",
+          "label": "p2"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "DDG"
+        }
+      ]
+    },
+    {
+      "filename": "",
+      "fullname": ":-1:-1:__offsetof__:1",
+      "nodes": [
+        0,
+        3,
+        1
+      ],
+      "edges": [
+        {
+          "source": 1,
+          "target": 3,
+          "kind": "DDG",
+          "label": "p1"
+        },
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "DDG"
+        }
+      ]
+    }
+  ]
+}

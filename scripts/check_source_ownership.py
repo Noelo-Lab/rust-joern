@@ -17,6 +17,7 @@ import time
 
 from compare_pyjoern import isomorphic
 from compare_decbench import cfg_option_contract
+from compare_native_corpus import freeze, read_frozen, source_fingerprints, unchanged
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -304,6 +305,8 @@ def main() -> int:
     parser.add_argument("--project", action="append", help="Bounded smoke scope; omit for all 513 binaries")
     parser.add_argument("--follow-abstract-origin", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--expected-core-sha256")
+    parser.add_argument("--build-provenance", type=Path)
+    parser.add_argument("--library", type=Path)
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text())
     dataset = args.dataset.resolve()
@@ -321,12 +324,26 @@ def main() -> int:
     sys.path.insert(0, manifest["decbench_root"])
     from decbench.utils.cfg import best_source_by_name
 
-    initial_core = core_sha256()
-    if args.expected_core_sha256 and initial_core != args.expected_core_sha256:
-        raise ValueError("Native source fingerprint differs from the requested frozen scope")
     generation_path = args.candidates / "summary.json"
     generation = json.loads(generation_path.read_text())
     expected_library = generation.get("native_library", {}).get("sha256")
+    guards = []
+    if args.build_provenance:
+        provenance_guard = freeze(args.build_provenance)
+        provenance = json.loads(read_frozen(provenance_guard))
+        initial_core, source_build_fingerprint, snapshot_files = source_fingerprints(Path(provenance["snapshot_root"]))
+        if (initial_core != provenance["native_source_sha256"]
+                or source_build_fingerprint != provenance["source_build_fingerprint"]
+                or expected_library != provenance["native_library"]["sha256"]):
+            raise ValueError("Ownership candidate generation differs from immutable build provenance")
+        library_guard = freeze(args.library or provenance["native_library"]["path"], expected_library)
+        guards = [provenance_guard, library_guard, *(freeze(path) for path in snapshot_files)]
+    else:
+        initial_core, source_build_fingerprint = core_sha256(), None
+        if args.library:
+            guards.append(freeze(args.library, expected_library))
+    if args.expected_core_sha256 and initial_core != args.expected_core_sha256:
+        raise ValueError("Native source fingerprint differs from the requested frozen scope")
     records, projects = [], []
     started = time.perf_counter()
     for (opt, project), binaries in sorted(groups.items()):
@@ -352,7 +369,9 @@ def main() -> int:
               f"{sum(r['named_functions'] for r in project_records)} functions; "
               f"{time.perf_counter() - project_started:.1f}s", flush=True)
         del maps, best, meta, selected, pool
-    final_core = core_sha256()
+    for guard in guards:
+        unchanged(guard)
+    final_core = source_fingerprints(Path(provenance["snapshot_root"]))[0] if args.build_provenance else core_sha256()
     report = {"schema_version": 1, "manifest": str(args.manifest.resolve()),
               "manifest_sha256": file_sha256(args.manifest),
               "published_manifest": str(published_path),
@@ -362,6 +381,9 @@ def main() -> int:
                         "expected_binaries": len(entries), "follow_abstract_origin": args.follow_abstract_origin,
                         "metric_excluded_tus_in_owner_maps": False},
               "native_source_sha256": initial_core, "native_source_unchanged": initial_core == final_core,
+              "source_build_fingerprint": source_build_fingerprint,
+              "snapshot_verified": bool(args.build_provenance),
+              "build_provenance": str(args.build_provenance.resolve()) if args.build_provenance else None,
               "candidate_native_library_sha256": expected_library,
               "reference_cfg_generation_seconds": None,
               "wall_seconds": time.perf_counter() - started,

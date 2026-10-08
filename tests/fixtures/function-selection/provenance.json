@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "generator": "Original public PyJoern4.0.150.4 / Joernv4.0.150",
+  "selection_contract": "FastParser emits last body per(FULL_NAME,FILENAME) at every original key occurrence; Function.from_many chooses largest CFG per(NAME,FILENAME), ties later; native frontend suppresses prototype/body duplicates.",
+  "audit": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/duplicate-selection-audit.json",
+    "sha256": "b2227e31f3991427fcc9fbae5945378828c7a0289551c588d75ae81347a62628"
+  },
+  "installed_original_files": {
+    "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200",
+    "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c"
+  },
+  "cases": {
+    "duplicate_selection.c": {
+      "source": "duplicate_selection.c",
+      "reference": "duplicate_selection.c.pyjoern.json",
+      "source_sha256": "fb1b50b973c4eb3e314030a968dd102aaca0cf599babedd252b998d908df31af",
+      "reference_sha256": "6a6d145c429e181ebb1726d19281c128481848182c6d990928296dbb64da7d5a",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_selection.c",
+      "original_reference": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_selection.c.public.pyjoern.json",
+      "original_fastparser_raw": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_selection.c.public.raw.json",
+        "sha256": "fa3a592590c5b96bb1511b72b0f232fa4e1cd65f6dbe83ef743b95d7904c544b"
+      }
+    },
+    "duplicate_selection.cpp": {
+      "source": "duplicate_selection.cpp",
+      "reference": "duplicate_selection.cpp.pyjoern.json",
+      "source_sha256": "73e444b08eb6fc0ff4b1d3558759105b0aed34dac20c8036dac9241a306d1cc3",
+      "reference_sha256": "fc6eb57d20305af20ad40b283dd7408fc7b8af1a7154eb80a0dd11a2a8a1036a",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_selection.cpp",
+      "original_reference": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_selection.cpp.public.pyjoern.json",
+      "original_fastparser_raw": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_selection.cpp.public.raw.json",
+        "sha256": "ab50c5aed21f339aa6b2cf94e99f4cc07060401a62f68b000fe7b06c18f95fac"
+      }
+    },
+    "duplicate_triplets.c": {
+      "source": "duplicate_triplets.c",
+      "reference": "duplicate_triplets.c.pyjoern.json",
+      "source_sha256": "b1b65730cc5b6d61df867eaa9714d81349af5b474d8e2298fdec0299a67bf47f",
+      "reference_sha256": "653cdde6e42822fb0272132deba6ce82d45ce0983b3e940e94ea72ca2bf1f7a2",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_triplets.c",
+      "original_reference": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_triplets.c.public.pyjoern.json",
+      "original_fastparser_raw": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_triplets.c.public.raw.json",
+        "sha256": "4179966e8a51e3a778d8fa5b388c67d8f8d5a8246bcab0f3ae840b37de037a82"
+      }
+    },
+    "duplicate_triplets.cpp": {
+      "source": "duplicate_triplets.cpp",
+      "reference": "duplicate_triplets.cpp.pyjoern.json",
+      "source_sha256": "b1b65730cc5b6d61df867eaa9714d81349af5b474d8e2298fdec0299a67bf47f",
+      "reference_sha256": "2e6df1d3e76a57d93f0970baa3fe6f42943f04653a4a5f241154d2aac40a7a51",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_triplets.cpp",
+      "original_reference": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_triplets.cpp.public.pyjoern.json",
+      "original_fastparser_raw": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/expression-parity/duplicate_triplets.cpp.public.raw.json",
+        "sha256": "0e90361d9a30e39bd23cbe504d1535653e598185d01db6db48eaf8de9c29f58e"
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "generator": "Original Joern4.0.150 (unmodified PyJoern4.0.150.4)",
+  "source_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "captured_at": "2026-10-08T03:36:10.646094+00:00",
+  "capture_script_sha256": "7820b7213c15e2cc5ad2e366946f7954cf2974f9e614f2488bdeb7cabfb189ad",
+  "snapshot_sha256": "9ae01a7aea836933391a777fa1a8b1a762971023301c95156beb5aa4ae3a64b4",
+  "referenced_cpg_snapshots": [
+    {
+      "file": "joern-4.0.150.json",
+      "sha256": "5d817e59f13d49ec337b90f37b995b9379bec9cfe73fb5e38ce9e8abd60ced2f"
+    },
+    {
+      "file": "joern-4.0.150-builtins.json",
+      "sha256": "b8ec7ad8c74d926c6ec4a37cc25ab7996c54e70eb5ed0ac75c6610bbc397fb3c"
+    }
+  ],
+  "source_files": [
+    {
+      "file": "flow.c",
+      "sha256": "1d533490cde5749ccc40d4c413ccf82608e10a7d25d65cdeed2e867e54e4d120",
+      "original_capture_sha256": "25511a9d826576c544c6e3ee834c013b26f6257489f8d292457924ef25e1b8b5"
+    },
+    {
+      "file": "semantics.c",
+      "sha256": "3166e781186ad5c6327652c17c0448cd8ada7e842750653cc4f5f832949c33af",
+      "original_capture_sha256": "066981d5794a8833082bcc63a34e7377df0ba1db4d2c0c20eade6e36fd6a43db"
+    },
+    {
+      "file": "extra.cpp",
+      "sha256": "e9a4042867bdc48013a75f93ec6b67ef9468180c6313c5655d3feae502051b3d",
+      "original_capture_sha256": "a56a2fecd67b977263202910d8956462bf83f82d16c4423722c6a1c703a565e2"
+    },
+    {
+      "file": "builtins.c",
+      "sha256": "3c88a36f55dba62224393dac68ab319f769522dd22240790f5ba1ee64834295c",
+      "original_capture_sha256": "8c7e224c429c2d5181066e10be04974ce9d53dae573277ccbc46ff1089b8e05a"
+    }
+  ],
+  "notes": [
+    "All60 graphs come from original DdgGenerator.generate(method); native output was not used to create or update reference expectations.",
+    "Projection node IDs reference immutable original CPG snapshots. Mapping asserts exact AST traversal sequence, kind, code, line, column and node count before replacing flatgraph IDs with snapshot local IDs.",
+    "The original generator can repeat a vertex; vertices are deduplicated while preserving first occurrence, matching DOT/NetworkX graph identity. Original DDG edges and non-empty variable labels are retained unchanged.",
+    "all_internal_methods is captured from original cpg.method.internal and includes prototypes and empty real definitions. EdgeValidator separately uses non-stub internal identities from the raw solver snapshot.",
+    "Recapture in an isolated unmodified Joern4.0.150 process with capture-ddg.sc target_dir=<one source file>. The raw capture also prints original DOT DDG for comparison with PyJoern normalization.",
+    "These are per-method projection tests. Cross-method closure/global propagation remains outside the intraprocedural solver contract."
+  ]
+}

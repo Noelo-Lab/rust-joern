@@ -1,5 +1,5 @@
 //! Tokens retain byte offsets into the original source; parsing never copies the input.
-use crate::syntax::{ParseDiagnostic, Span};
+use crate::syntax::{ParseDiagnostic, RetainedMacroCall, Span};
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -15,6 +15,20 @@ pub(crate) struct Token {
     pub span: Span,
 }
 
+#[derive(Clone, Debug)]
+pub(crate) struct RetainedMacroInvocation {
+    pub callee_end: usize,
+    pub descriptor: RetainedMacroCall,
+}
+
+#[derive(Clone)]
+struct MemberMacro<'a> {
+    name: &'a str,
+    definition: Span,
+    parameters: Vec<&'a str>,
+    receiver: &'a str,
+}
+
 #[cfg(test)]
 pub(crate) fn lex(source: &str) -> (Vec<Token>, Vec<ParseDiagnostic>) {
     lex_preprocessed(source, false)
@@ -26,10 +40,24 @@ pub(crate) fn lex_preprocessed(
     source: &str,
     preprocessed: bool,
 ) -> (Vec<Token>, Vec<ParseDiagnostic>) {
+    let (tokens, diagnostics, _) = lex_preprocessed_with_macros(source, preprocessed);
+    (tokens, diagnostics)
+}
+
+pub(crate) fn lex_preprocessed_with_macros(
+    source: &str,
+    preprocessed: bool,
+) -> (
+    Vec<Token>,
+    Vec<ParseDiagnostic>,
+    Vec<RetainedMacroInvocation>,
+) {
     let bytes = source.as_bytes();
     let mut tokens = Vec::with_capacity(source.len() / 5);
     let mut diagnostics = Vec::new();
     let mut macros = HashMap::new();
+    let mut member_macros = HashMap::new();
+    let mut macro_uses = Vec::new();
     let (mut at, mut line, mut column, mut line_start) = (0, 1, 1, true);
     while at < bytes.len() {
         let start = at;
@@ -105,13 +133,32 @@ pub(crate) fn lex_preprocessed(
                         {
                             Some("unexpected tokens after macro name in #undef")
                         } else {
-                            if !preprocessed {
-                                if keyword == "undef" || replacement.trim() == name {
-                                    macros.remove(name);
-                                } else {
-                                    // Whitespace before '(' distinguishes object-like macros.
-                                    macros.insert(name, replacement.starts_with('('));
+                            if preprocessed {
+                                member_macros.remove(name);
+                                if keyword == "define"
+                                    && let Some(definition) = retained_member_macro(
+                                        name,
+                                        replacement,
+                                        Span {
+                                            start,
+                                            end: at,
+                                            line: start_line,
+                                            column: start_column,
+                                            end_line: start_line
+                                                + directive_bytes
+                                                    .iter()
+                                                    .filter(|&&b| b == b'\n')
+                                                    .count(),
+                                        },
+                                    )
+                                {
+                                    member_macros.insert(name, definition);
                                 }
+                            } else if keyword == "undef" || replacement.trim() == name {
+                                macros.remove(name);
+                            } else {
+                                // Whitespace before '(' distinguishes object-like macros.
+                                macros.insert(name, replacement.starts_with('('));
                             }
                             None
                         }
@@ -249,6 +296,16 @@ pub(crate) fn lex_preprocessed(
             }
         }
         if !ignored {
+            if preprocessed
+                && kind == TokenKind::Identifier
+                && tokens.last().is_some_and(|token: &Token| {
+                    matches!(&source[token.span.start..token.span.end], "->" | ".")
+                })
+                && next_nontrivia_byte(bytes, at) == Some(b'(')
+                && let Some(definition) = member_macros.get(&source[start..at])
+            {
+                macro_uses.push((tokens.len(), definition.clone()));
+            }
             if !preprocessed
                 && kind == TokenKind::Identifier
                 && let Some(function_like) = macros.get(&source[start..at])
@@ -277,7 +334,151 @@ pub(crate) fn lex_preprocessed(
             });
         }
     }
-    (tokens, diagnostics)
+    let invocations = macro_uses
+        .into_iter()
+        .filter_map(|(index, definition)| {
+            retained_macro_invocation(source, &tokens, index, definition)
+        })
+        .collect();
+    (tokens, diagnostics, invocations)
+}
+
+/// A retained self-recursive member macro is already compiler-expanded. CDT
+/// re-expands its name under the original member prefix and attaches only the
+/// replacement receiver to an INLINED call. Keep that helper provenance without
+/// repeating the scanner's corruption of the executable expression.
+fn retained_member_macro<'a>(
+    name: &'a str,
+    replacement: &'a str,
+    definition: Span,
+) -> Option<MemberMacro<'a>> {
+    let bytes = replacement.as_bytes();
+    let mut at = 0;
+    while bytes.get(at..at + 2) == Some(b"\\\n")
+        || (bytes.get(at..at + 2) == Some(b"\\\r") && bytes.get(at + 2) == Some(&b'\n'))
+    {
+        at += if bytes.get(at + 1) == Some(&b'\r') {
+            3
+        } else {
+            2
+        };
+    }
+    if bytes.get(at) != Some(&b'(') {
+        return None;
+    }
+    at += 1;
+    let mut parameters = Vec::new();
+    loop {
+        at = skip_trivia(bytes, at);
+        if bytes.get(at) == Some(&b')') {
+            at += 1;
+            break;
+        }
+        let start = at;
+        if !bytes.get(at).is_some_and(|&b| identifier_start(b)) {
+            return None;
+        }
+        while bytes.get(at).is_some_and(|&b| identifier_byte(b)) {
+            at += 1;
+        }
+        parameters.push(&replacement[start..at]);
+        at = skip_trivia(bytes, at);
+        match bytes.get(at) {
+            Some(b',') => at += 1,
+            Some(b')') => {}
+            _ => return None, // Variadic arity requires a different scanner contract.
+        }
+    }
+    at = skip_trivia(bytes, at);
+    let start = at;
+    if !bytes.get(at).is_some_and(|&b| identifier_start(b)) {
+        return None;
+    }
+    while bytes.get(at).is_some_and(|&b| identifier_byte(b)) {
+        at += 1;
+    }
+    let receiver = &replacement[start..at];
+    loop {
+        at = skip_trivia(bytes, at);
+        at += match bytes.get(at..at + 2) {
+            Some(b"->") => 2,
+            _ if bytes.get(at) == Some(&b'.') => 1,
+            _ => return None,
+        };
+        at = skip_trivia(bytes, at);
+        let field = at;
+        if !bytes.get(at).is_some_and(|&b| identifier_start(b)) {
+            return None;
+        }
+        while bytes.get(at).is_some_and(|&b| identifier_byte(b)) {
+            at += 1;
+        }
+        if &replacement[field..at] == name && next_nontrivia_byte(bytes, at) == Some(b'(') {
+            return Some(MemberMacro {
+                name,
+                definition,
+                parameters,
+                receiver,
+            });
+        }
+    }
+}
+
+fn retained_macro_invocation(
+    source: &str,
+    tokens: &[Token],
+    index: usize,
+    definition: MemberMacro<'_>,
+) -> Option<RetainedMacroInvocation> {
+    let text = |i: usize| &source[tokens[i].span.start..tokens[i].span.end];
+    if tokens.get(index + 1).is_none() || text(index + 1) != "(" {
+        return None;
+    }
+    let mut arguments = Vec::new();
+    let (mut from, mut depth) = (index + 2, 0usize);
+    for i in index + 2..tokens.len() {
+        match text(i) {
+            ")" if depth == 0 => {
+                if from != i {
+                    arguments.push((from, i));
+                }
+                break;
+            }
+            "," if depth == 0 => {
+                arguments.push((from, i));
+                from = i + 1;
+            }
+            "(" | "[" | "{" | "<:" | "<%" => depth += 1,
+            ")" | "]" | "}" | ":>" | "%>" if depth > 0 => depth -= 1,
+            _ => {}
+        }
+    }
+    let identifier = |range: (usize, usize)| {
+        (range.1 == range.0 + 1 && tokens[range.0].kind == TokenKind::Identifier)
+            .then(|| text(range.0))
+    };
+    let receiver = match definition
+        .parameters
+        .iter()
+        .position(|&p| p == definition.receiver)
+    {
+        Some(parameter) => identifier(*arguments.get(parameter)?)?,
+        None => definition.receiver,
+    };
+    let parameter_count = arguments
+        .iter()
+        .take(definition.parameters.len())
+        .filter(|&&argument| identifier(argument) == Some(receiver))
+        .count();
+    Some(RetainedMacroInvocation {
+        callee_end: tokens[index].span.end,
+        descriptor: RetainedMacroCall {
+            name: definition.name.into(),
+            definition_span: definition.definition,
+            formal_arity: definition.parameters.len(),
+            parameter_count,
+        },
+    })
 }
 
 fn next_nontrivia_byte(bytes: &[u8], at: usize) -> Option<u8> {
@@ -401,6 +602,80 @@ mod tests {
     }
 
     #[test]
+    fn retained_macro_helpers_follow_active_definitions_and_cdt_argument_clones() {
+        let source = "#define one(value) env->ops->one(env, value)\n\
+            #define two(first, second) env->ops->two(env, first, second)\n\
+            void f(void) { env->ops->one(env, 5); env->ops->one(other, 5);\n\
+            env->ops->one((env), 5); env->ops->one(env + 1, 5);\n\
+            env->ops->two(env, 5, 6); env->ops->two(other, 5, 6); }\n\
+            #undef one\n\
+            void g(void) { env->ops->one(env, 5); }\n\
+            #define one(value) other->ops->one(other, value)\n\
+            void h(void) { env->ops->one(env, 5); }\n\
+            #define one 7\n\
+            void j(void) { env->ops->one(env, 5); }";
+        let (_, diagnostics, events) = lex_preprocessed_with_macros(source, true);
+        assert!(diagnostics.is_empty(), "{diagnostics:?}");
+        let summaries: Vec<_> = events
+            .iter()
+            .map(|event| {
+                let descriptor = &event.descriptor;
+                (
+                    descriptor.name.as_str(),
+                    descriptor.definition_span.line,
+                    descriptor.formal_arity,
+                    descriptor.parameter_count,
+                )
+            })
+            .collect();
+        assert_eq!(
+            summaries,
+            [
+                ("one", 1, 1, 1),
+                ("one", 1, 1, 0),
+                ("one", 1, 1, 0),
+                ("one", 1, 1, 0),
+                ("two", 2, 2, 1),
+                ("two", 2, 2, 0),
+                ("one", 8, 1, 0),
+            ]
+        );
+        assert!(
+            events
+                .windows(2)
+                .all(|pair| pair[0].callee_end < pair[1].callee_end)
+        );
+        for event in events {
+            assert!(source[..event.callee_end].ends_with(&event.descriptor.name));
+            assert!(source[event.descriptor.definition_span.start..].starts_with("#define"));
+        }
+    }
+
+    #[test]
+    fn retained_macro_arguments_use_tokens_and_keep_continued_definition_spans() {
+        let source = "#define relay(delay) dev->ops->\\\r\nrelay(dev,delay)\r\n\
+            void f(void) { dev->ops->relay(/* ignored */ dev, 5);\n\
+            dev->ops->relay(nested(dev, 1), 5);\n\
+            dev->ops->relay(\"dev,5\", 5); }\n\
+            #define receiver(input) input->ops->receiver(input, 5)\n\
+            void g(void) { dev->ops->receiver(dev, 6); }\n\
+            #define variadic(...) dev->ops->variadic(__VA_ARGS__)\n\
+            void h(void) { dev->ops->variadic(dev, 5); }";
+        let (_, diagnostics, events) = lex_preprocessed_with_macros(source, true);
+        assert!(diagnostics.is_empty(), "{diagnostics:?}");
+        assert_eq!(events.len(), 4);
+        assert_eq!(
+            events
+                .iter()
+                .map(|event| event.descriptor.parameter_count)
+                .collect::<Vec<_>>(),
+            [1, 0, 0, 1]
+        );
+        assert_eq!(events[0].descriptor.definition_span.line, 1);
+        assert_eq!(events[0].descriptor.definition_span.end_line, 2);
+    }
+
+    #[test]
     fn retained_macro_metadata_preserves_cfg_and_raw_macro_uses_fail_strictly() {
         use crate::{analyze, graph::Options};
 
@@ -416,11 +691,31 @@ mod tests {
         };
         let plain = analyze(expanded, "input.c", &options).unwrap();
         let retained = analyze(&prepared, "input.c", &options).unwrap();
-        assert_eq!(retained.functions.len(), 1);
+        let retained_f = retained.functions.iter().find(|f| f.name == "f").unwrap();
         assert_eq!(
             serde_json::to_value(&plain.functions[0].cfg).unwrap(),
-            serde_json::to_value(&retained.functions[0].cfg).unwrap()
+            serde_json::to_value(&retained_f.cfg).unwrap()
         );
+        let helper = retained
+            .functions
+            .iter()
+            .find(|f| f.name == "delayms")
+            .unwrap();
+        assert_eq!(helper.fullname, "input.c:1:1:delayms:1");
+        assert_eq!(helper.start_line, 1);
+        assert_eq!(helper.end_line, 1);
+        assert_eq!(
+            helper
+                .cpg
+                .nodes
+                .iter()
+                .filter(|node| node.kind == "METHOD_PARAMETER_IN")
+                .count(),
+            1
+        );
+        assert_eq!(helper.cfg.nodes.len(), 1);
+        assert!(helper.cfg.nodes[0].is_entrypoint);
+        assert!(!helper.cfg.nodes[0].is_exitpoint);
         let raw = Options {
             strict: true,
             ..Options::default()

@@ -149,12 +149,6 @@ def process_input(job: dict) -> dict:
     if analysis is not None:
         record["functions"] = candidate_functions(analysis)
         record["diagnostics"] = analysis.get("diagnostics", [])
-        # Selection metadata follows the same largest-CFG/later-tie rule.
-        for function in analysis["functions"]:
-            name = function["name"]
-            chosen = record["functions"].get(name)
-            if chosen and chosen["cfg"]["nodes"] == [block["id"] for block in function["cfg"]["nodes"]]:
-                chosen.update(start_line=function.get("start_line"), end_line=function.get("end_line"))
     normalization_seconds = time.perf_counter() - normalized_at
     record["timings" if not error else "fallback_timings"]["python_normalization_seconds"] = normalization_seconds
     record["timings"]["analysis_and_fallback_seconds"] = time.perf_counter() - started

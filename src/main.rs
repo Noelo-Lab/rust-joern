@@ -188,7 +188,7 @@ fn dot(analysis: &Analysis, kind: &str) -> String {
                 }
             }
             "ddg" => {
-                if let Some(ddg) = &function.ddg {
+                if let Some(ddg) = function.ddg_projection.as_ref().or(function.ddg.as_ref()) {
                     graph_dot(&mut output, &prefix, ddg);
                 }
             }

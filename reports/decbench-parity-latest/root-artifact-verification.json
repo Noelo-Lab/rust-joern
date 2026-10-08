@@ -1,0 +1,62 @@
+{
+  "root_native_source_sha256": "e492f0dd2b4c8dba279c523a1f7c3ba289090d54e91d0e9e5a140d1bf060be53",
+  "source_build_fingerprint": "69d9a4c8b426bb8be4288ea2f8d9c98aba0a297a7e1fe0a3840e5bf666009023",
+  "root_artifacts_byte_equal_frozen": true,
+  "cargo_fmt_check": true,
+  "checks": [
+    {
+      "language": "c",
+      "graph": "json",
+      "functions": 1,
+      "nodes": 16,
+      "cfg_blocks": 3
+    },
+    {
+      "language": "c",
+      "graph": "cfg",
+      "bytes": 301
+    },
+    {
+      "language": "c",
+      "graph": "ddg",
+      "bytes": 907
+    },
+    {
+      "language": "c",
+      "graph": "cpg",
+      "bytes": 1803
+    },
+    {
+      "language": "cpp",
+      "graph": "json",
+      "functions": 1,
+      "nodes": 16,
+      "cfg_blocks": 3
+    },
+    {
+      "language": "cpp",
+      "graph": "cfg",
+      "bytes": 310
+    },
+    {
+      "language": "cpp",
+      "graph": "ddg",
+      "bytes": 916
+    },
+    {
+      "language": "cpp",
+      "graph": "cpg",
+      "bytes": 1812
+    }
+  ],
+  "artifacts": {
+    "c.json": "e203c2b1818daeaa74ed0ce7cf472868e0e550b5400075c379d5100d776720be",
+    "c-cpg.dot": "83c693464f5ad6008257cb688a56e72602031bc51aece7096732f79fdb792e57",
+    "cpp-cpg.dot": "ad9d711295ae846963d75604c4aa318d33d48067ecb44513da6d02aeb08414ea",
+    "cpp-ddg.dot": "890054378b792b32c7d23fcc92caa14e92385c7ce66b30422f11cdebce4d621a",
+    "c-cfg.dot": "b4485fb1f4bb7100be8077af92c1e763540c67ec225491a4859f0f467a233252",
+    "c-ddg.dot": "ce6b53e06349cd4233dee711ab0a4fb9569d83fb46e1e4b87eab85e06617cb7b",
+    "cpp-cfg.dot": "d6a4588e28559e1b54f89990f27e9edeb082c163ee16c26a7b8f60ee5ebf1475",
+    "cpp.json": "0c4ccef80c4e7658ce7197ed723085c10d4201112c0cebe8175105a235ef1026"
+  }
+}

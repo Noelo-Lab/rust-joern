@@ -78,13 +78,18 @@ def reference_worker(python: str, config: dict, cwd: Path) -> dict:
 
 
 def candidate_functions(analysis: dict) -> dict:
+    """Replay FastParser export order, then Function.from_many selection."""
+    exported = {(function["fullname"], function["filename"]): function for function in analysis["functions"]}
     functions = {}
-    for function in analysis["functions"]:
+    for raw in analysis["functions"]:
+        function = exported[(raw["fullname"], raw["filename"])]
         name = function["name"]
+        filename = Path(function["filename"])
         cfg = function["cfg"]
-        if not name or name.startswith(BLACKLIST) or not cfg["nodes"]:
+        if not name or not filename or name.startswith(BLACKLIST) or not cfg["nodes"]:
             continue
-        previous = functions.get(name)
+        key = name, str(filename)
+        previous = functions.get(key)
         if previous and len(previous["cfg"]["nodes"]) > len(cfg["nodes"]):
             continue
         nops = {
@@ -101,8 +106,9 @@ def candidate_functions(analysis: dict) -> dict:
                 for node in cfg["nodes"] for stmt in node["statements"]
             ),
         }
-        functions[name] = {"name": name, "cfg": normalized}
-    return functions
+        functions[key] = {"name": name, "cfg": normalized,
+                          "start_line": function.get("start_line"), "end_line": function.get("end_line")}
+    return {name: function for (name, _), function in functions.items()}
 
 
 def role_graph(cfg: dict):

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "manifest": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/manifest.json",
+  "manifest_sha256": "986e297e6645d1a8172105312f3fd3214bac21412880869092248c6dbde3d956",
+  "published_manifest": "/home/mahaloz/github/decbench-dataset/configs/full/manifest.json",
+  "published_manifest_sha256": "b13b02242e329f4c9181008867b5a48ba055cb4181f319ecc4ee641c244e594e",
+  "results_root": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11",
+  "candidates": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/usage",
+  "scope": {
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "projects": null,
+    "expected_binaries": 513,
+    "follow_abstract_origin": true,
+    "metric_excluded_tus_in_owner_maps": false
+  },
+  "native_source_sha256": "e492f0dd2b4c8dba279c523a1f7c3ba289090d54e91d0e9e5a140d1bf060be53",
+  "native_source_unchanged": true,
+  "source_build_fingerprint": "69d9a4c8b426bb8be4288ea2f8d9c98aba0a297a7e1fe0a3840e5bf666009023",
+  "snapshot_verified": true,
+  "build_provenance": "/home/mahaloz/github/rust-joern/workspace/parity-rounds/round-08/build-provenance.json",
+  "candidate_native_library_sha256": "ae7bdb3584b8b36fdfd2ccb2b6e92dcfacd3acb4fc192df044effeebe71ff7b2",
+  "reference_cfg_generation_seconds": null,
+  "wall_seconds": 214.68035527900793,
+  "notes": [
+    "Real DecBench rebuild_cfg, best_source_by_name, resolved_source_for_binary and source_function_owners are used.",
+    "default_strict excludes every failed or diagnostic-bearing TU; permissive_fallback includes explicitly recorded fallback graphs.",
+    "Graph identity is a complete exact topology-and-role proof; other pairs use directed role-aware isomorphism, never size-only acceptance.",
+    "both_absent is baseline unavailability, not a recovered source-body success.",
+    "Published JSON is a secondary consistency check; TU hash-verified cached references remain authoritative.",
+    "Full source filenames determine TU insertion order and the winner of equal-rank cross-TU fallback ties.",
+    "DWARF read and owner resolution intervals are not CFG generation times.",
+    "Historical two-field candidate options and explicit preprocessed=True three-field options are counted separately; old parser support is not inferred."
+  ],
+  "summary": {
+    "binaries": 513,
+    "named_functions": 60704,
+    "binary_statuses": {
+      "ok": 513
+    },
+    "published_binary_hash_matches": 513,
+    "project_input_errors": 0,
+    "requested_option_contracts": {
+      "preprocessed_cfg_only": 7772
+    },
+    "reference_availability": {
+      "body": 57499,
+      "absent": 3205
+    },
+    "published_statuses": {
+      "match": 56725,
+      "extra": 2017,
+      "both_absent": 1188,
+      "topology_mismatch": 247,
+      "missing": 527
+    },
+    "profiles": {
+      "default_strict": {
+        "statuses": {
+          "match": 57499,
+          "both_absent": 3205
+        },
+        "reference_body_statuses": {
+          "match": 57499
+        },
+        "selected_tu_differences": 0
+      },
+      "permissive_fallback": {
+        "statuses": {
+          "match": 57499,
+          "both_absent": 3205
+        },
+        "reference_body_statuses": {
+          "match": 57499
+        },
+        "selected_tu_differences": 0
+      }
+    }
+  }
+}
