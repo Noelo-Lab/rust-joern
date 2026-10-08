@@ -1,0 +1,948 @@
+{
+  "schema_version": 1,
+  "scope": "Each listed public function is compared as an attributed directed graph and as a directed labeled multigraph against independently captured unchanged PyJoern. Counts denote per-input function instances; byte-identical inputs retained in the existing regression corpus are identified separately.",
+  "candidate_requirement": "All groups must replay one frozen native library and one frozen Python package; summary verifies candidate hashes.",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "groups": [
+    {
+      "name": "focused",
+      "report": "after.json",
+      "before_report": "before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references",
+      "inputs": [
+        {
+          "source": "tests/fixtures/control.c",
+          "reference": "tests/fixtures/ddg-parity/references/control.c.ddg.pyjoern.json",
+          "reference_sha256": "1a15b9d7a985740405e1e85c9b2c8f958e13ddebe298461816781b9336be69c1",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "152ae72deb90778dc488d0c5b5f54719c60fd0f5303ba395967d515223322392",
+          "prepared_sha256": "152ae72deb90778dc488d0c5b5f54719c60fd0f5303ba395967d515223322392",
+          "original_public_functions": 24
+        },
+        {
+          "source": "tests/fixtures/dataflow/builtins.c",
+          "reference": "tests/fixtures/ddg-parity/references/builtins.c.ddg.pyjoern.json",
+          "reference_sha256": "cdc3f9547789f27fe2d58da6b68ec31ce026745adc8fe88c77f3e3a3128290cc",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "3c88a36f55dba62224393dac68ab319f769522dd22240790f5ba1ee64834295c",
+          "prepared_sha256": "3c88a36f55dba62224393dac68ab319f769522dd22240790f5ba1ee64834295c",
+          "original_public_functions": 8
+        },
+        {
+          "source": "tests/fixtures/dataflow/extra.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/extra.cpp.ddg.pyjoern.json",
+          "reference_sha256": "c1cd22502ad795b0484143a8a7379b06d6a1d9d923a48e750917ef037442e631",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "e9a4042867bdc48013a75f93ec6b67ef9468180c6313c5655d3feae502051b3d",
+          "prepared_sha256": "e9a4042867bdc48013a75f93ec6b67ef9468180c6313c5655d3feae502051b3d",
+          "original_public_functions": 16
+        },
+        {
+          "source": "tests/fixtures/dataflow/flow.c",
+          "reference": "tests/fixtures/ddg-parity/references/flow.c.ddg.pyjoern.json",
+          "reference_sha256": "69e0d0169cfcacc6fd4ee9cb64b593a518631efc4a28325e7ee691385b29e166",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "1d533490cde5749ccc40d4c413ccf82608e10a7d25d65cdeed2e867e54e4d120",
+          "prepared_sha256": "1d533490cde5749ccc40d4c413ccf82608e10a7d25d65cdeed2e867e54e4d120",
+          "original_public_functions": 24
+        },
+        {
+          "source": "tests/fixtures/dataflow/semantics.c",
+          "reference": "tests/fixtures/ddg-parity/references/semantics.c.ddg.pyjoern.json",
+          "reference_sha256": "a5e3ad4a3c6dabd81fab3a1f95ea1eab65095d31f21bcec823fd5ef4314c4169",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "3166e781186ad5c6327652c17c0448cd8ada7e842750653cc4f5f832949c33af",
+          "prepared_sha256": "3166e781186ad5c6327652c17c0448cd8ada7e842750653cc4f5f832949c33af",
+          "original_public_functions": 9
+        },
+        {
+          "source": "tests/fixtures/ddg-parity/patterns.c",
+          "reference": "tests/fixtures/ddg-parity/references/patterns.c.ddg.pyjoern.json",
+          "reference_sha256": "444d86c8e21b3caeec7ecfb4763a78c33c46d48ec900e67f094c8a93a9778762",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "46c07bf6d2b4448a46587df60204eb43e21585fb29713451bebd271815eab569",
+          "prepared_sha256": "46c07bf6d2b4448a46587df60204eb43e21585fb29713451bebd271815eab569",
+          "original_public_functions": 30
+        },
+        {
+          "source": "tests/fixtures/ddg-parity/patterns.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/patterns.cpp.ddg.pyjoern.json",
+          "reference_sha256": "3abfc0c18202ae4269dc59ee570490e19f0eb0b9f2e1ffc5a7fcf3a646fd28b2",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "7e24fd062b65a415305c5af65ba12e38f64064c63621b4ad8d46bdf56c31f183",
+          "prepared_sha256": "7e24fd062b65a415305c5af65ba12e38f64064c63621b4ad8d46bdf56c31f183",
+          "original_public_functions": 21
+        },
+        {
+          "source": "tests/fixtures/decbench/bits.c",
+          "reference": "tests/fixtures/ddg-parity/references/bits.c.ddg.pyjoern.json",
+          "reference_sha256": "a64d6ed72bfee181af7d624d02eb960361c8103d19efbc0833c3711832f7bb3a",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "e410ee8ddbf80cb868a013642c66b17d0f34ba38a63b006950cfe4564ee6c53b",
+          "prepared_sha256": "e410ee8ddbf80cb868a013642c66b17d0f34ba38a63b006950cfe4564ee6c53b",
+          "original_public_functions": 51
+        },
+        {
+          "source": "tests/fixtures/decbench/libgzip_a-stripslash.c",
+          "reference": "tests/fixtures/ddg-parity/references/libgzip_a-stripslash.c.ddg.pyjoern.json",
+          "reference_sha256": "0994c713e7b51145d146bdedfee1dec6d86bf8a5121e1fab96f1d1e58aa57777",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "64b78dfcef070303e1138670790e850f796362daf16b4f42df259c9f02d053f6",
+          "prepared_sha256": "64b78dfcef070303e1138670790e850f796362daf16b4f42df259c9f02d053f6",
+          "original_public_functions": 14
+        },
+        {
+          "source": "tests/fixtures/expressions.c",
+          "reference": "tests/fixtures/ddg-parity/references/expressions.c.ddg.pyjoern.json",
+          "reference_sha256": "54ebdaa308edd21c68abd56cd772bc02d7ff8661c59e4e6e8e6e0bf67747f5b2",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "46f35341699f2bc4bd68512268019da5a74930a47abfdabb1e8ff0f3d25cb173",
+          "prepared_sha256": "46f35341699f2bc4bd68512268019da5a74930a47abfdabb1e8ff0f3d25cb173",
+          "original_public_functions": 16
+        },
+        {
+          "source": "tests/fixtures/functions.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/functions.cpp.ddg.pyjoern.json",
+          "reference_sha256": "88718b763f4f5a52a4e9aab3e08968b3bd3bc3f610cedc204f49ed57eb469281",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "39dcad051dce5080ea412b247d43d5911d1bda954486237f2d56703cce0d24c8",
+          "prepared_sha256": "39dcad051dce5080ea412b247d43d5911d1bda954486237f2d56703cce0d24c8",
+          "original_public_functions": 8
+        }
+      ],
+      "original_public_functions": 221
+    },
+    {
+      "name": "existing_regressions",
+      "report": "tier2-after.json",
+      "before_report": "tier2-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references/tier2",
+      "inputs": [
+        {
+          "source": "tests/fixtures/decbench-regressions/casted_indirect_call.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/casted_indirect_call.c.ddg.pyjoern.json",
+          "reference_sha256": "b1a4d1ecf42acbd1a1f545277ef2b63c97110a936a281e8cf78b74e54430d710",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "e43c2a00353ddf0b28288217b196eed5cfbe96b58c173b8c9f319b4406614fd8",
+          "prepared_sha256": "e43c2a00353ddf0b28288217b196eed5cfbe96b58c173b8c9f319b4406614fd8",
+          "original_public_functions": 1
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/cdt_builtin_controls_c.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/cdt_builtin_controls_c.c.ddg.pyjoern.json",
+          "reference_sha256": "99dc077ed45469d08b440df99105242607eda453ced01ce85889de897edf0d58",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+          "prepared_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+          "original_public_functions": 21
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/cdt_builtin_controls_cpp.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/cdt_builtin_controls_cpp.cpp.ddg.pyjoern.json",
+          "reference_sha256": "8aeeed5dd990545f3d2773a83672b30f751119fe1ef88fd06219536d324ce7d7",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+          "prepared_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+          "original_public_functions": 21
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/cpp_operator_declarations.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/cpp_operator_declarations.cpp.ddg.pyjoern.json",
+          "reference_sha256": "4852e4a8589159b26f1732faf1ae014d77baec118dee1c4febfe7f34cbc621f8",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "678fa4dc9d57bbbb1e6e642f1ea77cbce17238d1dcf1cc84e7a824d70d9eebc5",
+          "prepared_sha256": "678fa4dc9d57bbbb1e6e642f1ea77cbce17238d1dcf1cc84e7a824d70d9eebc5",
+          "original_public_functions": 3
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/cpp_operator_definitions.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/cpp_operator_definitions.cpp.ddg.pyjoern.json",
+          "reference_sha256": "70d97631587ab8b19c922675e43c81c62687ae5de5194c59b62aa16f4da9af3b",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "c10f47f7b7ff126fa418b43d9ff6ec4040a78bdc120fcb507ab479ceb1ef28e9",
+          "prepared_sha256": "c10f47f7b7ff126fa418b43d9ff6ec4040a78bdc120fcb507ab479ceb1ef28e9",
+          "original_public_functions": 3
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/empty_try.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/empty_try.cpp.ddg.pyjoern.json",
+          "reference_sha256": "530b236db9395cca6047afcf19b298dd88d196f5fbb1ed29de75c2940a505e82",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "85819af4dc5edeaab9172a9b0d9030dbbd7c5ce1cf203cd9704ec9bec0632a50",
+          "prepared_sha256": "85819af4dc5edeaab9172a9b0d9030dbbd7c5ce1cf203cd9704ec9bec0632a50",
+          "original_public_functions": 3
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/for_slots.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/for_slots.c.ddg.pyjoern.json",
+          "reference_sha256": "2aa70e2ffe3769f8ac781a55fcb97c2a105a455b3d3920b002b7275c1b5cc202",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "2dfc1f1846456de83b27920ca3f88512d1ad9d780a6246788fe34e0207fb85b3",
+          "prepared_sha256": "2dfc1f1846456de83b27920ca3f88512d1ad9d780a6246788fe34e0207fb85b3",
+          "original_public_functions": 8
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/global_qualification.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/global_qualification.c.ddg.pyjoern.json",
+          "reference_sha256": "ad1132661886121f4c3edcdb2b9b05c96d5d5e5be457c4f7982d25f5bc0b832e",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "48503386685c62694fae61bd4493123d8eaf549489fbfdbfd3965ec3506cea22",
+          "prepared_sha256": "48503386685c62694fae61bd4493123d8eaf549489fbfdbfd3965ec3506cea22",
+          "original_public_functions": 1
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/global_struct_initializer.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/global_struct_initializer.c.ddg.pyjoern.json",
+          "reference_sha256": "6ec31f94a7efcf80e0965b15782f2a83d08ead969578b6e91329682da40cbfa2",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "35fa60ff09f87e5ace0e46f70818b7c4321497b0946d93857afaf0df1d6b6aab",
+          "prepared_sha256": "35fa60ff09f87e5ace0e46f70818b7c4321497b0946d93857afaf0df1d6b6aab",
+          "original_public_functions": 1
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/gnu_assertions_c.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/gnu_assertions_c.c.ddg.pyjoern.json",
+          "reference_sha256": "43dfb5da7188ed0e6411390d352cb7c29be81c54e8d9d8bf4baf8113403ec033",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "0ffb4214cf1a9dc969961cfb9252cfd4e2f798c9c0e63893c20e91b18ffb967b",
+          "prepared_sha256": "0ffb4214cf1a9dc969961cfb9252cfd4e2f798c9c0e63893c20e91b18ffb967b",
+          "original_public_functions": 5
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/gnu_assertions_cpp.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/gnu_assertions_cpp.cpp.ddg.pyjoern.json",
+          "reference_sha256": "66a76b4ac63e475b5445fa2b9bbce593db09c06d0de54ad3284892e0b18da7e6",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "0ffb4214cf1a9dc969961cfb9252cfd4e2f798c9c0e63893c20e91b18ffb967b",
+          "prepared_sha256": "0ffb4214cf1a9dc969961cfb9252cfd4e2f798c9c0e63893c20e91b18ffb967b",
+          "original_public_functions": 5
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/gnu_builtins_c.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/gnu_builtins_c.c.ddg.pyjoern.json",
+          "reference_sha256": "6e2cc081ee9ddb47a4750bef738121c0ae709116b46be706e885dc4c72dfc748",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "8c23ab4f8618eaf4919c3a09ffe878bc6355b467ad01e8bc612bb5484286bc0b",
+          "prepared_sha256": "8c23ab4f8618eaf4919c3a09ffe878bc6355b467ad01e8bc612bb5484286bc0b",
+          "original_public_functions": 14
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/gnu_builtins_cpp.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/gnu_builtins_cpp.cpp.ddg.pyjoern.json",
+          "reference_sha256": "015f87c9cd94754fd81ce33c455b54eb65ec41f2e50b973ca9247297d8e21ccc",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "8c23ab4f8618eaf4919c3a09ffe878bc6355b467ad01e8bc612bb5484286bc0b",
+          "prepared_sha256": "8c23ab4f8618eaf4919c3a09ffe878bc6355b467ad01e8bc612bb5484286bc0b",
+          "original_public_functions": 14
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/gnu_inline_asm.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/gnu_inline_asm.c.ddg.pyjoern.json",
+          "reference_sha256": "199d8aeeadfcdada709428f4728da58e1309fbc2a5c38e0c4984bce3b31267df",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "c2f0580cee745c9811130d24d6a8d6e52059ffc57a0477046489e1884bc2720c",
+          "prepared_sha256": "c2f0580cee745c9811130d24d6a8d6e52059ffc57a0477046489e1884bc2720c",
+          "original_public_functions": 1
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/knr_const.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/knr_const.c.ddg.pyjoern.json",
+          "reference_sha256": "f5a0481b9dfad24d8ef56d71db9659ce5a9237cd4a0fc7888bd084af281d1dfc",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "5a13b9089e77313ba0095f7e832d16f8ceee695bc45549867d5ef30c942c8ea1",
+          "prepared_sha256": "5a13b9089e77313ba0095f7e832d16f8ceee695bc45549867d5ef30c942c8ea1",
+          "original_public_functions": 2
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/local_arrays_c.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/local_arrays_c.c.ddg.pyjoern.json",
+          "reference_sha256": "8d22348784d5665dc926928e547b80320f3c07970014329fd36318651b6b7b9e",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "85107e6ce38feed6eb6bb91ca44e2930510dcf47cddd873861b270e629334570",
+          "prepared_sha256": "85107e6ce38feed6eb6bb91ca44e2930510dcf47cddd873861b270e629334570",
+          "original_public_functions": 13
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/local_arrays_cpp.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/local_arrays_cpp.cpp.ddg.pyjoern.json",
+          "reference_sha256": "700807d6e775adbf778b7dab14812295eebac50f9cb96fac5fc546075c2c3406",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "85107e6ce38feed6eb6bb91ca44e2930510dcf47cddd873861b270e629334570",
+          "prepared_sha256": "85107e6ce38feed6eb6bb91ca44e2930510dcf47cddd873861b270e629334570",
+          "original_public_functions": 13
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/local_function_pointer_c.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/local_function_pointer_c.c.ddg.pyjoern.json",
+          "reference_sha256": "452d5bc628328311e20acc4f7d3993b34bca5f52cb89deea38e77f522ce3d2eb",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "549f5c518346915a7dc8f51fc1ae485b2e87531c6952a5ef0ab9f3165f2737c8",
+          "prepared_sha256": "549f5c518346915a7dc8f51fc1ae485b2e87531c6952a5ef0ab9f3165f2737c8",
+          "original_public_functions": 8
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/local_function_pointer_cpp.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/local_function_pointer_cpp.cpp.ddg.pyjoern.json",
+          "reference_sha256": "1b12c21085178d35b9dce8d4658376bf5994385e7065376d7b7a4636b1518982",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "549f5c518346915a7dc8f51fc1ae485b2e87531c6952a5ef0ab9f3165f2737c8",
+          "prepared_sha256": "549f5c518346915a7dc8f51fc1ae485b2e87531c6952a5ef0ab9f3165f2737c8",
+          "original_public_functions": 8
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/method_ref_lines.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/method_ref_lines.c.ddg.pyjoern.json",
+          "reference_sha256": "cec34b178f4c2de430a61d975ac3249ea32b068c757461f489bf404cb408f0e9",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "81bfdfb1c16fb6b1100b0c84f6cfc514a7723ec5c85e5a8891b7ea8c7d9deb5a",
+          "prepared_sha256": "81bfdfb1c16fb6b1100b0c84f6cfc514a7723ec5c85e5a8891b7ea8c7d9deb5a",
+          "original_public_functions": 6
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/microsoft_asm_block.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/microsoft_asm_block.c.ddg.pyjoern.json",
+          "reference_sha256": "450ca671180b822754375189b42c0497ce0f74968ba8e31a29cd87bb7d252e8e",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "2bd1fc9d45d7008c89fd0bf844d609a4af65d1290eb2d86d84e87633c658f177",
+          "prepared_sha256": "2bd1fc9d45d7008c89fd0bf844d609a4af65d1290eb2d86d84e87633c658f177",
+          "original_public_functions": 2
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/missing_goto_target.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/missing_goto_target.c.ddg.pyjoern.json",
+          "reference_sha256": "530ca1e31a9b2ad67ab96174e4c00c92473705453b688d59d9b3ebd5f3e960ea",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "f41bd873db939fdde08910d0b860c195cdb300d3684ebb1106df8d5d4adbaa97",
+          "prepared_sha256": "f41bd873db939fdde08910d0b860c195cdb300d3684ebb1106df8d5d4adbaa97",
+          "original_public_functions": 1
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/nested_designator.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/nested_designator.c.ddg.pyjoern.json",
+          "reference_sha256": "ba3c844795d2b5e061cdace80aeba7848c0d096c006facb3570130abbf1a5dc8",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "11e8b16ebae2f770e441509989e1409a62cb858cc2d80bd03a17170fa9e50d9b",
+          "prepared_sha256": "11e8b16ebae2f770e441509989e1409a62cb858cc2d80bd03a17170fa9e50d9b",
+          "original_public_functions": 1
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/nested_try.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/nested_try.cpp.ddg.pyjoern.json",
+          "reference_sha256": "0b81b46820471988804f2bfa824b9a4b2f8477c77451eb179ed32cb1badc2fd5",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "d92fc58ffe8ed6a69023d2e62023930ac58cd548c04439878fd5dd65afe69b05",
+          "prepared_sha256": "d92fc58ffe8ed6a69023d2e62023930ac58cd548c04439878fd5dd65afe69b05",
+          "original_public_functions": 2
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/qualified_names.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/qualified_names.cpp.ddg.pyjoern.json",
+          "reference_sha256": "cdcaf7cd9def81efecde9700576509a4bb401c09a706a5eff35a560dd2441664",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "4ba71e59638081f5dd5cbb45ca4b0cc347c7e73190b8625193ed5881a9784c13",
+          "prepared_sha256": "4ba71e59638081f5dd5cbb45ca4b0cc347c7e73190b8625193ed5881a9784c13",
+          "original_public_functions": 8
+        },
+        {
+          "source": "tests/fixtures/decbench-regressions/terminal_label.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/terminal_label.c.ddg.pyjoern.json",
+          "reference_sha256": "31c5d697e1ee3f007cd737d11585c7aa139c151cedfe12d3bde46d41f82a2fb1",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "412aeeb989111a48faf600643acb01ab7e2f9be891dfc8f8a2a067b5eebd1c33",
+          "prepared_sha256": "412aeeb989111a48faf600643acb01ab7e2f9be891dfc8f8a2a067b5eebd1c33",
+          "original_public_functions": 1
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/ambiguous_casts.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/ambiguous_casts.c.ddg.pyjoern.json",
+          "reference_sha256": "ed4e6d15a6a5227f4473b4d460e4a50f46c676c9e98ec668276f15b466018f7c",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "a8897b2ce13f19c70c168101a8206772303450749ecd862d317f70e66b9a0930",
+          "prepared_sha256": "a8897b2ce13f19c70c168101a8206772303450749ecd862d317f70e66b9a0930",
+          "original_public_functions": 9
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/ambiguous_casts.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/ambiguous_casts.cpp.ddg.pyjoern.json",
+          "reference_sha256": "8626257cca55e22fc0dbb13fe55c5daeb2c55be330569715fdccfecb31330295",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "a8897b2ce13f19c70c168101a8206772303450749ecd862d317f70e66b9a0930",
+          "prepared_sha256": "a8897b2ce13f19c70c168101a8206772303450749ecd862d317f70e66b9a0930",
+          "original_public_functions": 9
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/body_attributes.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/body_attributes.c.ddg.pyjoern.json",
+          "reference_sha256": "11923e6825932c659073814a256fdcc1aa58b06f97b1573fd0108dd2c6f029c1",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "db38d2ed01e0e27d6033bc8f726b3ef7af31c270d2d1a282bc04242354852918",
+          "prepared_sha256": "db38d2ed01e0e27d6033bc8f726b3ef7af31c270d2d1a282bc04242354852918",
+          "original_public_functions": 12
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/body_attributes.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/body_attributes.cpp.ddg.pyjoern.json",
+          "reference_sha256": "f2bbda6a153f35af9b1f947798f11d1d4f9b143fc4efe4f9de1b954e99515150",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "db38d2ed01e0e27d6033bc8f726b3ef7af31c270d2d1a282bc04242354852918",
+          "prepared_sha256": "db38d2ed01e0e27d6033bc8f726b3ef7af31c270d2d1a282bc04242354852918",
+          "original_public_functions": 12
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/cdt_builtin_controls.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/cdt_builtin_controls.c.ddg.pyjoern.json",
+          "reference_sha256": "b1b16425efc591c62bb27b0bdcb03f76ccbc6bad04e852a7e5c761d251cb1fa3",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+          "prepared_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+          "original_public_functions": 21
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/cdt_builtin_controls.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/cdt_builtin_controls.cpp.ddg.pyjoern.json",
+          "reference_sha256": "08a1f6efbb80f8063a86295b8d10bb9f8fb4903e9daaef6ba840d7f80854f31e",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+          "prepared_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+          "original_public_functions": 21
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/cdt_types_typeof.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/cdt_types_typeof.c.ddg.pyjoern.json",
+          "reference_sha256": "374e83e8a1fe80be26fa2f1afb67084396f50bdb0dc4c6868744a0eb66e8a280",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "16ceb84c38325f5f521a24364106bb9a2d5cbb8757452e4badfd541fbb4fc4bb",
+          "prepared_sha256": "16ceb84c38325f5f521a24364106bb9a2d5cbb8757452e4badfd541fbb4fc4bb",
+          "original_public_functions": 6
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/cdt_types_typeof.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/cdt_types_typeof.cpp.ddg.pyjoern.json",
+          "reference_sha256": "9e772c513737943f9aee5f530b60e10d541cd244d99813804c63a561c9bfc375",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "16ceb84c38325f5f521a24364106bb9a2d5cbb8757452e4badfd541fbb4fc4bb",
+          "prepared_sha256": "16ceb84c38325f5f521a24364106bb9a2d5cbb8757452e4badfd541fbb4fc4bb",
+          "original_public_functions": 6
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/microsoft_asm.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/microsoft_asm.c.ddg.pyjoern.json",
+          "reference_sha256": "16a823f589f9c1b0a9f005178e1b186be5affcad5b226117381ea4c03df40821",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "21245ca19215b0705b4c7eb4d73a4c1e1c47305b9d8284f346f1fff12fa51a98",
+          "prepared_sha256": "21245ca19215b0705b4c7eb4d73a4c1e1c47305b9d8284f346f1fff12fa51a98",
+          "original_public_functions": 8
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/microsoft_asm.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/microsoft_asm.cpp.ddg.pyjoern.json",
+          "reference_sha256": "e90f6648877d3e981b7c3ea4eb668d848aa1c8522d5c78b91724e36a6962c4c4",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "21245ca19215b0705b4c7eb4d73a4c1e1c47305b9d8284f346f1fff12fa51a98",
+          "prepared_sha256": "21245ca19215b0705b4c7eb4d73a4c1e1c47305b9d8284f346f1fff12fa51a98",
+          "original_public_functions": 8
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/qualification.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/qualification.c.ddg.pyjoern.json",
+          "reference_sha256": "c3468ba114a89737c0beaf461dca8b9f460aa2823d0607d3bf9379a6a916c815",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "4ba71e59638081f5dd5cbb45ca4b0cc347c7e73190b8625193ed5881a9784c13",
+          "prepared_sha256": "4ba71e59638081f5dd5cbb45ca4b0cc347c7e73190b8625193ed5881a9784c13",
+          "original_public_functions": 8
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/qualification_context.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/qualification_context.c.ddg.pyjoern.json",
+          "reference_sha256": "ba2777424e1bdcc25e2b7b2733fcaa5e42804241f04beb7bfa52126fff4f7c9a",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "f4511c903aa5fc5850cfa82de0ae2490a2dd6de0c79335fcf42f5d1a482c292c",
+          "prepared_sha256": "f4511c903aa5fc5850cfa82de0ae2490a2dd6de0c79335fcf42f5d1a482c292c",
+          "original_public_functions": 10
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/qualification_if_recovery.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/qualification_if_recovery.c.ddg.pyjoern.json",
+          "reference_sha256": "1f8477f93b3e24ff0123ee5452bc6c47558b8b18f4a1dd9c564a32aca65404ca",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "34a57bbbd30f0831b21af7efce594f17ff7b4025172f49be6c2ed2c83c8ccc8c",
+          "prepared_sha256": "34a57bbbd30f0831b21af7efce594f17ff7b4025172f49be6c2ed2c83c8ccc8c",
+          "original_public_functions": 8
+        },
+        {
+          "source": "tests/fixtures/parser-recovery/qualification_scalar_recovery.c",
+          "reference": "tests/fixtures/ddg-parity/references/tier2/qualification_scalar_recovery.c.ddg.pyjoern.json",
+          "reference_sha256": "f7788a2fcfe12c1002c7f92dfd51446a905d7cd5960c97e2e206699189960b92",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "998ede435d78a08d5927e87f4316654f97da4aed1473c723d23bc28c7e8abf2c",
+          "prepared_sha256": "998ede435d78a08d5927e87f4316654f97da4aed1473c723d23bc28c7e8abf2c",
+          "original_public_functions": 10
+        }
+      ],
+      "original_public_functions": 314
+    },
+    {
+      "name": "decbench_compiled",
+      "report": "decbench-compiled-after.json",
+      "before_report": "decbench-compiled-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references/decbench",
+      "inputs": [
+        {
+          "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/bash/compiled/mbschr.i",
+          "reference": "tests/fixtures/ddg-parity/references/decbench/mbschr.i.ddg.pyjoern.json",
+          "reference_sha256": "97c9ccb5762c00b067586819442cadf2209c97960ae52a0d668a55d9b132f383",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "af2b5d3a8af7695577476209966795239a5b0900f1862c2116c7bcc22c0844fb",
+          "prepared_sha256": "19cc10f0c87baec3da2859abb8aad556ebab648604fdb8e6932b2f0571bdd395",
+          "original_public_functions": 8
+        },
+        {
+          "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/nuttx/compiled/libxx_dynamic_cast.ii",
+          "reference": "tests/fixtures/ddg-parity/references/decbench/libxx_dynamic_cast.ii.ddg.pyjoern.json",
+          "reference_sha256": "d6a0ab97bd33087b51f7cf293a19b8f6fd08db7aa025ff2faad3b15cbbefa81a",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "748005c23cf06c886bbf3be51d986c6c923bcba4b85351393b8163030b87dbf0",
+          "prepared_sha256": "6ac69d3a97225c5c1ec28f8a59623676306c6f496bf5204d944a17c1a469464e",
+          "original_public_functions": 20
+        },
+        {
+          "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/nuttx/compiled/libxx_typeinfo.ii",
+          "reference": "tests/fixtures/ddg-parity/references/decbench/libxx_typeinfo.ii.ddg.pyjoern.json",
+          "reference_sha256": "bac7662bb641c96c33c4771ab372f147882477a26e342565dbbe0f060d4a87e5",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "8b0d0b7c0cf3ccc9b73fd7c9761e9b54dc2b2101fea607df97fde048653229d4",
+          "prepared_sha256": "0f200dd7a82441de8fb7603da91781e8cad4b5a447d882b03d63ebac3d2caf7e",
+          "original_public_functions": 20
+        }
+      ],
+      "original_public_functions": 48,
+      "decbench": "/home/mahaloz/github/decbench"
+    },
+    {
+      "name": "decbench_decompiled",
+      "report": "decbench-decompiled-after.json",
+      "before_report": "decbench-decompiled-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references/decbench",
+      "inputs": [
+        {
+          "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/coreutils/decompiled/ida_libstdbuf.c",
+          "reference": "tests/fixtures/ddg-parity/references/decbench/ida_libstdbuf.c.ddg.pyjoern.json",
+          "reference_sha256": "19fbf330f727eb4b726898a1d5e878d6ff351a3e4e0c7e1f30e7a938cad3da11",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "74ade60015f785c6cb7c5115bb857a9d780bc829a141c85f9f6ba4659ab0665f",
+          "prepared_sha256": "74ade60015f785c6cb7c5115bb857a9d780bc829a141c85f9f6ba4659ab0665f",
+          "original_public_functions": 3
+        },
+        {
+          "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/shadow/decompiled/kuna_groups.c",
+          "reference": "tests/fixtures/ddg-parity/references/decbench/kuna_groups.c.ddg.pyjoern.json",
+          "reference_sha256": "f6a26d4906ed9fdb05c49217c1494c78f9773cb358c3473803a66071907d4a3a",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "a1ce407d95dc0e95b87d1884ba215773f128571a42e467ab076b0011d149ad42",
+          "prepared_sha256": "a1ce407d95dc0e95b87d1884ba215773f128571a42e467ab076b0011d149ad42",
+          "original_public_functions": 2
+        },
+        {
+          "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O2/sysvinit/decompiled/ida_fstab-decode.c",
+          "reference": "tests/fixtures/ddg-parity/references/decbench/ida_fstab-decode.c.ddg.pyjoern.json",
+          "reference_sha256": "3c4f75b90e46a13c0e955aaa3b342c252c9121508cc71316336d8b7f1af2c41d",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "f9e57174f34622f2d8503182b70ec7fea80fc2dc626a5454e65af7c3fa3b51c6",
+          "prepared_sha256": "f9e57174f34622f2d8503182b70ec7fea80fc2dc626a5454e65af7c3fa3b51c6",
+          "original_public_functions": 1
+        }
+      ],
+      "original_public_functions": 6,
+      "decbench": "/home/mahaloz/github/decbench",
+      "sanitize_decompiled": true
+    },
+    {
+      "name": "audit_types",
+      "report": "audit-types-after.json",
+      "before_report": "audit-types-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references/audit-types",
+      "inputs": [
+        {
+          "source": "tests/fixtures/dataflow-audit/type-detail.c",
+          "reference": "tests/fixtures/ddg-parity/references/audit-types/type-detail.c.ddg.pyjoern.json",
+          "reference_sha256": "cc06353a9e18b28e0b86b88ef9e2d78e437b291d1fcaf6ebd03abfbe2ff5c4bd",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "47c8cd4f85251f322f11f98f91f04f8f15a992b834fa46fa3e8c754979165a4e",
+          "prepared_sha256": "47c8cd4f85251f322f11f98f91f04f8f15a992b834fa46fa3e8c754979165a4e",
+          "original_public_functions": 27
+        },
+        {
+          "source": "tests/fixtures/dataflow-audit/type-detail.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/audit-types/type-detail.cpp.ddg.pyjoern.json",
+          "reference_sha256": "f594817af02103fc36189b88b4b8b53bca6c286f5e6affef9e7bdd62a2f9490d",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "be2bfb9dfc56add8e1ddaa2da37d75889029d2e6ec610051144be5692135db30",
+          "prepared_sha256": "be2bfb9dfc56add8e1ddaa2da37d75889029d2e6ec610051144be5692135db30",
+          "original_public_functions": 28
+        },
+        {
+          "source": "tests/fixtures/dataflow-audit/type-metadata.c",
+          "reference": "tests/fixtures/ddg-parity/references/audit-types/type-metadata.c.ddg.pyjoern.json",
+          "reference_sha256": "d857b64ec5379aaaa30b6aff6a7c6ef1fe165bfaf047e635cf21ce275fda73cf",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "23c2c29fc8f92fa0fff813d77c47fd4cc08cc0676c2b0bc68e6cdfa19f1bb032",
+          "prepared_sha256": "23c2c29fc8f92fa0fff813d77c47fd4cc08cc0676c2b0bc68e6cdfa19f1bb032",
+          "original_public_functions": 25
+        },
+        {
+          "source": "tests/fixtures/dataflow-audit/type-metadata.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/audit-types/type-metadata.cpp.ddg.pyjoern.json",
+          "reference_sha256": "39f64521ac12ec07e0f758c0ec9cb82d1bb780b3be94a40672ca43f97ce69738",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "d05fbc4a101f5baf88a06e96d99cde58129731ca60a0bf1c0aa575bf166b5f9f",
+          "prepared_sha256": "d05fbc4a101f5baf88a06e96d99cde58129731ca60a0bf1c0aa575bf166b5f9f",
+          "original_public_functions": 28
+        }
+      ],
+      "original_public_functions": 108
+    },
+    {
+      "name": "audit_sources",
+      "report": "audit-sources-after.json",
+      "before_report": "audit-sources-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references/audit-sources",
+      "inputs": [
+        {
+          "source": "tests/fixtures/dataflow-audit/context.c",
+          "reference": "tests/fixtures/ddg-parity/references/audit-sources/context.c.ddg.pyjoern.json",
+          "reference_sha256": "ae872b4dda3d5e7a855bca79f34593d24e2f79a480c845d9973f3492b41e05d1",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "5acdf158632639d139e34553fcd542f7356298bcd0091e19a9708622a0433388",
+          "prepared_sha256": "5acdf158632639d139e34553fcd542f7356298bcd0091e19a9708622a0433388",
+          "original_public_functions": 10
+        },
+        {
+          "source": "tests/fixtures/dataflow-audit/context.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/audit-sources/context.cpp.ddg.pyjoern.json",
+          "reference_sha256": "fe52b44f712ad1f0f6ddd14c1f085afcfd4746451062bb955de763ef2b77cdba",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "044ee196565c610b578ec9c18e32ef3b99b2183840bb97dfcef116ab1dfbcd00",
+          "prepared_sha256": "044ee196565c610b578ec9c18e32ef3b99b2183840bb97dfcef116ab1dfbcd00",
+          "original_public_functions": 16
+        },
+        {
+          "source": "tests/fixtures/dataflow-audit/control.c",
+          "reference": "tests/fixtures/ddg-parity/references/audit-sources/control.c.ddg.pyjoern.json",
+          "reference_sha256": "4a0cab94a05e4ea83bfae959ac3345e2bc492c0a12cb309c5c0d75fedf481eba",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "69a02728736b0e92b205b0b3b7fb138e9c3a7a8904e55eb7d0931413643b7842",
+          "prepared_sha256": "69a02728736b0e92b205b0b3b7fb138e9c3a7a8904e55eb7d0931413643b7842",
+          "original_public_functions": 14
+        },
+        {
+          "source": "tests/fixtures/dataflow-audit/cpp_calls.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/audit-sources/cpp_calls.cpp.ddg.pyjoern.json",
+          "reference_sha256": "e5e28fec7df525d97488efdca6c03487d3701b0f6f21a06e04ff26b28d6e3c15",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "fdc8356e9e55dc567c7e1d8c5e077f14a63be2080fe43dd28599a73abbadca0a",
+          "prepared_sha256": "fdc8356e9e55dc567c7e1d8c5e077f14a63be2080fe43dd28599a73abbadca0a",
+          "original_public_functions": 16
+        },
+        {
+          "source": "tests/fixtures/dataflow-audit/globals.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/audit-sources/globals.cpp.ddg.pyjoern.json",
+          "reference_sha256": "9b12410f1d0cf01ae70231a5da4e04c1e245dbd0d86bfebb3a253801cc794390",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "946f1bf51e9f9284f824921b28bb3ceb7a9ce859d8cb6628031753d31c0cc1e0",
+          "prepared_sha256": "946f1bf51e9f9284f824921b28bb3ceb7a9ce859d8cb6628031753d31c0cc1e0",
+          "original_public_functions": 5
+        },
+        {
+          "source": "tests/fixtures/dataflow-audit/operators.c",
+          "reference": "tests/fixtures/ddg-parity/references/audit-sources/operators.c.ddg.pyjoern.json",
+          "reference_sha256": "ff0e7d311a8d0cef6aa6cc610fc7abe9304fdfa30cc4828c39522a852f9c56c1",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "f4610dabf02a07bc88b6d23aeca75056fba47c56a6c6b9081fee66ac60bf29c6",
+          "prepared_sha256": "f4610dabf02a07bc88b6d23aeca75056fba47c56a6c6b9081fee66ac60bf29c6",
+          "original_public_functions": 13
+        }
+      ],
+      "original_public_functions": 74
+    },
+    {
+      "name": "directory_context",
+      "report": "directory-after.json",
+      "before_report": "directory-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references/directory",
+      "inputs": [
+        {
+          "source": "tests/fixtures/ddg-directory",
+          "reference": "tests/fixtures/ddg-parity/references/directory/ddg-directory.ddg.pyjoern.json",
+          "reference_sha256": "340d2cec3a9a7b45c490040568ead1c565cbe2c9d62a94b6806dd012aaf7bb02",
+          "input_kind": "directory",
+          "language": "mixed_directory",
+          "source_sha256": "0d73d282c993806b30241d12c3fe076f9c932a64c161e35c0a3c20537575e776",
+          "prepared_sha256": "0d73d282c993806b30241d12c3fe076f9c932a64c161e35c0a3c20537575e776",
+          "original_public_functions": 2
+        }
+      ],
+      "original_public_functions": 2
+    },
+    {
+      "name": "directory_paths",
+      "report": "directory-paths-after.json",
+      "before_report": "directory-paths-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references/directory",
+      "inputs": [
+        {
+          "source": "tests/fixtures/ddg-parity/directory_paths",
+          "reference": "tests/fixtures/ddg-parity/references/directory/directory_paths.ddg.pyjoern.json",
+          "reference_sha256": "d03840809e72598563a49238e5b098aa03fe3951348cd9e2347ac39bbc79c153",
+          "input_kind": "directory",
+          "language": "mixed_directory",
+          "source_sha256": "56484fc764df7af27dca35e23f8d808aa17f962765ff795b9c7dc26ea316b06a",
+          "prepared_sha256": "56484fc764df7af27dca35e23f8d808aa17f962765ff795b9c7dc26ea316b06a",
+          "original_public_functions": 4
+        }
+      ],
+      "original_public_functions": 4
+    },
+    {
+      "name": "comma_conditions",
+      "report": "comma-conditions-after.json",
+      "before_report": "comma-conditions-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references",
+      "inputs": [
+        {
+          "source": "tests/fixtures/ddg-parity/comma-conditions.c",
+          "reference": "tests/fixtures/ddg-parity/references/comma-conditions.c.ddg.pyjoern.json",
+          "reference_sha256": "8b51b67bf52f6f1a88d98bbdd38922bada0d9223caf6aea9b8e1c6aa29a4aa76",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "271edcb00734c0f4e8e38a49f05a7316aa24bac6591f1bb60d18b29b392fca9b",
+          "prepared_sha256": "271edcb00734c0f4e8e38a49f05a7316aa24bac6591f1bb60d18b29b392fca9b",
+          "original_public_functions": 6
+        }
+      ],
+      "original_public_functions": 6
+    },
+    {
+      "name": "global_macro_discovery",
+      "report": "global-macros-after.json",
+      "before_report": "global-macros-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references",
+      "inputs": [
+        {
+          "source": "tests/fixtures/ddg-parity/global-macros.c",
+          "reference": "tests/fixtures/ddg-parity/references/global-macros.c.ddg.pyjoern.json",
+          "reference_sha256": "129329b415964f0e916f2bf1ee70a33fa98745053711e29f973683b9398fd268",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "4e575c85d1b153a997d1d80d04172ef9bb5c7bf3eea3f00a4295041476155228",
+          "prepared_sha256": "4e575c85d1b153a997d1d80d04172ef9bb5c7bf3eea3f00a4295041476155228",
+          "original_public_functions": 3
+        }
+      ],
+      "original_public_functions": 3
+    },
+    {
+      "name": "cpp_classes",
+      "report": "classes-after.json",
+      "before_report": "classes-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-classes/references",
+      "inputs": [
+        {
+          "source": "tests/fixtures/ddg-classes/constructors.cpp",
+          "reference": "tests/fixtures/ddg-classes/references/constructors.cpp.ddg.pyjoern.json",
+          "reference_sha256": "03520ff5b7c53923b597381ed95bb90815a3675b8c8b2fe1198f601c189185bb",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "83ddeaef679424a22882bdf151233fdac6cbe06845f4a454aedbdc0e0b1e4643",
+          "prepared_sha256": "83ddeaef679424a22882bdf151233fdac6cbe06845f4a454aedbdc0e0b1e4643",
+          "original_public_functions": 4
+        },
+        {
+          "source": "tests/fixtures/ddg-classes/using-namespace.cpp",
+          "reference": "tests/fixtures/ddg-classes/references/using-namespace.cpp.ddg.pyjoern.json",
+          "reference_sha256": "a784ea8d32be3c8b0b1ff518d1abfce77ef2d1c9795ed7495e305cc1c467323d",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "0f4f6e9aa05bcb5428fa00595c3389cd938f2089720a3d398edd415a2740effc",
+          "prepared_sha256": "0f4f6e9aa05bcb5428fa00595c3389cd938f2089720a3d398edd415a2740effc",
+          "original_public_functions": 6
+        }
+      ],
+      "original_public_functions": 10
+    },
+    {
+      "name": "cpp_lambdas_fields_pointers",
+      "report": "lambdas-after.json",
+      "before_report": "lambdas-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-lambdas/references",
+      "inputs": [
+        {
+          "source": "tests/fixtures/ddg-lambdas/lambdas.cpp",
+          "reference": "tests/fixtures/ddg-lambdas/references/lambdas.cpp.ddg.pyjoern.json",
+          "reference_sha256": "df9d2e6b36e10b9b897eec7422be09457ab9d1f8d8f9f9da8c40a3a0b04e05f8",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "a668ecdd3030372582235a4b6675756f7017ee4852f0208d40eedb60329c13ba",
+          "prepared_sha256": "a668ecdd3030372582235a4b6675756f7017ee4852f0208d40eedb60329c13ba",
+          "original_public_functions": 11
+        },
+        {
+          "source": "tests/fixtures/ddg-lambdas/fields.cpp",
+          "reference": "tests/fixtures/ddg-lambdas/references/fields.cpp.ddg.pyjoern.json",
+          "reference_sha256": "db3cfe3a68e29a7191440926d65a2b5afc6145903946a1424c7926a4d6200ce2",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "17497d40fb69aa965868368538fddaf1f282bbd7cb0197aa6e2b6bb69a6f0002",
+          "prepared_sha256": "17497d40fb69aa965868368538fddaf1f282bbd7cb0197aa6e2b6bb69a6f0002",
+          "original_public_functions": 7
+        },
+        {
+          "source": "tests/fixtures/ddg-lambdas/method-pointers.cpp",
+          "reference": "tests/fixtures/ddg-lambdas/references/method-pointers.cpp.ddg.pyjoern.json",
+          "reference_sha256": "4a58cf52ab7f1644613881c9d8255eec5b4c9fc2252990821c2697a137e8252f",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "3315d86361bae1950fe1a8e2cef82e48d3e544dbc025cf8f066700a62106cd1a",
+          "prepared_sha256": "3315d86361bae1950fe1a8e2cef82e48d3e544dbc025cf8f066700a62106cd1a",
+          "original_public_functions": 3
+        },
+        {
+          "source": "tests/fixtures/ddg-lambdas/namespaced-fields.cpp",
+          "reference": "tests/fixtures/ddg-lambdas/references/namespaced-fields.cpp.ddg.pyjoern.json",
+          "reference_sha256": "ef8c16352a1096efd28f31ec7134c4848da54faba8e39b8c15d3ec446937036b",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "f7741ffe988ea71efafa80fc0fab3f5472dda4c20a2d2f901745c428753e2822",
+          "prepared_sha256": "f7741ffe988ea71efafa80fc0fab3f5472dda4c20a2d2f901745c428753e2822",
+          "original_public_functions": 5
+        }
+      ],
+      "original_public_functions": 26
+    },
+    {
+      "name": "audit_assignments_construction",
+      "report": "audit-extensions-after.json",
+      "before_report": "audit-extensions-before.json.gz",
+      "reference_dir": "tests/fixtures/ddg-parity/references/audit-extensions",
+      "inputs": [
+        {
+          "source": "tests/fixtures/dataflow-audit/assignment-operators.c",
+          "reference": "tests/fixtures/ddg-parity/references/audit-extensions/assignment-operators.c.ddg.pyjoern.json",
+          "reference_sha256": "117a27c1053027e131436055d011c5f0cc07821d8b952d6a20a2ec365a2729a8",
+          "input_kind": "file",
+          "language": "c",
+          "source_sha256": "d5f09429ce67a81792871f649e193543f6ba19e0dc6abb4b0aee9886438d42a8",
+          "prepared_sha256": "d5f09429ce67a81792871f649e193543f6ba19e0dc6abb4b0aee9886438d42a8",
+          "original_public_functions": 10
+        },
+        {
+          "source": "tests/fixtures/dataflow-audit/constructors.cpp",
+          "reference": "tests/fixtures/ddg-parity/references/audit-extensions/constructors.cpp.ddg.pyjoern.json",
+          "reference_sha256": "6b6bd123b77245c6149116f686cec538e80b0635cca48df94f2a567eed703a12",
+          "input_kind": "file",
+          "language": "cpp",
+          "source_sha256": "19ac6a60f3df027142dc06a94fcc3caff3f6114f0eb19a89a5322d48f82e76d0",
+          "prepared_sha256": "19ac6a60f3df027142dc06a94fcc3caff3f6114f0eb19a89a5322d48f82e76d0",
+          "original_public_functions": 9
+        }
+      ],
+      "original_public_functions": 19
+    }
+  ],
+  "file_inputs": 77,
+  "directory_inputs": 2,
+  "original_public_function_instances": 841,
+  "unique_prepared_input_contexts": 77,
+  "original_functions_in_unique_prepared_contexts": 799,
+  "duplicate_prepared_input_contexts": [
+    {
+      "prepared_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+      "language": "c",
+      "sources": [
+        "tests/fixtures/decbench-regressions/cdt_builtin_controls_c.c",
+        "tests/fixtures/parser-recovery/cdt_builtin_controls.c"
+      ],
+      "public_functions_per_input": 21
+    },
+    {
+      "prepared_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+      "language": "cpp",
+      "sources": [
+        "tests/fixtures/decbench-regressions/cdt_builtin_controls_cpp.cpp",
+        "tests/fixtures/parser-recovery/cdt_builtin_controls.cpp"
+      ],
+      "public_functions_per_input": 21
+    }
+  ]
+}

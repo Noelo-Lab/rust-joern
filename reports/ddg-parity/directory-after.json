@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "scope": "per-file original Function.ddg plus directed labeled dotDdg; statement identities and multiplicity preserved",
+  "candidate_library": "/tmp/ddg-final-replay-6u47qqxc/librust_joern.so",
+  "candidate_library_sha256": "bbcc9029052314789b11ced7f495c0d63841112f59ae2ca46a569b739a1c76a6",
+  "candidate_package": "/tmp/ddg-final-replay-6u47qqxc/python",
+  "candidate_python_sha256": {
+    "rust_joern/__init__.py": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce"
+  },
+  "candidate_timing_kind": "parse_source_plus_lazy_ddg_materialization",
+  "seconds": 0.4708284679800272,
+  "requested_files": 1,
+  "completed_files": 1,
+  "files": [
+    {
+      "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/ddg-directory",
+      "source_inputs": [
+        {
+          "filename": "body.c",
+          "sha256": "36e3f02b296286d9653fa35d15e6754b0f0369ce7401bf9eb86557ea896e453a",
+          "bytes": 46
+        },
+        {
+          "filename": "caller.c",
+          "sha256": "327d1e1a80832d160cf4ea503f34e3eb2df153c23ac60e2e6f4fd95086e9297d",
+          "bytes": 97
+        }
+      ],
+      "prepared_inputs": [
+        {
+          "filename": "body.c",
+          "sha256": "36e3f02b296286d9653fa35d15e6754b0f0369ce7401bf9eb86557ea896e453a",
+          "bytes": 46
+        },
+        {
+          "filename": "caller.c",
+          "sha256": "327d1e1a80832d160cf4ea503f34e3eb2df153c23ac60e2e6f4fd95086e9297d",
+          "bytes": 97
+        }
+      ],
+      "source_sha256": "0d73d282c993806b30241d12c3fe076f9c932a64c161e35c0a3c20537575e776",
+      "prepared_sha256": "0d73d282c993806b30241d12c3fe076f9c932a64c161e35c0a3c20537575e776",
+      "language": "mixed_directory",
+      "input_kind": "directory",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 9.55287092702929,
+        "supplemental_raw_parse_seconds": 9.754219294060022
+      },
+      "candidate_seconds": 0.014630649937316775,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.013358038966543972,
+        "ddg_materialization_seconds": 0.0012726109707728028
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-k_mju7ej/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 2,
+      "candidate_functions": 2,
+      "matched": 2,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "[\"caller\",\"caller.c\"]",
+          "name": "caller",
+          "filename": "caller.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 14,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 14,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "[\"external_body\",\"body.c\"]",
+          "name": "external_body",
+          "filename": "body.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

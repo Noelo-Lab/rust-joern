@@ -1,0 +1,3221 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 15.311379474005662,
+    "supplemental_raw_parse_seconds": 13.557400271994993
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "comma_assertion": {
+      "name": "comma_assertion",
+      "fullname": "comma_assertion",
+      "filename": "gnu_assertions_c.c",
+      "start_line": 2,
+      "end_line": 4,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 2,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,comma_assertion",
+                    "source_line_number": 2,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 2,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['expressionList', '(void)sizeof(x?1:0)', '__extension__({if(x...']>",
+                  "fields": {
+                    "raw_text": [
+                      "expressionList",
+                      "(void)sizeof(x?1:0)",
+                      "__extension__({if(x..."
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "x ? x : ?",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,x?1:0",
+                    "source_line_number": 3,
+                    "cond": "x",
+                    "true": "x",
+                    "false": "?"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "g()",
+                  "fields": {
+                    "raw_text": "g,g()",
+                    "source_line_number": 3,
+                    "func": "g",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['bracketedPrimary', '((void)sizeof(x?1:0)', '__extension__({if(...']>",
+                  "fields": {
+                    "raw_text": [
+                      "bracketedPrimary",
+                      "((void)sizeof(x?1:0)",
+                      "__extension__({if(..."
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void",
+                    "source_line_number": 2,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(x?1:0)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(x?1:0)"
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 2,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,comma_assertion",
+                    "source_line_number": 2,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 2,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['expressionList', '(void)sizeof(x?1:0)', '__extension__({if(x...']>",
+                  "fields": {
+                    "raw_text": [
+                      "expressionList",
+                      "(void)sizeof(x?1:0)",
+                      "__extension__({if(x..."
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "x ? x : ?",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,x?1:0",
+                    "source_line_number": 3,
+                    "cond": "x",
+                    "true": "x",
+                    "false": "?"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "g()",
+                  "fields": {
+                    "raw_text": "g,g()",
+                    "source_line_number": 3,
+                    "func": "g",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['bracketedPrimary', '((void)sizeof(x?1:0)', '__extension__({if(...']>",
+                  "fields": {
+                    "raw_text": [
+                      "bracketedPrimary",
+                      "((void)sizeof(x?1:0)",
+                      "__extension__({if(..."
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void",
+                    "source_line_number": 2,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(x?1:0)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(x?1:0)"
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,comma_assertion)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,void)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(<operator>.bracketedPrimary,((void)sizeof(x ? 1 : 0), __extension__ ({ if (...)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.expressionList,(void)sizeof(x ? 1 : 0), __extension__ ({ if (x...)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(<operator>.sizeOf,sizeof(x ? 1 : 0))<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,if (x))<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.conditional,x ? 1 : 0)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(g,g())<SUB>3</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "(void)sizeof(x ? 1 : 0), __extension__ ({ if (x) ; else g(); })"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "((void)sizeof(x ? 1 : 0), __extension__ ({ if (x) ; else g(); }))"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "(void)sizeof(x ? 1 : 0)"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "(void)sizeof(x ? 1 : 0)"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "{ if (x) ; else g(); }"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "x ? 1 : 0"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "g()"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"comma_assertion\" {  \n\"111669149697\" [label = <(METHOD,comma_assertion)<SUB>2</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,void)<SUB>2</SUB>> ]\n\"115964116992\" [label = <(PARAM,int x)<SUB>2</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0), __extension__ ({ if (...)<SUB>3</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0), __extension__ ({ if (...)<SUB>3</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0), __extension__ ({ if (x...)<SUB>3</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0), __extension__ ({ if (x...)<SUB>3</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.sizeOf,sizeof(x ? 1 : 0))<SUB>3</SUB>> ]\n\"68719476737\" [label = <(IDENTIFIER,x,if (x))<SUB>3</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>3</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>3</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>3</SUB>> ]\n\"30064771077\" [label = <(g,g())<SUB>3</SUB>> ]\n  \"30064771076\" -> \"128849018880\"  [ label = \"x\"] \n  \"30064771075\" -> \"128849018880\"  [ label = \"x ? 1 : 0\"] \n  \"30064771073\" -> \"128849018880\"  [ label = \"(void)sizeof(x ? 1 : 0)\"] \n  \"30064771077\" -> \"128849018880\"  [ label = \"g()\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"(void)sizeof(x ? 1 : 0), __extension__ ({ if (x) ; else g(); })\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"((void)sizeof(x ? 1 : 0), __extension__ ({ if (x) ; else g(); }))\"] \n  \"111669149697\" -> \"115964116992\" \n  \"30064771073\" -> \"30064771072\"  [ label = \"(void)sizeof(x ? 1 : 0)\"] \n  \"30064771073\" -> \"30064771072\"  [ label = \"{ if (x) ; else g(); }\"] \n  \"111669149697\" -> \"30064771073\" \n  \"111669149697\" -> \"68719476737\" \n  \"111669149697\" -> \"30064771076\" \n  \"111669149697\" -> \"30064771077\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"comma_assertion\" {  \n\"30064771072\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0), __extension__ ({ if (...)<SUB>3</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0), __extension__ ({ if (x...)<SUB>3</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.cast,(void)sizeof(x ? 1 : 0))<SUB>3</SUB>> ]\n\"184683593728\" [label = <(UNKNOWN,void,void)<SUB>3</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.sizeOf,sizeof(x ? 1 : 0))<SUB>3</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>3</SUB>> ]\n\"68719476737\" [label = <(IDENTIFIER,x,if (x))<SUB>3</SUB>> ]\n\"30064771077\" [label = <(g,g())<SUB>3</SUB>> ]\n\"111669149697\" [label = <(METHOD,comma_assertion)<SUB>2</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,void)<SUB>2</SUB>> ]\n  \"30064771072\" -> \"128849018880\" \n  \"30064771073\" -> \"30064771072\" \n  \"30064771074\" -> \"68719476737\" \n  \"184683593728\" -> \"30064771076\" \n  \"30064771075\" -> \"30064771074\" \n  \"30064771076\" -> \"30064771075\" \n  \"68719476737\" -> \"30064771077\" \n  \"68719476737\" -> \"30064771073\" \n  \"30064771077\" -> \"30064771073\" \n  \"111669149697\" -> \"184683593728\" \n}\n"
+      ]
+    },
+    "comma_assertion_return": {
+      "name": "comma_assertion_return",
+      "fullname": "comma_assertion_return",
+      "filename": "gnu_assertions_c.c",
+      "start_line": 5,
+      "end_line": 9,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 5,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,comma_assertion_return",
+                    "source_line_number": 5,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 5,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 8
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "x ? x : ?",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,x?1:0",
+                    "source_line_number": 6,
+                    "cond": "x",
+                    "true": "x",
+                    "false": "?"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "g()",
+                  "fields": {
+                    "raw_text": "g,g()",
+                    "source_line_number": 7,
+                    "func": "g",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 5,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 8,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(x?1:0)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(x?1:0)"
+                    ],
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 5,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,comma_assertion_return",
+                    "source_line_number": 5,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 5,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 8
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "x ? x : ?",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,x?1:0",
+                    "source_line_number": 6,
+                    "cond": "x",
+                    "true": "x",
+                    "false": "?"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "g()",
+                  "fields": {
+                    "raw_text": "g,g()",
+                    "source_line_number": 7,
+                    "func": "g",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 5,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 8,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(x?1:0)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(x?1:0)"
+                    ],
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,comma_assertion_return)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(<operator>.bracketedPrimary,((void)sizeof(x ? 1 : 0),\n        __extension__...)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(RETURN,return x;,return x;)<SUB>8</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,return x;)<SUB>8</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.expressionList,(void)sizeof(x ? 1 : 0),\n        __extension__ ...)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.sizeOf,sizeof(x ? 1 : 0))<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,if (x))<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.conditional,x ? 1 : 0)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(g,g())<SUB>7</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "(void)sizeof(x ? 1 : 0),\n        __extension__ ({ if (x) ; else g(); })"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "((void)sizeof(x ? 1 : 0),\n        __extension__ ({ if (x) ; else g(); }))"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": "x"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "(void)sizeof(x ? 1 : 0)"
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "label": "(void)sizeof(x ? 1 : 0)"
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "label": "{ if (x) ; else g(); }"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "x ? 1 : 0"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "g()"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"comma_assertion_return\" {  \n\"111669149698\" [label = <(METHOD,comma_assertion_return)<SUB>5</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>5</SUB>> ]\n\"115964116993\" [label = <(PARAM,int x)<SUB>5</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0),\n        __extension__...)<SUB>6</SUB>> ]\n\"146028888064\" [label = <(RETURN,return x;,return x;)<SUB>8</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0),\n        __extension__...)<SUB>6</SUB>> ]\n\"68719476740\" [label = <(IDENTIFIER,x,return x;)<SUB>8</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0),\n        __extension__ ...)<SUB>6</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0),\n        __extension__ ...)<SUB>6</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.sizeOf,sizeof(x ? 1 : 0))<SUB>6</SUB>> ]\n\"68719476739\" [label = <(IDENTIFIER,x,if (x))<SUB>7</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>6</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>6</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>6</SUB>> ]\n\"30064771083\" [label = <(g,g())<SUB>7</SUB>> ]\n  \"146028888064\" -> \"128849018881\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771082\" -> \"128849018881\"  [ label = \"x\"] \n  \"30064771081\" -> \"128849018881\"  [ label = \"x ? 1 : 0\"] \n  \"30064771079\" -> \"128849018881\"  [ label = \"(void)sizeof(x ? 1 : 0)\"] \n  \"30064771083\" -> \"128849018881\"  [ label = \"g()\"] \n  \"30064771078\" -> \"128849018881\"  [ label = \"(void)sizeof(x ? 1 : 0),\n        __extension__ ({ if (x) ; else g(); })\"] \n  \"30064771078\" -> \"128849018881\"  [ label = \"((void)sizeof(x ? 1 : 0),\n        __extension__ ({ if (x) ; else g(); }))\"] \n  \"111669149698\" -> \"115964116993\" \n  \"68719476740\" -> \"146028888064\"  [ label = \"x\"] \n  \"30064771079\" -> \"30064771078\"  [ label = \"(void)sizeof(x ? 1 : 0)\"] \n  \"30064771079\" -> \"30064771078\"  [ label = \"{ if (x) ; else g(); }\"] \n  \"111669149698\" -> \"68719476740\" \n  \"111669149698\" -> \"30064771079\" \n  \"111669149698\" -> \"68719476739\" \n  \"111669149698\" -> \"30064771082\" \n  \"111669149698\" -> \"30064771083\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"comma_assertion_return\" {  \n\"30064771078\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0),\n        __extension__...)<SUB>6</SUB>> ]\n\"146028888064\" [label = <(RETURN,return x;,return x;)<SUB>8</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0),\n        __extension__ ...)<SUB>6</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.cast,(void)sizeof(x ? 1 : 0))<SUB>6</SUB>> ]\n\"184683593729\" [label = <(UNKNOWN,void,void)<SUB>6</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.sizeOf,sizeof(x ? 1 : 0))<SUB>6</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>6</SUB>> ]\n\"68719476739\" [label = <(IDENTIFIER,x,if (x))<SUB>7</SUB>> ]\n\"30064771083\" [label = <(g,g())<SUB>7</SUB>> ]\n\"111669149698\" [label = <(METHOD,comma_assertion_return)<SUB>5</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>5</SUB>> ]\n  \"30064771078\" -> \"146028888064\" \n  \"146028888064\" -> \"128849018881\" \n  \"30064771079\" -> \"30064771078\" \n  \"30064771080\" -> \"68719476739\" \n  \"184683593729\" -> \"30064771082\" \n  \"30064771081\" -> \"30064771080\" \n  \"30064771082\" -> \"30064771081\" \n  \"68719476739\" -> \"30064771083\" \n  \"68719476739\" -> \"30064771079\" \n  \"30064771083\" -> \"30064771079\" \n  \"111669149698\" -> \"184683593729\" \n}\n"
+      ]
+    },
+    "comma_assertion_if": {
+      "name": "comma_assertion_if",
+      "fullname": "comma_assertion_if",
+      "filename": "gnu_assertions_c.c",
+      "start_line": 10,
+      "end_line": 13,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 10,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,comma_assertion_if",
+                    "source_line_number": 10,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 10,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 12
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['expressionList', '(void)sizeof(x?1:0)', '__extension__({if(x...']>",
+                  "fields": {
+                    "raw_text": [
+                      "expressionList",
+                      "(void)sizeof(x?1:0)",
+                      "__extension__({if(x..."
+                    ],
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "x ? x : ?",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,x?1:0",
+                    "source_line_number": 11,
+                    "cond": "x",
+                    "true": "x",
+                    "false": "?"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "g()",
+                  "fields": {
+                    "raw_text": "g,g()",
+                    "source_line_number": 11,
+                    "func": "g",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 10,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 12,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['bracketedPrimary', '((void)sizeof(x?1:0)', '__extension__({if(...']>",
+                  "fields": {
+                    "raw_text": [
+                      "bracketedPrimary",
+                      "((void)sizeof(x?1:0)",
+                      "__extension__({if(..."
+                    ],
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(x?1:0)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(x?1:0)"
+                    ],
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 8,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 10,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,comma_assertion_if",
+                    "source_line_number": 10,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 10,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 12
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['expressionList', '(void)sizeof(x?1:0)', '__extension__({if(x...']>",
+                  "fields": {
+                    "raw_text": [
+                      "expressionList",
+                      "(void)sizeof(x?1:0)",
+                      "__extension__({if(x..."
+                    ],
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "x ? x : ?",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,x?1:0",
+                    "source_line_number": 11,
+                    "cond": "x",
+                    "true": "x",
+                    "false": "?"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "g()",
+                  "fields": {
+                    "raw_text": "g,g()",
+                    "source_line_number": 11,
+                    "func": "g",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 10,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 12,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['bracketedPrimary', '((void)sizeof(x?1:0)', '__extension__({if(...']>",
+                  "fields": {
+                    "raw_text": [
+                      "bracketedPrimary",
+                      "((void)sizeof(x?1:0)",
+                      "__extension__({if(..."
+                    ],
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(x?1:0)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(x?1:0)"
+                    ],
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 8,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,comma_assertion_if)<SUB>10</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>10</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>10</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return x;,return x;)<SUB>12</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,if (x))<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,return x;)<SUB>12</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.bracketedPrimary,((void)sizeof(x ? 1 : 0), __extension__ ({ if (...)<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.expressionList,(void)sizeof(x ? 1 : 0), __extension__ ({ if (x...)<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.sizeOf,sizeof(x ? 1 : 0))<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,if (x))<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.conditional,x ? 1 : 0)<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(g,g())<SUB>11</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "label": "x"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "(void)sizeof(x ? 1 : 0), __extension__ ({ if (x) ; else g(); })"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "((void)sizeof(x ? 1 : 0), __extension__ ({ if (x) ; else g(); }))"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "(void)sizeof(x ? 1 : 0)"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": "(void)sizeof(x ? 1 : 0)"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": "{ if (x) ; else g(); }"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "x ? 1 : 0"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "g()"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"comma_assertion_if\" {  \n\"111669149699\" [label = <(METHOD,comma_assertion_if)<SUB>10</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>10</SUB>> ]\n\"115964116994\" [label = <(PARAM,int x)<SUB>10</SUB>> ]\n\"146028888065\" [label = <(RETURN,return x;,return x;)<SUB>12</SUB>> ]\n\"68719476741\" [label = <(IDENTIFIER,x,if (x))<SUB>11</SUB>> ]\n\"68719476744\" [label = <(IDENTIFIER,x,return x;)<SUB>12</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0), __extension__ ({ if (...)<SUB>11</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0), __extension__ ({ if (...)<SUB>11</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0), __extension__ ({ if (x...)<SUB>11</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0), __extension__ ({ if (x...)<SUB>11</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.sizeOf,sizeof(x ? 1 : 0))<SUB>11</SUB>> ]\n\"68719476743\" [label = <(IDENTIFIER,x,if (x))<SUB>11</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>11</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>11</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>11</SUB>> ]\n\"30064771089\" [label = <(g,g())<SUB>11</SUB>> ]\n  \"146028888065\" -> \"128849018882\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116994\" -> \"128849018882\"  [ label = \"x\"] \n  \"30064771088\" -> \"128849018882\"  [ label = \"x\"] \n  \"30064771087\" -> \"128849018882\"  [ label = \"x ? 1 : 0\"] \n  \"30064771085\" -> \"128849018882\"  [ label = \"(void)sizeof(x ? 1 : 0)\"] \n  \"30064771089\" -> \"128849018882\"  [ label = \"g()\"] \n  \"30064771084\" -> \"128849018882\"  [ label = \"(void)sizeof(x ? 1 : 0), __extension__ ({ if (x) ; else g(); })\"] \n  \"30064771084\" -> \"128849018882\"  [ label = \"((void)sizeof(x ? 1 : 0), __extension__ ({ if (x) ; else g(); }))\"] \n  \"111669149699\" -> \"115964116994\" \n  \"68719476744\" -> \"146028888065\"  [ label = \"x\"] \n  \"111669149699\" -> \"68719476741\" \n  \"115964116994\" -> \"68719476744\"  [ label = \"x\"] \n  \"111669149699\" -> \"68719476744\" \n  \"30064771085\" -> \"30064771084\"  [ label = \"(void)sizeof(x ? 1 : 0)\"] \n  \"30064771085\" -> \"30064771084\"  [ label = \"{ if (x) ; else g(); }\"] \n  \"111669149699\" -> \"30064771085\" \n  \"111669149699\" -> \"68719476743\" \n  \"111669149699\" -> \"30064771088\" \n  \"111669149699\" -> \"30064771089\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"comma_assertion_if\" {  \n\"146028888065\" [label = <(RETURN,return x;,return x;)<SUB>12</SUB>> ]\n\"68719476741\" [label = <(IDENTIFIER,x,if (x))<SUB>11</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0), __extension__ ({ if (...)<SUB>11</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0), __extension__ ({ if (x...)<SUB>11</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.cast,(void)sizeof(x ? 1 : 0))<SUB>11</SUB>> ]\n\"184683593730\" [label = <(UNKNOWN,void,void)<SUB>11</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.sizeOf,sizeof(x ? 1 : 0))<SUB>11</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>11</SUB>> ]\n\"68719476743\" [label = <(IDENTIFIER,x,if (x))<SUB>11</SUB>> ]\n\"30064771089\" [label = <(g,g())<SUB>11</SUB>> ]\n\"111669149699\" [label = <(METHOD,comma_assertion_if)<SUB>10</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>10</SUB>> ]\n  \"146028888065\" -> \"128849018882\" \n  \"68719476741\" -> \"184683593730\" \n  \"68719476741\" -> \"146028888065\" \n  \"30064771084\" -> \"146028888065\" \n  \"30064771085\" -> \"30064771084\" \n  \"30064771086\" -> \"68719476743\" \n  \"184683593730\" -> \"30064771088\" \n  \"30064771087\" -> \"30064771086\" \n  \"30064771088\" -> \"30064771087\" \n  \"68719476743\" -> \"30064771089\" \n  \"68719476743\" -> \"30064771085\" \n  \"30064771089\" -> \"30064771085\" \n  \"111669149699\" -> \"68719476741\" \n}\n"
+      ]
+    },
+    "comma_assertion_missing_return": {
+      "name": "comma_assertion_missing_return",
+      "fullname": "comma_assertion_missing_return",
+      "filename": "gnu_assertions_c.c",
+      "start_line": 14,
+      "end_line": 17,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 14,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,comma_assertion_missing_return",
+                    "source_line_number": 14,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 14,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "x ? x : ?",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,x?1:0",
+                    "source_line_number": 15,
+                    "cond": "x",
+                    "true": "x",
+                    "false": "?"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "g()",
+                  "fields": {
+                    "raw_text": "g,g()",
+                    "source_line_number": 16,
+                    "func": "g",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 14,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(x?1:0)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(x?1:0)"
+                    ],
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 14,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,comma_assertion_missing_return",
+                    "source_line_number": 14,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 14,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,if(x)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,if(x)",
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "x ? x : ?",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,x?1:0",
+                    "source_line_number": 15,
+                    "cond": "x",
+                    "true": "x",
+                    "false": "?"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "g()",
+                  "fields": {
+                    "raw_text": "g,g()",
+                    "source_line_number": 16,
+                    "func": "g",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 14,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(x?1:0)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(x?1:0)"
+                    ],
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,comma_assertion_missing_return)<SUB>14</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>14</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>14</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,if (x))<SUB>15</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.bracketedPrimary,((void)sizeof(x ? 1 : 0),\n        __extension__...)<SUB>15</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(<operator>.expressionList,(void)sizeof(x ? 1 : 0),\n        __extension__ ...)<SUB>15</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.sizeOf,sizeof(x ? 1 : 0))<SUB>15</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,if (x))<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.conditional,x ? 1 : 0)<SUB>15</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(g,g())<SUB>16</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "(void)sizeof(x ? 1 : 0),\n        __extension__ ({ if (x) ; else g(); })"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "((void)sizeof(x ? 1 : 0),\n        __extension__ ({ if (x) ; else g(); }))"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "(void)sizeof(x ? 1 : 0)"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": "(void)sizeof(x ? 1 : 0)"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": "{ if (x) ; else g(); }"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "x ? 1 : 0"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "g()"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"comma_assertion_missing_return\" {  \n\"111669149700\" [label = <(METHOD,comma_assertion_missing_return)<SUB>14</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>14</SUB>> ]\n\"115964116995\" [label = <(PARAM,int x)<SUB>14</SUB>> ]\n\"68719476745\" [label = <(IDENTIFIER,x,if (x))<SUB>15</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0),\n        __extension__...)<SUB>15</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0),\n        __extension__...)<SUB>15</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0),\n        __extension__ ...)<SUB>15</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0),\n        __extension__ ...)<SUB>15</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.sizeOf,sizeof(x ? 1 : 0))<SUB>15</SUB>> ]\n\"68719476747\" [label = <(IDENTIFIER,x,if (x))<SUB>16</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>15</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>15</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>15</SUB>> ]\n\"30064771095\" [label = <(g,g())<SUB>16</SUB>> ]\n  \"30064771094\" -> \"128849018883\"  [ label = \"x\"] \n  \"30064771093\" -> \"128849018883\"  [ label = \"x ? 1 : 0\"] \n  \"30064771091\" -> \"128849018883\"  [ label = \"(void)sizeof(x ? 1 : 0)\"] \n  \"30064771095\" -> \"128849018883\"  [ label = \"g()\"] \n  \"30064771090\" -> \"128849018883\"  [ label = \"(void)sizeof(x ? 1 : 0),\n        __extension__ ({ if (x) ; else g(); })\"] \n  \"30064771090\" -> \"128849018883\"  [ label = \"((void)sizeof(x ? 1 : 0),\n        __extension__ ({ if (x) ; else g(); }))\"] \n  \"111669149700\" -> \"115964116995\" \n  \"111669149700\" -> \"68719476745\" \n  \"30064771091\" -> \"30064771090\"  [ label = \"(void)sizeof(x ? 1 : 0)\"] \n  \"30064771091\" -> \"30064771090\"  [ label = \"{ if (x) ; else g(); }\"] \n  \"111669149700\" -> \"30064771091\" \n  \"111669149700\" -> \"68719476747\" \n  \"111669149700\" -> \"30064771094\" \n  \"111669149700\" -> \"30064771095\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"comma_assertion_missing_return\" {  \n\"68719476745\" [label = <(IDENTIFIER,x,if (x))<SUB>15</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.bracketedPrimary,((void)sizeof(x ? 1 : 0),\n        __extension__...)<SUB>15</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.expressionList,(void)sizeof(x ? 1 : 0),\n        __extension__ ...)<SUB>15</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.cast,(void)sizeof(x ? 1 : 0))<SUB>15</SUB>> ]\n\"184683593731\" [label = <(UNKNOWN,void,void)<SUB>15</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.sizeOf,sizeof(x ? 1 : 0))<SUB>15</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.conditional,x ? 1 : 0)<SUB>15</SUB>> ]\n\"68719476747\" [label = <(IDENTIFIER,x,if (x))<SUB>16</SUB>> ]\n\"30064771095\" [label = <(g,g())<SUB>16</SUB>> ]\n\"111669149700\" [label = <(METHOD,comma_assertion_missing_return)<SUB>14</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>14</SUB>> ]\n  \"68719476745\" -> \"184683593731\" \n  \"68719476745\" -> \"128849018883\" \n  \"30064771090\" -> \"128849018883\" \n  \"30064771091\" -> \"30064771090\" \n  \"30064771092\" -> \"68719476747\" \n  \"184683593731\" -> \"30064771094\" \n  \"30064771093\" -> \"30064771092\" \n  \"30064771094\" -> \"30064771093\" \n  \"68719476747\" -> \"30064771095\" \n  \"68719476747\" -> \"30064771091\" \n  \"30064771095\" -> \"30064771091\" \n  \"111669149700\" -> \"68719476745\" \n}\n"
+      ]
+    },
+    "g": {
+      "name": "g",
+      "fullname": "g",
+      "filename": "gnu_assertions_c.c",
+      "start_line": 1,
+      "end_line": 1,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 1,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,g",
+                    "source_line_number": 1,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,void)<SUB>1</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,void)<SUB>1</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void",
+                    "source_line_number": 1,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 1,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,g",
+                    "source_line_number": 1,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,void)<SUB>1</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,void)<SUB>1</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void",
+                    "source_line_number": 1,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,g)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,void)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,void)<SUB>1</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": ""
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"g\" {  \n\"111669149701\" [label = <(METHOD,g)<SUB>1</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,void)<SUB>1</SUB>> ]\n\"115964116996\" [label = <(PARAM,void)<SUB>1</SUB>> ]\n  \"115964116996\" -> \"128849018885\" \n  \"111669149701\" -> \"115964116996\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"g\" {  \n\"111669149701\" [label = <(METHOD,g)<SUB>1</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,void)<SUB>1</SUB>> ]\n  \"111669149701\" -> \"128849018885\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "0ffb4214cf1a9dc969961cfb9252cfd4e2f798c9c0e63893c20e91b18ffb967b",
+  "prepared_sha256": "0ffb4214cf1a9dc969961cfb9252cfd4e2f798c9c0e63893c20e91b18ffb967b",
+  "language": "c",
+  "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/decbench-regressions/gnu_assertions_c.c",
+  "capture_worker_sha256": "d2256371f18c5cccbf5c7543404ed8333a9aaf855ffcfdede2af72fbafa4f708"
+}

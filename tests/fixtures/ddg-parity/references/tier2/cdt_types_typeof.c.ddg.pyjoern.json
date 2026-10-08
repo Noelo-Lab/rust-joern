@@ -1,0 +1,2401 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 11.046074012992904,
+    "supplemental_raw_parse_seconds": 10.952110272017308
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "types_typeof": {
+      "name": "types_typeof",
+      "fullname": "types_typeof",
+      "filename": "cdt_types_typeof.c",
+      "start_line": 3,
+      "end_line": 3,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 3,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,types_typeof",
+                    "source_line_number": 3,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 3,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(typeof(x)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x),typeof(...",
+                    "source_line_number": 3,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "typeof(x"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 3,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return __builtin_types_compatible_p(typeof(x),...,return__builtin_types_compatible_p(typeof(x),...",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return__builtin_types_compatible_p(typeof(x)",
+                      "...",
+                      "return__builtin_types_compatible_p(typeof(x)",
+                      "..."
+                    ],
+                    "source_line_number": 3,
+                    "ret": "__builtin_types_compatible_p(typeof(x),...,return__builtin_types_compatible_p(typeof(x),..."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(sizeof(typeof)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof(typeof),s...",
+                    "source_line_number": 3,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "sizeof(typeof"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(typeof)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(typeof)"
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 3,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,types_typeof",
+                    "source_line_number": 3,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 3,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(typeof(x)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x),typeof(...",
+                    "source_line_number": 3,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "typeof(x"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 3,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return __builtin_types_compatible_p(typeof(x),...,return__builtin_types_compatible_p(typeof(x),...",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return__builtin_types_compatible_p(typeof(x)",
+                      "...",
+                      "return__builtin_types_compatible_p(typeof(x)",
+                      "..."
+                    ],
+                    "source_line_number": 3,
+                    "ret": "__builtin_types_compatible_p(typeof(x),...,return__builtin_types_compatible_p(typeof(x),..."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(sizeof(typeof)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof(typeof),s...",
+                    "source_line_number": 3,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "sizeof(typeof"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(typeof)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(typeof)"
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,types_typeof)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return __builtin_types_compatible_p(typeof(x), ...,return __builtin_types_compatible_p(typeof(x), ...)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x), typeof(...)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.sizeOf,sizeof (typeof))<SUB>3</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "__builtin_types_compatible_p(typeof(x), typeof(int))"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "__builtin_types_compatible_p(typeof(x), typeof(int))"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "__builtin_types_compatible_p(sizeof (typeof), sizeof (typeof))"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "typeof"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"types_typeof\" {  \n\"111669149697\" [label = <(METHOD,types_typeof)<SUB>3</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>3</SUB>> ]\n\"115964116992\" [label = <(PARAM,int x)<SUB>3</SUB>> ]\n\"146028888064\" [label = <(RETURN,return __builtin_types_compatible_p(typeof(x), ...,return __builtin_types_compatible_p(typeof(x), ...)<SUB>3</SUB>> ]\n\"30064771072\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x), typeof(...)<SUB>3</SUB>> ]\n\"30064771073\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>3</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>3</SUB>> ]\n  \"146028888064\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116992\" -> \"128849018880\"  [ label = \"x\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"__builtin_types_compatible_p(typeof(x), typeof(int))\"] \n  \"30064771075\" -> \"128849018880\"  [ label = \"typeof\"] \n  \"30064771073\" -> \"128849018880\"  [ label = \"__builtin_types_compatible_p(sizeof (typeof), sizeof (typeof))\"] \n  \"111669149697\" -> \"115964116992\" \n  \"30064771072\" -> \"146028888064\"  [ label = \"__builtin_types_compatible_p(typeof(x), typeof(int))\"] \n  \"111669149697\" -> \"30064771072\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"types_typeof\" {  \n\"146028888064\" [label = <(RETURN,return __builtin_types_compatible_p(typeof(x), ...,return __builtin_types_compatible_p(typeof(x), ...)<SUB>3</SUB>> ]\n\"30064771072\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x), typeof(...)<SUB>3</SUB>> ]\n\"30064771073\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>3</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>3</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>3</SUB>> ]\n\"111669149697\" [label = <(METHOD,types_typeof)<SUB>3</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>3</SUB>> ]\n  \"146028888064\" -> \"128849018880\" \n  \"30064771072\" -> \"146028888064\" \n  \"30064771072\" -> \"30064771074\" \n  \"30064771073\" -> \"146028888064\" \n  \"30064771074\" -> \"30064771075\" \n  \"30064771075\" -> \"30064771073\" \n  \"111669149697\" -> \"30064771072\" \n}\n"
+      ]
+    },
+    "types_typeof_pointer": {
+      "name": "types_typeof_pointer",
+      "fullname": "types_typeof_pointer",
+      "filename": "cdt_types_typeof.c",
+      "start_line": 4,
+      "end_line": 4,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 4,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,types_typeof_pointer",
+                    "source_line_number": 4,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct device *dev)<SUB>4</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct device *dev)<SUB>4</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(typeof(dev)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(dev),typeo...",
+                    "source_line_number": 4,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "typeof(dev"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 4,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return __builtin_types_compatible_p(typeof(dev)...,return__builtin_types_compatible_p(typeof(dev)...",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return__builtin_types_compatible_p(typeof(dev)...",
+                      "return__builtin_types_compatible_p(typeof(dev)..."
+                    ],
+                    "source_line_number": 4,
+                    "ret": "__builtin_types_compatible_p(typeof(dev)...,return__builtin_types_compatible_p(typeof(dev)..."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(sizeof(typeof)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof(typeof),s...",
+                    "source_line_number": 4,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "sizeof(typeof"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(typeof)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(typeof)"
+                    ],
+                    "source_line_number": 4
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 4,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,types_typeof_pointer",
+                    "source_line_number": 4,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct device *dev)<SUB>4</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct device *dev)<SUB>4</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(typeof(dev)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(dev),typeo...",
+                    "source_line_number": 4,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "typeof(dev"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 4,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return __builtin_types_compatible_p(typeof(dev)...,return__builtin_types_compatible_p(typeof(dev)...",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return__builtin_types_compatible_p(typeof(dev)...",
+                      "return__builtin_types_compatible_p(typeof(dev)..."
+                    ],
+                    "source_line_number": 4,
+                    "ret": "__builtin_types_compatible_p(typeof(dev)...,return__builtin_types_compatible_p(typeof(dev)..."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(sizeof(typeof)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof(typeof),s...",
+                    "source_line_number": 4,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "sizeof(typeof"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(typeof)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(typeof)"
+                    ],
+                    "source_line_number": 4
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,types_typeof_pointer)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,struct device *dev)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return __builtin_types_compatible_p(typeof(dev)...,return __builtin_types_compatible_p(typeof(dev)...)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(dev), typeo...)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.sizeOf,sizeof (typeof))<SUB>4</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "dev"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "__builtin_types_compatible_p(typeof(dev), typeof(struct device *))"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "__builtin_types_compatible_p(typeof(dev), typeof(struct device *))"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "__builtin_types_compatible_p(sizeof (typeof), sizeof (typeof))"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "typeof"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"types_typeof_pointer\" {  \n\"111669149698\" [label = <(METHOD,types_typeof_pointer)<SUB>4</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>4</SUB>> ]\n\"115964116993\" [label = <(PARAM,struct device *dev)<SUB>4</SUB>> ]\n\"146028888065\" [label = <(RETURN,return __builtin_types_compatible_p(typeof(dev)...,return __builtin_types_compatible_p(typeof(dev)...)<SUB>4</SUB>> ]\n\"30064771076\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(dev), typeo...)<SUB>4</SUB>> ]\n\"30064771077\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>4</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>4</SUB>> ]\n  \"146028888065\" -> \"128849018881\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116993\" -> \"128849018881\"  [ label = \"dev\"] \n  \"30064771076\" -> \"128849018881\"  [ label = \"__builtin_types_compatible_p(typeof(dev), typeof(struct device *))\"] \n  \"30064771079\" -> \"128849018881\"  [ label = \"typeof\"] \n  \"30064771077\" -> \"128849018881\"  [ label = \"__builtin_types_compatible_p(sizeof (typeof), sizeof (typeof))\"] \n  \"111669149698\" -> \"115964116993\" \n  \"30064771076\" -> \"146028888065\"  [ label = \"__builtin_types_compatible_p(typeof(dev), typeof(struct device *))\"] \n  \"111669149698\" -> \"30064771076\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"types_typeof_pointer\" {  \n\"146028888065\" [label = <(RETURN,return __builtin_types_compatible_p(typeof(dev)...,return __builtin_types_compatible_p(typeof(dev)...)<SUB>4</SUB>> ]\n\"30064771076\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(dev), typeo...)<SUB>4</SUB>> ]\n\"30064771077\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>4</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>4</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>4</SUB>> ]\n\"111669149698\" [label = <(METHOD,types_typeof_pointer)<SUB>4</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>4</SUB>> ]\n  \"146028888065\" -> \"128849018881\" \n  \"30064771076\" -> \"146028888065\" \n  \"30064771076\" -> \"30064771078\" \n  \"30064771077\" -> \"146028888065\" \n  \"30064771078\" -> \"30064771079\" \n  \"30064771079\" -> \"30064771077\" \n  \"111669149698\" -> \"30064771076\" \n}\n"
+      ]
+    },
+    "types_typeof_branch": {
+      "name": "types_typeof_branch",
+      "fullname": "types_typeof_branch",
+      "filename": "cdt_types_typeof.c",
+      "start_line": 5,
+      "end_line": 5,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 5,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,types_typeof_branch",
+                    "source_line_number": 5,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 5,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(typeof(x&amp;&amp;foo(x)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x&amp;&amp;foo(x)...",
+                    "source_line_number": 5,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "typeof(x&amp;&amp;foo(x"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 5,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return __builtin_types_compatible_p(typeof(x&amp;&amp;...,return__builtin_types_compatible_p(typeof(x&amp;&amp;...",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return__builtin_types_compatible_p(typeof(x&amp;&amp;...",
+                      "return__builtin_types_compatible_p(typeof(x&amp;&amp;..."
+                    ],
+                    "source_line_number": 5,
+                    "ret": "__builtin_types_compatible_p(typeof(x&amp;&amp;...,return__builtin_types_compatible_p(typeof(x&amp;&amp;..."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(sizeof(typeof)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof(typeof),s...",
+                    "source_line_number": 5,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "sizeof(typeof"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(typeof)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(typeof)"
+                    ],
+                    "source_line_number": 5
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 5,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,types_typeof_branch",
+                    "source_line_number": 5,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 5,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(typeof(x&amp;&amp;foo(x)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x&amp;&amp;foo(x)...",
+                    "source_line_number": 5,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "typeof(x&amp;&amp;foo(x"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 5,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return __builtin_types_compatible_p(typeof(x&amp;&amp;...,return__builtin_types_compatible_p(typeof(x&amp;&amp;...",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return__builtin_types_compatible_p(typeof(x&amp;&amp;...",
+                      "return__builtin_types_compatible_p(typeof(x&amp;&amp;..."
+                    ],
+                    "source_line_number": 5,
+                    "ret": "__builtin_types_compatible_p(typeof(x&amp;&amp;...,return__builtin_types_compatible_p(typeof(x&amp;&amp;..."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(sizeof(typeof)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof(typeof),s...",
+                    "source_line_number": 5,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "sizeof(typeof"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(typeof)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(typeof)"
+                    ],
+                    "source_line_number": 5
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,types_typeof_branch)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return __builtin_types_compatible_p(typeof(x &&...,return __builtin_types_compatible_p(typeof(x &&...)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x && foo(x)...)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.sizeOf,sizeof (typeof))<SUB>5</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "__builtin_types_compatible_p(typeof(x && foo(x)), typeof(int))"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "__builtin_types_compatible_p(typeof(x && foo(x)), typeof(int))"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "__builtin_types_compatible_p(sizeof (typeof), sizeof (typeof))"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "typeof"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"types_typeof_branch\" {  \n\"111669149699\" [label = <(METHOD,types_typeof_branch)<SUB>5</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>5</SUB>> ]\n\"115964116994\" [label = <(PARAM,int x)<SUB>5</SUB>> ]\n\"146028888066\" [label = <(RETURN,return __builtin_types_compatible_p(typeof(x &amp;&amp;...,return __builtin_types_compatible_p(typeof(x &amp;&amp;...)<SUB>5</SUB>> ]\n\"30064771080\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x &amp;&amp; foo(x)...)<SUB>5</SUB>> ]\n\"30064771081\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>5</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>5</SUB>> ]\n  \"146028888066\" -> \"128849018882\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116994\" -> \"128849018882\"  [ label = \"x\"] \n  \"30064771080\" -> \"128849018882\"  [ label = \"__builtin_types_compatible_p(typeof(x &amp;&amp; foo(x)), typeof(int))\"] \n  \"30064771083\" -> \"128849018882\"  [ label = \"typeof\"] \n  \"30064771081\" -> \"128849018882\"  [ label = \"__builtin_types_compatible_p(sizeof (typeof), sizeof (typeof))\"] \n  \"111669149699\" -> \"115964116994\" \n  \"30064771080\" -> \"146028888066\"  [ label = \"__builtin_types_compatible_p(typeof(x &amp;&amp; foo(x)), typeof(int))\"] \n  \"111669149699\" -> \"30064771080\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"types_typeof_branch\" {  \n\"146028888066\" [label = <(RETURN,return __builtin_types_compatible_p(typeof(x &amp;&amp;...,return __builtin_types_compatible_p(typeof(x &amp;&amp;...)<SUB>5</SUB>> ]\n\"30064771080\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x &amp;&amp; foo(x)...)<SUB>5</SUB>> ]\n\"30064771081\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>5</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>5</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>5</SUB>> ]\n\"111669149699\" [label = <(METHOD,types_typeof_branch)<SUB>5</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>5</SUB>> ]\n  \"146028888066\" -> \"128849018882\" \n  \"30064771080\" -> \"146028888066\" \n  \"30064771080\" -> \"30064771082\" \n  \"30064771081\" -> \"146028888066\" \n  \"30064771082\" -> \"30064771083\" \n  \"30064771083\" -> \"30064771081\" \n  \"111669149699\" -> \"30064771080\" \n}\n"
+      ]
+    },
+    "types_assert": {
+      "name": "types_assert",
+      "fullname": "types_assert",
+      "filename": "cdt_types_typeof.c",
+      "start_line": 6,
+      "end_line": 6,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 6,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,types_assert",
+                    "source_line_number": 6,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 6,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "_Static_assert()",
+                  "fields": {
+                    "raw_text": "_Static_assert,_Static_assert(!__builtin_types_compatible_p(ty...",
+                    "source_line_number": 6,
+                    "func": "_Static_assert",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!__builtin_types_compatible_p(typeof(x)', 'typeof...']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!__builtin_types_compatible_p(typeof(x)",
+                      "typeof..."
+                    ],
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 6,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 6,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(sizeof(typeof)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof(typeof),s...",
+                    "source_line_number": 6,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "sizeof(typeof"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(typeof)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(typeof)"
+                    ],
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 5,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 6,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,types_assert",
+                    "source_line_number": 6,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 6,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "_Static_assert()",
+                  "fields": {
+                    "raw_text": "_Static_assert,_Static_assert(!__builtin_types_compatible_p(ty...",
+                    "source_line_number": 6,
+                    "func": "_Static_assert",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!__builtin_types_compatible_p(typeof(x)', 'typeof...']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!__builtin_types_compatible_p(typeof(x)",
+                      "typeof..."
+                    ],
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 6,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 6,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__builtin_types_compatible_p(sizeof(typeof)",
+                  "fields": {
+                    "raw_text": "__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof(typeof),s...",
+                    "source_line_number": 6,
+                    "func": "__builtin_types_compatible_p",
+                    "args": [
+                      "sizeof(typeof"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['sizeOf', 'sizeof(typeof)']>",
+                  "fields": {
+                    "raw_text": [
+                      "sizeOf",
+                      "sizeof(typeof)"
+                    ],
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 5,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,types_assert)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(_Static_assert,_Static_assert(!__builtin_types_compatible_p(ty...)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(RETURN,return x;,return x;)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,return x;)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.logicalNot,!__builtin_types_compatible_p(typeof(x), typeof...)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.sizeOf,sizeof (typeof))<SUB>6</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "!__builtin_types_compatible_p(typeof(x), typeof(int))"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "_Static_assert(!__builtin_types_compatible_p(typeof(x), typeof(int)), \"test\")"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": "x"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "__builtin_types_compatible_p(typeof(x), typeof(int))"
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "label": "__builtin_types_compatible_p(typeof(x), typeof(int))"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "__builtin_types_compatible_p(sizeof (typeof), sizeof (typeof))"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "typeof"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"types_assert\" {  \n\"111669149700\" [label = <(METHOD,types_assert)<SUB>6</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>6</SUB>> ]\n\"115964116995\" [label = <(PARAM,int x)<SUB>6</SUB>> ]\n\"30064771084\" [label = <(_Static_assert,_Static_assert(!__builtin_types_compatible_p(ty...)<SUB>6</SUB>> ]\n\"146028888067\" [label = <(RETURN,return x;,return x;)<SUB>6</SUB>> ]\n\"30064771084\" [label = <(_Static_assert,_Static_assert(!__builtin_types_compatible_p(ty...)<SUB>6</SUB>> ]\n\"30064771084\" [label = <(_Static_assert,_Static_assert(!__builtin_types_compatible_p(ty...)<SUB>6</SUB>> ]\n\"68719476744\" [label = <(IDENTIFIER,x,return x;)<SUB>6</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.logicalNot,!__builtin_types_compatible_p(typeof(x), typeof...)<SUB>6</SUB>> ]\n\"30064771087\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>6</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>6</SUB>> ]\n  \"146028888067\" -> \"128849018883\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116995\" -> \"128849018883\"  [ label = \"x\"] \n  \"30064771085\" -> \"128849018883\"  [ label = \"__builtin_types_compatible_p(typeof(x), typeof(int))\"] \n  \"30064771089\" -> \"128849018883\"  [ label = \"typeof\"] \n  \"30064771087\" -> \"128849018883\"  [ label = \"__builtin_types_compatible_p(sizeof (typeof), sizeof (typeof))\"] \n  \"30064771084\" -> \"128849018883\"  [ label = \"!__builtin_types_compatible_p(typeof(x), typeof(int))\"] \n  \"30064771084\" -> \"128849018883\"  [ label = \"_Static_assert(!__builtin_types_compatible_p(typeof(x), typeof(int)), &quot;test&quot;)\"] \n  \"111669149700\" -> \"115964116995\" \n  \"68719476744\" -> \"146028888067\"  [ label = \"x\"] \n  \"30064771085\" -> \"30064771084\"  [ label = \"__builtin_types_compatible_p(typeof(x), typeof(int))\"] \n  \"111669149700\" -> \"30064771084\" \n  \"115964116995\" -> \"68719476744\"  [ label = \"x\"] \n  \"111669149700\" -> \"68719476744\" \n  \"111669149700\" -> \"30064771085\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"types_assert\" {  \n\"30064771084\" [label = <(_Static_assert,_Static_assert(!__builtin_types_compatible_p(ty...)<SUB>6</SUB>> ]\n\"146028888067\" [label = <(RETURN,return x;,return x;)<SUB>6</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.logicalNot,!__builtin_types_compatible_p(typeof(x), typeof...)<SUB>6</SUB>> ]\n\"30064771086\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(typeof(x), typeof(...)<SUB>6</SUB>> ]\n\"30064771087\" [label = <(__builtin_types_compatible_p,__builtin_types_compatible_p(sizeof (typeof), s...)<SUB>6</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>6</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.sizeOf,sizeof (typeof))<SUB>6</SUB>> ]\n\"111669149700\" [label = <(METHOD,types_assert)<SUB>6</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>6</SUB>> ]\n  \"30064771084\" -> \"146028888067\" \n  \"146028888067\" -> \"128849018883\" \n  \"30064771085\" -> \"30064771084\" \n  \"30064771086\" -> \"30064771085\" \n  \"30064771086\" -> \"30064771088\" \n  \"30064771087\" -> \"30064771085\" \n  \"30064771088\" -> \"30064771089\" \n  \"30064771089\" -> \"30064771087\" \n  \"111669149700\" -> \"30064771086\" \n}\n"
+      ]
+    },
+    "foo": {
+      "name": "foo",
+      "fullname": "foo",
+      "filename": "cdt_types_typeof.c",
+      "start_line": 2,
+      "end_line": 2,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 2,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,foo",
+                    "source_line_number": 2,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 2,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 2,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 2,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,foo",
+                    "source_line_number": 2,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 2,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 2,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,foo)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>2</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"foo\" {  \n\"111669149701\" [label = <(METHOD,foo)<SUB>2</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,int)<SUB>2</SUB>> ]\n\"115964116996\" [label = <(PARAM,int x)<SUB>2</SUB>> ]\n  \"115964116996\" -> \"128849018885\"  [ label = \"x\"] \n  \"111669149701\" -> \"115964116996\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"foo\" {  \n\"111669149701\" [label = <(METHOD,foo)<SUB>2</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,int)<SUB>2</SUB>> ]\n  \"111669149701\" -> \"128849018885\" \n}\n"
+      ]
+    },
+    "__builtin_types_compatible_p": {
+      "name": "__builtin_types_compatible_p",
+      "fullname": ":-1:-1:__builtin_types_compatible_p:2",
+      "filename": ".",
+      "start_line": -1,
+      "end_line": -1,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [],
+        "edges": []
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [],
+        "edges": []
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [],
+        "edges": []
+      },
+      "ddg_dot": [
+        "digraph \"__builtin_types_compatible_p\" {  \n\n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"__builtin_types_compatible_p\" {  \n\"111669149703\" [label = <(METHOD,__builtin_types_compatible_p)<SUB>-1</SUB>> ]\n\"128849018887\" [label = <(METHOD_RETURN,ANY)> ]\n  \"111669149703\" -> \"128849018887\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "16ceb84c38325f5f521a24364106bb9a2d5cbb8757452e4badfd541fbb4fc4bb",
+  "prepared_sha256": "16ceb84c38325f5f521a24364106bb9a2d5cbb8757452e4badfd541fbb4fc4bb",
+  "language": "c",
+  "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/parser-recovery/cdt_types_typeof.c",
+  "capture_worker_sha256": "d2256371f18c5cccbf5c7543404ed8333a9aaf855ffcfdede2af72fbafa4f708"
+}

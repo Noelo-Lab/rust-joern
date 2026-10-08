@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "source_sha256": "271edcb00734c0f4e8e38a49f05a7316aa24bac6591f1bb60d18b29b392fca9b",
+  "prepared_sha256": "271edcb00734c0f4e8e38a49f05a7316aa24bac6591f1bb60d18b29b392fca9b",
+  "language": "c",
+  "input_kind": "file",
+  "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/ddg-parity/comma-conditions.c",
+  "capture_worker_sha256": "544aaf7609ab89e1f1d11d339b6fd6f8c0d64c47f097113b32ca66b2470745bd",
+  "captured_at": "2026-10-08T03:47:44.323137+00:00",
+  "preparation": {
+    "strip_system_headers": false,
+    "sanitize_decompiled": false,
+    "decbench": null
+  },
+  "functions": {
+    "while_comma": {
+      "name": "while_comma",
+      "start_line": 1,
+      "end_line": 4,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "entry": [
+          1
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "2.1:\n<UnsupportedStmt: ['postDecrement', 'x--']>\n",
+          "1": "1.0:\nFUNCTION_START\n",
+          "2": "3.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+          "3": "2.2:\n<UnsupportedStmt: ['subtraction', 'x-1']>\nx = x-1\n"
+        }
+      }
+    },
+    "if_comma": {
+      "name": "if_comma",
+      "start_line": 5,
+      "end_line": 8,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "6.1:\n<UnsupportedStmt: ['postIncrement', 'x++']>\n",
+          "1": "7.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+          "2": "5.0:\nFUNCTION_START\n<UnsupportedStmt: ['subtraction', 'x-1']>\nx = x-1\n"
+        }
+      }
+    },
+    "do_comma": {
+      "name": "do_comma",
+      "start_line": 9,
+      "end_line": 12,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          0
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "9.0:\nFUNCTION_START\n",
+          "1": "11.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+          "2": "10.0:\n<UnsupportedStmt: ['postDecrement', 'x--']>\n<UnsupportedStmt: ['subtraction', 'x-1']>\nx = x-1\n"
+        }
+      }
+    },
+    "for_comma": {
+      "name": "for_comma",
+      "start_line": 13,
+      "end_line": 16,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "entry": [
+          0
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "13.0:\nFUNCTION_START\n",
+          "1": "15.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+          "2": "14.3:\n<UnsupportedStmt: ['subtraction', 'x-1']>\nx = x-1\n",
+          "3": "14.2:\n<UnsupportedStmt: ['postDecrement', 'x--']>\n<UnsupportedStmt: ['postDecrement', 'x--']>\n"
+        }
+      }
+    },
+    "switch_comma": {
+      "name": "switch_comma",
+      "start_line": 17,
+      "end_line": 23,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "19.0:\n<UnsupportedStmt: ['postIncrement', 'x++']>\n",
+          "1": "20.0:\n<UnsupportedStmt: ['postDecrement', 'x--']>\n",
+          "2": "22.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+          "3": "17.0:\nFUNCTION_START\n<UnsupportedStmt: ['subtraction', 'x-1']>\nx = x-1\n"
+        }
+      }
+    },
+    "return_comma": {
+      "name": "return_comma",
+      "start_line": 24,
+      "end_line": 26,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "24.0:\nFUNCTION_START\n<UnsupportedStmt: ['subtraction', 'x-1']>\nx = x-1\n<UnsupportedStmt: ['expressionList', 'x=x-1', 'x']>\n<UnsupportedStmt: ['bracketedPrimary', '(x=x-1', 'x)']>\nreturn (x=x-1,x);,return(x=x-1,x);\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "derivation": "Unchanged original Function(cfg=captured cfg_dot).cfg; no new parser execution",
+  "derived_from_reference_sha256": "8b51b67bf52f6f1a88d98bbdd38922bada0d9223caf6aea9b8e1c6aa29a4aa76"
+}

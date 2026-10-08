@@ -1,5 +1,5 @@
 use rust_joern::{
-    analyze,
+    analyze, analyze_sources,
     graph::{Analysis, Options, PropertyGraph},
 };
 use std::{
@@ -59,30 +59,31 @@ fn run() -> Result<(), String> {
     if graph == "ddg" {
         options.data_flow = true;
     }
-    let mut all = Analysis {
-        schema_version: 1,
-        functions: Vec::new(),
-        diagnostics: Vec::new(),
-    };
-    let mut files = Vec::new();
-    if input == "-" {
+    let all = if input == "-" {
         use std::io::Read;
         let mut source = String::new();
         std::io::stdin()
             .read_to_string(&mut source)
             .map_err(|e| e.to_string())?;
-        all = analyze(&source, "<stdin>.c", &options)?;
+        analyze(&source, "<stdin>.c", &options)?
     } else {
+        let mut files = Vec::new();
         collect(Path::new(&input), &mut files).map_err(|e| e.to_string())?;
         files.sort();
-        for path in files {
-            let source =
-                fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?;
-            let mut result = analyze(&source, &path.to_string_lossy(), &options)?;
-            all.functions.append(&mut result.functions);
-            all.diagnostics.append(&mut result.diagnostics);
-        }
-    }
+        let sources = files
+            .iter()
+            .map(|path| {
+                fs::read_to_string(path)
+                    .map(|source| (source, path.to_string_lossy().into_owned()))
+                    .map_err(|e| format!("{}: {e}", path.display()))
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        let borrowed = sources
+            .iter()
+            .map(|(source, filename)| (source.as_str(), filename.as_str()))
+            .collect::<Vec<_>>();
+        analyze_sources(&borrowed, &options)?
+    };
     let content = if format == "json" {
         serde_json::to_string(&all).map_err(|e| e.to_string())?
     } else {
@@ -188,7 +189,12 @@ fn dot(analysis: &Analysis, kind: &str) -> String {
                 }
             }
             "ddg" => {
-                if let Some(ddg) = function.ddg_projection.as_ref().or(function.ddg.as_ref()) {
+                if let Some(ddg) = function
+                    .ddg_view
+                    .as_ref()
+                    .or(function.ddg_projection.as_ref())
+                    .or(function.ddg.as_ref())
+                {
                     graph_dot(&mut output, &prefix, ddg);
                 }
             }

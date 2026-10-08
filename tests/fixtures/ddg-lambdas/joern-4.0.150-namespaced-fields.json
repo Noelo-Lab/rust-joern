@@ -1,0 +1,2457 @@
+{
+  "generator": "Original Joern 4.0.150 / dataflowOss and ReachingDefProblem",
+  "source_sha256": "f7741ffe988ea71efafa80fc0fab3f5472dda4c20a2d2f901745c428753e2822",
+  "capture_sha256": "2b7017b294c34caa687bbec7a59f87016053c434561cb2a05f88bf1ad2684178",
+  "methods": [
+    {
+      "name": "<lambda>0",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 7,
+            "code": "[this]() { return value; }",
+            "id": 0,
+            "column": 44,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "<lambda>0",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "{ return value; }",
+            "id": 1,
+            "column": 53,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "return value;",
+            "id": 2,
+            "column": 55,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "this->value",
+            "id": 3,
+            "column": 62,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "this",
+            "id": 4,
+            "column": 62,
+            "type_name": "N.A*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "value",
+            "id": 5,
+            "column": 62,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 6,
+            "column": 0,
+            "kind": "MODIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "RET",
+            "id": 7,
+            "column": 44,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "namespaced-fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 7,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "N.A.constant_lambda:int().<lambda>0",
+      "start_line": 7,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 3,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 4,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 5,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 7,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "<lambda>1",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 8,
+            "code": "[this]() { return value; }",
+            "id": 0,
+            "column": 39,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "<lambda>1",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "{ return value; }",
+            "id": 1,
+            "column": 48,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "return value;",
+            "id": 2,
+            "column": 50,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "value",
+            "id": 3,
+            "column": 57,
+            "type_name": "A*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 4,
+            "column": 0,
+            "kind": "MODIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "RET",
+            "id": 5,
+            "column": 39,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          }
+        ]
+      },
+      "filename": "namespaced-fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 8,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "N.A.non_const_lambda:int().<lambda>1",
+      "start_line": 8,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 3,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 5,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "non_const",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 4,
+            "code": "int non_const() { return value; }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "non_const",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "{ return value; }",
+            "id": 2,
+            "column": 21,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "return value;",
+            "id": 3,
+            "column": 23,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "value",
+            "id": 4,
+            "column": 30,
+            "type_name": "A*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "RET",
+            "id": 5,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "this",
+            "id": 6,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          }
+        ]
+      },
+      "filename": "namespaced-fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 4,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.A.non_const:int()",
+      "start_line": 4,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "constant",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 5,
+            "code": "int constant() const { return value; }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "constant",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "{ return value; }",
+            "id": 2,
+            "column": 26,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "return value;",
+            "id": 3,
+            "column": 28,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "this->value",
+            "id": 4,
+            "column": 35,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "this",
+            "id": 5,
+            "column": 35,
+            "type_name": "N.A*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "value",
+            "id": 6,
+            "column": 35,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "RET",
+            "id": 7,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "this",
+            "id": 8,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "namespaced-fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 5,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.A.constant:int()",
+      "start_line": 5,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "non_const_assign",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 6,
+            "code": "int non_const_assign(int x) { value = x; return value; }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "non_const_assign",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "int x",
+            "id": 2,
+            "column": 26,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "{ value = x; return value; }",
+            "id": 3,
+            "column": 33,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "method_full_name": "<operator>.assignment",
+            "code": "value = x",
+            "id": 4,
+            "column": 35,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.assignment",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "value",
+            "id": 5,
+            "column": 35,
+            "type_name": "A*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "x",
+            "id": 6,
+            "column": 43,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "return value;",
+            "id": 7,
+            "column": 46,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "value",
+            "id": 8,
+            "column": 53,
+            "type_name": "A*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "RET",
+            "id": 9,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "this",
+            "id": 10,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "int x",
+            "id": 11,
+            "column": 26,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "value = x"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 5,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 2,
+            "kind": "REF"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 6,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          }
+        ]
+      },
+      "filename": "namespaced-fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 6,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "N.A.non_const_assign:int(int)",
+      "start_line": 6,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 2,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            1,
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "name": "constant_lambda",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 7,
+            "code": "int constant_lambda() const { auto f = [this]() { return value; }; return f(); }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "constant_lambda",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "{ auto f = [this]() { return value; }; return f(); }",
+            "id": 2,
+            "column": 33,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "auto f",
+            "id": 3,
+            "column": 40,
+            "type_name": "auto",
+            "kind": "LOCAL",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "method_full_name": "<operator>.assignment",
+            "code": "f = [this]() { return value; }",
+            "id": 4,
+            "column": 40,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.assignment",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "f",
+            "id": 5,
+            "column": 40,
+            "type_name": "auto",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "method_full_name": "N.A.constant_lambda:int().<lambda>0",
+            "code": "[this]() { return value; }",
+            "id": 6,
+            "column": 44,
+            "type_name": "N.A.constant_lambda:int().<lambda>0",
+            "kind": "METHOD_REF",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "return f();",
+            "id": 7,
+            "column": 72,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "method_full_name": "<operator>():int()",
+            "code": "f()",
+            "id": 8,
+            "column": 79,
+            "type_name": "int",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "f",
+            "id": 9,
+            "column": 79,
+            "type_name": "auto",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "RET",
+            "id": 10,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "this",
+            "id": 11,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "f = [this]() { return value; }"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "kind": "REF"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "f"
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "f"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "[this]() { return value; }"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "[this]() { return value; }"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "f()"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "f()"
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 9,
+            "target": 3,
+            "kind": "REF"
+          }
+        ]
+      },
+      "filename": "namespaced-fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 7,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.A.constant_lambda:int()",
+      "start_line": 7,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            4,
+            5
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            4,
+            5,
+            8
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            4,
+            5
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            4,
+            5
+          ],
+          "outgoing": [
+            1,
+            4,
+            5
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            4,
+            5,
+            8
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            1,
+            4,
+            5,
+            8
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "name": "non_const_lambda",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 8,
+            "code": "int non_const_lambda() { auto f = [this]() { return value; }; return f(); }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "non_const_lambda",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "{ auto f = [this]() { return value; }; return f(); }",
+            "id": 2,
+            "column": 28,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "auto f",
+            "id": 3,
+            "column": 35,
+            "type_name": "auto",
+            "kind": "LOCAL",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "method_full_name": "<operator>.assignment",
+            "code": "f = [this]() { return value; }",
+            "id": 4,
+            "column": 35,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.assignment",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "f",
+            "id": 5,
+            "column": 35,
+            "type_name": "auto",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "method_full_name": "N.A.non_const_lambda:int().<lambda>1",
+            "code": "[this]() { return value; }",
+            "id": 6,
+            "column": 39,
+            "type_name": "N.A.non_const_lambda:int().<lambda>1",
+            "kind": "METHOD_REF",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "return f();",
+            "id": 7,
+            "column": 67,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "method_full_name": "<operator>():int()",
+            "code": "f()",
+            "id": 8,
+            "column": 74,
+            "type_name": "int",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "f",
+            "id": 9,
+            "column": 74,
+            "type_name": "auto",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "RET",
+            "id": 10,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "this",
+            "id": 11,
+            "column": 5,
+            "type_name": "N.A",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "f = [this]() { return value; }"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "kind": "REF"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "f"
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "f"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "[this]() { return value; }"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "[this]() { return value; }"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "f()"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "f()"
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 9,
+            "target": 3,
+            "kind": "REF"
+          }
+        ]
+      },
+      "filename": "namespaced-fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 8,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "N.A.non_const_lambda:int()",
+      "start_line": 8,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            4,
+            5
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            4,
+            5,
+            8
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            4,
+            5
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            4,
+            5
+          ],
+          "outgoing": [
+            1,
+            4,
+            5
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            4,
+            5,
+            8
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            1,
+            4,
+            5,
+            8
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        }
+      ]
+    }
+  ]
+}

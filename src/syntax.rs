@@ -12,11 +12,23 @@ pub struct Function {
     pub name: String,
     pub full_name: String,
     pub return_type: String,
+    /// CDT's canonical function binding type can differ from METHOD_RETURN's
+    /// declaration-specifier type, especially for typedefs and pointer returns.
+    pub binding_return_type: String,
     pub signature: String,
     pub extern_c: bool,
     pub implicit_this: Option<String>,
     /// Lambda bodies are converted in their enclosing method's lexical scope.
     pub lambda_parent: Option<String>,
+    pub implicit_fields: Vec<(String, String)>,
+    pub member_cv_qualified: bool,
+    /// CDT stores a lambda method separately from the enclosing method AST.
+    pub lambda: bool,
+    pub is_static: bool,
+    /// Lambda bodies are converted in the enclosing lexical scope, after the
+    /// lambda parameter scope has already been popped by c2cpg 4.0.150.
+    pub inherited_bindings: Vec<(String, String)>,
+    pub inherited_closures: Vec<(String, Closure)>,
     pub parameters: Vec<Parameter>,
     pub body: Stmt,
     pub span: Span,
@@ -62,6 +74,15 @@ pub struct Expr {
 }
 
 #[derive(Clone, Debug)]
+pub struct Closure {
+    pub full_name: String,
+    /// The closure call signature uses CDT's deduced function type, while the
+    /// detached method's signature uses ANY unless it has a trailing return.
+    pub return_type: String,
+    pub parameter_types: Vec<String>,
+}
+
+#[derive(Clone, Debug)]
 pub enum ExprKind {
     Identifier(String),
     /// A type-id operand uses a decl-specifier identifier, never a method ref.
@@ -70,6 +91,7 @@ pub enum ExprKind {
         type_name: String,
     },
     Literal(String),
+    Lambda(Closure),
     Unary {
         op: String,
         argument: Box<Expr>,
@@ -88,11 +110,6 @@ pub enum ExprKind {
     Call {
         callee: Box<Expr>,
         arguments: Vec<Expr>,
-    },
-    Lambda {
-        full_name: String,
-        signature: String,
-        return_type: String,
     },
     /// A bracketed identifier used as a call receiver, rather than a bare name.
     Bracketed(Box<Expr>),

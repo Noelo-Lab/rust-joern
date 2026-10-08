@@ -1,0 +1,23 @@
+{
+  "generator": "Unmodified installed PyJoern 4.0.150.4 / Joern 4.0.150",
+  "source_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "captured_at": "2026-10-08T03:52:13.956483+00:00",
+  "source_files": [
+    {
+      "file": "constructors.cpp",
+      "sha256": "19ac6a60f3df027142dc06a94fcc3caff3f6114f0eb19a89a5322d48f82e76d0",
+      "original_capture_sha256": "97aac09ca677981339448597357a4c5481c8ec7510ef2487f6af50d0407b8145"
+    }
+  ],
+  "capture_script_sha256": "de0b6b03aafb843c878a17e03933967b16b1805459b04f60adb68e89639485dd",
+  "normalizer_sha256": "1925df4201ca8c71e49779b4659d13b34c5c9dd4f17aa5cbbe194c7bc41891d4",
+  "snapshot_sha256": "65b48ac988af199e69282e81895fa0ae34ce40e48a892793817bc56d3c470b05",
+  "original_captures_sha256": "1c43ccfcc4fac54a970ca2a5272f5ac410f916e2c0537c3fcefb79b065c043ab",
+  "method_count": 11,
+  "notes": [
+    "These are original CPG/CFG/REF/REACHING_DEF, independently queried original solver in/out sets and original method.dotDdg projection. Native output never used as expected graphs.",
+    "Seven method bodies cover allocation via a declared constructor, primitive allocation, qualified type allocation and delete. Four source constructor prototypes preserve internal/stub context.",
+    "Joern lowers a new expression type operand as a decl-specifier IDENTIFIER. A type name that also names a constructor must remain IDENTIFIER, and a qualified type operand remains a single identifier.",
+    "Current native solver and projected graph on all 11 original CPGs match exactly; source frontend previously reclassified type_info as METHOD_REF and delete p as a declaration."
+  ]
+}

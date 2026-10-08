@@ -5,7 +5,10 @@
 use crate::graph::{DefinitionSet, Edge, FunctionGraph, Node, PropertyGraph};
 use std::collections::{HashMap, HashSet, VecDeque};
 
-pub const LIMITATIONS: &str = "Data flow is intraprocedural: cross-method closure/global propagation is not yet implemented; callee resolution depends on recovered C/C++ types.";
+pub const LIMITATIONS: &str = "Data flow follows Joern's intraprocedural overlay; callee resolution depends on recovered C/C++ types.";
+
+// PyJoern runs the original overlay with its default ReachingDefPass limit.
+const MAX_DEFINITIONS: usize = 4000;
 
 #[derive(Clone, PartialEq, Eq)]
 struct Bits(Vec<u64>);
@@ -48,10 +51,12 @@ fn output(node: &Node) -> bool {
 fn call(node: &Node) -> bool {
     node.kind == "CALL"
 }
-fn expression(node: &Node) -> bool {
+pub(crate) fn expression(node: &Node) -> bool {
     matches!(
         node.kind.as_str(),
         "CALL"
+            | "RETURN"
+            | "CONTROL_STRUCTURE"
             | "IDENTIFIER"
             | "LITERAL"
             | "BLOCK"
@@ -72,7 +77,7 @@ fn ddg_node(node: &Node) -> bool {
             | "LOCAL"
     )
 }
-fn member(op: &str) -> bool {
+pub(crate) fn member(op: &str) -> bool {
     matches!(
         op,
         "<operator>.memberAccess"
@@ -191,6 +196,8 @@ pub fn apply_with_context(
     cpp: bool,
 ) {
     function.cpg.edges.retain(|e| e.kind != "REACHING_DEF");
+    function.ddg_view = None;
+    function.ddg_projection = None;
     let Some(entry_id) = function
         .cpg
         .nodes
@@ -361,6 +368,14 @@ pub fn apply_with_context(
         gens[at].retain(|&i| i != arg);
         lone.push(arg);
     }
+    // Joern counts definitions at each generating CFG node, after removing
+    // lone identifiers, rather than counting unique definition nodes.
+    let skip_overlay = gens.iter().map(Vec::len).sum::<usize>() > MAX_DEFINITIONS;
+    if skip_overlay && !expose_sets {
+        function.ddg = Some(PropertyGraph::default());
+        function.reaching_definitions = None;
+        return;
+    }
     let definitions: Vec<_> = gens
         .iter()
         .flatten()
@@ -453,10 +468,31 @@ pub fn apply_with_context(
             }
         }
     }
+    function.reaching_definitions = expose_sets.then(|| {
+        order
+            .iter()
+            .map(|&i| DefinitionSet {
+                node: nodes[i].id,
+                incoming: incoming[i]
+                    .iter()
+                    .map(|d| nodes[definitions[d]].id)
+                    .collect(),
+                outgoing: outgoing[i]
+                    .iter()
+                    .map(|d| nodes[definitions[d]].id)
+                    .collect(),
+            })
+            .collect()
+    });
+    // Explicit solver-set requests remain available independently of the
+    // overlay, matching an explicit ReachingDefProblem/DataFlowSolver query.
+    if skip_overlay {
+        function.ddg = Some(PropertyGraph::default());
+        return;
+    }
     let mut ddg = Edges {
         graph: &graph,
         edges: Vec::new(),
-        seen: HashSet::new(),
     };
     for &i in &order {
         let uses = graph.uses(i);
@@ -512,22 +548,6 @@ pub fn apply_with_context(
             .collect(),
         edges: edges.clone(),
     });
-    function.reaching_definitions = expose_sets.then(|| {
-        order
-            .iter()
-            .map(|&i| DefinitionSet {
-                node: nodes[i].id,
-                incoming: incoming[i]
-                    .iter()
-                    .map(|d| nodes[definitions[d]].id)
-                    .collect(),
-                outgoing: outgoing[i]
-                    .iter()
-                    .map(|d| nodes[definitions[d]].id)
-                    .collect(),
-            })
-            .collect()
-    });
     function.cpg.edges.extend(edges);
 }
 
@@ -542,189 +562,12 @@ pub fn project_ddg(
     all_internal_methods: &HashSet<String>,
     cpp: bool,
 ) -> PropertyGraph {
-    let nodes = &function.cpg.nodes;
-    let index: HashMap<_, _> = nodes.iter().enumerate().map(|(i, n)| (n.id, i)).collect();
-    let Some(entry) = nodes.iter().position(|n| n.kind == "METHOD") else {
-        return PropertyGraph::default();
-    };
-    let mut graph = Graph {
-        nodes,
-        internal_methods: internal_nonstub_methods,
-        cpp,
-        ast: vec![Vec::new(); nodes.len()],
-        args: vec![Vec::new(); nodes.len()],
-        parent_call: vec![None; nodes.len()],
-    };
-    let mut incoming = vec![Vec::new(); nodes.len()];
-    for edge in &function.cpg.edges {
-        let (Some(&a), Some(&b)) = (index.get(&edge.source), index.get(&edge.target)) else {
-            continue;
-        };
-        match edge.kind.as_str() {
-            "AST" => graph.ast[a].push(b),
-            "ARGUMENT" => graph.add_argument(a, b, edge),
-            "REACHING_DEF" => incoming[b].push((a, edge.label.clone().unwrap_or_default())),
-            _ => {}
-        }
-    }
-    // ContainsEdgePass visits the AST breadth-first, stopping at nested scope
-    // roots. Parameters and method returns are not CONTAINS destinations.
-    let mut visible = vec![entry];
-    visible.extend(nodes.iter().position(|n| n.kind == "METHOD_RETURN"));
-    visible.extend(
-        nodes
-            .iter()
-            .enumerate()
-            .filter(|(_, n)| input(n))
-            .map(|(i, _)| i),
-    );
-    let mut queue = VecDeque::from([entry]);
-    while let Some(parent) = queue.pop_front() {
-        for &child in &graph.ast[parent] {
-            let node = &nodes[child];
-            if (expression(node) || matches!(node.kind.as_str(), "RETURN" | "METHOD"))
-                && !matches!(node.kind.as_str(), "CONTROL_STRUCTURE" | "JUMP_TARGET")
-            {
-                visible.push(child);
-            }
-            if !matches!(node.kind.as_str(), "METHOD" | "TYPE_DECL" | "FILE") {
-                queue.push_back(child);
-            }
-        }
-    }
-    let mut projection = DdgProjection {
-        graph: &graph,
+    crate::ddg::project(
+        function,
+        internal_nonstub_methods,
         all_internal_methods,
-        incoming,
-        cache: vec![None; nodes.len()],
-        visited: vec![false; nodes.len()],
-    };
-    let mut edges = Vec::new();
-    let mut referenced = HashSet::new();
-    for &target in &visible {
-        for (source, label) in projection.expand(target) {
-            referenced.extend([source, target]);
-            let (source, target) = (
-                graph.surrounding_call(source),
-                graph.surrounding_call(target),
-            );
-            if source != target
-                && !(call(&nodes[source]) && member(name(&nodes[source])))
-                && !(call(&nodes[target]) && member(name(&nodes[target])))
-            {
-                edges.push(Edge {
-                    source: nodes[source].id,
-                    target: nodes[target].id,
-                    kind: "DDG".into(),
-                    label: (!label.is_empty()).then_some(label),
-                });
-            }
-        }
-    }
-    let mut seen = HashSet::new();
-    let nodes = visible
-        .into_iter()
-        .filter(|i| referenced.contains(i))
-        .map(|i| graph.surrounding_call(i))
-        .filter(|&i| !(call(&nodes[i]) && member(name(&nodes[i]))))
-        .filter(|&i| seen.insert(i))
-        .map(|i| nodes[i].clone())
-        .collect();
-    let mut seen = HashSet::new();
-    edges.retain(|e| seen.insert(e.clone()));
-    PropertyGraph { nodes, edges }
-}
-
-struct DdgProjection<'g, 'n> {
-    graph: &'g Graph<'n>,
-    all_internal_methods: &'g HashSet<String>,
-    incoming: Vec<Vec<(usize, String)>>,
-    cache: Vec<Option<Vec<(usize, String)>>>,
-    visited: Vec<bool>,
-}
-
-struct ProjectionFrame {
-    target: usize,
-    result: Vec<(usize, String)>,
-    invisible: VecDeque<usize>,
-}
-
-impl DdgProjection<'_, '_> {
-    fn expand(&mut self, target: usize) -> Vec<(usize, String)> {
-        if let Some(result) = &self.cache[target] {
-            return result.clone();
-        }
-        self.visited[target] = true;
-        let mut stack = vec![self.frame(target)];
-        while let Some(frame) = stack.last_mut() {
-            if let Some(source) = frame.invisible.pop_front() {
-                if let Some(result) = &self.cache[source] {
-                    frame.result.extend(result.iter().cloned());
-                } else if !self.visited[source] {
-                    self.visited[source] = true;
-                    stack.push(self.frame(source));
-                }
-            } else {
-                let mut frame = stack.pop().unwrap();
-                let mut seen = HashSet::new();
-                frame.result.retain(|e| seen.insert(e.clone()));
-                self.visited[frame.target] = false;
-                if let Some(parent) = stack.last_mut() {
-                    parent.result.extend(frame.result.iter().cloned());
-                }
-                self.cache[frame.target] = Some(frame.result);
-            }
-        }
-        self.cache[target].as_ref().unwrap().clone()
-    }
-
-    fn frame(&self, target: usize) -> ProjectionFrame {
-        let mut result = Vec::new();
-        let mut invisible = VecDeque::new();
-        for (source, label) in &self.incoming[target] {
-            let source = *source;
-            if self.graph.nodes[source].kind == "METHOD" {
-                result.push((source, label.clone()));
-            } else if source != target && self.graph.valid_edge(source, target) {
-                let g = self.graph;
-                let visible = if expression(&g.nodes[source]) && expression(&g.nodes[target]) {
-                    if g.parent_call[source].map(|(p, _)| p)
-                        == g.parent_call[target].map(|(p, _)| p)
-                    {
-                        let semantic_exists =
-                            g.parent_call[source].is_some_and(|(p, _)| g.semantic(p).is_some());
-                        let internal = g.parent_call[source].is_some_and(|(p, _)| {
-                            g.nodes[p]
-                                .method_full_name
-                                .as_deref()
-                                .or_else(|| (!g.cpp).then(|| name(&g.nodes[p])))
-                                .is_some_and(|n| self.all_internal_methods.contains(n))
-                        });
-                        semantic_exists && g.defined(source) || !internal
-                    } else {
-                        g.defined(source)
-                    }
-                } else {
-                    true
-                };
-                if visible
-                    && !matches!(
-                        g.nodes[source].kind.as_str(),
-                        "CONTROL_STRUCTURE" | "JUMP_TARGET"
-                    )
-                {
-                    result.push((source, label.clone()));
-                } else {
-                    invisible.push_back(source);
-                }
-            }
-        }
-        ProjectionFrame {
-            target,
-            result,
-            invisible,
-        }
-    }
+        cpp,
+    )
 }
 
 fn reverse_postorder(entry: usize, next: &[Vec<usize>]) -> Vec<usize> {
@@ -768,18 +611,16 @@ impl Graph<'_> {
             self.parent_call[target] = Some((source, position));
         }
     }
-    fn surrounding_call(&self, at: usize) -> usize {
-        if expression(&self.nodes[at]) {
-            self.parent_call[at].map(|(p, _)| p).unwrap_or(at)
-        } else {
-            at
-        }
-    }
     fn semantic(&self, at: usize) -> Option<Semantic> {
         let node = &self.nodes[at];
         match node.method_full_name.as_deref() {
             Some(full_name) => semantics(full_name),
-            None if !self.cpp || name(node).starts_with("<operator>.") => semantics(name(node)),
+            None if !self.cpp
+                || name(node).starts_with("<operator>.")
+                || name(node).starts_with("<operators>.") =>
+            {
+                semantics(name(node))
+            }
             None => None,
         }
     }
@@ -1078,12 +919,10 @@ impl Graph<'_> {
 struct Edges<'g, 'n> {
     graph: &'g Graph<'n>,
     edges: Vec<Edge>,
-    seen: HashSet<(usize, usize, String)>,
 }
 impl Edges<'_, '_> {
     fn add(&mut self, source: usize, target: usize, label: &str) {
-        if self.graph.valid_edge(source, target) && self.seen.insert((source, target, label.into()))
-        {
+        if self.graph.valid_edge(source, target) {
             self.edges.push(Edge {
                 source: self.graph.nodes[source].id,
                 target: self.graph.nodes[target].id,
@@ -1141,11 +980,11 @@ fn exact_path(a: &[Access], b: &[Access]) -> bool {
     !b[bh..].contains(&Access::VariableShift)
 }
 
-struct Semantic {
-    flows: &'static [(i32, i32)],
-    pass: bool,
+pub(crate) struct Semantic {
+    pub(crate) flows: &'static [(i32, i32)],
+    pub(crate) pass: bool,
 }
-fn semantics(name: &str) -> Option<Semantic> {
+pub(crate) fn semantics(name: &str) -> Option<Semantic> {
     let flows: &[(i32, i32)] = match name {
         "<operator>.addition"
         | "<operator>.cast"
@@ -1167,6 +1006,12 @@ fn semantics(name: &str) -> Option<Semantic> {
         | "<operator>.assignmentPlus"
         | "<operator>.assignmentShiftLeft"
         | "<operator>.assignmentXor" => &[(2, 1), (1, 1), (2, -1)],
+        "<operators>.assignmentAnd"
+        | "<operators>.assignmentArithmeticShiftRight"
+        | "<operators>.assignmentModulo"
+        | "<operators>.assignmentOr"
+        | "<operators>.assignmentShiftLeft"
+        | "<operators>.assignmentXor" => &[(2, 1), (1, 1), (2, -1)],
         "<operator>.addressOf"
         | "<operator>.computedMemberAccess"
         | "<operator>.notNullAssert"
@@ -1655,6 +1500,30 @@ mod tests {
             expected.filename,
             expected.fullname
         );
+        let edges = |function: &FunctionGraph, keys: &HashMap<u32, String>| {
+            let mut edges: Vec<_> = function
+                .cpg
+                .edges
+                .iter()
+                .filter(|e| e.kind == "REACHING_DEF")
+                .map(|e| {
+                    (
+                        keys[&e.source].clone(),
+                        keys[&e.target].clone(),
+                        e.label.clone().unwrap_or_default(),
+                    )
+                })
+                .collect();
+            edges.sort();
+            edges
+        };
+        assert_eq!(
+            edges(actual, &actual_keys),
+            edges(expected, &expected_keys),
+            "raw edge multiplicity {}:{}",
+            expected.filename,
+            expected.fullname
+        );
     }
 
     #[test]
@@ -1738,6 +1607,84 @@ mod tests {
     }
 
     #[test]
+    fn native_compound_assignment_operators_match_original_dataflow() {
+        let oracle: Oracle = serde_json::from_str(include_str!(
+            "../tests/fixtures/dataflow-audit/joern-4.0.150-assignments.json"
+        ))
+        .unwrap();
+        let analysis = crate::analyze(
+            include_str!("../tests/fixtures/dataflow-audit/assignment-operators.c"),
+            "assignment-operators.c",
+            &crate::graph::Options {
+                reaching_definitions: true,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        assert!(!analysis.diagnostics.iter().any(|d| d.severity == "error"));
+        assert_eq!(analysis.functions.len(), 10);
+        assert_eq!(oracle.methods.len(), 10);
+        for expected in oracle.methods {
+            let actual = analysis
+                .functions
+                .iter()
+                .find(|f| f.fullname == expected.fullname)
+                .unwrap_or_else(|| panic!("missing {}", expected.fullname));
+            assert_native_dataflow(actual, &expected);
+        }
+    }
+
+    #[test]
+    fn native_return_display_types_match_original_metadata() {
+        let oracle: Oracle = serde_json::from_str(include_str!(
+            "../tests/fixtures/dataflow-audit/joern-4.0.150-types.json"
+        ))
+        .unwrap();
+        for (filename, source) in [
+            (
+                "type-metadata.c",
+                include_str!("../tests/fixtures/dataflow-audit/type-metadata.c"),
+            ),
+            (
+                "type-metadata.cpp",
+                include_str!("../tests/fixtures/dataflow-audit/type-metadata.cpp"),
+            ),
+            (
+                "type-detail.c",
+                include_str!("../tests/fixtures/dataflow-audit/type-detail.c"),
+            ),
+            (
+                "type-detail.cpp",
+                include_str!("../tests/fixtures/dataflow-audit/type-detail.cpp"),
+            ),
+        ] {
+            let actual = crate::analyze(source, filename, &Default::default()).unwrap();
+            let expected: Vec<_> = oracle
+                .methods
+                .iter()
+                .filter(|f| f.filename == filename)
+                .collect();
+            assert_eq!(
+                actual.functions.len(),
+                expected.len(),
+                "coverage {filename}"
+            );
+            for expected in expected {
+                let function = actual
+                    .functions
+                    .iter()
+                    .find(|f| f.name == expected.name)
+                    .unwrap_or_else(|| panic!("missing {filename}:{}", expected.name));
+                assert_eq!(
+                    function.return_type, expected.return_type,
+                    "return display {filename}:{}",
+                    expected.name
+                );
+            }
+        }
+    }
+
+    #[test]
     fn original_joern_c_cpp_solver_snapshots_match_by_expression_role() {
         let mut count = 0;
         for snapshot in [
@@ -1786,6 +1733,90 @@ mod tests {
             }
         }
         assert_eq!(count, 60);
+    }
+
+    #[test]
+    fn broad_original_graphs_match_solver_overlay_and_labeled_dot_projection() {
+        #[derive(serde::Deserialize)]
+        struct Audit {
+            methods: Vec<FunctionGraph>,
+            internal_methods: HashMap<String, HashSet<String>>,
+            all_internal_methods: HashMap<String, HashSet<String>>,
+        }
+        for (snapshot, count) in [
+            (
+                include_str!("../tests/fixtures/dataflow-audit/joern-4.0.150.json"),
+                82,
+            ),
+            (
+                include_str!("../tests/fixtures/dataflow-audit/joern-4.0.150-types.json"),
+                108,
+            ),
+            (
+                include_str!("../tests/fixtures/dataflow-audit/joern-4.0.150-assignments.json"),
+                10,
+            ),
+            (
+                include_str!("../tests/fixtures/dataflow-audit/joern-4.0.150-construction.json"),
+                11,
+            ),
+        ] {
+            let oracle: Audit = serde_json::from_str(snapshot).unwrap();
+            assert_eq!(oracle.methods.len(), count);
+            for expected in oracle.methods {
+                let mut actual = expected.clone();
+                actual.ddg = None;
+                actual.ddg_view = None;
+                actual.reaching_definitions = None;
+                let nonstub = &oracle.internal_methods[&expected.filename];
+                let internal = &oracle.all_internal_methods[&expected.filename];
+                apply_with_methods(&mut actual, true, nonstub);
+                assert_eq!(
+                    definitions(&actual),
+                    definitions(&expected),
+                    "RD {}",
+                    expected.fullname
+                );
+                assert_eq!(
+                    dependencies(&actual),
+                    dependencies(&expected),
+                    "overlay {}",
+                    expected.fullname
+                );
+                let edges = |f: &FunctionGraph| {
+                    let mut edges: Vec<_> = f
+                        .cpg
+                        .edges
+                        .iter()
+                        .filter(|e| e.kind == "REACHING_DEF")
+                        .map(|e| (e.source, e.target, e.label.clone().unwrap_or_default()))
+                        .collect();
+                    edges.sort();
+                    edges
+                };
+                assert_eq!(
+                    edges(&actual),
+                    edges(&expected),
+                    "raw edge multiplicity {}",
+                    expected.fullname
+                );
+                let cpp = expected.filename.ends_with(".cpp");
+                let projected = crate::ddg::project(&actual, nonstub, internal, cpp);
+                let original = expected.ddg_view.as_ref().unwrap();
+                assert_eq!(
+                    projected.nodes.iter().map(|n| n.id).collect::<HashSet<_>>(),
+                    original.nodes.iter().map(|n| n.id).collect::<HashSet<_>>(),
+                    "projected vertices {}",
+                    expected.fullname,
+                );
+                assert_eq!(
+                    projected.edges.iter().collect::<HashSet<_>>(),
+                    original.edges.iter().collect::<HashSet<_>>(),
+                    "projected labeled edges {}",
+                    expected.fullname,
+                );
+            }
+        }
     }
 
     fn cross_argument_edges(function: &FunctionGraph, callee: &str) -> usize {
@@ -2022,6 +2053,7 @@ mod tests {
             cpg: graph,
             cfg: Cfg::default(),
             ddg: None,
+            ddg_view: None,
             ddg_projection: None,
             reaching_definitions: None,
         }
@@ -2081,6 +2113,48 @@ mod tests {
                 .cloned()
                 .collect::<HashSet<_>>(),
             edges
+        );
+    }
+
+    #[test]
+    fn original_overlay_cutoff_keeps_explicit_solver_queries_available() {
+        // The original live oracle produces edges at 3999 definitions and no
+        // edges at 4001. Check the exact 4000 boundary as well: each increment
+        // generates its CALL and IDENTIFIER, and an input parameter adds one.
+        let increments = "x++;".repeat(2000);
+        let at_limit = format!("int f() {{ int x; {increments} return x; }}");
+        let over_limit = format!("int f(int x) {{ {increments} return x; }}");
+        let options = crate::graph::Options {
+            data_flow: true,
+            ..Default::default()
+        };
+        let analyzed = crate::analyze(&at_limit, "threshold.c", &options).unwrap();
+        assert!(!analyzed.functions[0].ddg.as_ref().unwrap().edges.is_empty());
+        let skipped = crate::analyze(&over_limit, "threshold.c", &options).unwrap();
+        let function = &skipped.functions[0];
+        assert!(function.ddg.as_ref().unwrap().nodes.is_empty());
+        assert!(function.ddg_view.as_ref().unwrap().nodes.is_empty());
+        assert!(!function.cpg.edges.iter().any(|e| e.kind == "REACHING_DEF"));
+        assert!(function.reaching_definitions.is_none());
+
+        let analyzed = crate::analyze(
+            &over_limit,
+            "threshold.c",
+            &crate::graph::Options {
+                reaching_definitions: true,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        let function = &analyzed.functions[0];
+        assert!(function.ddg.as_ref().unwrap().edges.is_empty());
+        assert!(
+            function
+                .reaching_definitions
+                .as_ref()
+                .unwrap()
+                .iter()
+                .any(|set| !set.incoming.is_empty())
         );
     }
 

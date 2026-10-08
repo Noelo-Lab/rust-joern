@@ -29,8 +29,17 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         extern_c: false,
         extern_c_names: HashSet::new(),
         class_scopes: HashSet::new(),
+        class_fields: HashMap::new(),
+        function_fields: Vec::new(),
+        function_member_cv: false,
         variables: HashSet::new(),
+        variable_types: HashMap::new(),
+        variable_closures: HashMap::new(),
+        function_returns: HashMap::new(),
+        function_full_name: String::new(),
         imports: HashMap::new(),
+        using_namespaces: Vec::new(),
+        lexical_scope: String::new(),
         asm_problem_recovery: false,
         in_function_body: false,
         function_declarations: Vec::new(),
@@ -46,6 +55,12 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
     let mut functions = Vec::new();
     parser.translation_scope("", &mut functions);
     functions.append(&mut parser.function_declarations);
+    let declaration_count = functions
+        .iter()
+        .filter(|function| matches!(function.body.kind, StmtKind::Empty))
+        .map(|function| function.full_name.as_str())
+        .collect::<HashSet<_>>()
+        .len();
     // Joern collects declarations separately, and emits only those without a
     // matching definition after visiting every translation-unit declaration.
     let definitions: HashSet<_> = functions
@@ -58,7 +73,19 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         !matches!(f.body.kind, StmtKind::Empty)
             || !definitions.contains(&f.full_name) && declarations.insert(f.full_name.clone())
     });
-    functions.sort_by_key(|f| matches!(f.body.kind, StmtKind::Empty));
+    let declaration_names: Vec<_> = functions
+        .iter()
+        .filter(|function| matches!(function.body.kind, StmtKind::Empty))
+        .map(|function| function.full_name.clone())
+        .collect();
+    let ranks = joern_declaration_order(&declaration_names, declaration_count);
+    functions.sort_by_key(|f| {
+        if matches!(f.body.kind, StmtKind::Empty) {
+            (true, ranks[&f.full_name])
+        } else {
+            (false, 0)
+        }
+    });
     let retained_macro_calls = parser
         .retained_macro_invocations
         .into_iter()
@@ -71,6 +98,59 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         retained_macro_calls,
         diagnostics: parser.diagnostics,
     }
+}
+
+fn joern_declaration_order(names: &[String], registered_count: usize) -> HashMap<String, usize> {
+    // AstCreationPass copies its ConcurrentHashMap into Scala's immutable Map,
+    // then removes definitions. Small Maps retain Java's bucket order; larger
+    // Maps iterate the hash trie, visiting inline data before child nodes.
+    fn java_hash(name: &str) -> u32 {
+        name.encode_utf16().fold(0u32, |hash, unit| {
+            hash.wrapping_mul(31).wrapping_add(unit as u32)
+        })
+    }
+    fn improved_hash(name: &str) -> u32 {
+        let hash = java_hash(name);
+        let hash = hash.wrapping_add(!(hash << 9));
+        let hash = hash ^ (hash >> 14);
+        let hash = hash.wrapping_add(hash << 4);
+        hash ^ (hash >> 10)
+    }
+    fn trie_order<'a>(names: Vec<&'a String>, shift: u32, output: &mut Vec<&'a String>) {
+        if shift >= 32 {
+            output.extend(names);
+            return;
+        }
+        let mut slots: [Vec<&String>; 32] = std::array::from_fn(|_| Vec::new());
+        for name in names {
+            slots[((improved_hash(name) >> shift) & 31) as usize].push(name);
+        }
+        output.extend(
+            slots
+                .iter()
+                .filter(|slot| slot.len() == 1)
+                .map(|slot| slot[0]),
+        );
+        for slot in slots.into_iter().filter(|slot| slot.len() > 1) {
+            trie_order(slot, shift + 5, output);
+        }
+    }
+    let mut order: Vec<_> = names.iter().collect();
+    if registered_count <= 4 {
+        order.sort_by_key(|name| {
+            let hash = java_hash(name);
+            (hash ^ (hash >> 16)) & 15
+        });
+    } else {
+        let mut sorted = Vec::with_capacity(order.len());
+        trie_order(order, 0, &mut sorted);
+        order = sorted;
+    }
+    order
+        .into_iter()
+        .enumerate()
+        .map(|(index, name)| (name.clone(), index))
+        .collect()
 }
 
 #[cfg(test)]
@@ -365,8 +445,12 @@ mod expression_port_tests {
             let function = unit.functions.iter().find(|f| f.name == name).unwrap();
             assert_eq!(function.lambda_parent.as_deref(), Some(parent));
             assert_eq!(function.full_name, fullname);
-            assert_eq!(function.return_type, "ANY");
-            assert_eq!(function.signature, signature);
+            let explicit = name == "<lambda>2";
+            assert_eq!(function.return_type, if explicit { "int" } else { "ANY" });
+            assert_eq!(
+                function.signature,
+                if explicit { "int(int)" } else { signature }
+            );
         }
         let outer = unit.functions.iter().find(|f| f.name == "outer").unwrap();
         let StmtKind::Block(body) = &outer.body.kind else {
@@ -376,7 +460,7 @@ mod expression_port_tests {
             panic!()
         };
         assert!(
-            matches!(&declarations[0].initializer.as_ref().unwrap().kind,ExprKind::Lambda {signature,return_type,..} if signature=="int(int)"&&return_type=="int")
+            matches!(&declarations[0].initializer.as_ref().unwrap().kind,ExprKind::Lambda(closure) if closure.parameter_types==["int"]&&closure.return_type=="int")
         );
     }
 
@@ -412,8 +496,17 @@ struct Parser<'a> {
     extern_c: bool,
     extern_c_names: HashSet<String>,
     class_scopes: HashSet<String>,
+    class_fields: HashMap<String, Vec<(String, String)>>,
+    function_fields: Vec<(String, String)>,
+    function_member_cv: bool,
     variables: HashSet<String>,
+    variable_types: HashMap<String, String>,
+    variable_closures: HashMap<String, Closure>,
+    function_returns: HashMap<String, String>,
+    function_full_name: String,
     imports: HashMap<String, String>,
+    using_namespaces: Vec<String>,
+    lexical_scope: String,
     asm_problem_recovery: bool,
     in_function_body: bool,
     function_declarations: Vec<Function>,
@@ -546,6 +639,8 @@ impl Parser<'_> {
     }
 
     fn translation_scope(&mut self, prefix: &str, functions: &mut Vec<Function>) {
+        let old_scope = std::mem::replace(&mut self.lexical_scope, prefix.to_string());
+        let old_using_namespaces = self.using_namespaces.clone();
         while self.pos < self.limit && !self.at("}") {
             if self.eat(";") {
                 continue;
@@ -647,13 +742,22 @@ impl Parser<'_> {
                 let elaborated = (start..self.specifier_end(start, cursor))
                     .any(|i| matches!(self.text(i), "struct" | "union" | "enum" | "class"));
                 self.remember_types(start, cursor);
+                if self.cpp && self.text(start) == "using" {
+                    self.pos = cursor + 1;
+                    continue;
+                }
                 if !is_typedef {
                     self.collect_global_expressions(start, cursor);
                 }
                 if !is_typedef && !elaborated {
                     // A simple declaration shares its specifiers across every
                     // declarator; Joern converts each function declarator.
-                    let base_end = self.specifier_end(start, cursor);
+                    // A constructor's name is also a known type. It belongs to
+                    // the declarator, rather than the shared type specifiers.
+                    let base_end = header.as_ref().map_or_else(
+                        || self.specifier_end(start, cursor),
+                        |header| self.specifier_end(start, cursor).min(header.name_start),
+                    );
                     let base_type = self.clean_type(start, base_end);
                     if let Some(header) = header.filter(|h| h.name_start < base_end) {
                         // A C++ constructor has no return decl-specifier;
@@ -725,6 +829,9 @@ impl Parser<'_> {
                     };
                     if self.cpp && class.is_some() && !nested.is_empty() {
                         self.class_scopes.insert(nested.clone());
+                        let close = self.matching(cursor, self.limit).unwrap_or(self.limit);
+                        let fields = self.collect_class_fields(cursor + 1, close);
+                        self.class_fields.insert(nested.clone(), fields);
                     }
                     let previous_linkage = self.extern_c;
                     let outer_variables = class.map(|_| self.variables.clone());
@@ -791,6 +898,8 @@ impl Parser<'_> {
                 self.pos = start + 1;
             }
         }
+        self.lexical_scope = old_scope;
+        self.using_namespaces = old_using_namespaces;
     }
 
     fn record_retained_macro_call(&mut self, callee: &Expr, _arguments: &[Expr]) {
@@ -975,14 +1084,14 @@ impl Parser<'_> {
                 i += 1;
                 continue;
             }
+            if name_start > start && self.text(name_start - 1) == "~" {
+                name_start -= 1;
+            }
             while name_start >= start + 2
                 && self.text(name_start - 1) == "::"
                 && self.tokens[name_start - 2].kind == TokenKind::Identifier
             {
                 name_start -= 2;
-            }
-            if name_start > start && self.text(name_start - 1) == "~" {
-                name_start -= 1;
             }
             if (start..name_start).any(|n| self.text(n) == "=" || self.text(n) == ":") {
                 i = close + 1;
@@ -1082,6 +1191,60 @@ impl Parser<'_> {
         Some(header)
     }
 
+    fn collect_class_fields(&self, start: usize, end: usize) -> Vec<(String, String)> {
+        let mut fields = Vec::new();
+        let mut at = start;
+        while at < end {
+            if matches!(self.text(at), "public" | "private" | "protected")
+                && self.text(at + 1) == ":"
+            {
+                at += 2;
+                continue;
+            }
+            let from = at;
+            while at < end && !matches!(self.text(at), ";" | "{") {
+                if matches!(self.text(at), "(" | "[") {
+                    at = self.matching(at, end).map_or(end, |close| close + 1);
+                } else {
+                    at += 1;
+                }
+            }
+            if at >= end {
+                break;
+            }
+            let method = self.function_header(from, at).is_some();
+            if self.text(at) == "{" {
+                at = self.matching(at, end).map_or(end, |close| close + 1);
+                if method {
+                    continue;
+                }
+                while at < end && self.text(at) != ";" {
+                    at += 1;
+                }
+            }
+            if !method
+                && !(from..at).any(|i| {
+                    matches!(
+                        self.text(i),
+                        "static" | "typedef" | "using" | "struct" | "class" | "union" | "enum"
+                    )
+                })
+            {
+                let base = self.specifier_end(from, at);
+                for (a, b) in self.split_ranges(base, at, ",") {
+                    if let (Some(name), _) = self.declarator_name(a, b) {
+                        fields.push((
+                            self.text(name).into(),
+                            self.declarator_type(from, base, Some(name), b),
+                        ));
+                    }
+                }
+            }
+            at += 1;
+        }
+        fields
+    }
+
     fn add_function(
         &mut self,
         start: usize,
@@ -1150,46 +1313,77 @@ impl Parser<'_> {
                 .clone()
                 .unwrap_or_else(|| self.clean_type(return_start, header.name_start))
         };
+        let return_binding_type = if return_type.is_empty() && self.cpp {
+            "ANY".into()
+        } else if return_type.is_empty() {
+            "int".into()
+        } else {
+            return_type.clone()
+        };
         let return_type = if return_type.is_empty() {
-            if self.cpp {
-                "void".into()
+            if !definition
+                && self.cpp
+                && (return_start..header.name_start).any(|i| self.text(i) == "virtual")
+            {
+                "virtual".into()
             } else {
-                "int".into()
+                return_binding_type.clone()
+            }
+        } else if definition {
+            let base = return_type.trim_end_matches(['*', '&']).trim();
+            if base.split_whitespace().all(type_word) {
+                primitive_return_display(&self.type_code(return_start, header.name_start, true))
+            } else if self.explicit_types.contains(base)
+                || self.class_scopes.contains(base)
+                || base.contains("::")
+            {
+                simple_type_name(base).to_string()
+            } else {
+                return_type
             }
         } else {
             return_type
         };
         let old_variables = self.variables.clone();
+        let old_variable_types = self.variable_types.clone();
+        let old_variable_closures = self.variable_closures.clone();
+        let old_function_full_name = self.function_full_name.clone();
+        let old_function_fields = self.function_fields.clone();
+        let old_function_member_cv = self.function_member_cv;
         let old_body_context = self.in_function_body;
         self.in_function_body = false;
-        let parameters =
-            if definition && (header.parameters_end + 1..body_start).any(|i| self.text(i) == ";") {
-                let mut declared = Vec::new();
-                for (a, b) in self.split_ranges(header.parameters_end + 1, body_start, ";") {
-                    if a < b {
-                        declared.extend(self.declarations_range(a, b));
-                    }
+        let parameters = if definition
+            && (header.parameters_end + 1..body_start).any(|i| self.text(i) == ";")
+        {
+            let mut declared = Vec::new();
+            for (a, b) in self.split_ranges(header.parameters_end + 1, body_start, ";") {
+                if a < b {
+                    let span = self.span(a, b + 1);
+                    declared.extend(
+                        self.declarations_range(a, b)
+                            .into_iter()
+                            .map(|d| (d, span.clone())),
+                    );
                 }
-                self.split_ranges(header.parameters_start, header.parameters_end, ",")
-                    .into_iter()
-                    .filter(|(a, b)| a < b)
-                    .map(|(a, b)| {
-                        let name = self.raw(a, b);
-                        let type_name = declared
-                            .iter()
-                            .find(|d| d.name == name)
-                            .map_or("int".into(), |d| d.type_name.clone());
-                        Parameter {
-                            name,
-                            type_name,
-                            function_pointer: false,
-                            span: self.span(a, b),
-                        }
-                    })
-                    .collect()
-            } else {
-                self.parameters(header.parameters_start, header.parameters_end)
-            };
+            }
+            self.split_ranges(header.parameters_start, header.parameters_end, ",")
+                .into_iter()
+                .filter(|(a, b)| a < b)
+                .map(|(a, b)| {
+                    let name = self.raw(a, b);
+                    let declaration = declared.iter().find(|(d, _)| d.name == name);
+                    let type_name = declaration.map_or("int".into(), |(d, _)| d.type_name.clone());
+                    Parameter {
+                        name,
+                        type_name,
+                        function_pointer: false,
+                        span: declaration.map_or_else(|| self.span(a, b), |(_, span)| span.clone()),
+                    }
+                })
+                .collect()
+        } else {
+            self.parameters(header.parameters_start, header.parameters_end)
+        };
         let signature = format!(
             "{}({})",
             return_type,
@@ -1214,18 +1408,24 @@ impl Parser<'_> {
         } else {
             lexical_name
         };
-        let resolved_name = if let Some((owner, method)) = header.name.split_once("::") {
-            self.imports.get(owner).map_or_else(
-                || header.name.clone(),
-                |qualified| format!("{qualified}::{method}"),
-            )
+        let qualified_name = if let Some((owner, method)) = header.name.rsplit_once("::")
+            && let Some(owner) = self.resolve_class_name(owner)
+        {
+            format!("{owner}::{method}")
         } else {
-            header.name.clone()
-        };
-        let qualified_name = if prefix.is_empty() {
-            resolved_name
-        } else {
-            format!("{prefix}::{resolved_name}")
+            let resolved_name = if let Some((owner, method)) = header.name.split_once("::") {
+                self.imports.get(owner).map_or_else(
+                    || header.name.clone(),
+                    |qualified| format!("{qualified}::{method}"),
+                )
+            } else {
+                header.name.clone()
+            };
+            if prefix.is_empty() {
+                resolved_name
+            } else {
+                format!("{prefix}::{resolved_name}")
+            }
         };
         let extern_c = self.cpp
             && (self.extern_c
@@ -1252,7 +1452,10 @@ impl Parser<'_> {
                 .filter(|t| t != "void" && t != "...")
                 .collect::<Vec<_>>()
                 .join(",");
-            format!("{}({parameter_types})", self.binding_type(&return_type))
+            format!(
+                "{}({parameter_types})",
+                self.binding_type(&return_binding_type)
+            )
         });
         let duplicate_binding = if definition && self.cpp && !header.name.contains("::") {
             let mut qualifiers = String::new();
@@ -1283,6 +1486,15 @@ impl Parser<'_> {
         if duplicate_binding {
             implicit_this = None;
         }
+        let implicit_fields = if duplicate_binding {
+            Vec::new()
+        } else {
+            qualified_name
+                .rsplit_once("::")
+                .and_then(|(owner, _)| self.class_fields.get(owner))
+                .cloned()
+                .unwrap_or_default()
+        };
         let full_name = if duplicate_binding {
             format!("{}:<unresolvedSignature>", header.name.replace("::", "."))
         } else if self.cpp && !extern_c {
@@ -1302,6 +1514,8 @@ impl Parser<'_> {
         };
         for parameter in &parameters {
             self.variables.insert(parameter.name.clone());
+            self.variable_types
+                .insert(parameter.name.clone(), parameter.type_name.clone());
         }
         self.variables.insert(header.name.clone());
         if definition && (header.parameters_end + 1..body_start).any(|i| self.text(i) == ":") {
@@ -1311,6 +1525,28 @@ impl Parser<'_> {
                 "constructor member-initializer CFG is unsupported",
             );
         }
+        self.function_full_name.clone_from(&full_name);
+        self.function_fields.clone_from(&implicit_fields);
+        let mut suffix = header.parameters_end + 1;
+        let mut member_cv_qualified = false;
+        while suffix < body_start && !matches!(self.text(suffix), "->" | ":") {
+            if matches!(self.text(suffix), "const" | "volatile") {
+                member_cv_qualified = true;
+            }
+            suffix = if matches!(self.text(suffix), "(" | "[") {
+                self.matching(suffix, body_start)
+                    .map_or(body_start, |close| close + 1)
+            } else {
+                suffix + 1
+            };
+        }
+        self.function_member_cv = member_cv_qualified;
+        if let Some(owner) = &implicit_this {
+            self.variables.insert("this".into());
+            self.variable_types.insert("this".into(), owner.clone());
+        }
+        self.function_returns
+            .insert(name.clone(), return_type.clone());
         self.pos = body_start;
         let old_method = std::mem::replace(&mut self.current_method, full_name.clone());
         let old_ast_parent = std::mem::replace(&mut self.lambda_ast_parent, full_name.clone());
@@ -1337,21 +1573,39 @@ impl Parser<'_> {
             self.pos = body_end + 1;
         }
         self.variables = old_variables;
+        self.variable_types = old_variable_types;
+        self.variable_closures = old_variable_closures;
+        self.function_full_name = old_function_full_name;
+        self.function_fields = old_function_fields;
+        self.function_member_cv = old_function_member_cv;
         self.in_function_body = old_body_context;
         self.current_method = old_method;
         self.lambda_ast_parent = old_ast_parent;
         self.variables.insert(header.name.clone());
+        let mut span = self.span(start, end);
+        if !definition {
+            let name_span = self.span(header.name_start, header.name_start + 1);
+            span.line = name_span.line;
+            span.column = name_span.column;
+        }
         functions.push(Function {
             name,
             full_name,
+            binding_return_type: self.binding_type(&return_binding_type),
             return_type,
             signature,
-            extern_c,
             implicit_this,
+            extern_c,
             lambda_parent: None,
+            implicit_fields,
+            member_cv_qualified,
+            lambda: false,
+            is_static: (start..header.name_start).any(|i| self.text(i) == "static"),
+            inherited_bindings: Vec::new(),
+            inherited_closures: Vec::new(),
             parameters,
             body,
-            span: self.span(start, end),
+            span,
         });
     }
 
@@ -1493,10 +1747,17 @@ impl Parser<'_> {
                         full_name: name.clone(),
                         name,
                         return_type: "ANY".into(),
+                        binding_return_type: "ANY".into(),
                         signature: format!("ANY({})", vec!["ANY"; parameters.len()].join(",")),
                         extern_c: false,
                         implicit_this: None,
                         lambda_parent: None,
+                        implicit_fields: Vec::new(),
+                        member_cv_qualified: false,
+                        lambda: false,
+                        is_static: false,
+                        inherited_bindings: Vec::new(),
+                        inherited_closures: Vec::new(),
                         parameters,
                         body: Stmt {
                             kind: StmtKind::Empty,
@@ -1588,6 +1849,10 @@ impl Parser<'_> {
             let qualified = (start + 1..end).map(|i| self.text(i)).collect::<String>();
             self.imports.insert(name, qualified);
         }
+        if self.cpp && self.text(start) == "using" && self.text(start + 1) == "namespace" {
+            self.using_namespaces
+                .push((start + 2..end).map(|i| self.text(i)).collect());
+        }
         if (start..end).any(|i| self.text(i) == "typedef") {
             let base_end = self.specifier_end(start, end);
             self.remember_inferred_type(start, base_end);
@@ -1622,10 +1887,10 @@ impl Parser<'_> {
             let base_end = self.specifier_end(a, b);
             self.remember_inferred_type(a, base_end);
             let (name_index, suffix) = self.declarator_name(base_end, b);
-            let name = name_index
+            let mut name = name_index
                 .map(|i| self.text(i).to_string())
                 .unwrap_or_default();
-            let type_name = if self.text(suffix) == "(" {
+            let mut type_name = if self.text(suffix) == "(" {
                 // CDT's parameter type helper reads only the outer
                 // declarator's pointer operators, not those nested in a
                 // function-pointer declarator or its parameter list.
@@ -1642,6 +1907,23 @@ impl Parser<'_> {
             } else {
                 self.declarator_type(a, base_end, name_index, b)
             };
+            // Without a typedef binding, CDT's C parser interprets a bare
+            // identifier parameter as an old-style parameter name.
+            if !self.cpp
+                && name_index.is_none()
+                && b > a
+                && self.tokens[b - 1].kind == TokenKind::Identifier
+                && !type_word(self.text(b - 1))
+                && !self.explicit_types.contains(self.text(b - 1))
+                && (a..b - 1).all(|i| qualifier(self.text(i)))
+            {
+                name = self.text(b - 1).into();
+                type_name = if b == a + 1 {
+                    "ANY".into()
+                } else {
+                    self.type_code(a, b - 1, true)
+                };
+            }
             result.push(Parameter {
                 name,
                 type_name,
@@ -1740,6 +2022,10 @@ impl Parser<'_> {
                 base = rest.to_string();
             }
         }
+        let class_type = self.cpp.then(|| self.resolve_class_name(&base)).flatten();
+        if let Some(qualified) = &class_type {
+            base.clone_from(qualified);
+        }
         base = match base.as_str() {
             "signed" | "signed int" => "int".into(),
             "unsigned" => "unsigned int".into(),
@@ -1766,12 +2052,50 @@ impl Parser<'_> {
                 &result[..=space],
                 result[space + 1..].replace(' ', "")
             );
-        } else if result.contains(['*', '[']) {
+        } else if result.contains(['*', '[']) || base.contains("::") {
             result = result.replace(' ', "");
         } else if raw[split..].contains('&') {
             result = format!("{base} {}", raw[split..].trim());
         }
         result.replace("::", ".")
+    }
+
+    fn resolve_class_name(&self, name: &str) -> Option<String> {
+        let raw = name.trim_start_matches("::");
+        if name.starts_with("::") {
+            return self.class_scopes.contains(raw).then(|| raw.to_string());
+        }
+        let mut scope = self.lexical_scope.as_str();
+        while !scope.is_empty() {
+            let candidate = format!("{scope}::{raw}");
+            if self.class_scopes.contains(&candidate) {
+                return Some(candidate);
+            }
+            scope = scope.rsplit_once("::").map_or("", |(owner, _)| owner);
+        }
+        if self.class_scopes.contains(raw) {
+            return Some(raw.to_string());
+        }
+        let (head, suffix) = raw
+            .split_once("::")
+            .map_or((raw, ""), |(head, tail)| (head, tail));
+        if let Some(imported) = self.imports.get(head) {
+            let candidate = if suffix.is_empty() {
+                imported.clone()
+            } else {
+                format!("{imported}::{suffix}")
+            };
+            if self.class_scopes.contains(&candidate) {
+                return Some(candidate);
+            }
+        }
+        let candidates: HashSet<_> = self
+            .using_namespaces
+            .iter()
+            .map(|namespace| format!("{namespace}::{raw}"))
+            .filter(|candidate| self.class_scopes.contains(candidate))
+            .collect();
+        (candidates.len() == 1).then(|| candidates.into_iter().next().unwrap())
     }
 
     fn angle_close(&self, start: usize, end: usize) -> Option<usize> {
@@ -1944,6 +2268,10 @@ impl Parser<'_> {
     }
 
     fn clean_type(&self, start: usize, end: usize) -> String {
+        self.type_code(start, end, false)
+    }
+
+    fn type_code(&self, start: usize, end: usize, keep_qualifiers: bool) -> String {
         let mut pieces = Vec::new();
         let mut i = start;
         while i < end {
@@ -1985,11 +2313,9 @@ impl Parser<'_> {
                     | "__restrict"
                     | "__restrict__"
                     | "restrict"
-                    | "const"
-                    | "volatile"
-                    | "__volatile__"
-            ) {
-                pieces.push(t);
+            ) && (keep_qualifiers || !matches!(t, "const" | "volatile" | "__volatile__"))
+            {
+                pieces.push(if t == "__volatile__" { "volatile" } else { t });
             }
             i += 1;
         }
@@ -2079,6 +2405,7 @@ impl Parser<'_> {
                     let type_name = self.declarator_type(start, base_end, Some(name), b);
                     let name = self.text(name).to_string();
                     self.variables.insert(name.clone());
+                    self.variable_types.insert(name.clone(), type_name.clone());
                     return vec![Declaration {
                         name,
                         type_name,
@@ -2169,6 +2496,16 @@ impl Parser<'_> {
             let type_name = self.declarator_type(start, base_end, Some(name_index), b);
             if !is_typedef {
                 self.variables.insert(name.clone());
+                self.variable_types.insert(name.clone(), type_name.clone());
+                if let Some(closure) = initializer
+                    .as_ref()
+                    .and_then(|value| self.closure_expression(value))
+                    .cloned()
+                {
+                    self.variable_closures.insert(name.clone(), closure);
+                } else {
+                    self.variable_closures.remove(&name);
+                }
             }
             result.push(Declaration {
                 name,
@@ -2186,6 +2523,9 @@ impl Parser<'_> {
 
     fn looks_declaration(&self, start: usize, end: usize) -> bool {
         let t = self.text(start);
+        if self.cpp && matches!(t, "new" | "delete" | "noexcept") {
+            return false;
+        }
         if (self.cpp || t != "[")
             && let Some(after) = self.skip_attribute(start, end)
         {
@@ -2219,6 +2559,33 @@ impl Parser<'_> {
             {
                 // Even a real typedef does not turn T(existing_object) into
                 // a new local in the original ambiguous-statement recovery.
+                return false;
+            }
+        }
+        if self.cpp {
+            let mut after = start + 1;
+            while after + 1 < end && self.text(after) == "::" {
+                after += 2;
+            }
+            if after > start + 1
+                && matches!(
+                    self.text(after),
+                    "=" | "+="
+                        | "-="
+                        | "*="
+                        | "/="
+                        | "%="
+                        | "&="
+                        | "|="
+                        | "^="
+                        | "<<="
+                        | ">>="
+                        | "("
+                        | "["
+                        | "++"
+                        | "--"
+                )
+            {
                 return false;
             }
         }
@@ -2315,6 +2682,8 @@ impl Parser<'_> {
             "{" | "<%" => {
                 self.pos += 1;
                 let old_variables = self.variables.clone();
+                let old_variable_types = self.variable_types.clone();
+                let old_variable_closures = self.variable_closures.clone();
                 let mut statements = Vec::new();
                 while self.pos < self.limit && !matches!(self.peek(), "}" | "%>") {
                     let before = self.pos;
@@ -2328,6 +2697,8 @@ impl Parser<'_> {
                     self.expect("%>");
                 }
                 self.variables = old_variables;
+                self.variable_types = old_variable_types;
+                self.variable_closures = old_variable_closures;
                 StmtKind::Block(statements)
             }
             ";" => {
@@ -3442,6 +3813,15 @@ impl Parser<'_> {
             asm_problem_recovery: false,
             in_function_body: self.in_function_body,
             function_declarations: Vec::new(),
+            variable_types: self.variable_types.clone(),
+            variable_closures: self.variable_closures.clone(),
+            function_returns: self.function_returns.clone(),
+            function_full_name: self.function_full_name.clone(),
+            using_namespaces: self.using_namespaces.clone(),
+            lexical_scope: self.lexical_scope.clone(),
+            class_fields: self.class_fields.clone(),
+            function_fields: self.function_fields.clone(),
+            function_member_cv: self.function_member_cv,
             global_expressions: Vec::new(),
             // The replacement for types_compatible_p contains its own name;
             // a disabled macro is not expanded a second time by CDT.
@@ -3494,6 +3874,156 @@ impl Parser<'_> {
         }
     }
 
+    fn closure_expression<'a>(&'a self, expression: &'a Expr) -> Option<&'a Closure> {
+        closure_expression(expression, &self.variable_closures)
+    }
+
+    fn lambda_expression(&mut self) -> Expr {
+        let start = self.pos;
+        let Some(capture_end) = self.matching(start, self.limit) else {
+            self.diagnose(start, start + 1, "unterminated lambda capture list");
+            self.pos += 1;
+            return Expr {
+                kind: ExprKind::Unknown("[".into()),
+                span: self.span(start, self.pos),
+            };
+        };
+        // Captures are not expression AST children in c2cpg 4.0.150, including
+        // init captures. Their body identifiers use the surrounding scope.
+        self.pos = capture_end + 1;
+        let inherited_bindings = self
+            .variable_types
+            .iter()
+            .map(|(name, ty)| (name.clone(), ty.clone()))
+            .collect();
+        let inherited_closures = self
+            .variable_closures
+            .iter()
+            .map(|(name, closure)| (name.clone(), closure.clone()))
+            .collect();
+        let name = format!("<lambda>{}", self.lambda_counter);
+        self.lambda_counter += 1;
+        let full_name = if self.function_full_name.is_empty() {
+            name.clone()
+        } else {
+            format!("{}.{}", self.function_full_name, name)
+        };
+        let mut parameter_types = Vec::new();
+        let parameters = if self.at("(") {
+            let open = self.pos;
+            let close = self.matching(open, self.limit).unwrap_or(self.limit);
+            parameter_types = self
+                .split_ranges(open + 1, close, ",")
+                .into_iter()
+                .filter(|(a, b)| a < b)
+                .map(|(a, b)| self.binding_parameter_type(a, b))
+                .filter(|ty| ty != "void" && ty != "...")
+                .collect();
+            let parameters = self.parameters(open + 1, close);
+            self.pos = close.saturating_add(1).min(self.limit);
+            parameters
+        } else {
+            Vec::new()
+        };
+        let mut declared_return = None;
+        let mut callable_return = None;
+        while self.pos < self.limit && !self.at("{") {
+            if let Some(after) = self.skip_attribute(self.pos, self.limit) {
+                self.pos = after;
+            } else if self.eat("->") {
+                let return_start = self.pos;
+                let specifier_end = self.specifier_end(return_start, self.limit);
+                self.pos = specifier_end;
+                while matches!(self.peek(), "*" | "&" | "&&") || qualifier(self.peek()) {
+                    self.pos += 1;
+                }
+                declared_return = Some(self.clean_type(return_start, specifier_end));
+                callable_return = Some(self.binding_type(&self.clean_type(return_start, self.pos)));
+            } else if self.at("(") {
+                self.pos = self
+                    .matching(self.pos, self.limit)
+                    .map_or(self.limit, |close| close + 1);
+            } else {
+                self.pos += 1;
+            }
+        }
+        if !self.at("{") {
+            self.diagnose(start, self.pos, "lambda requires a compound body");
+            return Expr {
+                kind: ExprKind::Unknown(self.raw(start, self.pos)),
+                span: self.span(start, self.pos),
+            };
+        }
+        let old_variables = self.variables.clone();
+        for parameter in &parameters {
+            self.variables.insert(parameter.name.clone());
+        }
+        let parent = self.current_method.clone();
+        let old_method = std::mem::replace(&mut self.current_method, full_name.clone());
+        let body = self.statement();
+        self.current_method = old_method;
+        self.variables = old_variables;
+        let return_type = declared_return.unwrap_or_else(|| "ANY".into());
+        let signature = format!(
+            "{}({})",
+            return_type,
+            parameters
+                .iter()
+                .map(|parameter| parameter.type_name.as_str())
+                .collect::<Vec<_>>()
+                .join(",")
+        );
+        let mut types = self.variable_types.clone();
+        for (name, ty) in &self.function_fields {
+            types.entry(name.clone()).or_insert_with(|| ty.clone());
+        }
+        for parameter in &parameters {
+            types.insert(parameter.name.clone(), parameter.type_name.clone());
+        }
+        let mut returns = Vec::new();
+        infer_return_types(
+            &body,
+            &mut types,
+            &mut self.variable_closures.clone(),
+            &self.function_returns,
+            &mut returns,
+        );
+        let call_return = callable_return.unwrap_or_else(|| {
+            returns
+                .into_iter()
+                .reduce(common_type)
+                .unwrap_or_else(|| "void".into())
+        });
+        let closure = Closure {
+            full_name: full_name.clone(),
+            return_type: self.binding_type(&call_return),
+            parameter_types,
+        };
+        self.function_declarations.push(Function {
+            name,
+            full_name,
+            binding_return_type: self.binding_type(&return_type),
+            return_type,
+            signature,
+            extern_c: false,
+            lambda_parent: Some(parent),
+            implicit_this: None,
+            implicit_fields: self.function_fields.clone(),
+            member_cv_qualified: self.function_member_cv,
+            lambda: true,
+            is_static: false,
+            inherited_bindings,
+            inherited_closures,
+            parameters,
+            body,
+            span: self.span(start, self.pos),
+        });
+        Expr {
+            kind: ExprKind::Lambda(closure),
+            span: self.span(start, self.pos),
+        }
+    }
+
     fn prefix(&mut self) -> Expr {
         let start = self.pos;
         let token = if self.cpp {
@@ -3503,7 +4033,10 @@ impl Parser<'_> {
         }
         .to_string();
         let kind = match token.as_str() {
-            "[" if self.cpp => return self.lambda_expression(start),
+            "true" | "false" | "nullptr" if self.cpp => {
+                self.pos += 1;
+                ExprKind::Literal(token)
+            }
             "__null" if !self.macro_expansion => {
                 self.pos += 1;
                 let replacement = if self.cpp { "0" } else { "(void *)0" };
@@ -3526,6 +4059,7 @@ impl Parser<'_> {
                 self.pos += 1;
                 return self.expression(14);
             }
+            "[" if self.cpp => return self.lambda_expression(),
             "(" => {
                 self.pos += 1;
                 if self.at("{") {
@@ -3557,8 +4091,13 @@ impl Parser<'_> {
                     return if self.macro_expansion || matches!(inner.kind, ExprKind::List(_)) {
                         // Expanded parent CODE still contains these brackets,
                         // although their operand has no extra CPG AST vertex.
+                        let span = if matches!(inner.kind, ExprKind::List(_)) {
+                            self.span(start, self.pos)
+                        } else {
+                            inner.span.clone()
+                        };
                         Expr {
-                            span: inner.span.clone(),
+                            span,
                             kind: ExprKind::Bracketed(Box::new(inner)),
                         }
                     } else {
@@ -3732,11 +4271,15 @@ impl Parser<'_> {
                 self.pos += 1;
                 let type_start = self.pos;
                 self.pos = self.specifier_end(self.pos, self.limit);
+                let type_end = self.pos;
                 while self.eat("*") {}
-                let type_name = self.clean_type(type_start, self.pos);
+                let type_name = self.clean_type(type_start, type_end).replace("::", ".");
                 let mut arguments = vec![Expr {
-                    kind: ExprKind::Identifier(type_name),
-                    span: self.span(type_start, self.pos),
+                    kind: ExprKind::TypeSpecifier {
+                        code: self.raw(type_start, type_end),
+                        type_name,
+                    },
+                    span: self.span(type_start, type_end),
                 }];
                 while self.eat("[") {
                     arguments.push(self.expression(0));
@@ -3827,109 +4370,6 @@ impl Parser<'_> {
         }
     }
 
-    fn lambda_expression(&mut self, start: usize) -> Expr {
-        let Some(capture_end) = self.matching(start, self.limit) else {
-            self.diagnose(start, start + 1, "unterminated lambda capture list");
-            self.pos += 1;
-            return Expr {
-                kind: ExprKind::Unknown(self.raw(start, self.pos)),
-                span: self.span(start, self.pos),
-            };
-        };
-        self.pos = capture_end + 1;
-        let (parameters, binding_parameters) = if self.at("(") {
-            let open = self.pos;
-            let end = self
-                .matching(open, self.limit)
-                .unwrap_or(self.limit.saturating_sub(1));
-            let parameters = self.parameters(open + 1, end);
-            let bindings = self
-                .split_ranges(open + 1, end, ",")
-                .into_iter()
-                .filter(|(a, b)| a < b)
-                .map(|(a, b)| self.binding_parameter_type(a, b))
-                .filter(|t| t != "void" && t != "...")
-                .collect::<Vec<_>>();
-            self.pos = end + 1;
-            (parameters, bindings)
-        } else {
-            (Vec::new(), Vec::new())
-        };
-        while matches!(
-            self.peek(),
-            "mutable" | "constexpr" | "consteval" | "noexcept"
-        ) {
-            let noexcept = self.at("noexcept");
-            self.pos += 1;
-            if noexcept && self.at("(") {
-                self.pos = self
-                    .matching(self.pos, self.limit)
-                    .map_or(self.pos + 1, |n| n + 1);
-            }
-        }
-        while let Some(after) = self.skip_attribute(self.pos, self.limit) {
-            self.pos = after;
-        }
-        let explicit_return = if self.eat("->") {
-            let return_start = self.pos;
-            while self.pos < self.limit && !self.at("{") {
-                self.pos += 1;
-            }
-            Some(self.binding_type(&self.clean_type(return_start, self.pos)))
-        } else {
-            None
-        };
-        if !self.at("{") {
-            self.diagnose(start, self.pos, "lambda requires a compound body");
-            return Expr {
-                kind: ExprKind::Unknown(self.raw(start, self.pos)),
-                span: self.span(start, self.pos),
-            };
-        }
-        let name = format!("<lambda>{}", self.lambda_counter);
-        self.lambda_counter += 1;
-        let parent = self.current_method.clone();
-        let full_name = format!("{}.{name}", self.lambda_ast_parent);
-        let old_method = std::mem::replace(&mut self.current_method, full_name.clone());
-        let old_variables = self.variables.clone();
-        self.variables
-            .extend(parameters.iter().map(|p| p.name.clone()));
-        let body = self.statement();
-        self.variables = old_variables;
-        self.current_method = old_method;
-        let return_type = explicit_return
-            .unwrap_or_else(|| self.binding_type(&lambda_return_type(&body, &parameters)));
-        let signature = format!("{return_type}({})", binding_parameters.join(","));
-        let span = self.span(start, self.pos);
-        self.function_declarations.push(Function {
-            name,
-            full_name: full_name.clone(),
-            return_type: "ANY".into(),
-            signature: format!(
-                "ANY({})",
-                parameters
-                    .iter()
-                    .map(|p| p.type_name.as_str())
-                    .collect::<Vec<_>>()
-                    .join(",")
-            ),
-            extern_c: false,
-            implicit_this: None,
-            lambda_parent: Some(parent),
-            parameters,
-            body,
-            span: span.clone(),
-        });
-        Expr {
-            kind: ExprKind::Lambda {
-                full_name,
-                signature,
-                return_type,
-            },
-            span,
-        }
-    }
-
     fn can_start_expression(&self, i: usize) -> bool {
         if i >= self.limit {
             return false;
@@ -3939,6 +4379,7 @@ impl Parser<'_> {
                 self.text(i),
                 "(" | "{" | "::" | "++" | "--" | "+" | "-" | "*" | "&" | "!" | "~"
             )
+            || self.cpp && self.text(i) == "["
     }
 
     fn is_cast(&self, start: usize, end: usize) -> bool {
@@ -4077,6 +4518,250 @@ impl Parser<'_> {
     }
 }
 
+fn closure_expression<'a>(
+    expression: &'a Expr,
+    closures: &'a HashMap<String, Closure>,
+) -> Option<&'a Closure> {
+    match &expression.kind {
+        ExprKind::Lambda(closure) => Some(closure),
+        ExprKind::Identifier(name) => closures.get(name),
+        ExprKind::Bracketed(inner)
+        | ExprKind::Generated {
+            expression: inner, ..
+        } => closure_expression(inner, closures),
+        ExprKind::Unary { op, argument, .. } if matches!(op.as_str(), "*" | "&") => {
+            closure_expression(argument, closures)
+        }
+        _ => None,
+    }
+}
+
+fn common_type(left: String, right: String) -> String {
+    if left == right {
+        return left;
+    }
+    if left == "ANY" || right == "ANY" {
+        return "ANY".into();
+    }
+    for ty in [
+        "long double",
+        "double",
+        "float",
+        "unsigned long long",
+        "long long",
+        "unsigned long",
+        "long",
+        "unsigned int",
+        "int",
+    ] {
+        if left == ty || right == ty {
+            return ty.into();
+        }
+    }
+    left
+}
+
+fn infer_value_type(
+    expression: &Expr,
+    types: &HashMap<String, String>,
+    closures: &HashMap<String, Closure>,
+    functions: &HashMap<String, String>,
+) -> String {
+    match &expression.kind {
+        ExprKind::Identifier(name) => types
+            .get(name)
+            .map(|ty| ty.trim_end_matches('&').to_string())
+            .unwrap_or_else(|| "ANY".into()),
+        ExprKind::Literal(value) => {
+            if matches!(value.as_str(), "true" | "false") {
+                "bool".into()
+            } else if value.starts_with('"') {
+                "char*".into()
+            } else if value.starts_with('\'') {
+                "char".into()
+            } else if value.contains('.')
+                || (!value.starts_with("0x") && value.to_lowercase().contains('e'))
+            {
+                if value.ends_with(['f', 'F']) {
+                    "float".into()
+                } else {
+                    "double".into()
+                }
+            } else if value.ends_with(['l', 'L']) {
+                "long".into()
+            } else if value.ends_with(['u', 'U']) {
+                "unsigned int".into()
+            } else {
+                "int".into()
+            }
+        }
+        ExprKind::Cast { type_name, .. } => type_name.clone(),
+        ExprKind::Bracketed(inner)
+        | ExprKind::Generated {
+            expression: inner, ..
+        } => infer_value_type(inner, types, closures, functions),
+        ExprKind::Unary { op, argument, .. } => {
+            let ty = infer_value_type(argument, types, closures, functions);
+            match op.as_str() {
+                "!" => "bool".into(),
+                "*" => ty.strip_suffix('*').unwrap_or("ANY").into(),
+                "&" => format!("{ty}*"),
+                "sizeof" | "alignof" => "unsigned long".into(),
+                _ => ty,
+            }
+        }
+        ExprKind::Binary { op, left, right } => {
+            let left = infer_value_type(left, types, closures, functions);
+            let right = infer_value_type(right, types, closures, functions);
+            match op.as_str() {
+                "==" | "!=" | "<" | ">" | "<=" | ">=" | "&&" | "||" => "bool".into(),
+                "," => right,
+                "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>=" => left,
+                "+" | "-" if left.ends_with('*') => left,
+                _ => common_type(left, right),
+            }
+        }
+        ExprKind::Conditional {
+            consequence,
+            alternative,
+            ..
+        } => common_type(
+            infer_value_type(consequence, types, closures, functions),
+            infer_value_type(alternative, types, closures, functions),
+        ),
+        ExprKind::Call { callee, .. } => {
+            if let Some(closure) = closure_expression(callee, closures) {
+                closure.return_type.clone()
+            } else if let ExprKind::Identifier(name) = &callee.kind {
+                functions
+                    .get(name.rsplit("::").next().unwrap())
+                    .cloned()
+                    .unwrap_or_else(|| "ANY".into())
+            } else {
+                "ANY".into()
+            }
+        }
+        ExprKind::Index { base, .. } => {
+            let ty = infer_value_type(base, types, closures, functions);
+            ty.strip_suffix('*')
+                .or_else(|| ty.split_once('[').map(|(ty, _)| ty))
+                .unwrap_or("ANY")
+                .into()
+        }
+        ExprKind::List(expressions) | ExprKind::Block(expressions) => expressions
+            .last()
+            .map(|value| infer_value_type(value, types, closures, functions))
+            .unwrap_or_else(|| "void".into()),
+        _ => "ANY".into(),
+    }
+}
+
+fn infer_return_types(
+    statement: &Stmt,
+    types: &mut HashMap<String, String>,
+    closures: &mut HashMap<String, Closure>,
+    functions: &HashMap<String, String>,
+    returns: &mut Vec<String>,
+) {
+    match &statement.kind {
+        StmtKind::Block(statements) => {
+            let mut types = types.clone();
+            let mut closures = closures.clone();
+            for statement in statements {
+                infer_return_types(statement, &mut types, &mut closures, functions, returns);
+            }
+        }
+        StmtKind::Sequence(statements) => {
+            for statement in statements {
+                infer_return_types(statement, types, closures, functions, returns);
+            }
+        }
+        StmtKind::Declaration(declarations) => {
+            for declaration in declarations {
+                let ty = if declaration.type_name.starts_with("auto") {
+                    declaration
+                        .initializer
+                        .as_ref()
+                        .map(|value| infer_value_type(value, types, closures, functions))
+                        .unwrap_or_else(|| "ANY".into())
+                } else {
+                    declaration.type_name.clone()
+                };
+                if let Some(closure) = declaration
+                    .initializer
+                    .as_ref()
+                    .and_then(|value| closure_expression(value, closures))
+                    .cloned()
+                {
+                    closures.insert(declaration.name.clone(), closure);
+                }
+                types.insert(declaration.name.clone(), ty);
+            }
+        }
+        StmtKind::Return(value) => returns.push(
+            value
+                .as_ref()
+                .map(|value| infer_value_type(value, types, closures, functions))
+                .unwrap_or_else(|| "void".into()),
+        ),
+        StmtKind::If {
+            consequence,
+            alternative,
+            ..
+        } => {
+            infer_return_types(
+                consequence,
+                &mut types.clone(),
+                &mut closures.clone(),
+                functions,
+                returns,
+            );
+            if let Some(alternative) = alternative {
+                infer_return_types(
+                    alternative,
+                    &mut types.clone(),
+                    &mut closures.clone(),
+                    functions,
+                    returns,
+                );
+            }
+        }
+        StmtKind::While { body, .. }
+        | StmtKind::DoWhile { body, .. }
+        | StmtKind::Switch { body, .. }
+        | StmtKind::For { body, .. }
+        | StmtKind::RangeFor { body, .. }
+        | StmtKind::Label {
+            statement: body, ..
+        } => infer_return_types(
+            body,
+            &mut types.clone(),
+            &mut closures.clone(),
+            functions,
+            returns,
+        ),
+        StmtKind::Try { body, catches } => {
+            infer_return_types(
+                body,
+                &mut types.clone(),
+                &mut closures.clone(),
+                functions,
+                returns,
+            );
+            for catch in catches {
+                infer_return_types(
+                    catch,
+                    &mut types.clone(),
+                    &mut closures.clone(),
+                    functions,
+                    returns,
+                );
+            }
+        }
+        _ => (),
+    }
+}
+
 // CDT uses a formatted AST signature for expanded syntax, rather than the
 // original macro call's source. This also governs which original arguments
 // MacroHandler can find and clone in the expansion AST.
@@ -4105,7 +4790,22 @@ fn expanded_code(expression: &Expr, source: &str) -> String {
         ExprKind::Cast {
             type_name,
             argument,
-        } => format!("({}){}", macro_type_code(type_name), code(argument)),
+        } => {
+            let raw = &source[expression.span.start..expression.span.end];
+            let cast = [
+                "static_cast",
+                "reinterpret_cast",
+                "const_cast",
+                "dynamic_cast",
+            ]
+            .into_iter()
+            .find(|cast| raw.starts_with(cast));
+            if let Some(cast) = cast {
+                format!("{cast}<{}>({})", macro_type_code(type_name), code(argument))
+            } else {
+                format!("({}){}", macro_type_code(type_name), code(argument))
+            }
+        }
         ExprKind::Unary {
             op,
             argument,
@@ -4124,8 +4824,12 @@ fn expanded_code(expression: &Expr, source: &str) -> String {
                     | "__typeof__"
             ) {
                 let raw = &source[expression.span.start..expression.span.end];
-                let value = if !matches!(argument.kind, ExprKind::TypeSpecifier { .. })
-                    || matches!(&argument.kind,ExprKind::TypeSpecifier {code,..} if code=="typeof"||code=="__typeof__"||code=="decltype")
+                // ASTSignatureUtil supplies the parentheses for a type-id;
+                // an expression operand already retains its bracketed syntax.
+                if !matches!(argument.kind, ExprKind::TypeSpecifier { .. }) {
+                    return format!("{op} {}", code(argument));
+                }
+                let value = if matches!(&argument.kind,ExprKind::TypeSpecifier {code,..} if code=="typeof"||code=="__typeof__"||code=="decltype")
                 {
                     code(argument)
                 } else if let Some(inner) = raw
@@ -4367,120 +5071,6 @@ fn generated_statement(statement: &mut Stmt, source: &str, span: &Span) {
     statement.span = span.clone();
 }
 
-fn lambda_return_type(body: &Stmt, parameters: &[Parameter]) -> String {
-    fn expression_type(expression: &Expr, parameters: &[Parameter]) -> String {
-        let infer = |e: &Expr| expression_type(e, parameters);
-        match &expression.kind {
-            ExprKind::Identifier(name) => parameters
-                .iter()
-                .find(|p| &p.name == name)
-                .map_or("ANY".into(), |p| p.type_name.clone()),
-            ExprKind::Literal(value) => {
-                if value.starts_with('"') {
-                    "const char*".into()
-                } else if value.starts_with('\'') {
-                    "char".into()
-                } else if value.contains('.') {
-                    "double".into()
-                } else {
-                    "int".into()
-                }
-            }
-            ExprKind::Cast { type_name, .. } => type_name.clone(),
-            ExprKind::Bracketed(inner)
-            | ExprKind::Generated {
-                expression: inner, ..
-            } => infer(inner),
-            ExprKind::Unary { op, argument, .. } => match op.as_str() {
-                "!" => "bool".into(),
-                "&" => format!("{}*", infer(argument)),
-                "*" => infer(argument).strip_suffix('*').unwrap_or("ANY").into(),
-                _ => infer(argument),
-            },
-            ExprKind::Binary { op, left, right } => {
-                if matches!(
-                    op.as_str(),
-                    "==" | "!=" | "<" | ">" | "<=" | ">=" | "&&" | "||"
-                ) {
-                    "bool".into()
-                } else {
-                    let left = infer(left);
-                    let right = infer(right);
-                    if left == "ANY" { right } else { left }
-                }
-            }
-            ExprKind::Conditional {
-                consequence,
-                alternative,
-                ..
-            } => {
-                let first = infer(consequence);
-                if first == "ANY" {
-                    infer(alternative)
-                } else {
-                    first
-                }
-            }
-            ExprKind::List(values) | ExprKind::Block(values) => {
-                values.last().map_or("void".into(), infer)
-            }
-            _ => "ANY".into(),
-        }
-    }
-    fn returns(body: &Stmt, parameters: &[Parameter], types: &mut Vec<String>) {
-        match &body.kind {
-            StmtKind::Return(expression) => types.push(
-                expression
-                    .as_ref()
-                    .map_or("void".into(), |e| expression_type(e, parameters)),
-            ),
-            StmtKind::Block(statements) | StmtKind::Sequence(statements) => {
-                for s in statements {
-                    returns(s, parameters, types);
-                }
-            }
-            StmtKind::If {
-                consequence,
-                alternative,
-                ..
-            } => {
-                returns(consequence, parameters, types);
-                if let Some(s) = alternative {
-                    returns(s, parameters, types);
-                }
-            }
-            StmtKind::While { body, .. }
-            | StmtKind::DoWhile { body, .. }
-            | StmtKind::For { body, .. }
-            | StmtKind::RangeFor { body, .. }
-            | StmtKind::Switch { body, .. }
-            | StmtKind::Label {
-                statement: body, ..
-            } => returns(body, parameters, types),
-            StmtKind::Try { body, catches } => {
-                returns(body, parameters, types);
-                for s in catches {
-                    returns(s, parameters, types);
-                }
-            }
-            _ => (),
-        }
-    }
-    let mut types = Vec::new();
-    returns(body, parameters, &mut types);
-    types
-        .iter()
-        .find(|t| t.as_str() != "ANY")
-        .cloned()
-        .unwrap_or_else(|| {
-            if types.is_empty() {
-                "void".into()
-            } else {
-                "ANY".into()
-            }
-        })
-}
-
 fn qualifier(t: &str) -> bool {
     matches!(
         t,
@@ -4594,6 +5184,36 @@ fn binary_precedence(op: &str) -> Option<(u8, bool)> {
         ".*" | "->*" => (13, false),
         _ => return None,
     })
+}
+
+// CDT's ASTStringUtil renders simple return specifiers from their flags, so
+// base qualifiers and signedness precede the type regardless of source order.
+// Qualifiers on pointer operators keep their position after the pointer.
+fn primitive_return_display(code: &str) -> String {
+    let split = code.find(['*', '&', '[']).unwrap_or(code.len());
+    let words: Vec<_> = code[..split].split_whitespace().collect();
+    let modifiers = ["const", "volatile", "signed", "unsigned"];
+    let mut base: Vec<_> = modifiers
+        .iter()
+        .copied()
+        .filter(|modifier| words.contains(modifier))
+        .collect();
+    base.extend(words.into_iter().filter(|word| !modifiers.contains(word)));
+    format!("{}{}", base.join(" "), &code[split..]).replace("_Bool", "bool")
+}
+
+fn simple_type_name(name: &str) -> &str {
+    let mut depth = 0usize;
+    let mut start = 0;
+    for (at, ch) in name.char_indices() {
+        match ch {
+            '<' => depth += 1,
+            '>' => depth = depth.saturating_sub(1),
+            ':' if depth == 0 && name[at..].starts_with("::") => start = at + 2,
+            _ => {}
+        }
+    }
+    &name[start..]
 }
 
 fn alternative_operator(op: &str) -> &str {
@@ -4850,6 +5470,113 @@ mod declaration_tests {
     }
 
     #[test]
+    fn cpp_method_names_and_signatures_match_original_joern() {
+        let reference: serde_json::Value = serde_json::from_str(include_str!(
+            "../tests/fixtures/ddg-lambdas/method-names.json"
+        ))
+        .unwrap();
+        assert_eq!(reference["generator"], "Original Joern 4.0.150 / c2cpg");
+        for (filename, source) in [
+            (
+                "using.cpp",
+                include_str!("../tests/fixtures/ddg-lambdas/using.cpp"),
+            ),
+            (
+                "namespaced.cpp",
+                include_str!("../tests/fixtures/ddg-lambdas/namespaced.cpp"),
+            ),
+        ] {
+            let unit = parse(source, true);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let methods = reference["methods"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .filter(|method| method["filename"] == filename)
+                .collect::<Vec<_>>();
+            assert_eq!(unit.functions.len(), methods.len());
+            for function in &unit.functions {
+                let original = methods
+                    .iter()
+                    .find(|method| method["name"] == function.name)
+                    .unwrap();
+                assert_eq!(function.full_name, original["fullname"].as_str().unwrap());
+                assert_eq!(function.signature, original["signature"].as_str().unwrap());
+                assert_eq!(
+                    function.return_type,
+                    original["return_type"].as_str().unwrap()
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn cpp_declaration_iteration_matches_original_constructor_selection() {
+        let reference: serde_json::Value = serde_json::from_str(include_str!(
+            "../tests/fixtures/ddg-classes/joern-4.0.150.json"
+        ))
+        .unwrap();
+        let unit = parse(
+            include_str!("../tests/fixtures/ddg-classes/constructors.cpp"),
+            true,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        let expected: Vec<_> = reference["methods"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|method| method["fullname"].as_str().unwrap())
+            .collect();
+        assert_eq!(
+            unit.functions
+                .iter()
+                .map(|function| function.full_name.as_str())
+                .collect::<Vec<_>>(),
+            expected
+        );
+        // Every reduced constructor has one CFG node, so PyJoern keeps the
+        // last declaration on ties, including Plain's default overload.
+        for name in ["type_info", "Plain"] {
+            let selected = unit
+                .functions
+                .iter()
+                .rev()
+                .find(|function| function.name == name)
+                .unwrap();
+            let original = reference["methods"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .find(|method| method["name"] == name && method["selected_by_from_many"] == true)
+                .unwrap();
+            assert_eq!(selected.full_name, original["fullname"].as_str().unwrap());
+        }
+    }
+
+    #[test]
+    fn c_and_cpp_declaration_orders_match_original_joern() {
+        let reference: serde_json::Value = serde_json::from_str(include_str!(
+            "../tests/fixtures/ddg-classes/method-order-oracle.json"
+        ))
+        .unwrap();
+        for case in reference["cases"].as_array().unwrap() {
+            let unit = parse(case["source"].as_str().unwrap(), case["language"] == "cpp");
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let original = case["ordered_methods"].as_array().unwrap();
+            assert_eq!(unit.functions.len(), original.len());
+            for (function, method) in unit.functions.iter().zip(original) {
+                assert_eq!(function.name, method["name"].as_str().unwrap());
+                assert_eq!(function.full_name, method["fullname"].as_str().unwrap());
+                assert_eq!(function.signature, method["signature"].as_str().unwrap());
+                assert_eq!(
+                    function.return_type,
+                    method["return_type"].as_str().unwrap()
+                );
+            }
+        }
+    }
+
+    #[test]
     fn c_symbol_definition_replaces_array_parameter_declaration() {
         let unit = parse(
             "int f(int values[]); int f(int *values) { return values[0]; }",
@@ -4972,12 +5699,17 @@ mod declaration_tests {
         for cpp in [false, true] {
             let unit = parse(source, cpp);
             assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let expected = if cpp {
+                ["f", "first", "start"]
+            } else {
+                ["f", "start", "first"]
+            };
             assert_eq!(
                 unit.functions
                     .iter()
                     .map(|f| f.name.as_str())
                     .collect::<Vec<_>>(),
-                ["f", "start", "first"]
+                expected
             );
             assert!(
                 unit.functions[1..]
@@ -5148,10 +5880,10 @@ mod declaration_tests {
                 .iter()
                 .map(|f| f.name.as_str())
                 .collect::<Vec<_>>(),
-            ["first", "second", "third", "fourth"]
+            ["third", "fourth", "first", "second"]
         );
-        assert_eq!(unit.functions[2].return_type, "char*");
-        assert_eq!(unit.functions[3].return_type, "char*");
+        assert_eq!(unit.functions[0].return_type, "char*");
+        assert_eq!(unit.functions[1].return_type, "char*");
     }
 
     #[test]
@@ -5237,7 +5969,7 @@ mod declaration_tests {
                 .iter()
                 .map(|f| f.name.as_str())
                 .collect::<Vec<_>>(),
-            ["definition", "after", "before_keyword", "after_keyword"]
+            ["definition", "after", "after_keyword", "before_keyword"]
         );
         assert_eq!(
             cpp.functions
@@ -5377,7 +6109,7 @@ mod declaration_tests {
                 .iter()
                 .map(|f| f.name.as_str())
                 .collect::<Vec<_>>(),
-            ["S", "S", "~S"]
+            ["~S", "S", "S"]
         );
         assert!(unit.functions.iter().all(|f| f.implicit_this.is_none()));
     }

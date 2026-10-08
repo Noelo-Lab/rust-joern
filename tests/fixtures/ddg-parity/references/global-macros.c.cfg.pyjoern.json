@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "source_sha256": "4e575c85d1b153a997d1d80d04172ef9bb5c7bf3eea3f00a4295041476155228",
+  "prepared_sha256": "4e575c85d1b153a997d1d80d04172ef9bb5c7bf3eea3f00a4295041476155228",
+  "language": "c",
+  "input_kind": "file",
+  "source": "/home/mahaloz/github/rust-joern-ddg/workspace/incoming-cfg/probes/global-macros.c",
+  "capture_worker_sha256": "544aaf7609ab89e1f1d11d339b6fd6f8c0d64c47f097113b32ca66b2470745bd",
+  "captured_at": "2026-10-08T03:42:52.682816+00:00",
+  "preparation": {
+    "strip_system_headers": false,
+    "sanitize_decompiled": false,
+    "decbench": null
+  },
+  "functions": {
+    "ordinary": {
+      "name": "ordinary",
+      "start_line": 4,
+      "end_line": 4,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "4.1:\nFUNCTION_START\nreturn x;,returnx;\nFUNCTION_END\n"
+        }
+      }
+    },
+    "__builtin_offsetof": {
+      "name": "__builtin_offsetof",
+      "start_line": -1,
+      "end_line": -1,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "None.0:\nFUNCTION_START\n<UnsupportedStmt: >\n"
+        }
+      }
+    },
+    "__builtin_types_compatible_p": {
+      "name": "__builtin_types_compatible_p",
+      "start_line": -1,
+      "end_line": -1,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "None.0:\nFUNCTION_START\n<UnsupportedStmt: >\n"
+        }
+      }
+    }
+  },
+  "derivation": "Unchanged original Function(cfg=captured cfg_dot).cfg; no new parser execution",
+  "derived_from_reference_sha256": "129329b415964f0e916f2bf1ee70a33fa98745053711e29f973683b9398fd268"
+}

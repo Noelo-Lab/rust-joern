@@ -78,6 +78,9 @@ pub struct FunctionGraph {
     pub cfg: Cfg,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub ddg: Option<PropertyGraph>,
+    /// Joern's DOT projection, including labeled dependence edges between calls.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ddg_view: Option<PropertyGraph>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub ddg_projection: Option<PropertyGraph>,
     #[serde(skip_serializing_if = "Option::is_none")]

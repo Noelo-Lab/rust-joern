@@ -1,0 +1,164 @@
+{
+  "generator": "Unchanged Joern 4.0.150 / original ordered FLOW method traversal",
+  "joern_tag_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "capture_script": "tests/fixtures/ddg-lambdas/capture.sc",
+  "capture_sha256": "2b7017b294c34caa687bbec7a59f87016053c434561cb2a05f88bf1ad2684178",
+  "cases": [
+    {
+      "parser_test": "block_scope_prototypes_emit_method_stubs_without_local_initializers",
+      "case": "block-scope-c",
+      "language": "c",
+      "source": "int f(int x) { extern void start(void) __attribute__((__noreturn__)); int first(int), second(int); start(); return first(x); }",
+      "source_sha256": "f8ce18a72663095118ed416144d22f66ab51ddfc0bb28d728d9e82171b4b341b",
+      "filename": "block-scope.c",
+      "ordered_methods": [
+        {
+          "name": "f",
+          "fullname": "f",
+          "signature": "int(int)",
+          "return_type": "int",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "start",
+          "fullname": "start",
+          "signature": "void(void)",
+          "return_type": "void",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "first",
+          "fullname": "first",
+          "signature": "int(int)",
+          "return_type": "int",
+          "start_line": 1,
+          "end_line": 1
+        }
+      ],
+      "capture_log_sha256": "5b536ceae97cb77b31bd47b21490d1abfdd995381613a523e84346d5550d4e45"
+    },
+    {
+      "parser_test": "block_scope_prototypes_emit_method_stubs_without_local_initializers",
+      "case": "block-scope-cpp",
+      "language": "cpp",
+      "source": "int f(int x) { extern void start(void) __attribute__((__noreturn__)); int first(int), second(int); start(); return first(x); }",
+      "source_sha256": "f8ce18a72663095118ed416144d22f66ab51ddfc0bb28d728d9e82171b4b341b",
+      "filename": "block-scope.cpp",
+      "ordered_methods": [
+        {
+          "name": "f",
+          "fullname": "f:int(int)",
+          "signature": "int(int)",
+          "return_type": "int",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "first",
+          "fullname": "first:int(int)",
+          "signature": "int(int)",
+          "return_type": "int",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "start",
+          "fullname": "start:void()",
+          "signature": "void(void)",
+          "return_type": "void",
+          "start_line": 1,
+          "end_line": 1
+        }
+      ],
+      "capture_log_sha256": "57597fef0356ff64c64fd4f7d9c3f02824bb726865cd75b3ef8b6ede018398eb"
+    },
+    {
+      "parser_test": "top_level_declarations_convert_each_function_declarator",
+      "case": "top-level-c",
+      "language": "c",
+      "source": "void first(void), second(int); char *third(void), *fourth(int);",
+      "source_sha256": "76a89aec43faa4a82ff798d80fdc0b2114432f93c57d8d264ad5ff2b99158368",
+      "filename": "top-level.c",
+      "ordered_methods": [
+        {
+          "name": "third",
+          "fullname": "third",
+          "signature": "char*(void)",
+          "return_type": "char*",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "fourth",
+          "fullname": "fourth",
+          "signature": "char*(int)",
+          "return_type": "char*",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "first",
+          "fullname": "first",
+          "signature": "void(void)",
+          "return_type": "void",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "second",
+          "fullname": "second",
+          "signature": "void(int)",
+          "return_type": "void",
+          "start_line": 1,
+          "end_line": 1
+        }
+      ],
+      "capture_log_sha256": "1e10799ea3a64857473d36fc95f392a0541edb2e2ad8e9e81434fd712a416e75"
+    },
+    {
+      "parser_test": "top_level_declarations_convert_each_function_declarator",
+      "case": "top-level-cpp",
+      "language": "cpp",
+      "source": "void first(void), second(int); char *third(void), *fourth(int);",
+      "source_sha256": "76a89aec43faa4a82ff798d80fdc0b2114432f93c57d8d264ad5ff2b99158368",
+      "filename": "top-level.cpp",
+      "ordered_methods": [
+        {
+          "name": "third",
+          "fullname": "third:char*()",
+          "signature": "char*(void)",
+          "return_type": "char*",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "second",
+          "fullname": "second:void(int)",
+          "signature": "void(int)",
+          "return_type": "void",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "first",
+          "fullname": "first:void()",
+          "signature": "void(void)",
+          "return_type": "void",
+          "start_line": 1,
+          "end_line": 1
+        },
+        {
+          "name": "fourth",
+          "fullname": "fourth:char*(int)",
+          "signature": "char*(int)",
+          "return_type": "char*",
+          "start_line": 1,
+          "end_line": 1
+        }
+      ],
+      "capture_log_sha256": "ed9e5bdb789d63cd715c2ac93a0f7ba7a4a835623b53a7b492e4ada5c3aa873b"
+    }
+  ]
+}

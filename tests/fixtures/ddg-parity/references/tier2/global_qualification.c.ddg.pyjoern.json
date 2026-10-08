@@ -1,0 +1,547 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 12.011085159960203,
+    "supplemental_raw_parse_seconds": 16.14778269198723
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "global_qualification": {
+      "name": "global_qualification",
+      "fullname": "global_qualification",
+      "filename": "global_qualification.c",
+      "start_line": 3,
+      "end_line": 8,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 3,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,global_qualification",
+                    "source_line_number": 3,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 3,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return 0;,return0;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return0;",
+                      "return0;"
+                    ],
+                    "source_line_number": 7,
+                    "ret": "0;,return0;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,0,return0;>",
+                  "fields": {
+                    "raw_text": "LITERAL,0,return0;",
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return 1;,return1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return1;",
+                      "return1;"
+                    ],
+                    "source_line_number": 6,
+                    "ret": "1;,return1;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,1,return1;>",
+                  "fields": {
+                    "raw_text": "LITERAL,1,return1;",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 3,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 3,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,global_qualification",
+                    "source_line_number": 3,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 3,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return 0;,return0;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return0;",
+                      "return0;"
+                    ],
+                    "source_line_number": 7,
+                    "ret": "0;,return0;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,0,return0;>",
+                  "fields": {
+                    "raw_text": "LITERAL,0,return0;",
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return 1;,return1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return1;",
+                      "return1;"
+                    ],
+                    "source_line_number": 6,
+                    "ret": "1;,return1;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,1,return1;>",
+                  "fields": {
+                    "raw_text": "LITERAL,1,return1;",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 3,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,global_qualification)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return 0;,return 0;)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(LITERAL,0,return 0;)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(RETURN,return 1;,return 1;)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(LITERAL,1,return 1;)<SUB>6</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "0"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "label": "1"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"global_qualification\" {  \n\"111669149697\" [label = <(METHOD,global_qualification)<SUB>3</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>3</SUB>> ]\n\"115964116992\" [label = <(PARAM,int x)<SUB>3</SUB>> ]\n\"146028888065\" [label = <(RETURN,return 0;,return 0;)<SUB>7</SUB>> ]\n\"90194313217\" [label = <(LITERAL,0,return 0;)<SUB>7</SUB>> ]\n\"146028888064\" [label = <(RETURN,return 1;,return 1;)<SUB>6</SUB>> ]\n\"90194313216\" [label = <(LITERAL,1,return 1;)<SUB>6</SUB>> ]\n  \"146028888065\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"146028888064\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116992\" -> \"128849018880\"  [ label = \"x\"] \n  \"111669149697\" -> \"115964116992\" \n  \"90194313217\" -> \"146028888065\"  [ label = \"0\"] \n  \"111669149697\" -> \"146028888065\" \n  \"111669149697\" -> \"90194313217\" \n  \"90194313216\" -> \"146028888064\"  [ label = \"1\"] \n  \"111669149697\" -> \"146028888064\" \n  \"111669149697\" -> \"90194313216\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"global_qualification\" {  \n\"146028888065\" [label = <(RETURN,return 0;,return 0;)<SUB>7</SUB>> ]\n\"184683593728\" [label = <(UNKNOWN,::stream,::stream)<SUB>6</SUB>> ]\n\"146028888064\" [label = <(RETURN,return 1;,return 1;)<SUB>6</SUB>> ]\n\"111669149697\" [label = <(METHOD,global_qualification)<SUB>3</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>3</SUB>> ]\n  \"146028888065\" -> \"128849018880\" \n  \"184683593728\" -> \"146028888064\" \n  \"184683593728\" -> \"146028888065\" \n  \"146028888064\" -> \"128849018880\" \n  \"111669149697\" -> \"184683593728\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "48503386685c62694fae61bd4493123d8eaf549489fbfdbfd3965ec3506cea22",
+  "prepared_sha256": "48503386685c62694fae61bd4493123d8eaf549489fbfdbfd3965ec3506cea22",
+  "language": "c",
+  "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/decbench-regressions/global_qualification.c",
+  "capture_worker_sha256": "d2256371f18c5cccbf5c7543404ed8333a9aaf855ffcfdede2af72fbafa4f708"
+}

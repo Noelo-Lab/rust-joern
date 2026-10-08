@@ -1,0 +1,2439 @@
+[
+  {
+    "name": "<global>",
+    "dot_ddg": [
+      "digraph \"&lt;global&gt;\" {  \n\n}\n"
+    ],
+    "cpg": {
+      "nodes": [
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "<global>",
+          "id": 111669149696,
+          "order": 1,
+          "column": 1,
+          "type_name": "",
+          "kind": "METHOD",
+          "end_byte": 0,
+          "name": "<global>",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "",
+          "id": 25769803776,
+          "order": 1,
+          "column": 1,
+          "type_name": "ANY",
+          "kind": "BLOCK",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int external_body(int x, int y) { return x; }",
+          "id": 111669149697,
+          "order": 1,
+          "column": 1,
+          "type_name": "",
+          "kind": "METHOD",
+          "end_byte": 0,
+          "name": "external_body",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int x",
+          "id": 115964116992,
+          "order": 1,
+          "column": 19,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_IN",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int y",
+          "id": 115964116993,
+          "order": 2,
+          "column": 26,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_IN",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "{ return x; }",
+          "id": 25769803777,
+          "order": 3,
+          "column": 33,
+          "type_name": "void",
+          "kind": "BLOCK",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "return x;",
+          "id": 146028888064,
+          "order": 1,
+          "column": 35,
+          "type_name": "",
+          "kind": "RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "x",
+          "id": 68719476736,
+          "order": 1,
+          "column": 42,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "RET",
+          "id": 128849018880,
+          "order": 4,
+          "column": 1,
+          "type_name": "int",
+          "kind": "METHOD_RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int x",
+          "id": 120259084288,
+          "order": 1,
+          "column": 19,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_OUT",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int y",
+          "id": 120259084289,
+          "order": 2,
+          "column": 26,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_OUT",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "RET",
+          "id": 128849018881,
+          "order": 2,
+          "column": 1,
+          "type_name": "ANY",
+          "kind": "METHOD_RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        }
+      ],
+      "edges": [
+        {
+          "source": 111669149696,
+          "target": 25769803776,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149696,
+          "target": 128849018881,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149696,
+          "target": 128849018881,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 25769803776,
+          "target": 111669149697,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 115964116992,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 115964116993,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 25769803777,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 128849018880,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 120259084288,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 120259084289,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 68719476736,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 68719476736,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 115964116993,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 115964116992,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 115964116992,
+          "target": 120259084288,
+          "kind": "PARAMETER_LINK",
+          "label": ""
+        },
+        {
+          "source": 115964116992,
+          "target": 120259084288,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116992,
+          "target": 120259084288,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116992,
+          "target": 68719476736,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116992,
+          "target": 128849018880,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116993,
+          "target": 120259084289,
+          "kind": "PARAMETER_LINK",
+          "label": ""
+        },
+        {
+          "source": 115964116993,
+          "target": 120259084289,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 115964116993,
+          "target": 120259084289,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 115964116993,
+          "target": 128849018880,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 25769803777,
+          "target": 146028888064,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 146028888064,
+          "target": 68719476736,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 146028888064,
+          "target": 68719476736,
+          "kind": "ARGUMENT",
+          "label": ""
+        },
+        {
+          "source": 146028888064,
+          "target": 128849018880,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 146028888064,
+          "target": 128849018880,
+          "kind": "REACHING_DEF",
+          "label": "<RET>"
+        },
+        {
+          "source": 68719476736,
+          "target": 146028888064,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476736,
+          "target": 115964116992,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476736,
+          "target": 146028888064,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        }
+      ]
+    },
+    "filename": "body.c",
+    "cfg": {
+      "nodes": [],
+      "edges": []
+    },
+    "capture_nodes": [
+      {
+        "capture_out": [],
+        "name": "x",
+        "ref_out": [
+          115964116992
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "x",
+        "id": 68719476736,
+        "kind": "IDENTIFIER"
+      }
+    ],
+    "is_external": false,
+    "external_ddg_edges": [],
+    "callee_context": [],
+    "end_line": 1,
+    "signature": "",
+    "return_type": "ANY",
+    "fullname": "body.c:<global>",
+    "start_line": 1,
+    "reaching_definitions": [
+      {
+        "node": 111669149696,
+        "incoming": [],
+        "outgoing": []
+      },
+      {
+        "node": 128849018881,
+        "incoming": [],
+        "outgoing": []
+      }
+    ]
+  },
+  {
+    "name": "external_body",
+    "dot_ddg": [
+      "digraph \"external_body\" {  \n\"111669149697\" [label = <(METHOD,external_body)<SUB>1</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>1</SUB>> ]\n\"115964116992\" [label = <(PARAM,int x)<SUB>1</SUB>> ]\n\"115964116993\" [label = <(PARAM,int y)<SUB>1</SUB>> ]\n\"146028888064\" [label = <(RETURN,return x;,return x;)<SUB>1</SUB>> ]\n\"68719476736\" [label = <(IDENTIFIER,x,return x;)<SUB>1</SUB>> ]\n  \"146028888064\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116992\" -> \"128849018880\"  [ label = \"x\"] \n  \"115964116993\" -> \"128849018880\"  [ label = \"y\"] \n  \"111669149697\" -> \"115964116992\" \n  \"111669149697\" -> \"115964116993\" \n  \"68719476736\" -> \"146028888064\"  [ label = \"x\"] \n  \"115964116992\" -> \"68719476736\"  [ label = \"x\"] \n  \"111669149697\" -> \"68719476736\" \n}\n"
+    ],
+    "cpg": {
+      "nodes": [
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int external_body(int x, int y) { return x; }",
+          "id": 111669149697,
+          "order": 1,
+          "column": 1,
+          "type_name": "",
+          "kind": "METHOD",
+          "end_byte": 0,
+          "name": "external_body",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int x",
+          "id": 115964116992,
+          "order": 1,
+          "column": 19,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_IN",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int y",
+          "id": 115964116993,
+          "order": 2,
+          "column": 26,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_IN",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "{ return x; }",
+          "id": 25769803777,
+          "order": 3,
+          "column": 33,
+          "type_name": "void",
+          "kind": "BLOCK",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "return x;",
+          "id": 146028888064,
+          "order": 1,
+          "column": 35,
+          "type_name": "",
+          "kind": "RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "x",
+          "id": 68719476736,
+          "order": 1,
+          "column": 42,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "RET",
+          "id": 128849018880,
+          "order": 4,
+          "column": 1,
+          "type_name": "int",
+          "kind": "METHOD_RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int x",
+          "id": 120259084288,
+          "order": 1,
+          "column": 19,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_OUT",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "int y",
+          "id": 120259084289,
+          "order": 2,
+          "column": 26,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_OUT",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        }
+      ],
+      "edges": [
+        {
+          "source": 111669149697,
+          "target": 115964116992,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 115964116993,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 25769803777,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 128849018880,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 120259084288,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 120259084289,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 68719476736,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 68719476736,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 115964116993,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149697,
+          "target": 115964116992,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 115964116992,
+          "target": 120259084288,
+          "kind": "PARAMETER_LINK",
+          "label": ""
+        },
+        {
+          "source": 115964116992,
+          "target": 120259084288,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116992,
+          "target": 120259084288,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116992,
+          "target": 68719476736,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116992,
+          "target": 128849018880,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116993,
+          "target": 120259084289,
+          "kind": "PARAMETER_LINK",
+          "label": ""
+        },
+        {
+          "source": 115964116993,
+          "target": 120259084289,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 115964116993,
+          "target": 120259084289,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 115964116993,
+          "target": 128849018880,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 25769803777,
+          "target": 146028888064,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 146028888064,
+          "target": 68719476736,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 146028888064,
+          "target": 68719476736,
+          "kind": "ARGUMENT",
+          "label": ""
+        },
+        {
+          "source": 146028888064,
+          "target": 128849018880,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 146028888064,
+          "target": 128849018880,
+          "kind": "REACHING_DEF",
+          "label": "<RET>"
+        },
+        {
+          "source": 68719476736,
+          "target": 146028888064,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476736,
+          "target": 115964116992,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476736,
+          "target": 146028888064,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        }
+      ]
+    },
+    "filename": "body.c",
+    "cfg": {
+      "nodes": [],
+      "edges": []
+    },
+    "capture_nodes": [
+      {
+        "capture_out": [],
+        "name": "x",
+        "ref_out": [
+          115964116992
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "x",
+        "id": 68719476736,
+        "kind": "IDENTIFIER"
+      }
+    ],
+    "is_external": false,
+    "external_ddg_edges": [],
+    "callee_context": [],
+    "end_line": 1,
+    "signature": "int(int,int)",
+    "return_type": "int",
+    "fullname": "external_body",
+    "start_line": 1,
+    "reaching_definitions": [
+      {
+        "node": 68719476736,
+        "incoming": [
+          115964116992,
+          115964116993
+        ],
+        "outgoing": [
+          115964116992,
+          115964116993
+        ]
+      },
+      {
+        "node": 111669149697,
+        "incoming": [],
+        "outgoing": []
+      },
+      {
+        "node": 115964116993,
+        "incoming": [
+          115964116992
+        ],
+        "outgoing": [
+          115964116992,
+          115964116993
+        ]
+      },
+      {
+        "node": 120259084288,
+        "incoming": [
+          115964116992,
+          115964116993
+        ],
+        "outgoing": [
+          115964116992,
+          115964116993
+        ]
+      },
+      {
+        "node": 128849018880,
+        "incoming": [
+          115964116992,
+          115964116993
+        ],
+        "outgoing": [
+          115964116992,
+          115964116993
+        ]
+      },
+      {
+        "node": 115964116992,
+        "incoming": [],
+        "outgoing": [
+          115964116992
+        ]
+      },
+      {
+        "node": 146028888064,
+        "incoming": [
+          115964116992,
+          115964116993
+        ],
+        "outgoing": [
+          115964116992,
+          115964116993
+        ]
+      },
+      {
+        "node": 120259084289,
+        "incoming": [
+          115964116992,
+          115964116993
+        ],
+        "outgoing": [
+          115964116992,
+          115964116993
+        ]
+      }
+    ]
+  },
+  {
+    "name": "<global>",
+    "dot_ddg": [
+      "digraph \"&lt;global&gt;\" {  \n\n}\n"
+    ],
+    "cpg": {
+      "nodes": [
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "<global>",
+          "id": 111669149698,
+          "order": 1,
+          "column": 1,
+          "type_name": "",
+          "kind": "METHOD",
+          "end_byte": 0,
+          "name": "<global>",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "",
+          "id": 25769803778,
+          "order": 1,
+          "column": 1,
+          "type_name": "ANY",
+          "kind": "BLOCK",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int caller(int x, int y) { external_body(x, y); return x + y; }",
+          "id": 111669149699,
+          "order": 1,
+          "column": 1,
+          "type_name": "",
+          "kind": "METHOD",
+          "end_byte": 0,
+          "name": "caller",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int x",
+          "id": 115964116994,
+          "order": 1,
+          "column": 12,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_IN",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int y",
+          "id": 115964116995,
+          "order": 2,
+          "column": 19,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_IN",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "{ external_body(x, y); return x + y; }",
+          "id": 25769803779,
+          "order": 3,
+          "column": 26,
+          "type_name": "void",
+          "kind": "BLOCK",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "external_body",
+          "code": "external_body(x, y)",
+          "id": 30064771072,
+          "order": 1,
+          "column": 28,
+          "type_name": "int",
+          "kind": "CALL",
+          "end_byte": 0,
+          "name": "external_body",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "x",
+          "id": 68719476737,
+          "order": 1,
+          "column": 42,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": 1,
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "y",
+          "id": 68719476738,
+          "order": 2,
+          "column": 45,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": 2,
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "return x + y;",
+          "id": 146028888065,
+          "order": 2,
+          "column": 49,
+          "type_name": "",
+          "kind": "RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "<operator>.addition",
+          "code": "x + y",
+          "id": 30064771073,
+          "order": 1,
+          "column": 56,
+          "type_name": "ANY",
+          "kind": "CALL",
+          "end_byte": 0,
+          "name": "<operator>.addition",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "x",
+          "id": 68719476739,
+          "order": 1,
+          "column": 56,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": 1,
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "y",
+          "id": 68719476740,
+          "order": 2,
+          "column": 60,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": 2,
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "RET",
+          "id": 128849018882,
+          "order": 4,
+          "column": 1,
+          "type_name": "int",
+          "kind": "METHOD_RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int x",
+          "id": 120259084290,
+          "order": 1,
+          "column": 12,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_OUT",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int y",
+          "id": 120259084291,
+          "order": 2,
+          "column": 19,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_OUT",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "RET",
+          "id": 128849018883,
+          "order": 2,
+          "column": 1,
+          "type_name": "ANY",
+          "kind": "METHOD_RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        }
+      ],
+      "edges": [
+        {
+          "source": 111669149698,
+          "target": 25769803778,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149698,
+          "target": 128849018883,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149698,
+          "target": 128849018883,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 25769803778,
+          "target": 111669149699,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 115964116994,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 115964116995,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 25769803779,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 128849018882,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 120259084290,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 120259084291,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476737,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476737,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 115964116995,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476740,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 115964116994,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476738,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476739,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 115964116994,
+          "target": 120259084290,
+          "kind": "PARAMETER_LINK",
+          "label": ""
+        },
+        {
+          "source": 115964116994,
+          "target": 120259084290,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116994,
+          "target": 68719476737,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116995,
+          "target": 120259084291,
+          "kind": "PARAMETER_LINK",
+          "label": ""
+        },
+        {
+          "source": 115964116995,
+          "target": 68719476738,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 115964116995,
+          "target": 120259084291,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 25769803779,
+          "target": 30064771072,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 25769803779,
+          "target": 146028888065,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476737,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476738,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476737,
+          "kind": "ARGUMENT",
+          "label": "1"
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476738,
+          "kind": "ARGUMENT",
+          "label": "2"
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476739,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 30064771072,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "external_body(x, y)"
+        },
+        {
+          "source": 68719476737,
+          "target": 68719476738,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476737,
+          "target": 115964116994,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476737,
+          "target": 68719476739,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476737,
+          "target": 30064771072,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476738,
+          "target": 30064771072,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476738,
+          "target": 115964116995,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476738,
+          "target": 68719476740,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 68719476738,
+          "target": 30064771072,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 146028888065,
+          "target": 30064771073,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 146028888065,
+          "target": 30064771073,
+          "kind": "ARGUMENT",
+          "label": ""
+        },
+        {
+          "source": 146028888065,
+          "target": 128849018882,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 146028888065,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "<RET>"
+        },
+        {
+          "source": 30064771073,
+          "target": 68719476739,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771073,
+          "target": 68719476740,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771073,
+          "target": 68719476739,
+          "kind": "ARGUMENT",
+          "label": "1"
+        },
+        {
+          "source": 30064771073,
+          "target": 68719476740,
+          "kind": "ARGUMENT",
+          "label": "2"
+        },
+        {
+          "source": 30064771073,
+          "target": 146028888065,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 30064771073,
+          "target": 146028888065,
+          "kind": "REACHING_DEF",
+          "label": "x + y"
+        },
+        {
+          "source": 30064771073,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "x + y"
+        },
+        {
+          "source": 68719476739,
+          "target": 68719476740,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476739,
+          "target": 115964116994,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476739,
+          "target": 120259084290,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476739,
+          "target": 30064771073,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476739,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476740,
+          "target": 30064771073,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476740,
+          "target": 115964116995,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476740,
+          "target": 30064771073,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 68719476740,
+          "target": 120259084291,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 68719476740,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        }
+      ]
+    },
+    "filename": "caller.c",
+    "cfg": {
+      "nodes": [],
+      "edges": []
+    },
+    "capture_nodes": [
+      {
+        "capture_out": [],
+        "name": "x",
+        "ref_out": [
+          115964116994
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "x",
+        "id": 68719476737,
+        "kind": "IDENTIFIER"
+      },
+      {
+        "capture_out": [],
+        "name": "y",
+        "ref_out": [
+          115964116995
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "y",
+        "id": 68719476738,
+        "kind": "IDENTIFIER"
+      },
+      {
+        "capture_out": [],
+        "name": "x",
+        "ref_out": [
+          115964116994
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "x",
+        "id": 68719476739,
+        "kind": "IDENTIFIER"
+      },
+      {
+        "capture_out": [],
+        "name": "y",
+        "ref_out": [
+          115964116995
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "y",
+        "id": 68719476740,
+        "kind": "IDENTIFIER"
+      }
+    ],
+    "is_external": false,
+    "external_ddg_edges": [],
+    "callee_context": [],
+    "end_line": 2,
+    "signature": "",
+    "return_type": "ANY",
+    "fullname": "caller.c:<global>",
+    "start_line": 1,
+    "reaching_definitions": [
+      {
+        "node": 111669149698,
+        "incoming": [],
+        "outgoing": []
+      },
+      {
+        "node": 128849018883,
+        "incoming": [],
+        "outgoing": []
+      }
+    ]
+  },
+  {
+    "name": "caller",
+    "dot_ddg": [
+      "digraph \"caller\" {  \n\"111669149699\" [label = <(METHOD,caller)<SUB>2</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>2</SUB>> ]\n\"115964116994\" [label = <(PARAM,int x)<SUB>2</SUB>> ]\n\"115964116995\" [label = <(PARAM,int y)<SUB>2</SUB>> ]\n\"30064771072\" [label = <(external_body,external_body(x, y))<SUB>2</SUB>> ]\n\"146028888065\" [label = <(RETURN,return x + y;,return x + y;)<SUB>2</SUB>> ]\n\"30064771072\" [label = <(external_body,external_body(x, y))<SUB>2</SUB>> ]\n\"30064771072\" [label = <(external_body,external_body(x, y))<SUB>2</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.addition,x + y)<SUB>2</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.addition,x + y)<SUB>2</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.addition,x + y)<SUB>2</SUB>> ]\n  \"146028888065\" -> \"128849018882\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771072\" -> \"128849018882\"  [ label = \"external_body(x, y)\"] \n  \"30064771073\" -> \"128849018882\"  [ label = \"x\"] \n  \"30064771073\" -> \"128849018882\"  [ label = \"y\"] \n  \"30064771073\" -> \"128849018882\"  [ label = \"x + y\"] \n  \"111669149699\" -> \"115964116994\" \n  \"111669149699\" -> \"115964116995\" \n  \"30064771073\" -> \"146028888065\"  [ label = \"x + y\"] \n  \"115964116994\" -> \"30064771072\"  [ label = \"x\"] \n  \"111669149699\" -> \"30064771072\" \n  \"115964116995\" -> \"30064771072\"  [ label = \"y\"] \n  \"30064771072\" -> \"30064771073\"  [ label = \"x\"] \n  \"111669149699\" -> \"30064771073\" \n  \"30064771072\" -> \"30064771073\"  [ label = \"y\"] \n}\n"
+    ],
+    "cpg": {
+      "nodes": [
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int caller(int x, int y) { external_body(x, y); return x + y; }",
+          "id": 111669149699,
+          "order": 1,
+          "column": 1,
+          "type_name": "",
+          "kind": "METHOD",
+          "end_byte": 0,
+          "name": "caller",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int x",
+          "id": 115964116994,
+          "order": 1,
+          "column": 12,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_IN",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int y",
+          "id": 115964116995,
+          "order": 2,
+          "column": 19,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_IN",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "{ external_body(x, y); return x + y; }",
+          "id": 25769803779,
+          "order": 3,
+          "column": 26,
+          "type_name": "void",
+          "kind": "BLOCK",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "external_body",
+          "code": "external_body(x, y)",
+          "id": 30064771072,
+          "order": 1,
+          "column": 28,
+          "type_name": "int",
+          "kind": "CALL",
+          "end_byte": 0,
+          "name": "external_body",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "x",
+          "id": 68719476737,
+          "order": 1,
+          "column": 42,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": 1,
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "y",
+          "id": 68719476738,
+          "order": 2,
+          "column": 45,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": 2,
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "return x + y;",
+          "id": 146028888065,
+          "order": 2,
+          "column": 49,
+          "type_name": "",
+          "kind": "RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "<operator>.addition",
+          "code": "x + y",
+          "id": 30064771073,
+          "order": 1,
+          "column": 56,
+          "type_name": "ANY",
+          "kind": "CALL",
+          "end_byte": 0,
+          "name": "<operator>.addition",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "x",
+          "id": 68719476739,
+          "order": 1,
+          "column": 56,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": 1,
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "y",
+          "id": 68719476740,
+          "order": 2,
+          "column": 60,
+          "type_name": "int",
+          "kind": "IDENTIFIER",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": 2,
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "RET",
+          "id": 128849018882,
+          "order": 4,
+          "column": 1,
+          "type_name": "int",
+          "kind": "METHOD_RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int x",
+          "id": 120259084290,
+          "order": 1,
+          "column": 12,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_OUT",
+          "end_byte": 0,
+          "name": "x",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 2,
+          "method_full_name": "",
+          "code": "int y",
+          "id": 120259084291,
+          "order": 2,
+          "column": 19,
+          "type_name": "int",
+          "kind": "METHOD_PARAMETER_OUT",
+          "end_byte": 0,
+          "name": "y",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        }
+      ],
+      "edges": [
+        {
+          "source": 111669149699,
+          "target": 115964116994,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 115964116995,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 25769803779,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 128849018882,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 120259084290,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 120259084291,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476737,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476737,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 115964116995,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476740,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 115964116994,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476738,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 111669149699,
+          "target": 68719476739,
+          "kind": "REACHING_DEF",
+          "label": ""
+        },
+        {
+          "source": 115964116994,
+          "target": 120259084290,
+          "kind": "PARAMETER_LINK",
+          "label": ""
+        },
+        {
+          "source": 115964116994,
+          "target": 120259084290,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116994,
+          "target": 68719476737,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 115964116995,
+          "target": 120259084291,
+          "kind": "PARAMETER_LINK",
+          "label": ""
+        },
+        {
+          "source": 115964116995,
+          "target": 68719476738,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 115964116995,
+          "target": 120259084291,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 25769803779,
+          "target": 30064771072,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 25769803779,
+          "target": 146028888065,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476737,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476738,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476737,
+          "kind": "ARGUMENT",
+          "label": "1"
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476738,
+          "kind": "ARGUMENT",
+          "label": "2"
+        },
+        {
+          "source": 30064771072,
+          "target": 68719476739,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 30064771072,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "external_body(x, y)"
+        },
+        {
+          "source": 68719476737,
+          "target": 68719476738,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476737,
+          "target": 115964116994,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476737,
+          "target": 68719476739,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476737,
+          "target": 30064771072,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476738,
+          "target": 30064771072,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476738,
+          "target": 115964116995,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476738,
+          "target": 68719476740,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 68719476738,
+          "target": 30064771072,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 146028888065,
+          "target": 30064771073,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 146028888065,
+          "target": 30064771073,
+          "kind": "ARGUMENT",
+          "label": ""
+        },
+        {
+          "source": 146028888065,
+          "target": 128849018882,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 146028888065,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "<RET>"
+        },
+        {
+          "source": 30064771073,
+          "target": 68719476739,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771073,
+          "target": 68719476740,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 30064771073,
+          "target": 68719476739,
+          "kind": "ARGUMENT",
+          "label": "1"
+        },
+        {
+          "source": 30064771073,
+          "target": 68719476740,
+          "kind": "ARGUMENT",
+          "label": "2"
+        },
+        {
+          "source": 30064771073,
+          "target": 146028888065,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 30064771073,
+          "target": 146028888065,
+          "kind": "REACHING_DEF",
+          "label": "x + y"
+        },
+        {
+          "source": 30064771073,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "x + y"
+        },
+        {
+          "source": 68719476739,
+          "target": 68719476740,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476739,
+          "target": 115964116994,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476739,
+          "target": 120259084290,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476739,
+          "target": 30064771073,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476739,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "x"
+        },
+        {
+          "source": 68719476740,
+          "target": 30064771073,
+          "kind": "CFG",
+          "label": ""
+        },
+        {
+          "source": 68719476740,
+          "target": 115964116995,
+          "kind": "REF",
+          "label": ""
+        },
+        {
+          "source": 68719476740,
+          "target": 30064771073,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 68719476740,
+          "target": 120259084291,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        },
+        {
+          "source": 68719476740,
+          "target": 128849018882,
+          "kind": "REACHING_DEF",
+          "label": "y"
+        }
+      ]
+    },
+    "filename": "caller.c",
+    "cfg": {
+      "nodes": [],
+      "edges": []
+    },
+    "capture_nodes": [
+      {
+        "capture_out": [],
+        "name": "x",
+        "ref_out": [
+          115964116994
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "x",
+        "id": 68719476737,
+        "kind": "IDENTIFIER"
+      },
+      {
+        "capture_out": [],
+        "name": "y",
+        "ref_out": [
+          115964116995
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "y",
+        "id": 68719476738,
+        "kind": "IDENTIFIER"
+      },
+      {
+        "capture_out": [],
+        "name": "x",
+        "ref_out": [
+          115964116994
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "x",
+        "id": 68719476739,
+        "kind": "IDENTIFIER"
+      },
+      {
+        "capture_out": [],
+        "name": "y",
+        "ref_out": [
+          115964116995
+        ],
+        "closure_binding_id": "",
+        "capture_in": [],
+        "code": "y",
+        "id": 68719476740,
+        "kind": "IDENTIFIER"
+      }
+    ],
+    "is_external": false,
+    "external_ddg_edges": [],
+    "callee_context": [
+      {
+        "id": 30064771072,
+        "method_full_name": "external_body",
+        "callees": [
+          {
+            "fullname": "external_body",
+            "is_external": false,
+            "is_stub": false
+          }
+        ]
+      },
+      {
+        "id": 30064771073,
+        "method_full_name": "<operator>.addition",
+        "callees": [
+          {
+            "fullname": "<operator>.addition",
+            "is_external": true,
+            "is_stub": true
+          }
+        ]
+      }
+    ],
+    "end_line": 2,
+    "signature": "int(int,int)",
+    "return_type": "int",
+    "fullname": "caller",
+    "start_line": 2,
+    "reaching_definitions": [
+      {
+        "node": 120259084290,
+        "incoming": [
+          30064771072,
+          68719476739,
+          68719476740,
+          30064771073
+        ],
+        "outgoing": [
+          30064771072,
+          68719476739,
+          68719476740,
+          30064771073
+        ]
+      },
+      {
+        "node": 128849018882,
+        "incoming": [
+          30064771072,
+          68719476739,
+          68719476740,
+          30064771073
+        ],
+        "outgoing": [
+          30064771072,
+          68719476739,
+          68719476740,
+          30064771073
+        ]
+      },
+      {
+        "node": 68719476737,
+        "incoming": [
+          115964116994,
+          115964116995
+        ],
+        "outgoing": [
+          115964116994,
+          115964116995
+        ]
+      },
+      {
+        "node": 115964116995,
+        "incoming": [
+          115964116994
+        ],
+        "outgoing": [
+          115964116994,
+          115964116995
+        ]
+      },
+      {
+        "node": 30064771073,
+        "incoming": [
+          68719476737,
+          68719476738,
+          30064771072
+        ],
+        "outgoing": [
+          30064771072,
+          68719476739,
+          68719476740,
+          30064771073
+        ]
+      },
+      {
+        "node": 68719476740,
+        "incoming": [
+          68719476737,
+          68719476738,
+          30064771072
+        ],
+        "outgoing": [
+          68719476737,
+          68719476738,
+          30064771072
+        ]
+      },
+      {
+        "node": 115964116994,
+        "incoming": [],
+        "outgoing": [
+          115964116994
+        ]
+      },
+      {
+        "node": 68719476738,
+        "incoming": [
+          115964116994,
+          115964116995
+        ],
+        "outgoing": [
+          115964116994,
+          115964116995
+        ]
+      },
+      {
+        "node": 30064771072,
+        "incoming": [
+          115964116994,
+          115964116995
+        ],
+        "outgoing": [
+          68719476737,
+          68719476738,
+          30064771072
+        ]
+      },
+      {
+        "node": 68719476739,
+        "incoming": [
+          68719476737,
+          68719476738,
+          30064771072
+        ],
+        "outgoing": [
+          68719476737,
+          68719476738,
+          30064771072
+        ]
+      },
+      {
+        "node": 146028888065,
+        "incoming": [
+          30064771072,
+          68719476739,
+          68719476740,
+          30064771073
+        ],
+        "outgoing": [
+          30064771072,
+          68719476739,
+          68719476740,
+          30064771073
+        ]
+      },
+      {
+        "node": 111669149699,
+        "incoming": [],
+        "outgoing": []
+      },
+      {
+        "node": 120259084291,
+        "incoming": [
+          30064771072,
+          68719476739,
+          68719476740,
+          30064771073
+        ],
+        "outgoing": [
+          30064771072,
+          68719476739,
+          68719476740,
+          30064771073
+        ]
+      }
+    ]
+  },
+  {
+    "name": "<global>",
+    "dot_ddg": [
+      "digraph \"&lt;global&gt;\" {  \n\n}\n"
+    ],
+    "cpg": {
+      "nodes": [
+        {
+          "line": 1,
+          "method_full_name": "",
+          "code": "<global>",
+          "id": 111669149700,
+          "order": 1,
+          "column": 0,
+          "type_name": "",
+          "kind": "METHOD",
+          "end_byte": 0,
+          "name": "<global>",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 0,
+          "method_full_name": "",
+          "code": "",
+          "id": 25769803780,
+          "order": 1,
+          "column": 0,
+          "type_name": "ANY",
+          "kind": "BLOCK",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        },
+        {
+          "line": 0,
+          "method_full_name": "",
+          "code": "RET",
+          "id": 128849018884,
+          "order": 2,
+          "column": 0,
+          "type_name": "ANY",
+          "kind": "METHOD_RETURN",
+          "end_byte": 0,
+          "name": "",
+          "start_byte": 0,
+          "argument_index": "",
+          "canonical_name": ""
+        }
+      ],
+      "edges": [
+        {
+          "source": 111669149700,
+          "target": 25769803780,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149700,
+          "target": 128849018884,
+          "kind": "AST",
+          "label": ""
+        },
+        {
+          "source": 111669149700,
+          "target": 128849018884,
+          "kind": "CFG",
+          "label": ""
+        }
+      ]
+    },
+    "filename": "<includes>",
+    "cfg": {
+      "nodes": [],
+      "edges": []
+    },
+    "capture_nodes": [],
+    "is_external": false,
+    "external_ddg_edges": [],
+    "callee_context": [],
+    "end_line": 0,
+    "signature": "",
+    "return_type": "ANY",
+    "fullname": "<includes>:<global>",
+    "start_line": 1,
+    "reaching_definitions": [
+      {
+        "node": 111669149700,
+        "incoming": [],
+        "outgoing": []
+      },
+      {
+        "node": 128849018884,
+        "incoming": [],
+        "outgoing": []
+      }
+    ]
+  }
+]

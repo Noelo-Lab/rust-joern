@@ -1,0 +1,2653 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 11.591641335980967,
+    "supplemental_raw_parse_seconds": 11.343974177958444
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "problem_both": {
+      "name": "problem_both",
+      "fullname": "problem_both",
+      "filename": "qualification_if_recovery.c",
+      "start_line": 3,
+      "end_line": 3,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 3,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_both",
+                    "source_line_number": 3,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 3,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 3,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 3,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 3,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_both",
+                    "source_line_number": 3,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 3,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 3,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 3,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,problem_both)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return x;,return x;)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,return x;)<SUB>3</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "x"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"problem_both\" {  \n\"111669149697\" [label = <(METHOD,problem_both)<SUB>3</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>3</SUB>> ]\n\"115964116992\" [label = <(PARAM,int x)<SUB>3</SUB>> ]\n\"146028888064\" [label = <(RETURN,return x;,return x;)<SUB>3</SUB>> ]\n\"68719476736\" [label = <(IDENTIFIER,x,return x;)<SUB>3</SUB>> ]\n  \"146028888064\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116992\" -> \"128849018880\"  [ label = \"x\"] \n  \"111669149697\" -> \"115964116992\" \n  \"68719476736\" -> \"146028888064\"  [ label = \"x\"] \n  \"115964116992\" -> \"68719476736\"  [ label = \"x\"] \n  \"111669149697\" -> \"68719476736\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"problem_both\" {  \n\"146028888064\" [label = <(RETURN,return x;,return x;)<SUB>3</SUB>> ]\n\"111669149697\" [label = <(METHOD,problem_both)<SUB>3</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>3</SUB>> ]\n  \"146028888064\" -> \"128849018880\" \n  \"111669149697\" -> \"146028888064\" \n}\n"
+      ]
+    },
+    "problem_no_else": {
+      "name": "problem_no_else",
+      "fullname": "problem_no_else",
+      "filename": "qualification_if_recovery.c",
+      "start_line": 4,
+      "end_line": 4,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 4,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_no_else",
+                    "source_line_number": 4,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 4,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 4,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 4,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 4,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_no_else",
+                    "source_line_number": 4,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 4,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 4,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 4,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,problem_no_else)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return x;,return x;)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,return x;)<SUB>4</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "x"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"problem_no_else\" {  \n\"111669149698\" [label = <(METHOD,problem_no_else)<SUB>4</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>4</SUB>> ]\n\"115964116993\" [label = <(PARAM,int x)<SUB>4</SUB>> ]\n\"146028888065\" [label = <(RETURN,return x;,return x;)<SUB>4</SUB>> ]\n\"68719476737\" [label = <(IDENTIFIER,x,return x;)<SUB>4</SUB>> ]\n  \"146028888065\" -> \"128849018881\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116993\" -> \"128849018881\"  [ label = \"x\"] \n  \"111669149698\" -> \"115964116993\" \n  \"68719476737\" -> \"146028888065\"  [ label = \"x\"] \n  \"115964116993\" -> \"68719476737\"  [ label = \"x\"] \n  \"111669149698\" -> \"68719476737\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"problem_no_else\" {  \n\"146028888065\" [label = <(RETURN,return x;,return x;)<SUB>4</SUB>> ]\n\"111669149698\" [label = <(METHOD,problem_no_else)<SUB>4</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>4</SUB>> ]\n  \"146028888065\" -> \"128849018881\" \n  \"111669149698\" -> \"146028888065\" \n}\n"
+      ]
+    },
+    "problem_valid_else": {
+      "name": "problem_valid_else",
+      "fullname": "problem_valid_else",
+      "filename": "qualification_if_recovery.c",
+      "start_line": 5,
+      "end_line": 5,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 5,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_valid_else",
+                    "source_line_number": 5,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 5,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 5
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 5,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 5,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 5,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_valid_else",
+                    "source_line_number": 5,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 5,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 5
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 5,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 5,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,problem_valid_else)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return x;,return x;)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,return x;)<SUB>5</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "x"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"problem_valid_else\" {  \n\"111669149699\" [label = <(METHOD,problem_valid_else)<SUB>5</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>5</SUB>> ]\n\"115964116994\" [label = <(PARAM,int x)<SUB>5</SUB>> ]\n\"146028888066\" [label = <(RETURN,return x;,return x;)<SUB>5</SUB>> ]\n\"68719476738\" [label = <(IDENTIFIER,x,return x;)<SUB>5</SUB>> ]\n  \"146028888066\" -> \"128849018882\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116994\" -> \"128849018882\"  [ label = \"x\"] \n  \"111669149699\" -> \"115964116994\" \n  \"68719476738\" -> \"146028888066\"  [ label = \"x\"] \n  \"115964116994\" -> \"68719476738\"  [ label = \"x\"] \n  \"111669149699\" -> \"68719476738\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"problem_valid_else\" {  \n\"146028888066\" [label = <(RETURN,return x;,return x;)<SUB>5</SUB>> ]\n\"111669149699\" [label = <(METHOD,problem_valid_else)<SUB>5</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>5</SUB>> ]\n  \"146028888066\" -> \"128849018882\" \n  \"111669149699\" -> \"146028888066\" \n}\n"
+      ]
+    },
+    "problem_braced_both": {
+      "name": "problem_braced_both",
+      "fullname": "problem_braced_both",
+      "filename": "qualification_if_recovery.c",
+      "start_line": 6,
+      "end_line": 6,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 6,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_braced_both",
+                    "source_line_number": 6,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 6,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "BinOp",
+                  "text": "x||foo() || ",
+                  "fields": {
+                    "raw_text": [
+                      "logicalOr",
+                      "x||foo()"
+                    ],
+                    "source_line_number": 6,
+                    "type": 3,
+                    "arg1": "x||foo()",
+                    "arg2": ""
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 6,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 6,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 6,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_braced_both",
+                    "source_line_number": 6,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 6,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "BinOp",
+                  "text": "x||foo() || ",
+                  "fields": {
+                    "raw_text": [
+                      "logicalOr",
+                      "x||foo()"
+                    ],
+                    "source_line_number": 6,
+                    "type": 3,
+                    "arg1": "x||foo()",
+                    "arg2": ""
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 6,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 6,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,problem_braced_both)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return x;,return x;)<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.logicalOr,x || foo())<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,return x;)<SUB>6</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "foo()"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "x || foo()"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": "x"
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "label": "x"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"problem_braced_both\" {  \n\"111669149700\" [label = <(METHOD,problem_braced_both)<SUB>6</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>6</SUB>> ]\n\"115964116995\" [label = <(PARAM,int x)<SUB>6</SUB>> ]\n\"146028888067\" [label = <(RETURN,return x;,return x;)<SUB>6</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.logicalOr,x || foo())<SUB>6</SUB>> ]\n\"68719476740\" [label = <(IDENTIFIER,x,return x;)<SUB>6</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.logicalOr,x || foo())<SUB>6</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.logicalOr,x || foo())<SUB>6</SUB>> ]\n  \"146028888067\" -> \"128849018883\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771072\" -> \"128849018883\"  [ label = \"x\"] \n  \"30064771072\" -> \"128849018883\"  [ label = \"foo()\"] \n  \"30064771072\" -> \"128849018883\"  [ label = \"x || foo()\"] \n  \"111669149700\" -> \"115964116995\" \n  \"68719476740\" -> \"146028888067\"  [ label = \"x\"] \n  \"30064771072\" -> \"68719476740\"  [ label = \"x\"] \n  \"111669149700\" -> \"68719476740\" \n  \"115964116995\" -> \"30064771072\"  [ label = \"x\"] \n  \"111669149700\" -> \"30064771072\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"problem_braced_both\" {  \n\"146028888067\" [label = <(RETURN,return x;,return x;)<SUB>6</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.logicalOr,x || foo())<SUB>6</SUB>> ]\n\"30064771073\" [label = <(foo,foo())<SUB>6</SUB>> ]\n\"111669149700\" [label = <(METHOD,problem_braced_both)<SUB>6</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>6</SUB>> ]\n  \"146028888067\" -> \"128849018883\" \n  \"30064771072\" -> \"146028888067\" \n  \"30064771073\" -> \"30064771072\" \n  \"111669149700\" -> \"30064771073\" \n  \"111669149700\" -> \"30064771072\" \n}\n"
+      ]
+    },
+    "problem_braced_then": {
+      "name": "problem_braced_then",
+      "fullname": "problem_braced_then",
+      "filename": "qualification_if_recovery.c",
+      "start_line": 7,
+      "end_line": 7,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 7,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_braced_then",
+                    "source_line_number": 7,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 7,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 7,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 7,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 7,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_braced_then",
+                    "source_line_number": 7,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 7,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 7,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 7,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,problem_braced_then)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return x;,return x;)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,return x;)<SUB>7</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "x"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"problem_braced_then\" {  \n\"111669149701\" [label = <(METHOD,problem_braced_then)<SUB>7</SUB>> ]\n\"128849018884\" [label = <(METHOD_RETURN,int)<SUB>7</SUB>> ]\n\"115964116996\" [label = <(PARAM,int x)<SUB>7</SUB>> ]\n\"146028888068\" [label = <(RETURN,return x;,return x;)<SUB>7</SUB>> ]\n\"68719476741\" [label = <(IDENTIFIER,x,return x;)<SUB>7</SUB>> ]\n  \"146028888068\" -> \"128849018884\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116996\" -> \"128849018884\"  [ label = \"x\"] \n  \"111669149701\" -> \"115964116996\" \n  \"68719476741\" -> \"146028888068\"  [ label = \"x\"] \n  \"115964116996\" -> \"68719476741\"  [ label = \"x\"] \n  \"111669149701\" -> \"68719476741\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"problem_braced_then\" {  \n\"146028888068\" [label = <(RETURN,return x;,return x;)<SUB>7</SUB>> ]\n\"111669149701\" [label = <(METHOD,problem_braced_then)<SUB>7</SUB>> ]\n\"128849018884\" [label = <(METHOD_RETURN,int)<SUB>7</SUB>> ]\n  \"146028888068\" -> \"128849018884\" \n  \"111669149701\" -> \"146028888068\" \n}\n"
+      ]
+    },
+    "problem_braced_else": {
+      "name": "problem_braced_else",
+      "fullname": "problem_braced_else",
+      "filename": "qualification_if_recovery.c",
+      "start_line": 8,
+      "end_line": 8,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 8,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_braced_else",
+                    "source_line_number": 8,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 8,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 8
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 8,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 8,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 8,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,problem_braced_else",
+                    "source_line_number": 8,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 8,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,x,returnx;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,x,returnx;",
+                    "source_line_number": 8
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 8,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return x;,returnx;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnx;",
+                      "returnx;"
+                    ],
+                    "source_line_number": 8,
+                    "ret": "x;,returnx;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,problem_braced_else)<SUB>8</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>8</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>8</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(RETURN,return x;,return x;)<SUB>8</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(IDENTIFIER,x,return x;)<SUB>8</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": "x"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "label": "x"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"problem_braced_else\" {  \n\"111669149702\" [label = <(METHOD,problem_braced_else)<SUB>8</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,int)<SUB>8</SUB>> ]\n\"115964116997\" [label = <(PARAM,int x)<SUB>8</SUB>> ]\n\"146028888069\" [label = <(RETURN,return x;,return x;)<SUB>8</SUB>> ]\n\"68719476742\" [label = <(IDENTIFIER,x,return x;)<SUB>8</SUB>> ]\n  \"146028888069\" -> \"128849018885\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116997\" -> \"128849018885\"  [ label = \"x\"] \n  \"111669149702\" -> \"115964116997\" \n  \"68719476742\" -> \"146028888069\"  [ label = \"x\"] \n  \"115964116997\" -> \"68719476742\"  [ label = \"x\"] \n  \"111669149702\" -> \"68719476742\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"problem_braced_else\" {  \n\"146028888069\" [label = <(RETURN,return x;,return x;)<SUB>8</SUB>> ]\n\"111669149702\" [label = <(METHOD,problem_braced_else)<SUB>8</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,int)<SUB>8</SUB>> ]\n  \"146028888069\" -> \"128849018885\" \n  \"111669149702\" -> \"146028888069\" \n}\n"
+      ]
+    },
+    "bar": {
+      "name": "bar",
+      "fullname": "bar",
+      "filename": "qualification_if_recovery.c",
+      "start_line": 2,
+      "end_line": 2,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 2,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,bar",
+                    "source_line_number": 2,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 2,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 2,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 2,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,bar",
+                    "source_line_number": 2,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int x",
+                  "fields": {
+                    "raw_text": "PARAM,int x",
+                    "source_line_number": 2,
+                    "type": "int",
+                    "name": "x"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 2,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,bar)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int x)<SUB>2</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "x"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"bar\" {  \n\"111669149703\" [label = <(METHOD,bar)<SUB>2</SUB>> ]\n\"128849018887\" [label = <(METHOD_RETURN,int)<SUB>2</SUB>> ]\n\"115964116998\" [label = <(PARAM,int x)<SUB>2</SUB>> ]\n  \"115964116998\" -> \"128849018887\"  [ label = \"x\"] \n  \"111669149703\" -> \"115964116998\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"bar\" {  \n\"111669149703\" [label = <(METHOD,bar)<SUB>2</SUB>> ]\n\"128849018887\" [label = <(METHOD_RETURN,int)<SUB>2</SUB>> ]\n  \"111669149703\" -> \"128849018887\" \n}\n"
+      ]
+    },
+    "foo": {
+      "name": "foo",
+      "fullname": "foo",
+      "filename": "qualification_if_recovery.c",
+      "start_line": 1,
+      "end_line": 1,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 1,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,foo",
+                    "source_line_number": 1,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,void)<SUB>1</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,void)<SUB>1</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 1,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 1,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,foo",
+                    "source_line_number": 1,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,void)<SUB>1</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,void)<SUB>1</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 1,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,foo)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,void)<SUB>1</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": ""
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"foo\" {  \n\"111669149704\" [label = <(METHOD,foo)<SUB>1</SUB>> ]\n\"128849018888\" [label = <(METHOD_RETURN,int)<SUB>1</SUB>> ]\n\"115964116999\" [label = <(PARAM,void)<SUB>1</SUB>> ]\n  \"115964116999\" -> \"128849018888\" \n  \"111669149704\" -> \"115964116999\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"foo\" {  \n\"111669149704\" [label = <(METHOD,foo)<SUB>1</SUB>> ]\n\"128849018888\" [label = <(METHOD_RETURN,int)<SUB>1</SUB>> ]\n  \"111669149704\" -> \"128849018888\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "34a57bbbd30f0831b21af7efce594f17ff7b4025172f49be6c2ed2c83c8ccc8c",
+  "prepared_sha256": "34a57bbbd30f0831b21af7efce594f17ff7b4025172f49be6c2ed2c83c8ccc8c",
+  "language": "c",
+  "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/parser-recovery/qualification_if_recovery.c",
+  "capture_worker_sha256": "d2256371f18c5cccbf5c7543404ed8333a9aaf855ffcfdede2af72fbafa4f708"
+}

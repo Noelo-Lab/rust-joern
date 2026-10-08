@@ -1,0 +1,1289 @@
+{
+  "generator": "Original Joern 4.0.150 live audit",
+  "internal_methods": {
+    "caller.c": [
+      "external_body",
+      "caller"
+    ],
+    "body.c": [
+      "external_body",
+      "caller"
+    ]
+  },
+  "all_internal_methods": {
+    "caller.c": [
+      "body.c:<global>",
+      "external_body",
+      "caller.c:<global>",
+      "caller",
+      "<includes>:<global>"
+    ],
+    "body.c": [
+      "body.c:<global>",
+      "external_body",
+      "caller.c:<global>",
+      "caller",
+      "<includes>:<global>"
+    ]
+  },
+  "methods": [
+    {
+      "name": "external_body",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 1,
+            "code": "int external_body(int x, int y) { return x; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "external_body",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "int x",
+            "id": 1,
+            "column": 19,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "int y",
+            "id": 2,
+            "column": 26,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "y",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "{ return x; }",
+            "id": 3,
+            "column": 33,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "return x;",
+            "id": 4,
+            "column": 35,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "x",
+            "id": 5,
+            "column": 42,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "RET",
+            "id": 6,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "int x",
+            "id": 7,
+            "column": 19,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "int y",
+            "id": 8,
+            "column": 26,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "y",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          }
+        ]
+      },
+      "filename": "body.c",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 1,
+      "signature": "int(int,int)",
+      "return_type": "int",
+      "fullname": "external_body",
+      "start_line": 1,
+      "reaching_definitions": [
+        {
+          "node": 5,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        }
+      ],
+      "ddg_view": {
+        "nodes": [
+          {
+            "line": 1,
+            "code": "x",
+            "id": 5,
+            "column": 42,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "int external_body(int x, int y) { return x; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "external_body",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "int x",
+            "id": 1,
+            "column": 19,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "int y",
+            "id": 2,
+            "column": 26,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "y",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "RET",
+            "id": 6,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "return x;",
+            "id": 4,
+            "column": 35,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "DDG",
+            "label": "<RET>"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "DDG",
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "kind": "DDG",
+            "label": "y"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "DDG",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "DDG",
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "DDG",
+            "label": "x"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "DDG",
+            "label": "x"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "DDG",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "name": "caller",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 2,
+            "code": "int caller(int x, int y) { external_body(x, y); return x + y; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "caller",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "int x",
+            "id": 1,
+            "column": 12,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "int y",
+            "id": 2,
+            "column": 19,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "y",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "{ external_body(x, y); return x + y; }",
+            "id": 3,
+            "column": 26,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": "external_body",
+            "code": "external_body(x, y)",
+            "id": 4,
+            "column": 28,
+            "type_name": "int",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "external_body",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "x",
+            "id": 5,
+            "column": 42,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "y",
+            "id": 6,
+            "column": 45,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "y",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "return x + y;",
+            "id": 7,
+            "column": 49,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": "<operator>.addition",
+            "code": "x + y",
+            "id": 8,
+            "column": 56,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.addition",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "x",
+            "id": 9,
+            "column": 56,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "y",
+            "id": 10,
+            "column": 60,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "y",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "RET",
+            "id": 11,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "int x",
+            "id": 12,
+            "column": 12,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "int y",
+            "id": 13,
+            "column": 19,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "y",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 12,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 13,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          },
+          {
+            "source": 2,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "external_body(x, y)"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 5,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 2,
+            "kind": "REF"
+          },
+          {
+            "source": 6,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "x + y"
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "x + y"
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "kind": "CFG"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 9,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 9,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 10,
+            "target": 2,
+            "kind": "REF"
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          },
+          {
+            "source": 10,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "y"
+          }
+        ]
+      },
+      "filename": "caller.c",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 2,
+      "signature": "int(int,int)",
+      "return_type": "int",
+      "fullname": "caller",
+      "start_line": 2,
+      "reaching_definitions": [
+        {
+          "node": 12,
+          "incoming": [
+            4,
+            9,
+            10,
+            8
+          ],
+          "outgoing": [
+            4,
+            9,
+            10,
+            8
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            4,
+            9,
+            10,
+            8
+          ],
+          "outgoing": [
+            4,
+            9,
+            10,
+            8
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 2,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            5,
+            6,
+            4
+          ],
+          "outgoing": [
+            4,
+            9,
+            10,
+            8
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            5,
+            6,
+            4
+          ],
+          "outgoing": [
+            5,
+            6,
+            4
+          ]
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            5,
+            6,
+            4
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            5,
+            6,
+            4
+          ],
+          "outgoing": [
+            5,
+            6,
+            4
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            4,
+            9,
+            10,
+            8
+          ],
+          "outgoing": [
+            4,
+            9,
+            10,
+            8
+          ]
+        },
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 13,
+          "incoming": [
+            4,
+            9,
+            10,
+            8
+          ],
+          "outgoing": [
+            4,
+            9,
+            10,
+            8
+          ]
+        }
+      ],
+      "ddg_view": {
+        "nodes": [
+          {
+            "line": 2,
+            "method_full_name": "external_body",
+            "code": "external_body(x, y)",
+            "id": 4,
+            "column": 28,
+            "type_name": "int",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "external_body",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": "<operator>.addition",
+            "code": "x + y",
+            "id": 8,
+            "column": 56,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.addition",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "int caller(int x, int y) { external_body(x, y); return x + y; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "caller",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "int x",
+            "id": 1,
+            "column": 12,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "int y",
+            "id": 2,
+            "column": 19,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "y",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "RET",
+            "id": 11,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "return x + y;",
+            "id": 7,
+            "column": 49,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 7,
+            "target": 11,
+            "kind": "DDG",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 11,
+            "kind": "DDG",
+            "label": "external_body(x, y)"
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "kind": "DDG",
+            "label": "x"
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "kind": "DDG",
+            "label": "y"
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "kind": "DDG",
+            "label": "x + y"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "DDG",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "DDG",
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "DDG",
+            "label": "x + y"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "DDG",
+            "label": "x"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "DDG",
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "kind": "DDG",
+            "label": "y"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "DDG",
+            "label": "x"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "DDG",
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "DDG",
+            "label": "y"
+          }
+        ]
+      }
+    }
+  ]
+}

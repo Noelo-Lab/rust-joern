@@ -1,0 +1,292 @@
+{
+  "schema_version": 1,
+  "scope": "per-file original Function.ddg plus directed labeled dotDdg; statement identities and multiplicity preserved",
+  "candidate_library": "/tmp/ddg-final-replay-6u47qqxc/librust_joern.so",
+  "candidate_library_sha256": "bbcc9029052314789b11ced7f495c0d63841112f59ae2ca46a569b739a1c76a6",
+  "candidate_package": "/tmp/ddg-final-replay-6u47qqxc/python",
+  "candidate_python_sha256": {
+    "rust_joern/__init__.py": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce"
+  },
+  "candidate_timing_kind": "parse_source_plus_lazy_ddg_materialization",
+  "seconds": 0.9364831959828734,
+  "requested_files": 3,
+  "completed_files": 3,
+  "files": [
+    {
+      "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/coreutils/decompiled/ida_libstdbuf.c",
+      "source_sha256": "74ade60015f785c6cb7c5115bb857a9d780bc829a141c85f9f6ba4659ab0665f",
+      "prepared_sha256": "74ade60015f785c6cb7c5115bb857a9d780bc829a141c85f9f6ba4659ab0665f",
+      "language": "c",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 16.19418994593434,
+        "supplemental_raw_parse_seconds": 15.590052774990909
+      },
+      "candidate_seconds": 0.045171511941589415,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.04209098592400551,
+        "ddg_materialization_seconds": 0.0030805260175839067
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-b8wi6w7g/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 3,
+      "candidate_functions": 3,
+      "matched": 3,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "apply_mode",
+          "name": "apply_mode",
+          "filename": "ida_libstdbuf.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 52,
+              "edges": 111,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 52,
+              "edges": 111,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 52,
+              "edges": 136,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 52,
+              "edges": 136,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "fileno_to_name",
+          "name": "fileno_to_name",
+          "filename": "ida_libstdbuf.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 17,
+              "edges": 30,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 17,
+              "edges": 30,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 17,
+              "edges": 31,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 17,
+              "edges": 31,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "stdbuf",
+          "name": "stdbuf",
+          "filename": "ida_libstdbuf.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 22,
+              "edges": 41,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 22,
+              "edges": 41,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 22,
+              "edges": 57,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 22,
+              "edges": 57,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O0/shadow/decompiled/kuna_groups.c",
+      "source_sha256": "a1ce407d95dc0e95b87d1884ba215773f128571a42e467ab076b0011d149ad42",
+      "prepared_sha256": "a1ce407d95dc0e95b87d1884ba215773f128571a42e467ab076b0011d149ad42",
+      "language": "c",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 16.42546341207344,
+        "supplemental_raw_parse_seconds": 16.127343807020225
+      },
+      "candidate_seconds": 0.06683838996104896,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.06324989104177803,
+        "ddg_materialization_seconds": 0.0035884989192709327
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-b8wi6w7g/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 2,
+      "candidate_functions": 2,
+      "matched": 2,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "main",
+          "name": "main",
+          "filename": "kuna_groups.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 71,
+              "edges": 134,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 71,
+              "edges": 134,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 71,
+              "edges": 155,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 71,
+              "edges": 155,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "print_groups",
+          "name": "print_groups",
+          "filename": "kuna_groups.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 45,
+              "edges": 104,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 45,
+              "edges": 104,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 45,
+              "edges": 126,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 45,
+              "edges": 126,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O2/sysvinit/decompiled/ida_fstab-decode.c",
+      "source_sha256": "f9e57174f34622f2d8503182b70ec7fea80fc2dc626a5454e65af7c3fa3b51c6",
+      "prepared_sha256": "f9e57174f34622f2d8503182b70ec7fea80fc2dc626a5454e65af7c3fa3b51c6",
+      "language": "c",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 14.04981493507512,
+        "supplemental_raw_parse_seconds": 14.471602176083252
+      },
+      "candidate_seconds": 0.03113373590167612,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.029329868964850903,
+        "ddg_materialization_seconds": 0.0018038669368252158
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-b8wi6w7g/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 1,
+      "candidate_functions": 1,
+      "matched": 1,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "main",
+          "name": "main",
+          "filename": "ida_fstab-decode.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 53,
+              "edges": 92,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 53,
+              "edges": 92,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 53,
+              "edges": 95,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 53,
+              "edges": 95,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

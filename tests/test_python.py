@@ -61,10 +61,11 @@ class PythonApiTests(unittest.TestCase):
         function, = analysis.functions
         self.assertIsNotNone(function.ddg)
         self.assertTrue(function.ddg.number_of_edges())
+        self.assertTrue(all(isinstance(block, rust_joern.Block) for block in function.ddg))
         self.assertTrue(function.reaching_definitions)
         self.assertIsNotNone(function.ddg_projection)
         self.assertTrue(set(function.ddg_projection).issubset(function.cpg))
-        self.assertTrue(all(edge["kind"] == "REACHING_DEF" for _, _, edge in function.ddg.edges(data=True)))
+        self.assertTrue(all(edge["kind"] == "REACHING_DEF" for _, _, edge in function.ddg_raw.edges(data=True)))
         self.assertTrue(all(edge["kind"] == "DDG" for _, _, edge in function.ddg_projection.edges(data=True)))
         assignment = next(node for node, attrs in function.ddg_projection.nodes(data=True)
                           if attrs.get("name") == "<operator>.assignment")
@@ -86,7 +87,8 @@ class PythonApiTests(unittest.TestCase):
         data["ddg_projection"] = projection
         analysis = rust_joern.Analysis({"schema_version": 1, "diagnostics": [], "functions": [data]})
         function, = analysis.functions
-        self.assertEqual(set(function.ddg), {0})
+        self.assertIsNone(function.ddg)
+        self.assertEqual(set(function.ddg_raw), {0})
         self.assertEqual(set(function.ddg_projection), {0, 1})
         self.assertEqual(function.ddg_projection.number_of_edges(), 2)
         self.assertEqual({edge["label"] for _, _, edge in function.ddg_projection.edges(data=True)}, {"x", "y"})

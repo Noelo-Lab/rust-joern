@@ -1,0 +1,10 @@
+int op0(int x, int y) { x += y; return x; }
+int op1(int x, int y) { x -= y; return x; }
+int op2(int x, int y) { x *= y; return x; }
+int op3(int x, int y) { x /= y; return x; }
+int op4(int x, int y) { x %= y; return x; }
+int op5(int x, int y) { x &= y; return x; }
+int op6(int x, int y) { x |= y; return x; }
+int op7(int x, int y) { x ^= y; return x; }
+int op8(int x, int y) { x <<= y; return x; }
+int op9(int x, int y) { x >>= y; return x; }

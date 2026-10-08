@@ -1,0 +1,3726 @@
+{
+  "generator": "Original Joern 4.0.150 / dataflowOss and ReachingDefProblem",
+  "source_sha256": "a8897b2ce13f19c70c168101a8206772303450749ecd862d317f70e66b9a0930",
+  "capture_sha256": "2b7017b294c34caa687bbec7a59f87016053c434561cb2a05f88bf1ad2684178",
+  "methods": [
+    {
+      "name": "cast_deref",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 2,
+            "code": "int cast_deref(int *p) { return (uch)(*p); }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "cast_deref",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "int *p",
+            "id": 1,
+            "column": 16,
+            "type_name": "int*",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "p",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "{ return (uch)(*p); }",
+            "id": 2,
+            "column": 24,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "return (uch)(*p);",
+            "id": 3,
+            "column": 26,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": "<unresolvedNamespace>.<operator>():<unresolvedSignature>(1)",
+            "code": "(uch)(*p)",
+            "id": 4,
+            "column": 33,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "uch",
+            "id": 5,
+            "column": 34,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "uch",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": "<operator>.indirection",
+            "code": "*p",
+            "id": 6,
+            "column": 39,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirection",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "p",
+            "id": 7,
+            "column": 40,
+            "type_name": "int*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "p",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "RET",
+            "id": 8,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "code": "int *p",
+            "id": 9,
+            "column": 16,
+            "type_name": "int*",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "p",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "0"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "(uch)(*p)"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "(uch)(*p)"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "uch"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "uch"
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "uch"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "*p"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "*p"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "*p"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "*p"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "kind": "REF"
+          }
+        ]
+      },
+      "filename": "ambiguous_casts.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 2,
+      "signature": "int(int*)",
+      "return_type": "int",
+      "fullname": "cast_deref:int(int*)",
+      "start_line": 2,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1,
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cast_chain",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 3,
+            "code": "int cast_chain(int n) { return (float8)(float4)n; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "cast_chain",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "int n",
+            "id": 1,
+            "column": 16,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "{ return (float8)(float4)n; }",
+            "id": 2,
+            "column": 23,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "return (float8)(float4)n;",
+            "id": 3,
+            "column": 25,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": "<operator>.cast",
+            "code": "(float8)(float4)n",
+            "id": 4,
+            "column": 32,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.cast",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "float8",
+            "id": 5,
+            "column": 33,
+            "kind": "UNKNOWN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": "<operator>.cast",
+            "code": "(float4)n",
+            "id": 6,
+            "column": 40,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.cast",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "float4",
+            "id": 7,
+            "column": 41,
+            "kind": "UNKNOWN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "n",
+            "id": 8,
+            "column": 48,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "RET",
+            "id": 9,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "int n",
+            "id": 10,
+            "column": 16,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "(float8)(float4)n"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "(float8)(float4)n"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "(float4)n"
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "(float4)n"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          }
+        ]
+      },
+      "filename": "ambiguous_casts.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 3,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "cast_chain:int(int)",
+      "start_line": 3,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            4,
+            6,
+            8
+          ],
+          "outgoing": [
+            4,
+            6,
+            8
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            6,
+            8
+          ],
+          "outgoing": [
+            4,
+            6,
+            8
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            6,
+            8
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            4,
+            6,
+            8
+          ],
+          "outgoing": [
+            4,
+            6,
+            8
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            4,
+            6,
+            8
+          ],
+          "outgoing": [
+            4,
+            6,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cast_builtin",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 4,
+            "code": "int cast_builtin(int n) { return (undefined10)(long double)1; }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "cast_builtin",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "int n",
+            "id": 1,
+            "column": 18,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "{ return (undefined10)(long double)1; }",
+            "id": 2,
+            "column": 25,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "return (undefined10)(long double)1;",
+            "id": 3,
+            "column": 27,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.cast",
+            "code": "(undefined10)(long double)1",
+            "id": 4,
+            "column": 34,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.cast",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "undefined10",
+            "id": 5,
+            "column": 35,
+            "kind": "UNKNOWN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.cast",
+            "code": "(long double)1",
+            "id": 6,
+            "column": 47,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.cast",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "long double",
+            "id": 7,
+            "column": 48,
+            "kind": "UNKNOWN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "1",
+            "id": 8,
+            "column": 60,
+            "type_name": "int",
+            "kind": "LITERAL",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "RET",
+            "id": 9,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "int n",
+            "id": 10,
+            "column": 18,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "(undefined10)(long double)1"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "(undefined10)(long double)1"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "(long double)1"
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "(long double)1"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "1"
+          }
+        ]
+      },
+      "filename": "ambiguous_casts.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 4,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "cast_builtin:int(int)",
+      "start_line": 4,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1,
+            4,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            6
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            6
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            6
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            4,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            6
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            4,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cast_group_call",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 5,
+            "code": "int cast_group_call(int n) { return (unknown)(foo(n)); }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "cast_group_call",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "int n",
+            "id": 1,
+            "column": 21,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "{ return (unknown)(foo(n)); }",
+            "id": 2,
+            "column": 28,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "return (unknown)(foo(n));",
+            "id": 3,
+            "column": 30,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": "<unresolvedNamespace>.<operator>():<unresolvedSignature>(1)",
+            "code": "(unknown)(foo(n))",
+            "id": 4,
+            "column": 37,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "unknown",
+            "id": 5,
+            "column": 38,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "unknown",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": "foo:int(int)",
+            "code": "foo(n)",
+            "id": 6,
+            "column": 47,
+            "type_name": "int",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "foo",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "n",
+            "id": 7,
+            "column": 51,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "RET",
+            "id": 8,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "int n",
+            "id": 9,
+            "column": 21,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "0"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "(unknown)(foo(n))"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "(unknown)(foo(n))"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "unknown"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "unknown"
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "unknown"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "foo(n)"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "foo(n)"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "foo(n)"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          }
+        ]
+      },
+      "filename": "ambiguous_casts.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 5,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "cast_group_call:int(int)",
+      "start_line": 5,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            6,
+            7
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            6,
+            7
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cast_callback_parameter",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 6,
+            "code": "int cast_callback_parameter(int n, int (*callback)(int)) { return (callback)(n); }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "cast_callback_parameter",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "int n",
+            "id": 1,
+            "column": 29,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "int (*callback)(int)",
+            "id": 2,
+            "column": 36,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "callback",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "{ return (callback)(n); }",
+            "id": 3,
+            "column": 58,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "return (callback)(n);",
+            "id": 4,
+            "column": 60,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "method_full_name": "<operator>.pointerCall",
+            "code": "(callback)(n)",
+            "id": 5,
+            "column": 67,
+            "type_name": "int",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.pointerCall",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "callback",
+            "id": 6,
+            "column": 68,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "callback",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "n",
+            "id": 7,
+            "column": 78,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "RET",
+            "id": 8,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "int n",
+            "id": 9,
+            "column": 29,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "int (*callback)(int)",
+            "id": 10,
+            "column": 36,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "callback",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "callback"
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "callback"
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "callback"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "(callback)(n)"
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "(callback)(n)"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 2,
+            "kind": "REF"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          }
+        ]
+      },
+      "filename": "ambiguous_casts.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 6,
+      "signature": "int(int,int)",
+      "return_type": "int",
+      "fullname": "cast_callback_parameter:int(int,int(*)(int))",
+      "start_line": 6,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 2,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            2,
+            5,
+            7
+          ],
+          "outgoing": [
+            2,
+            5,
+            7
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            2,
+            5,
+            7
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            2,
+            5,
+            7
+          ],
+          "outgoing": [
+            2,
+            5,
+            7
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            2,
+            5,
+            7
+          ],
+          "outgoing": [
+            2,
+            5,
+            7
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            2,
+            5,
+            7
+          ],
+          "outgoing": [
+            2,
+            5,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cast_callback_unknown",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 7,
+            "code": "int cast_callback_unknown(int n) { return (callback)(n); }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "cast_callback_unknown",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "int n",
+            "id": 1,
+            "column": 27,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "{ return (callback)(n); }",
+            "id": 2,
+            "column": 34,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "return (callback)(n);",
+            "id": 3,
+            "column": 36,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "method_full_name": "<unresolvedNamespace>.<operator>():<unresolvedSignature>(1)",
+            "code": "(callback)(n)",
+            "id": 4,
+            "column": 43,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "callback",
+            "id": 5,
+            "column": 44,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "callback",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "n",
+            "id": 6,
+            "column": 54,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "RET",
+            "id": 7,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "int n",
+            "id": 8,
+            "column": 27,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "0"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "(callback)(n)"
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "(callback)(n)"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "callback"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "callback"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "callback"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          }
+        ]
+      },
+      "filename": "ambiguous_casts.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 7,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "cast_callback_unknown:int(int)",
+      "start_line": 7,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            4,
+            5,
+            6
+          ],
+          "outgoing": [
+            4,
+            5,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cast_chain_paren",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 8,
+            "code": "int cast_chain_paren(int n) { return (float8)((float4)n); }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "cast_chain_paren",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "int n",
+            "id": 1,
+            "column": 22,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "{ return (float8)((float4)n); }",
+            "id": 2,
+            "column": 29,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "return (float8)((float4)n);",
+            "id": 3,
+            "column": 31,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "method_full_name": "<unresolvedNamespace>.<operator>():<unresolvedSignature>(1)",
+            "code": "(float8)((float4)n)",
+            "id": 4,
+            "column": 38,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "float8",
+            "id": 5,
+            "column": 39,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "float8",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "method_full_name": "<operator>.cast",
+            "code": "(float4)n",
+            "id": 6,
+            "column": 47,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.cast",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "float4",
+            "id": 7,
+            "column": 48,
+            "kind": "UNKNOWN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "n",
+            "id": 8,
+            "column": 55,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "RET",
+            "id": 9,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "int n",
+            "id": 10,
+            "column": 22,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "0"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "(float8)((float4)n)"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "(float8)((float4)n)"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "float8"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "float8"
+          },
+          {
+            "source": 5,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "float8"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "(float4)n"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "(float4)n"
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "(float4)n"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          }
+        ]
+      },
+      "filename": "ambiguous_casts.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 8,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "cast_chain_paren:int(int)",
+      "start_line": 8,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            4,
+            5,
+            6,
+            8
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            8
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            6,
+            8
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            8
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            6,
+            8
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            4,
+            5,
+            6,
+            8
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            8
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            4,
+            5,
+            6,
+            8
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cast_chain_group",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 9,
+            "code": "int cast_chain_group(int n) { return (float8)(float4)(n); }",
+            "id": 0,
+            "column": 1,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "cast_chain_group",
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "code": "int n",
+            "id": 1,
+            "column": 22,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "code": "{ return (float8)(float4)(n); }",
+            "id": 2,
+            "column": 29,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "code": "return (float8)(float4)(n);",
+            "id": 3,
+            "column": 31,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "method_full_name": "<unresolvedNamespace>.<operator>():<unresolvedSignature>(1)",
+            "code": "(float8)(float4)(n)",
+            "id": 4,
+            "column": 38,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "method_full_name": "<unresolvedNamespace>.<operator>():<unresolvedSignature>(1)",
+            "code": "(float8)(float4)",
+            "id": 5,
+            "column": 38,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "code": "float8",
+            "id": 6,
+            "column": 39,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "float8",
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "code": "float4",
+            "id": 7,
+            "column": 47,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "float4",
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "code": "n",
+            "id": 8,
+            "column": 55,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "code": "RET",
+            "id": 9,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 9,
+            "code": "int n",
+            "id": 10,
+            "column": 22,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "0"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "(float8)(float4)(n)"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "(float8)(float4)(n)"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "0"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "(float8)(float4)"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "(float8)(float4)"
+          },
+          {
+            "source": 5,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "(float8)(float4)"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "float8"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "float8"
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "float8"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "float4"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "float4"
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "float4"
+          },
+          {
+            "source": 8,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 8,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 8,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          }
+        ]
+      },
+      "filename": "ambiguous_casts.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 9,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "cast_chain_group:int(int)",
+      "start_line": 9,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1,
+            5,
+            6,
+            7
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            5,
+            6,
+            7
+          ],
+          "outgoing": [
+            1,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "outgoing": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "name": "foo",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 1,
+            "code": "int foo(int n);",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "foo",
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "int n",
+            "id": 1,
+            "column": 9,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 2,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "RET",
+            "id": 3,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 1,
+            "code": "int n",
+            "id": 4,
+            "column": 9,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          }
+        ]
+      },
+      "filename": "ambiguous_casts.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 1,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "foo:int(int)",
+      "start_line": 1,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    }
+  ]
+}

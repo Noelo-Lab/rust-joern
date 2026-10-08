@@ -1,0 +1,2552 @@
+{
+  "schema_version": 1,
+  "scope": "per-file original Function.ddg plus directed labeled dotDdg; statement identities and multiplicity preserved",
+  "candidate_library": "/tmp/ddg-final-replay-6u47qqxc/librust_joern.so",
+  "candidate_library_sha256": "bbcc9029052314789b11ced7f495c0d63841112f59ae2ca46a569b739a1c76a6",
+  "candidate_package": "/tmp/ddg-final-replay-6u47qqxc/python",
+  "candidate_python_sha256": {
+    "rust_joern/__init__.py": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce"
+  },
+  "candidate_timing_kind": "parse_source_plus_lazy_ddg_materialization",
+  "seconds": 0.9045819289749488,
+  "requested_files": 6,
+  "completed_files": 6,
+  "files": [
+    {
+      "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/dataflow-audit/context.c",
+      "source_sha256": "5acdf158632639d139e34553fcd542f7356298bcd0091e19a9708622a0433388",
+      "prepared_sha256": "5acdf158632639d139e34553fcd542f7356298bcd0091e19a9708622a0433388",
+      "language": "c",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 11.524049525964074,
+        "supplemental_raw_parse_seconds": 12.156203231075779
+      },
+      "candidate_seconds": 0.02317108295392245,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.020858827978372574,
+        "ddg_materialization_seconds": 0.0023122549755498767
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-tvlpilnv/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 10,
+      "candidate_functions": 10,
+      "matched": 10,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "body_call",
+          "name": "body_call",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "body_internal",
+          "name": "body_internal",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "empty_call",
+          "name": "empty_call",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "empty_internal",
+          "name": "empty_internal",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "free",
+          "name": "free",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "free_call",
+          "name": "free_call",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "proto",
+          "name": "proto",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "proto_call",
+          "name": "proto_call",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "sink",
+          "name": "sink",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "sink_call",
+          "name": "sink_call",
+          "filename": "context.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/dataflow-audit/context.cpp",
+      "source_sha256": "044ee196565c610b578ec9c18e32ef3b99b2183840bb97dfcef116ab1dfbcd00",
+      "prepared_sha256": "044ee196565c610b578ec9c18e32ef3b99b2183840bb97dfcef116ab1dfbcd00",
+      "language": "cpp",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 11.582198821939528,
+        "supplemental_raw_parse_seconds": 11.981925901956856
+      },
+      "candidate_seconds": 0.027400114107877016,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.025145063060335815,
+        "ddg_materialization_seconds": 0.002255051047541201
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-tvlpilnv/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 16,
+      "candidate_functions": 16,
+      "matched": 16,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "body",
+          "name": "body",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "body_call",
+          "name": "body_call",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "body_internal",
+          "name": "body_internal",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "body_member",
+          "name": "body_member",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "decl",
+          "name": "decl",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "empty",
+          "name": "empty",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 4,
+              "edges": 4,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 4,
+              "edges": 4,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 4,
+              "edges": 4,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 4,
+              "edges": 4,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "empty_call",
+          "name": "empty_call",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "empty_internal",
+          "name": "empty_internal",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "empty_member",
+          "name": "empty_member",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "free",
+          "name": "free",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "free_call",
+          "name": "free_call",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "proto",
+          "name": "proto",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "proto_call",
+          "name": "proto_call",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "proto_member",
+          "name": "proto_member",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "sink",
+          "name": "sink",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "sink_call",
+          "name": "sink_call",
+          "filename": "context.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/dataflow-audit/control.c",
+      "source_sha256": "69a02728736b0e92b205b0b3b7fb138e9c3a7a8904e55eb7d0931413643b7842",
+      "prepared_sha256": "69a02728736b0e92b205b0b3b7fb138e9c3a7a8904e55eb7d0931413643b7842",
+      "language": "c",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 13.11365175107494,
+        "supplemental_raw_parse_seconds": 11.82749637204688
+      },
+      "candidate_seconds": 0.021997990901581943,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.0188243689481169,
+        "ddg_materialization_seconds": 0.0031736219534650445
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-tvlpilnv/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 14,
+      "candidate_functions": 14,
+      "matched": 14,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "bare_return",
+          "name": "bare_return",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 4,
+              "edges": 4,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 4,
+              "edges": 4,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 4,
+              "edges": 4,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 4,
+              "edges": 4,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "break_end",
+          "name": "break_end",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 5,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 5,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 5,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 5,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "dead_call",
+          "name": "dead_call",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 12,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 12,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "empty_body",
+          "name": "empty_body",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "global_unreachable",
+          "name": "global_unreachable",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "goto_unreachable",
+          "name": "goto_unreachable",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "multi_exit",
+          "name": "multi_exit",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 11,
+              "edges": 16,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 11,
+              "edges": 16,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 11,
+              "edges": 16,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 11,
+              "edges": 16,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "never",
+          "name": "never",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "second_return",
+          "name": "second_return",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "sink",
+          "name": "sink",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "switch_out",
+          "name": "switch_out",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 12,
+              "edges": 18,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 12,
+              "edges": 18,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 12,
+              "edges": 18,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 12,
+              "edges": 18,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "unknown_input",
+          "name": "unknown_input",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "unreachable",
+          "name": "unreachable",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "unset",
+          "name": "unset",
+          "filename": "control.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/dataflow-audit/cpp_calls.cpp",
+      "source_sha256": "fdc8356e9e55dc567c7e1d8c5e077f14a63be2080fe43dd28599a73abbadca0a",
+      "prepared_sha256": "fdc8356e9e55dc567c7e1d8c5e077f14a63be2080fe43dd28599a73abbadca0a",
+      "language": "cpp",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 13.403345954953693,
+        "supplemental_raw_parse_seconds": 12.054843624006025
+      },
+      "candidate_seconds": 0.024552179966121912,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.021205099998041987,
+        "ddg_materialization_seconds": 0.0033470799680799246
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-tvlpilnv/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 16,
+      "candidate_functions": 16,
+      "matched": 16,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "abs",
+          "name": "abs",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "ambiguous",
+          "name": "ambiguous",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "c_semantics",
+          "name": "c_semantics",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 12,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 12,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "choose",
+          "name": "choose",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 8,
+              "edges": 13,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 8,
+              "edges": 13,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 8,
+              "edges": 15,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 8,
+              "edges": 15,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "distinct",
+          "name": "distinct",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "free",
+          "name": "free",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 3,
+              "edges": 2,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "member_arg0",
+          "name": "member_arg0",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "method",
+          "name": "method",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "n",
+          "name": "n",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "overload",
+          "name": "overload",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "plain",
+          "name": "plain",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "q",
+          "name": "q",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "refs",
+          "name": "refs",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 13,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 13,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "structs",
+          "name": "structs",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "unresolved",
+          "name": "unresolved",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 7,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "use",
+          "name": "use",
+          "filename": "cpp_calls.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/dataflow-audit/globals.cpp",
+      "source_sha256": "946f1bf51e9f9284f824921b28bb3ceb7a9ce859d8cb6628031753d31c0cc1e0",
+      "prepared_sha256": "946f1bf51e9f9284f824921b28bb3ceb7a9ce859d8cb6628031753d31c0cc1e0",
+      "language": "cpp",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 10.519921386963688,
+        "supplemental_raw_parse_seconds": 10.208533136057667
+      },
+      "candidate_seconds": 0.02157883800100535,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.020323639968410134,
+        "ddg_materialization_seconds": 0.0012551980325952172
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-tvlpilnv/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 5,
+      "candidate_functions": 5,
+      "matched": 5,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "captures_ref",
+          "name": "captures_ref",
+          "filename": "globals.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "captures_value",
+          "name": "captures_value",
+          "filename": "globals.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "nested_capture",
+          "name": "nested_capture",
+          "filename": "globals.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "reads_global",
+          "name": "reads_global",
+          "filename": "globals.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 6,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "uses_global",
+          "name": "uses_global",
+          "filename": "globals.cpp",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/dataflow-audit/operators.c",
+      "source_sha256": "f4610dabf02a07bc88b6d23aeca75056fba47c56a6c6b9081fee66ac60bf29c6",
+      "prepared_sha256": "f4610dabf02a07bc88b6d23aeca75056fba47c56a6c6b9081fee66ac60bf29c6",
+      "language": "c",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 10.891414226032794,
+        "supplemental_raw_parse_seconds": 10.523049185983837
+      },
+      "candidate_seconds": 0.02972503611817956,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.026450886041857302,
+        "ddg_materialization_seconds": 0.0032741500763222575
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-tvlpilnv/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 13,
+      "candidate_functions": 13,
+      "matched": 13,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "addresses",
+          "name": "addresses",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "compound_field",
+          "name": "compound_field",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 10,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "const_idx",
+          "name": "const_idx",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "input_shadow",
+          "name": "input_shadow",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 8,
+              "edges": 11,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 8,
+              "edges": 11,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 8,
+              "edges": 12,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 8,
+              "edges": 12,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "nested",
+          "name": "nested",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "pointer_shift",
+          "name": "pointer_shift",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 8,
+              "edges": 13,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 8,
+              "edges": 13,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 8,
+              "edges": 16,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 8,
+              "edges": 16,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "ptr_add_zero",
+          "name": "ptr_add_zero",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 11,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 13,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 13,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "ptr_inc_zero",
+          "name": "ptr_inc_zero",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "ptr_size",
+          "name": "ptr_size",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 7,
+              "edges": 8,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 8,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 7,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "shadow",
+          "name": "shadow",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 9,
+              "edges": 14,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 9,
+              "edges": 14,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 9,
+              "edges": 16,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 9,
+              "edges": 16,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "sizeof_return",
+          "name": "sizeof_return",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 5,
+              "edges": 3,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 3,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 5,
+              "edges": 3,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 5,
+              "edges": 3,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "sizeof_value",
+          "name": "sizeof_value",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "string_idx",
+          "name": "string_idx",
+          "filename": "operators.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 7,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 6,
+              "edges": 9,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
