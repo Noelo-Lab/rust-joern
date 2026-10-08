@@ -1,0 +1,4096 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 14.04981493507512,
+    "supplemental_raw_parse_seconds": 14.471602176083252
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "main": {
+      "name": "main",
+      "fullname": "main",
+      "filename": "ida_fstab-decode.c",
+      "start_line": 2,
+      "end_line": 73,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 2,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,main",
+                    "source_line_number": 2,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int a1",
+                  "fields": {
+                    "raw_text": "PARAM,int a1",
+                    "source_line_number": 2,
+                    "type": "int",
+                    "name": "a1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char **a2",
+                  "fields": {
+                    "raw_text": "PARAM,char **a2",
+                    "source_line_number": 2,
+                    "type": "char",
+                    "name": "**a2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char **a3",
+                  "fields": {
+                    "raw_text": "PARAM,char **a3",
+                    "source_line_number": 2,
+                    "type": "char",
+                    "name": "**a3"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "a1 <= 1",
+                  "fields": {
+                    "raw_text": [
+                      "lessEqualsThan",
+                      "a1&lt;=1"
+                    ],
+                    "source_line_number": 16,
+                    "type": 3,
+                    "arg1": "a1",
+                    "arg2": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__fprintf_chk()",
+                  "fields": {
+                    "raw_text": "__fprintf_chk,__fprintf_chk(stderr,1,&quot;Usage:fstab-decodec...",
+                    "source_line_number": 18,
+                    "func": "__fprintf_chk",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return 1;,return1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return1;",
+                      "return1;"
+                    ],
+                    "source_line_number": 19,
+                    "ret": "1;,return1;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,1,return1;>",
+                  "fields": {
+                    "raw_text": "LITERAL,1,return1;",
+                    "source_line_number": 19
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 23,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v13 = a2+2",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v13=a2+2"
+                    ],
+                    "source_line_number": 23,
+                    "src": "v13",
+                    "dst": "a2+2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 24,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v14 = &amp;a2[a1]",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v14=&amp;a2[a1]"
+                    ],
+                    "source_line_number": 24,
+                    "src": "v14",
+                    "dst": "&amp;a2[a1]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "execvp()",
+                  "fields": {
+                    "raw_text": "execvp,execvp(a2[1],a2+1)",
+                    "source_line_number": 67,
+                    "func": "execvp",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 68,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v10 = __errno_location()",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v10=__errno_location()"
+                    ],
+                    "source_line_number": 68,
+                    "src": "v10",
+                    "dst": "__errno_location()"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 70,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__fprintf_chk()",
+                  "fields": {
+                    "raw_text": "__fprintf_chk,__fprintf_chk(stderr,1,&quot;fstab-decode:%s:%s\\...",
+                    "source_line_number": 70,
+                    "func": "__fprintf_chk",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 71,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return 127;,return127;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return127;",
+                      "return127;"
+                    ],
+                    "source_line_number": 71,
+                    "ret": "127;,return127;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "a1 != 2",
+                  "fields": {
+                    "raw_text": [
+                      "notEquals",
+                      "a1!=2"
+                    ],
+                    "source_line_number": 25,
+                    "type": 5,
+                    "arg1": "a1",
+                    "arg2": "2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 71,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,127,return127;>",
+                  "fields": {
+                    "raw_text": "LITERAL,127,return127;",
+                    "source_line_number": 71
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 23,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'a2+2']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "a2+2"
+                    ],
+                    "source_line_number": 23
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'a2+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "a2+1"
+                    ],
+                    "source_line_number": 67
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 65,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v13 != v14",
+                  "fields": {
+                    "raw_text": [
+                      "notEquals",
+                      "v13!=v14"
+                    ],
+                    "source_line_number": 65,
+                    "type": 5,
+                    "arg1": "v13",
+                    "arg2": "v14"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "addr": 62,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['preIncrement', '++v13']>",
+                  "fields": {
+                    "raw_text": [
+                      "preIncrement",
+                      "++v13"
+                    ],
+                    "source_line_number": 62
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 20,
+            "identity": {
+              "addr": 63,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*v5 = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*v5=0"
+                    ],
+                    "source_line_number": 63,
+                    "src": "*v5",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 21,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,v4,if(v4)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,v4,if(v4)",
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 22,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,1,while(1)>",
+                  "fields": {
+                    "raw_text": "LITERAL,1,while(1)",
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 23,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v6 = v3+1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v6=v3+1"
+                    ],
+                    "source_line_number": 36,
+                    "src": "v6",
+                    "dst": "v3+1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 24,
+            "identity": {
+              "addr": 54,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*v5 = v4",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*v5=v4"
+                    ],
+                    "source_line_number": 54,
+                    "src": "*v5",
+                    "dst": "v4"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 25,
+            "identity": {
+              "addr": 56,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['preIncrement', '++v5']>",
+                  "fields": {
+                    "raw_text": [
+                      "preIncrement",
+                      "++v5"
+                    ],
+                    "source_line_number": 56
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 26,
+            "identity": {
+              "addr": 59,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v3 = v6",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v3=v6"
+                    ],
+                    "source_line_number": 59,
+                    "src": "v3",
+                    "dst": "v6"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 27,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v4 == 92",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "v4==92"
+                    ],
+                    "source_line_number": 37,
+                    "type": 0,
+                    "arg1": "v4",
+                    "arg2": "92"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 28,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'v3+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "v3+1"
+                    ],
+                    "source_line_number": 36
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 29,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v7 = &quot;\\\\&quot;",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v7=&quot;\\\\&quot;"
+                    ],
+                    "source_line_number": 39,
+                    "src": "v7",
+                    "dst": "&quot;\\\\&quot;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 30,
+            "identity": {
+              "addr": 40,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v8 = 1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v8=1"
+                    ],
+                    "source_line_number": 40,
+                    "src": "v8",
+                    "dst": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 31,
+            "identity": {
+              "addr": 41,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v9 = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v9=0"
+                    ],
+                    "source_line_number": 41,
+                    "src": "v9",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 32,
+            "identity": {
+              "addr": 42,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "memcmp()",
+                  "fields": {
+                    "raw_text": "memcmp,memcmp(v3+1,v7,v8)",
+                    "source_line_number": 42,
+                    "func": "memcmp",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 33,
+            "identity": {
+              "addr": 44,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['preIncrement', '++v9']>",
+                  "fields": {
+                    "raw_text": [
+                      "preIncrement",
+                      "++v9"
+                    ],
+                    "source_line_number": 44
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 34,
+            "identity": {
+              "addr": 45,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['assignmentPlus', 'v7+=24']>",
+                  "fields": {
+                    "raw_text": [
+                      "assignmentPlus",
+                      "v7+=24"
+                    ],
+                    "source_line_number": 45
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 35,
+            "identity": {
+              "addr": 42,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'v3+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "v3+1"
+                    ],
+                    "source_line_number": 42
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 36,
+            "identity": {
+              "addr": 46,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v9 == 5",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "v9==5"
+                    ],
+                    "source_line_number": 46,
+                    "type": 0,
+                    "arg1": "v9",
+                    "arg2": "5"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 37,
+            "identity": {
+              "addr": 50,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', '24*v9+16']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "24*v9+16"
+                    ],
+                    "source_line_number": 50
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 38,
+            "identity": {
+              "addr": 50,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['multiplication', '24*v9']>",
+                  "fields": {
+                    "raw_text": [
+                      "multiplication",
+                      "24*v9"
+                    ],
+                    "source_line_number": 50
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 39,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'v8+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "v8+1"
+                    ],
+                    "source_line_number": 51
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 40,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', '(longlong*)v7+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "(longlong*)v7+1"
+                    ],
+                    "source_line_number": 48
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 41,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(longlong*)v7']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(longlong*)v7"
+                    ],
+                    "source_line_number": 48
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 42,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,longlong",
+                    "source_line_number": 2,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 43,
+            "identity": {
+              "addr": 69,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v11 = strerror(*v10)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v11=strerror(*v10)"
+                    ],
+                    "source_line_number": 69,
+                    "src": "v11",
+                    "dst": "strerror(*v10)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 44,
+            "identity": {
+              "addr": 69,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "strerror(*v10)",
+                  "fields": {
+                    "raw_text": "strerror,strerror(*v10)",
+                    "source_line_number": 69,
+                    "func": "strerror",
+                    "args": [
+                      "*v10"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 45,
+            "identity": {
+              "addr": 29,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v3 = *v13",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v3=*v13"
+                    ],
+                    "source_line_number": 29,
+                    "src": "v3",
+                    "dst": "*v13"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 46,
+            "identity": {
+              "addr": 30,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v4 = **v13",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v4=**v13"
+                    ],
+                    "source_line_number": 30,
+                    "src": "v4",
+                    "dst": "**v13"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 47,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v5 = *v13",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v5=*v13"
+                    ],
+                    "source_line_number": 31,
+                    "src": "v5",
+                    "dst": "*v13"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 48,
+            "identity": {
+              "addr": 55,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v4 = *v6",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v4=*v6"
+                    ],
+                    "source_line_number": 55,
+                    "src": "v4",
+                    "dst": "*v6"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 49,
+            "identity": {
+              "addr": 57,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!*v6']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!*v6"
+                    ],
+                    "source_line_number": 57
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 50,
+            "identity": {
+              "addr": 50,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v4 = asc_2060[24*v9+16]",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v4=asc_2060[24*v9+16]"
+                    ],
+                    "source_line_number": 50,
+                    "src": "v4",
+                    "dst": "asc_2060[24*v9+16]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 51,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v6 = &amp;v3[v8+1]",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v6=&amp;v3[v8+1]"
+                    ],
+                    "source_line_number": 51,
+                    "src": "v6",
+                    "dst": "&amp;v3[v8+1]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 52,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v8 = *((longlong*)v7+1)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v8=*((longlong*)v7+1)"
+                    ],
+                    "source_line_number": 48,
+                    "src": "v8",
+                    "dst": "*((longlong*)v7+1)"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 22,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 23,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 24,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 25,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 26,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 27,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 28,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 29,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 30,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 31,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 32,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 33,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 34,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 35,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 36,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 37,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 38,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 39,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 40,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 41,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 18,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 19,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 23,
+            "target": 26,
+            "label": ""
+          },
+          {
+            "source": 24,
+            "target": 25,
+            "label": ""
+          },
+          {
+            "source": 26,
+            "target": 23,
+            "label": ""
+          },
+          {
+            "source": 26,
+            "target": 28,
+            "label": ""
+          },
+          {
+            "source": 27,
+            "target": 24,
+            "label": ""
+          },
+          {
+            "source": 29,
+            "target": 32,
+            "label": ""
+          },
+          {
+            "source": 30,
+            "target": 32,
+            "label": ""
+          },
+          {
+            "source": 31,
+            "target": 33,
+            "label": ""
+          },
+          {
+            "source": 31,
+            "target": 38,
+            "label": ""
+          },
+          {
+            "source": 32,
+            "target": 34,
+            "label": ""
+          },
+          {
+            "source": 32,
+            "target": 39,
+            "label": ""
+          },
+          {
+            "source": 33,
+            "target": 36,
+            "label": ""
+          },
+          {
+            "source": 34,
+            "target": 32,
+            "label": ""
+          },
+          {
+            "source": 34,
+            "target": 40,
+            "label": ""
+          },
+          {
+            "source": 34,
+            "target": 41,
+            "label": ""
+          },
+          {
+            "source": 36,
+            "target": 33,
+            "label": ""
+          },
+          {
+            "source": 36,
+            "target": 38,
+            "label": ""
+          },
+          {
+            "source": 38,
+            "target": 37,
+            "label": ""
+          },
+          {
+            "source": 43,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 44,
+            "target": 43,
+            "label": ""
+          },
+          {
+            "source": 45,
+            "target": 23,
+            "label": ""
+          },
+          {
+            "source": 45,
+            "target": 28,
+            "label": ""
+          },
+          {
+            "source": 46,
+            "target": 27,
+            "label": ""
+          },
+          {
+            "source": 47,
+            "target": 25,
+            "label": ""
+          },
+          {
+            "source": 48,
+            "target": 27,
+            "label": ""
+          },
+          {
+            "source": 49,
+            "target": 48,
+            "label": ""
+          },
+          {
+            "source": 49,
+            "target": 26,
+            "label": ""
+          },
+          {
+            "source": 50,
+            "target": 24,
+            "label": ""
+          },
+          {
+            "source": 51,
+            "target": 26,
+            "label": ""
+          },
+          {
+            "source": 52,
+            "target": 32,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 2,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,main",
+                    "source_line_number": 2,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int a1",
+                  "fields": {
+                    "raw_text": "PARAM,int a1",
+                    "source_line_number": 2,
+                    "type": "int",
+                    "name": "a1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char **a2",
+                  "fields": {
+                    "raw_text": "PARAM,char **a2",
+                    "source_line_number": 2,
+                    "type": "char",
+                    "name": "**a2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char **a3",
+                  "fields": {
+                    "raw_text": "PARAM,char **a3",
+                    "source_line_number": 2,
+                    "type": "char",
+                    "name": "**a3"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "a1 <= 1",
+                  "fields": {
+                    "raw_text": [
+                      "lessEqualsThan",
+                      "a1&lt;=1"
+                    ],
+                    "source_line_number": 16,
+                    "type": 3,
+                    "arg1": "a1",
+                    "arg2": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__fprintf_chk()",
+                  "fields": {
+                    "raw_text": "__fprintf_chk,__fprintf_chk(stderr,1,&quot;Usage:fstab-decodec...",
+                    "source_line_number": 18,
+                    "func": "__fprintf_chk",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return 1;,return1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return1;",
+                      "return1;"
+                    ],
+                    "source_line_number": 19,
+                    "ret": "1;,return1;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,1,return1;>",
+                  "fields": {
+                    "raw_text": "LITERAL,1,return1;",
+                    "source_line_number": 19
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 23,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v13 = a2+2",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v13=a2+2"
+                    ],
+                    "source_line_number": 23,
+                    "src": "v13",
+                    "dst": "a2+2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 24,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v14 = &amp;a2[a1]",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v14=&amp;a2[a1]"
+                    ],
+                    "source_line_number": 24,
+                    "src": "v14",
+                    "dst": "&amp;a2[a1]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "execvp()",
+                  "fields": {
+                    "raw_text": "execvp,execvp(a2[1],a2+1)",
+                    "source_line_number": 67,
+                    "func": "execvp",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 68,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v10 = __errno_location()",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v10=__errno_location()"
+                    ],
+                    "source_line_number": 68,
+                    "src": "v10",
+                    "dst": "__errno_location()"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 70,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "__fprintf_chk()",
+                  "fields": {
+                    "raw_text": "__fprintf_chk,__fprintf_chk(stderr,1,&quot;fstab-decode:%s:%s\\...",
+                    "source_line_number": 70,
+                    "func": "__fprintf_chk",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 71,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return 127;,return127;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "return127;",
+                      "return127;"
+                    ],
+                    "source_line_number": 71,
+                    "ret": "127;,return127;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "a1 != 2",
+                  "fields": {
+                    "raw_text": [
+                      "notEquals",
+                      "a1!=2"
+                    ],
+                    "source_line_number": 25,
+                    "type": 5,
+                    "arg1": "a1",
+                    "arg2": "2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 71,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,127,return127;>",
+                  "fields": {
+                    "raw_text": "LITERAL,127,return127;",
+                    "source_line_number": 71
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 23,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'a2+2']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "a2+2"
+                    ],
+                    "source_line_number": 23
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'a2+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "a2+1"
+                    ],
+                    "source_line_number": 67
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 65,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v13 != v14",
+                  "fields": {
+                    "raw_text": [
+                      "notEquals",
+                      "v13!=v14"
+                    ],
+                    "source_line_number": 65,
+                    "type": 5,
+                    "arg1": "v13",
+                    "arg2": "v14"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "addr": 62,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['preIncrement', '++v13']>",
+                  "fields": {
+                    "raw_text": [
+                      "preIncrement",
+                      "++v13"
+                    ],
+                    "source_line_number": 62
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 20,
+            "identity": {
+              "addr": 63,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*v5 = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*v5=0"
+                    ],
+                    "source_line_number": 63,
+                    "src": "*v5",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 21,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,v4,if(v4)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,v4,if(v4)",
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 22,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: LITERAL,1,while(1)>",
+                  "fields": {
+                    "raw_text": "LITERAL,1,while(1)",
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 23,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v6 = v3+1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v6=v3+1"
+                    ],
+                    "source_line_number": 36,
+                    "src": "v6",
+                    "dst": "v3+1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 24,
+            "identity": {
+              "addr": 54,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*v5 = v4",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*v5=v4"
+                    ],
+                    "source_line_number": 54,
+                    "src": "*v5",
+                    "dst": "v4"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 25,
+            "identity": {
+              "addr": 56,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['preIncrement', '++v5']>",
+                  "fields": {
+                    "raw_text": [
+                      "preIncrement",
+                      "++v5"
+                    ],
+                    "source_line_number": 56
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 26,
+            "identity": {
+              "addr": 59,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v3 = v6",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v3=v6"
+                    ],
+                    "source_line_number": 59,
+                    "src": "v3",
+                    "dst": "v6"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 27,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v4 == 92",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "v4==92"
+                    ],
+                    "source_line_number": 37,
+                    "type": 0,
+                    "arg1": "v4",
+                    "arg2": "92"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 28,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'v3+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "v3+1"
+                    ],
+                    "source_line_number": 36
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 29,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v7 = &quot;\\\\&quot;",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v7=&quot;\\\\&quot;"
+                    ],
+                    "source_line_number": 39,
+                    "src": "v7",
+                    "dst": "&quot;\\\\&quot;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 30,
+            "identity": {
+              "addr": 40,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v8 = 1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v8=1"
+                    ],
+                    "source_line_number": 40,
+                    "src": "v8",
+                    "dst": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 31,
+            "identity": {
+              "addr": 41,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v9 = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v9=0"
+                    ],
+                    "source_line_number": 41,
+                    "src": "v9",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 32,
+            "identity": {
+              "addr": 42,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "memcmp()",
+                  "fields": {
+                    "raw_text": "memcmp,memcmp(v3+1,v7,v8)",
+                    "source_line_number": 42,
+                    "func": "memcmp",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 33,
+            "identity": {
+              "addr": 44,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['preIncrement', '++v9']>",
+                  "fields": {
+                    "raw_text": [
+                      "preIncrement",
+                      "++v9"
+                    ],
+                    "source_line_number": 44
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 34,
+            "identity": {
+              "addr": 45,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['assignmentPlus', 'v7+=24']>",
+                  "fields": {
+                    "raw_text": [
+                      "assignmentPlus",
+                      "v7+=24"
+                    ],
+                    "source_line_number": 45
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 35,
+            "identity": {
+              "addr": 42,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'v3+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "v3+1"
+                    ],
+                    "source_line_number": 42
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 36,
+            "identity": {
+              "addr": 46,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v9 == 5",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "v9==5"
+                    ],
+                    "source_line_number": 46,
+                    "type": 0,
+                    "arg1": "v9",
+                    "arg2": "5"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 37,
+            "identity": {
+              "addr": 50,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', '24*v9+16']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "24*v9+16"
+                    ],
+                    "source_line_number": 50
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 38,
+            "identity": {
+              "addr": 50,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['multiplication', '24*v9']>",
+                  "fields": {
+                    "raw_text": [
+                      "multiplication",
+                      "24*v9"
+                    ],
+                    "source_line_number": 50
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 39,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'v8+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "v8+1"
+                    ],
+                    "source_line_number": 51
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 40,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', '(longlong*)v7+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "(longlong*)v7+1"
+                    ],
+                    "source_line_number": 48
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 41,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(longlong*)v7']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(longlong*)v7"
+                    ],
+                    "source_line_number": 48
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 42,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,longlong",
+                    "source_line_number": 2,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 43,
+            "identity": {
+              "addr": 69,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v11 = strerror(*v10)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v11=strerror(*v10)"
+                    ],
+                    "source_line_number": 69,
+                    "src": "v11",
+                    "dst": "strerror(*v10)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 44,
+            "identity": {
+              "addr": 69,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "strerror(*v10)",
+                  "fields": {
+                    "raw_text": "strerror,strerror(*v10)",
+                    "source_line_number": 69,
+                    "func": "strerror",
+                    "args": [
+                      "*v10"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 45,
+            "identity": {
+              "addr": 29,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v3 = *v13",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v3=*v13"
+                    ],
+                    "source_line_number": 29,
+                    "src": "v3",
+                    "dst": "*v13"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 46,
+            "identity": {
+              "addr": 30,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v4 = **v13",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v4=**v13"
+                    ],
+                    "source_line_number": 30,
+                    "src": "v4",
+                    "dst": "**v13"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 47,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v5 = *v13",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v5=*v13"
+                    ],
+                    "source_line_number": 31,
+                    "src": "v5",
+                    "dst": "*v13"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 48,
+            "identity": {
+              "addr": 55,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v4 = *v6",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v4=*v6"
+                    ],
+                    "source_line_number": 55,
+                    "src": "v4",
+                    "dst": "*v6"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 49,
+            "identity": {
+              "addr": 57,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!*v6']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!*v6"
+                    ],
+                    "source_line_number": 57
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 50,
+            "identity": {
+              "addr": 50,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v4 = asc_2060[24*v9+16]",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v4=asc_2060[24*v9+16]"
+                    ],
+                    "source_line_number": 50,
+                    "src": "v4",
+                    "dst": "asc_2060[24*v9+16]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 51,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v6 = &amp;v3[v8+1]",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v6=&amp;v3[v8+1]"
+                    ],
+                    "source_line_number": 51,
+                    "src": "v6",
+                    "dst": "&amp;v3[v8+1]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 52,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "v8 = *((longlong*)v7+1)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "v8=*((longlong*)v7+1)"
+                    ],
+                    "source_line_number": 48,
+                    "src": "v8",
+                    "dst": "*((longlong*)v7+1)"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 22,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 23,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 24,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 25,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 26,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 27,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 28,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 29,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 30,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 31,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 32,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 33,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 34,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 35,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 36,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 37,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 38,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 39,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 40,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 41,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 18,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 19,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 23,
+            "target": 26,
+            "label": ""
+          },
+          {
+            "source": 24,
+            "target": 25,
+            "label": ""
+          },
+          {
+            "source": 26,
+            "target": 23,
+            "label": ""
+          },
+          {
+            "source": 26,
+            "target": 28,
+            "label": ""
+          },
+          {
+            "source": 27,
+            "target": 24,
+            "label": ""
+          },
+          {
+            "source": 29,
+            "target": 32,
+            "label": ""
+          },
+          {
+            "source": 30,
+            "target": 32,
+            "label": ""
+          },
+          {
+            "source": 31,
+            "target": 33,
+            "label": ""
+          },
+          {
+            "source": 31,
+            "target": 38,
+            "label": ""
+          },
+          {
+            "source": 32,
+            "target": 34,
+            "label": ""
+          },
+          {
+            "source": 32,
+            "target": 39,
+            "label": ""
+          },
+          {
+            "source": 33,
+            "target": 36,
+            "label": ""
+          },
+          {
+            "source": 34,
+            "target": 32,
+            "label": ""
+          },
+          {
+            "source": 34,
+            "target": 40,
+            "label": ""
+          },
+          {
+            "source": 34,
+            "target": 41,
+            "label": ""
+          },
+          {
+            "source": 36,
+            "target": 33,
+            "label": ""
+          },
+          {
+            "source": 36,
+            "target": 38,
+            "label": ""
+          },
+          {
+            "source": 38,
+            "target": 37,
+            "label": ""
+          },
+          {
+            "source": 43,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 44,
+            "target": 43,
+            "label": ""
+          },
+          {
+            "source": 45,
+            "target": 23,
+            "label": ""
+          },
+          {
+            "source": 45,
+            "target": 28,
+            "label": ""
+          },
+          {
+            "source": 46,
+            "target": 27,
+            "label": ""
+          },
+          {
+            "source": 47,
+            "target": 25,
+            "label": ""
+          },
+          {
+            "source": 48,
+            "target": 27,
+            "label": ""
+          },
+          {
+            "source": 49,
+            "target": 48,
+            "label": ""
+          },
+          {
+            "source": 49,
+            "target": 26,
+            "label": ""
+          },
+          {
+            "source": 50,
+            "target": 24,
+            "label": ""
+          },
+          {
+            "source": 51,
+            "target": 26,
+            "label": ""
+          },
+          {
+            "source": 52,
+            "target": 32,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,main)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,long long)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int a1)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,char **a2)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(PARAM,char **a3)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(<operator>.lessEqualsThan,a1 <= 1)<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(__fprintf_chk,__fprintf_chk(stderr, 1, \"Usage: fstab-decode c...)<SUB>18</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(RETURN,return 1;,return 1;)<SUB>19</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(LITERAL,1,return 1;)<SUB>19</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v13 = a2 + 2)<SUB>23</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v14 = &a2[a1])<SUB>24</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(execvp,execvp(a2[1], a2 + 1))<SUB>67</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v10 = __errno_location())<SUB>68</SUB>"
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v11 = strerror(*v10))<SUB>69</SUB>"
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "dot_label": "(__fprintf_chk,__fprintf_chk(stderr, 1, \"fstab-decode: %s: %s\\...)<SUB>70</SUB>"
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "dot_label": "(RETURN,return 127;,return 127;)<SUB>71</SUB>"
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "dot_label": "(<operator>.notEquals,a1 != 2)<SUB>25</SUB>"
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "dot_label": "(LITERAL,127,return 127;)<SUB>71</SUB>"
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "dot_label": "(<operator>.addition,a2 + 2)<SUB>23</SUB>"
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "dot_label": "(<operator>.addition,a2 + 1)<SUB>67</SUB>"
+            }
+          },
+          {
+            "id": 20,
+            "identity": {
+              "dot_label": "(strerror,strerror(*v10))<SUB>69</SUB>"
+            }
+          },
+          {
+            "id": 21,
+            "identity": {
+              "dot_label": "(<operator>.notEquals,v13 != v14)<SUB>65</SUB>"
+            }
+          },
+          {
+            "id": 22,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v3 = *v13)<SUB>29</SUB>"
+            }
+          },
+          {
+            "id": 23,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v4 = **v13)<SUB>30</SUB>"
+            }
+          },
+          {
+            "id": 24,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v5 = *v13)<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 25,
+            "identity": {
+              "dot_label": "(<operator>.preIncrement,++v13)<SUB>62</SUB>"
+            }
+          },
+          {
+            "id": 26,
+            "identity": {
+              "dot_label": "(<operator>.assignment,*v5 = 0)<SUB>63</SUB>"
+            }
+          },
+          {
+            "id": 27,
+            "identity": {
+              "dot_label": "(IDENTIFIER,v4,if (v4))<SUB>32</SUB>"
+            }
+          },
+          {
+            "id": 28,
+            "identity": {
+              "dot_label": "(LITERAL,1,while (1))<SUB>34</SUB>"
+            }
+          },
+          {
+            "id": 29,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v6 = v3 + 1)<SUB>36</SUB>"
+            }
+          },
+          {
+            "id": 30,
+            "identity": {
+              "dot_label": "(<operator>.assignment,*v5 = v4)<SUB>54</SUB>"
+            }
+          },
+          {
+            "id": 31,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v4 = *v6)<SUB>55</SUB>"
+            }
+          },
+          {
+            "id": 32,
+            "identity": {
+              "dot_label": "(<operator>.preIncrement,++v5)<SUB>56</SUB>"
+            }
+          },
+          {
+            "id": 33,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v3 = v6)<SUB>59</SUB>"
+            }
+          },
+          {
+            "id": 34,
+            "identity": {
+              "dot_label": "(<operator>.equals,v4 == 92)<SUB>37</SUB>"
+            }
+          },
+          {
+            "id": 35,
+            "identity": {
+              "dot_label": "(<operator>.logicalNot,!*v6)<SUB>57</SUB>"
+            }
+          },
+          {
+            "id": 36,
+            "identity": {
+              "dot_label": "(<operator>.addition,v3 + 1)<SUB>36</SUB>"
+            }
+          },
+          {
+            "id": 37,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v7 = \"\\\\\")<SUB>39</SUB>"
+            }
+          },
+          {
+            "id": 38,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v8 = 1)<SUB>40</SUB>"
+            }
+          },
+          {
+            "id": 39,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v9 = 0)<SUB>41</SUB>"
+            }
+          },
+          {
+            "id": 40,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v4 = asc_2060[24 * v9 + 16])<SUB>50</SUB>"
+            }
+          },
+          {
+            "id": 41,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v6 = &v3[v8 + 1])<SUB>51</SUB>"
+            }
+          },
+          {
+            "id": 42,
+            "identity": {
+              "dot_label": "(memcmp,memcmp(v3 + 1, v7, v8))<SUB>42</SUB>"
+            }
+          },
+          {
+            "id": 43,
+            "identity": {
+              "dot_label": "(<operator>.preIncrement,++v9)<SUB>44</SUB>"
+            }
+          },
+          {
+            "id": 44,
+            "identity": {
+              "dot_label": "(<operator>.assignmentPlus,v7 += 24)<SUB>45</SUB>"
+            }
+          },
+          {
+            "id": 45,
+            "identity": {
+              "dot_label": "(<operator>.assignment,v8 = *((long long *)v7 + 1))<SUB>48</SUB>"
+            }
+          },
+          {
+            "id": 46,
+            "identity": {
+              "dot_label": "(<operator>.addition,v3 + 1)<SUB>42</SUB>"
+            }
+          },
+          {
+            "id": 47,
+            "identity": {
+              "dot_label": "(<operator>.equals,v9 == 5)<SUB>46</SUB>"
+            }
+          },
+          {
+            "id": 48,
+            "identity": {
+              "dot_label": "(<operator>.addition,24 * v9 + 16)<SUB>50</SUB>"
+            }
+          },
+          {
+            "id": 49,
+            "identity": {
+              "dot_label": "(<operator>.multiplication,24 * v9)<SUB>50</SUB>"
+            }
+          },
+          {
+            "id": 50,
+            "identity": {
+              "dot_label": "(<operator>.addition,v8 + 1)<SUB>51</SUB>"
+            }
+          },
+          {
+            "id": 51,
+            "identity": {
+              "dot_label": "(<operator>.addition,(long long *)v7 + 1)<SUB>48</SUB>"
+            }
+          },
+          {
+            "id": 52,
+            "identity": {
+              "dot_label": "(<operator>.cast,(long long *)v7)<SUB>48</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 25,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 26,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 27,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 28,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 29,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 30,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 32,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 33,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 34,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 36,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 37,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 38,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 39,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 42,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 43,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 44,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 46,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 47,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 48,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 49,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 50,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 51,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 52,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "label": "a1"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "a2"
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": "a2"
+          },
+          {
+            "source": 3,
+            "target": 10,
+            "label": "a2"
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "label": "a2"
+          },
+          {
+            "source": 3,
+            "target": 14,
+            "label": "a2"
+          },
+          {
+            "source": 3,
+            "target": 18,
+            "label": "a2"
+          },
+          {
+            "source": 3,
+            "target": 19,
+            "label": "a2"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "a3"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "a1"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "a1 <= 1"
+          },
+          {
+            "source": 5,
+            "target": 16,
+            "label": "a1"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "stderr"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "__fprintf_chk(stderr, 1, \"Usage: fstab-decode command [arguments]\\n\")"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": "1"
+          },
+          {
+            "source": 9,
+            "target": 25,
+            "label": "v13"
+          },
+          {
+            "source": 10,
+            "target": 21,
+            "label": "v14"
+          },
+          {
+            "source": 11,
+            "target": 14,
+            "label": "a2[1]"
+          },
+          {
+            "source": 13,
+            "target": 14,
+            "label": "v11"
+          },
+          {
+            "source": 15,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 17,
+            "target": 15,
+            "label": "127"
+          },
+          {
+            "source": 20,
+            "target": 13,
+            "label": "*v10"
+          },
+          {
+            "source": 21,
+            "target": 25,
+            "label": "v13"
+          },
+          {
+            "source": 22,
+            "target": 29,
+            "label": "v3"
+          },
+          {
+            "source": 22,
+            "target": 36,
+            "label": "v3"
+          },
+          {
+            "source": 23,
+            "target": 34,
+            "label": "v4"
+          },
+          {
+            "source": 24,
+            "target": 32,
+            "label": "v5"
+          },
+          {
+            "source": 25,
+            "target": 21,
+            "label": "v13"
+          },
+          {
+            "source": 29,
+            "target": 33,
+            "label": "v6"
+          },
+          {
+            "source": 30,
+            "target": 32,
+            "label": "*v5"
+          },
+          {
+            "source": 31,
+            "target": 34,
+            "label": "v4"
+          },
+          {
+            "source": 33,
+            "target": 29,
+            "label": "v3"
+          },
+          {
+            "source": 33,
+            "target": 36,
+            "label": "v3"
+          },
+          {
+            "source": 34,
+            "target": 30,
+            "label": "v4"
+          },
+          {
+            "source": 35,
+            "target": 31,
+            "label": "*v6"
+          },
+          {
+            "source": 35,
+            "target": 33,
+            "label": "*v6"
+          },
+          {
+            "source": 37,
+            "target": 42,
+            "label": "v7"
+          },
+          {
+            "source": 38,
+            "target": 42,
+            "label": "v8"
+          },
+          {
+            "source": 39,
+            "target": 43,
+            "label": "v9"
+          },
+          {
+            "source": 39,
+            "target": 49,
+            "label": "v9"
+          },
+          {
+            "source": 40,
+            "target": 30,
+            "label": "v4"
+          },
+          {
+            "source": 41,
+            "target": 33,
+            "label": "v6"
+          },
+          {
+            "source": 42,
+            "target": 44,
+            "label": "v7"
+          },
+          {
+            "source": 42,
+            "target": 50,
+            "label": "v8"
+          },
+          {
+            "source": 43,
+            "target": 47,
+            "label": "v9"
+          },
+          {
+            "source": 44,
+            "target": 42,
+            "label": "v7"
+          },
+          {
+            "source": 44,
+            "target": 51,
+            "label": "v7"
+          },
+          {
+            "source": 44,
+            "target": 52,
+            "label": "v7"
+          },
+          {
+            "source": 45,
+            "target": 42,
+            "label": "v8"
+          },
+          {
+            "source": 47,
+            "target": 43,
+            "label": "v9"
+          },
+          {
+            "source": 47,
+            "target": 49,
+            "label": "v9"
+          },
+          {
+            "source": 49,
+            "target": 48,
+            "label": "24"
+          },
+          {
+            "source": 49,
+            "target": 48,
+            "label": "v9"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"main\" {  \n\"111669149697\" [label = <(METHOD,main)<SUB>2</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,long long)<SUB>2</SUB>> ]\n\"115964116992\" [label = <(PARAM,int a1)<SUB>2</SUB>> ]\n\"115964116993\" [label = <(PARAM,char **a2)<SUB>2</SUB>> ]\n\"115964116994\" [label = <(PARAM,char **a3)<SUB>2</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.lessEqualsThan,a1 &lt;= 1)<SUB>16</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.lessEqualsThan,a1 &lt;= 1)<SUB>16</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.lessEqualsThan,a1 &lt;= 1)<SUB>16</SUB>> ]\n\"30064771073\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;Usage: fstab-decode c...)<SUB>18</SUB>> ]\n\"146028888064\" [label = <(RETURN,return 1;,return 1;)<SUB>19</SUB>> ]\n\"30064771073\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;Usage: fstab-decode c...)<SUB>18</SUB>> ]\n\"30064771073\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;Usage: fstab-decode c...)<SUB>18</SUB>> ]\n\"30064771073\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;Usage: fstab-decode c...)<SUB>18</SUB>> ]\n\"90194313219\" [label = <(LITERAL,1,return 1;)<SUB>19</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.assignment,v13 = a2 + 2)<SUB>23</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,v14 = &amp;a2[a1])<SUB>24</SUB>> ]\n\"30064771122\" [label = <(execvp,execvp(a2[1], a2 + 1))<SUB>67</SUB>> ]\n\"30064771125\" [label = <(&lt;operator&gt;.assignment,v10 = __errno_location())<SUB>68</SUB>> ]\n\"30064771127\" [label = <(&lt;operator&gt;.assignment,v11 = strerror(*v10))<SUB>69</SUB>> ]\n\"30064771130\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;fstab-decode: %s: %s\\...)<SUB>70</SUB>> ]\n\"146028888065\" [label = <(RETURN,return 127;,return 127;)<SUB>71</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.assignment,v13 = a2 + 2)<SUB>23</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.assignment,v13 = a2 + 2)<SUB>23</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,v14 = &amp;a2[a1])<SUB>24</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,v14 = &amp;a2[a1])<SUB>24</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.notEquals,a1 != 2)<SUB>25</SUB>> ]\n\"30064771122\" [label = <(execvp,execvp(a2[1], a2 + 1))<SUB>67</SUB>> ]\n\"30064771122\" [label = <(execvp,execvp(a2[1], a2 + 1))<SUB>67</SUB>> ]\n\"30064771125\" [label = <(&lt;operator&gt;.assignment,v10 = __errno_location())<SUB>68</SUB>> ]\n\"30064771125\" [label = <(&lt;operator&gt;.assignment,v10 = __errno_location())<SUB>68</SUB>> ]\n\"30064771127\" [label = <(&lt;operator&gt;.assignment,v11 = strerror(*v10))<SUB>69</SUB>> ]\n\"30064771127\" [label = <(&lt;operator&gt;.assignment,v11 = strerror(*v10))<SUB>69</SUB>> ]\n\"30064771130\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;fstab-decode: %s: %s\\...)<SUB>70</SUB>> ]\n\"30064771130\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;fstab-decode: %s: %s\\...)<SUB>70</SUB>> ]\n\"30064771130\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;fstab-decode: %s: %s\\...)<SUB>70</SUB>> ]\n\"30064771130\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;fstab-decode: %s: %s\\...)<SUB>70</SUB>> ]\n\"30064771130\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;fstab-decode: %s: %s\\...)<SUB>70</SUB>> ]\n\"90194313241\" [label = <(LITERAL,127,return 127;)<SUB>71</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.addition,a2 + 2)<SUB>23</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.addition,a2 + 2)<SUB>23</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.notEquals,a1 != 2)<SUB>25</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.notEquals,a1 != 2)<SUB>25</SUB>> ]\n\"30064771124\" [label = <(&lt;operator&gt;.addition,a2 + 1)<SUB>67</SUB>> ]\n\"30064771124\" [label = <(&lt;operator&gt;.addition,a2 + 1)<SUB>67</SUB>> ]\n\"30064771128\" [label = <(strerror,strerror(*v10))<SUB>69</SUB>> ]\n\"30064771121\" [label = <(&lt;operator&gt;.notEquals,v13 != v14)<SUB>65</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,v3 = *v13)<SUB>29</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.assignment,v4 = **v13)<SUB>30</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.assignment,v5 = *v13)<SUB>31</SUB>> ]\n\"30064771118\" [label = <(&lt;operator&gt;.preIncrement,++v13)<SUB>62</SUB>> ]\n\"30064771119\" [label = <(&lt;operator&gt;.assignment,*v5 = 0)<SUB>63</SUB>> ]\n\"30064771121\" [label = <(&lt;operator&gt;.notEquals,v13 != v14)<SUB>65</SUB>> ]\n\"30064771121\" [label = <(&lt;operator&gt;.notEquals,v13 != v14)<SUB>65</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,v3 = *v13)<SUB>29</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,v3 = *v13)<SUB>29</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.assignment,v4 = **v13)<SUB>30</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.assignment,v4 = **v13)<SUB>30</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.assignment,v5 = *v13)<SUB>31</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.assignment,v5 = *v13)<SUB>31</SUB>> ]\n\"68719476750\" [label = <(IDENTIFIER,v4,if (v4))<SUB>32</SUB>> ]\n\"30064771118\" [label = <(&lt;operator&gt;.preIncrement,++v13)<SUB>62</SUB>> ]\n\"30064771119\" [label = <(&lt;operator&gt;.assignment,*v5 = 0)<SUB>63</SUB>> ]\n\"30064771119\" [label = <(&lt;operator&gt;.assignment,*v5 = 0)<SUB>63</SUB>> ]\n\"90194313222\" [label = <(LITERAL,1,while (1))<SUB>34</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.assignment,v6 = v3 + 1)<SUB>36</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,*v5 = v4)<SUB>54</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.assignment,v4 = *v6)<SUB>55</SUB>> ]\n\"30064771114\" [label = <(&lt;operator&gt;.preIncrement,++v5)<SUB>56</SUB>> ]\n\"30064771117\" [label = <(&lt;operator&gt;.assignment,v3 = v6)<SUB>59</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.assignment,v6 = v3 + 1)<SUB>36</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.assignment,v6 = v3 + 1)<SUB>36</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.equals,v4 == 92)<SUB>37</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,*v5 = v4)<SUB>54</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,*v5 = v4)<SUB>54</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.assignment,v4 = *v6)<SUB>55</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.assignment,v4 = *v6)<SUB>55</SUB>> ]\n\"30064771114\" [label = <(&lt;operator&gt;.preIncrement,++v5)<SUB>56</SUB>> ]\n\"30064771115\" [label = <(&lt;operator&gt;.logicalNot,!*v6)<SUB>57</SUB>> ]\n\"30064771117\" [label = <(&lt;operator&gt;.assignment,v3 = v6)<SUB>59</SUB>> ]\n\"30064771117\" [label = <(&lt;operator&gt;.assignment,v3 = v6)<SUB>59</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.addition,v3 + 1)<SUB>36</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.addition,v3 + 1)<SUB>36</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.equals,v4 == 92)<SUB>37</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.equals,v4 == 92)<SUB>37</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,v7 = &quot;\\\\&quot;)<SUB>39</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.assignment,v8 = 1)<SUB>40</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.assignment,v9 = 0)<SUB>41</SUB>> ]\n\"30064771102\" [label = <(&lt;operator&gt;.assignment,v4 = asc_2060[24 * v9 + 16])<SUB>50</SUB>> ]\n\"30064771106\" [label = <(&lt;operator&gt;.assignment,v6 = &amp;v3[v8 + 1])<SUB>51</SUB>> ]\n\"30064771115\" [label = <(&lt;operator&gt;.logicalNot,!*v6)<SUB>57</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,v7 = &quot;\\\\&quot;)<SUB>39</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,v7 = &quot;\\\\&quot;)<SUB>39</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.assignment,v8 = 1)<SUB>40</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.assignment,v8 = 1)<SUB>40</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.assignment,v9 = 0)<SUB>41</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.assignment,v9 = 0)<SUB>41</SUB>> ]\n\"30064771093\" [label = <(memcmp,memcmp(v3 + 1, v7, v8))<SUB>42</SUB>> ]\n\"30064771102\" [label = <(&lt;operator&gt;.assignment,v4 = asc_2060[24 * v9 + 16])<SUB>50</SUB>> ]\n\"30064771102\" [label = <(&lt;operator&gt;.assignment,v4 = asc_2060[24 * v9 + 16])<SUB>50</SUB>> ]\n\"30064771106\" [label = <(&lt;operator&gt;.assignment,v6 = &amp;v3[v8 + 1])<SUB>51</SUB>> ]\n\"30064771106\" [label = <(&lt;operator&gt;.assignment,v6 = &amp;v3[v8 + 1])<SUB>51</SUB>> ]\n\"30064771093\" [label = <(memcmp,memcmp(v3 + 1, v7, v8))<SUB>42</SUB>> ]\n\"30064771093\" [label = <(memcmp,memcmp(v3 + 1, v7, v8))<SUB>42</SUB>> ]\n\"30064771093\" [label = <(memcmp,memcmp(v3 + 1, v7, v8))<SUB>42</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.preIncrement,++v9)<SUB>44</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignmentPlus,v7 += 24)<SUB>45</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.assignment,v8 = *((long long *)v7 + 1))<SUB>48</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.addition,v3 + 1)<SUB>42</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.addition,v3 + 1)<SUB>42</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.preIncrement,++v9)<SUB>44</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignmentPlus,v7 += 24)<SUB>45</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignmentPlus,v7 += 24)<SUB>45</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.equals,v9 == 5)<SUB>46</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.assignment,v8 = *((long long *)v7 + 1))<SUB>48</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.assignment,v8 = *((long long *)v7 + 1))<SUB>48</SUB>> ]\n\"30064771104\" [label = <(&lt;operator&gt;.addition,24 * v9 + 16)<SUB>50</SUB>> ]\n\"30064771104\" [label = <(&lt;operator&gt;.addition,24 * v9 + 16)<SUB>50</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.equals,v9 == 5)<SUB>46</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.equals,v9 == 5)<SUB>46</SUB>> ]\n\"30064771105\" [label = <(&lt;operator&gt;.multiplication,24 * v9)<SUB>50</SUB>> ]\n\"30064771105\" [label = <(&lt;operator&gt;.multiplication,24 * v9)<SUB>50</SUB>> ]\n\"30064771109\" [label = <(&lt;operator&gt;.addition,v8 + 1)<SUB>51</SUB>> ]\n\"30064771109\" [label = <(&lt;operator&gt;.addition,v8 + 1)<SUB>51</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.addition,(long long *)v7 + 1)<SUB>48</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.addition,(long long *)v7 + 1)<SUB>48</SUB>> ]\n\"30064771101\" [label = <(&lt;operator&gt;.cast,(long long *)v7)<SUB>48</SUB>> ]\n  \"146028888065\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"146028888064\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116993\" -> \"128849018880\"  [ label = \"a2\"] \n  \"115964116994\" -> \"128849018880\"  [ label = \"a3\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"a1\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"a1 &lt;= 1\"] \n  \"30064771073\" -> \"128849018880\"  [ label = \"stderr\"] \n  \"30064771073\" -> \"128849018880\"  [ label = \"__fprintf_chk(stderr, 1, &quot;Usage: fstab-decode command [arguments]\\n&quot;)\"] \n  \"111669149697\" -> \"115964116992\" \n  \"111669149697\" -> \"115964116993\" \n  \"111669149697\" -> \"115964116994\" \n  \"115964116992\" -> \"30064771072\"  [ label = \"a1\"] \n  \"111669149697\" -> \"30064771072\" \n  \"90194313219\" -> \"146028888064\"  [ label = \"1\"] \n  \"111669149697\" -> \"146028888064\" \n  \"111669149697\" -> \"30064771073\" \n  \"111669149697\" -> \"90194313219\" \n  \"115964116993\" -> \"30064771074\"  [ label = \"a2\"] \n  \"111669149697\" -> \"30064771074\" \n  \"115964116993\" -> \"30064771076\"  [ label = \"a2\"] \n  \"111669149697\" -> \"30064771076\" \n  \"111669149697\" -> \"30064771125\" \n  \"30064771128\" -> \"30064771127\"  [ label = \"*v10\"] \n  \"90194313241\" -> \"146028888065\"  [ label = \"127\"] \n  \"111669149697\" -> \"146028888065\" \n  \"111669149697\" -> \"30064771122\" \n  \"115964116993\" -> \"30064771122\"  [ label = \"a2\"] \n  \"111669149697\" -> \"30064771130\" \n  \"30064771122\" -> \"30064771130\"  [ label = \"a2[1]\"] \n  \"115964116993\" -> \"30064771130\"  [ label = \"a2\"] \n  \"30064771127\" -> \"30064771130\"  [ label = \"v11\"] \n  \"111669149697\" -> \"90194313241\" \n  \"115964116993\" -> \"30064771075\"  [ label = \"a2\"] \n  \"111669149697\" -> \"30064771075\" \n  \"30064771072\" -> \"30064771079\"  [ label = \"a1\"] \n  \"111669149697\" -> \"30064771079\" \n  \"111669149697\" -> \"30064771124\" \n  \"115964116993\" -> \"30064771124\"  [ label = \"a2\"] \n  \"111669149697\" -> \"30064771119\" \n  \"30064771118\" -> \"30064771121\"  [ label = \"v13\"] \n  \"111669149697\" -> \"30064771121\" \n  \"30064771076\" -> \"30064771121\"  [ label = \"v14\"] \n  \"111669149697\" -> \"68719476750\" \n  \"30064771074\" -> \"30064771118\"  [ label = \"v13\"] \n  \"30064771121\" -> \"30064771118\"  [ label = \"v13\"] \n  \"111669149697\" -> \"30064771118\" \n  \"111669149697\" -> \"90194313222\" \n  \"30064771080\" -> \"30064771087\"  [ label = \"v3\"] \n  \"30064771117\" -> \"30064771087\"  [ label = \"v3\"] \n  \"111669149697\" -> \"30064771087\" \n  \"30064771089\" -> \"30064771110\"  [ label = \"v4\"] \n  \"30064771102\" -> \"30064771110\"  [ label = \"v4\"] \n  \"111669149697\" -> \"30064771110\" \n  \"30064771115\" -> \"30064771112\"  [ label = \"*v6\"] \n  \"30064771087\" -> \"30064771117\"  [ label = \"v6\"] \n  \"30064771106\" -> \"30064771117\"  [ label = \"v6\"] \n  \"30064771115\" -> \"30064771117\"  [ label = \"*v6\"] \n  \"111669149697\" -> \"30064771117\" \n  \"30064771085\" -> \"30064771114\"  [ label = \"v5\"] \n  \"30064771110\" -> \"30064771114\"  [ label = \"*v5\"] \n  \"111669149697\" -> \"30064771114\" \n  \"30064771080\" -> \"30064771088\"  [ label = \"v3\"] \n  \"30064771117\" -> \"30064771088\"  [ label = \"v3\"] \n  \"111669149697\" -> \"30064771088\" \n  \"30064771082\" -> \"30064771089\"  [ label = \"v4\"] \n  \"30064771112\" -> \"30064771089\"  [ label = \"v4\"] \n  \"111669149697\" -> \"30064771089\" \n  \"111669149697\" -> \"30064771090\" \n  \"111669149697\" -> \"30064771091\" \n  \"111669149697\" -> \"30064771092\" \n  \"111669149697\" -> \"30064771093\" \n  \"30064771090\" -> \"30064771093\"  [ label = \"v7\"] \n  \"30064771096\" -> \"30064771093\"  [ label = \"v7\"] \n  \"30064771091\" -> \"30064771093\"  [ label = \"v8\"] \n  \"30064771098\" -> \"30064771093\"  [ label = \"v8\"] \n  \"111669149697\" -> \"30064771096\" \n  \"111669149697\" -> \"30064771094\" \n  \"30064771092\" -> \"30064771095\"  [ label = \"v9\"] \n  \"30064771097\" -> \"30064771095\"  [ label = \"v9\"] \n  \"111669149697\" -> \"30064771095\" \n  \"30064771093\" -> \"30064771096\"  [ label = \"v7\"] \n  \"30064771105\" -> \"30064771104\"  [ label = \"24\"] \n  \"30064771105\" -> \"30064771104\"  [ label = \"v9\"] \n  \"111669149697\" -> \"30064771104\" \n  \"30064771095\" -> \"30064771097\"  [ label = \"v9\"] \n  \"111669149697\" -> \"30064771097\" \n  \"111669149697\" -> \"30064771105\" \n  \"30064771092\" -> \"30064771105\"  [ label = \"v9\"] \n  \"30064771097\" -> \"30064771105\"  [ label = \"v9\"] \n  \"30064771093\" -> \"30064771109\"  [ label = \"v8\"] \n  \"111669149697\" -> \"30064771109\" \n  \"30064771096\" -> \"30064771100\"  [ label = \"v7\"] \n  \"111669149697\" -> \"30064771100\" \n  \"30064771096\" -> \"30064771101\"  [ label = \"v7\"] \n  \"111669149697\" -> \"30064771101\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"main\" {  \n\"30064771072\" [label = <(&lt;operator&gt;.lessEqualsThan,a1 &lt;= 1)<SUB>16</SUB>> ]\n\"30064771073\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;Usage: fstab-decode c...)<SUB>18</SUB>> ]\n\"146028888064\" [label = <(RETURN,return 1;,return 1;)<SUB>19</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.assignment,v13 = a2 + 2)<SUB>23</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,v14 = &amp;a2[a1])<SUB>24</SUB>> ]\n\"30064771122\" [label = <(execvp,execvp(a2[1], a2 + 1))<SUB>67</SUB>> ]\n\"30064771125\" [label = <(&lt;operator&gt;.assignment,v10 = __errno_location())<SUB>68</SUB>> ]\n\"30064771127\" [label = <(&lt;operator&gt;.assignment,v11 = strerror(*v10))<SUB>69</SUB>> ]\n\"30064771130\" [label = <(__fprintf_chk,__fprintf_chk(stderr, 1, &quot;fstab-decode: %s: %s\\...)<SUB>70</SUB>> ]\n\"146028888065\" [label = <(RETURN,return 127;,return 127;)<SUB>71</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.addition,a2 + 2)<SUB>23</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.addressOf,&amp;a2[a1])<SUB>24</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.notEquals,a1 != 2)<SUB>25</SUB>> ]\n\"30064771123\" [label = <(&lt;operator&gt;.indirectIndexAccess,a2[1])<SUB>67</SUB>> ]\n\"30064771124\" [label = <(&lt;operator&gt;.addition,a2 + 1)<SUB>67</SUB>> ]\n\"30064771126\" [label = <(__errno_location,__errno_location())<SUB>68</SUB>> ]\n\"30064771128\" [label = <(strerror,strerror(*v10))<SUB>69</SUB>> ]\n\"30064771131\" [label = <(&lt;operator&gt;.indirectIndexAccess,a2[1])<SUB>70</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.indirectIndexAccess,a2[a1])<SUB>24</SUB>> ]\n\"30064771129\" [label = <(&lt;operator&gt;.indirection,*v10)<SUB>69</SUB>> ]\n\"30064771121\" [label = <(&lt;operator&gt;.notEquals,v13 != v14)<SUB>65</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,v3 = *v13)<SUB>29</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.assignment,v4 = **v13)<SUB>30</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.assignment,v5 = *v13)<SUB>31</SUB>> ]\n\"30064771118\" [label = <(&lt;operator&gt;.preIncrement,++v13)<SUB>62</SUB>> ]\n\"30064771119\" [label = <(&lt;operator&gt;.assignment,*v5 = 0)<SUB>63</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.indirection,*v13)<SUB>29</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.indirection,**v13)<SUB>30</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.indirection,*v13)<SUB>31</SUB>> ]\n\"68719476750\" [label = <(IDENTIFIER,v4,if (v4))<SUB>32</SUB>> ]\n\"30064771120\" [label = <(&lt;operator&gt;.indirection,*v5)<SUB>63</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.indirection,*v13)<SUB>30</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.assignment,v6 = v3 + 1)<SUB>36</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,*v5 = v4)<SUB>54</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.assignment,v4 = *v6)<SUB>55</SUB>> ]\n\"30064771114\" [label = <(&lt;operator&gt;.preIncrement,++v5)<SUB>56</SUB>> ]\n\"30064771117\" [label = <(&lt;operator&gt;.assignment,v3 = v6)<SUB>59</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.addition,v3 + 1)<SUB>36</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.equals,v4 == 92)<SUB>37</SUB>> ]\n\"30064771111\" [label = <(&lt;operator&gt;.indirection,*v5)<SUB>54</SUB>> ]\n\"30064771113\" [label = <(&lt;operator&gt;.indirection,*v6)<SUB>55</SUB>> ]\n\"30064771115\" [label = <(&lt;operator&gt;.logicalNot,!*v6)<SUB>57</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,v7 = &quot;\\\\&quot;)<SUB>39</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.assignment,v8 = 1)<SUB>40</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.assignment,v9 = 0)<SUB>41</SUB>> ]\n\"30064771102\" [label = <(&lt;operator&gt;.assignment,v4 = asc_2060[24 * v9 + 16])<SUB>50</SUB>> ]\n\"30064771106\" [label = <(&lt;operator&gt;.assignment,v6 = &amp;v3[v8 + 1])<SUB>51</SUB>> ]\n\"30064771116\" [label = <(&lt;operator&gt;.indirection,*v6)<SUB>57</SUB>> ]\n\"30064771093\" [label = <(memcmp,memcmp(v3 + 1, v7, v8))<SUB>42</SUB>> ]\n\"30064771103\" [label = <(&lt;operator&gt;.indirectIndexAccess,asc_2060[24 * v9 + 16])<SUB>50</SUB>> ]\n\"30064771107\" [label = <(&lt;operator&gt;.addressOf,&amp;v3[v8 + 1])<SUB>51</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.addition,v3 + 1)<SUB>42</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.preIncrement,++v9)<SUB>44</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignmentPlus,v7 += 24)<SUB>45</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.assignment,v8 = *((long long *)v7 + 1))<SUB>48</SUB>> ]\n\"30064771104\" [label = <(&lt;operator&gt;.addition,24 * v9 + 16)<SUB>50</SUB>> ]\n\"30064771108\" [label = <(&lt;operator&gt;.indirectIndexAccess,v3[v8 + 1])<SUB>51</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.equals,v9 == 5)<SUB>46</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.indirection,*((long long *)v7 + 1))<SUB>48</SUB>> ]\n\"30064771105\" [label = <(&lt;operator&gt;.multiplication,24 * v9)<SUB>50</SUB>> ]\n\"30064771109\" [label = <(&lt;operator&gt;.addition,v8 + 1)<SUB>51</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.addition,(long long *)v7 + 1)<SUB>48</SUB>> ]\n\"30064771101\" [label = <(&lt;operator&gt;.cast,(long long *)v7)<SUB>48</SUB>> ]\n\"184683593728\" [label = <(UNKNOWN,long long *,long long *)<SUB>48</SUB>> ]\n\"111669149697\" [label = <(METHOD,main)<SUB>2</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,long long)<SUB>2</SUB>> ]\n  \"30064771072\" -> \"30064771073\" \n  \"30064771072\" -> \"30064771075\" \n  \"30064771073\" -> \"146028888064\" \n  \"146028888064\" -> \"128849018880\" \n  \"30064771074\" -> \"30064771078\" \n  \"30064771076\" -> \"30064771079\" \n  \"30064771122\" -> \"30064771126\" \n  \"30064771125\" -> \"30064771129\" \n  \"30064771127\" -> \"30064771131\" \n  \"30064771130\" -> \"146028888065\" \n  \"146028888065\" -> \"128849018880\" \n  \"30064771075\" -> \"30064771074\" \n  \"30064771077\" -> \"30064771076\" \n  \"30064771079\" -> \"30064771081\" \n  \"30064771079\" -> \"30064771123\" \n  \"30064771123\" -> \"30064771124\" \n  \"30064771124\" -> \"30064771122\" \n  \"30064771126\" -> \"30064771125\" \n  \"30064771128\" -> \"30064771127\" \n  \"30064771131\" -> \"30064771130\" \n  \"30064771078\" -> \"30064771077\" \n  \"30064771129\" -> \"30064771128\" \n  \"30064771121\" -> \"30064771081\" \n  \"30064771121\" -> \"30064771123\" \n  \"30064771080\" -> \"30064771084\" \n  \"30064771082\" -> \"30064771086\" \n  \"30064771085\" -> \"68719476750\" \n  \"30064771118\" -> \"30064771120\" \n  \"30064771119\" -> \"30064771121\" \n  \"30064771081\" -> \"30064771080\" \n  \"30064771083\" -> \"30064771082\" \n  \"30064771086\" -> \"30064771085\" \n  \"68719476750\" -> \"30064771088\" \n  \"68719476750\" -> \"30064771118\" \n  \"30064771120\" -> \"30064771119\" \n  \"30064771084\" -> \"30064771083\" \n  \"30064771087\" -> \"30064771089\" \n  \"30064771110\" -> \"30064771113\" \n  \"30064771112\" -> \"30064771114\" \n  \"30064771114\" -> \"30064771116\" \n  \"30064771117\" -> \"30064771088\" \n  \"30064771117\" -> \"30064771118\" \n  \"30064771088\" -> \"30064771087\" \n  \"30064771089\" -> \"30064771090\" \n  \"30064771089\" -> \"30064771111\" \n  \"30064771111\" -> \"30064771110\" \n  \"30064771113\" -> \"30064771112\" \n  \"30064771115\" -> \"30064771118\" \n  \"30064771115\" -> \"30064771117\" \n  \"30064771090\" -> \"30064771091\" \n  \"30064771091\" -> \"30064771092\" \n  \"30064771092\" -> \"30064771094\" \n  \"30064771102\" -> \"30064771109\" \n  \"30064771106\" -> \"30064771111\" \n  \"30064771116\" -> \"30064771115\" \n  \"30064771093\" -> \"30064771095\" \n  \"30064771093\" -> \"30064771105\" \n  \"30064771103\" -> \"30064771102\" \n  \"30064771107\" -> \"30064771106\" \n  \"30064771094\" -> \"30064771093\" \n  \"30064771095\" -> \"30064771096\" \n  \"30064771096\" -> \"30064771097\" \n  \"30064771098\" -> \"30064771094\" \n  \"30064771104\" -> \"30064771103\" \n  \"30064771108\" -> \"30064771107\" \n  \"30064771097\" -> \"30064771111\" \n  \"30064771097\" -> \"184683593728\" \n  \"30064771099\" -> \"30064771098\" \n  \"30064771105\" -> \"30064771104\" \n  \"30064771109\" -> \"30064771108\" \n  \"30064771100\" -> \"30064771099\" \n  \"30064771101\" -> \"30064771100\" \n  \"184683593728\" -> \"30064771101\" \n  \"111669149697\" -> \"30064771072\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "f9e57174f34622f2d8503182b70ec7fea80fc2dc626a5454e65af7c3fa3b51c6",
+  "prepared_sha256": "f9e57174f34622f2d8503182b70ec7fea80fc2dc626a5454e65af7c3fa3b51c6",
+  "language": "c",
+  "source": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11/O2/sysvinit/decompiled/ida_fstab-decode.c",
+  "capture_worker_sha256": "d2256371f18c5cccbf5c7543404ed8333a9aaf855ffcfdede2af72fbafa4f708"
+}

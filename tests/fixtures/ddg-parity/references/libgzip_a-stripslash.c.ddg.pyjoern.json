@@ -1,0 +1,4356 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 10.061997283017263,
+    "supplemental_raw_parse_seconds": 9.840045810095035
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "strip_trailing_slashes": {
+      "name": "strip_trailing_slashes",
+      "fullname": "strip_trailing_slashes",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 155,
+      "end_line": 173,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 155,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,strip_trailing_slashes",
+                    "source_line_number": 155,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 157,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char *file",
+                  "fields": {
+                    "raw_text": "PARAM,char *file",
+                    "source_line_number": 157,
+                    "type": "char",
+                    "name": "*file"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 169,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "base_lim = base+base_len(base)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "base_lim=base+base_len(base)"
+                    ],
+                    "source_line_number": 169,
+                    "src": "base_lim",
+                    "dst": "base+base_len(base)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 171,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*base_lim = '\\0'",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*base_lim='\\0'"
+                    ],
+                    "source_line_number": 171,
+                    "src": "*base_lim",
+                    "dst": "'\\0'"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 172,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,had_slash,returnhad_slash;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,had_slash,returnhad_slash;",
+                    "source_line_number": 172
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 159,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "last_component(file)",
+                  "fields": {
+                    "raw_text": "last_component,last_component(file)",
+                    "source_line_number": 159,
+                    "func": "last_component",
+                    "args": [
+                      "file"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 168,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "base = file",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "base=file"
+                    ],
+                    "source_line_number": 168,
+                    "src": "base",
+                    "dst": "file"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 169,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'base+base_len(base)']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "base+base_len(base)"
+                    ],
+                    "source_line_number": 169
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 170,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "*base_lim != '\\0'",
+                  "fields": {
+                    "raw_text": [
+                      "notEquals",
+                      "*base_lim!='\\0'"
+                    ],
+                    "source_line_number": 170,
+                    "type": 5,
+                    "arg1": "*base_lim",
+                    "arg2": "'\\0'"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 169,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "base_len(base)",
+                  "fields": {
+                    "raw_text": "base_len,base_len(base)",
+                    "source_line_number": 169,
+                    "func": "base_len",
+                    "args": [
+                      "base"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 159,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*base = last_component(file)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*base=last_component(file)"
+                    ],
+                    "source_line_number": 159,
+                    "src": "*base",
+                    "dst": "last_component(file)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 155,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,bool",
+                    "source_line_number": 155,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 170,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "had_slash = (*base_lim!='\\0')",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "had_slash=(*base_lim!='\\0')"
+                    ],
+                    "source_line_number": 170,
+                    "src": "had_slash",
+                    "dst": "(*base_lim!='\\0')"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 172,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return had_slash;,returnhad_slash;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnhad_slash;",
+                      "returnhad_slash;"
+                    ],
+                    "source_line_number": 172,
+                    "ret": "had_slash;,returnhad_slash;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 167,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!*base']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!*base"
+                    ],
+                    "source_line_number": 167
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 9,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 155,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,strip_trailing_slashes",
+                    "source_line_number": 155,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 157,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char *file",
+                  "fields": {
+                    "raw_text": "PARAM,char *file",
+                    "source_line_number": 157,
+                    "type": "char",
+                    "name": "*file"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 169,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "base_lim = base+base_len(base)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "base_lim=base+base_len(base)"
+                    ],
+                    "source_line_number": 169,
+                    "src": "base_lim",
+                    "dst": "base+base_len(base)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 171,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*base_lim = '\\0'",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*base_lim='\\0'"
+                    ],
+                    "source_line_number": 171,
+                    "src": "*base_lim",
+                    "dst": "'\\0'"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 172,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,had_slash,returnhad_slash;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,had_slash,returnhad_slash;",
+                    "source_line_number": 172
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 159,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "last_component(file)",
+                  "fields": {
+                    "raw_text": "last_component,last_component(file)",
+                    "source_line_number": 159,
+                    "func": "last_component",
+                    "args": [
+                      "file"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 168,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "base = file",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "base=file"
+                    ],
+                    "source_line_number": 168,
+                    "src": "base",
+                    "dst": "file"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 169,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'base+base_len(base)']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "base+base_len(base)"
+                    ],
+                    "source_line_number": 169
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 170,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "*base_lim != '\\0'",
+                  "fields": {
+                    "raw_text": [
+                      "notEquals",
+                      "*base_lim!='\\0'"
+                    ],
+                    "source_line_number": 170,
+                    "type": 5,
+                    "arg1": "*base_lim",
+                    "arg2": "'\\0'"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 169,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "base_len(base)",
+                  "fields": {
+                    "raw_text": "base_len,base_len(base)",
+                    "source_line_number": 169,
+                    "func": "base_len",
+                    "args": [
+                      "base"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 159,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*base = last_component(file)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*base=last_component(file)"
+                    ],
+                    "source_line_number": 159,
+                    "src": "*base",
+                    "dst": "last_component(file)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 155,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,bool",
+                    "source_line_number": 155,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 170,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "had_slash = (*base_lim!='\\0')",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "had_slash=(*base_lim!='\\0')"
+                    ],
+                    "source_line_number": 170,
+                    "src": "had_slash",
+                    "dst": "(*base_lim!='\\0')"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 172,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return had_slash;,returnhad_slash;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnhad_slash;",
+                      "returnhad_slash;"
+                    ],
+                    "source_line_number": 172,
+                    "ret": "had_slash;,returnhad_slash;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 167,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!*base']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!*base"
+                    ],
+                    "source_line_number": 167
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 9,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,strip_trailing_slashes)<SUB>155</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,bool)<SUB>155</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,char *file)<SUB>157</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(<operator>.assignment,*base = last_component (file))<SUB>159</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.assignment,base_lim = base + base_len (base))<SUB>169</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(<operator>.assignment,had_slash = (*base_lim != '\\0'))<SUB>170</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.assignment,*base_lim = '\\0')<SUB>171</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(RETURN,return had_slash;,return had_slash;)<SUB>172</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.logicalNot,! *base)<SUB>167</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(IDENTIFIER,had_slash,return had_slash;)<SUB>172</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(last_component,last_component (file))<SUB>159</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.assignment,base = file)<SUB>168</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(<operator>.addition,base + base_len (base))<SUB>169</SUB>"
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "dot_label": "(<operator>.notEquals,*base_lim != '\\0')<SUB>170</SUB>"
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "dot_label": "(base_len,base_len (base))<SUB>169</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "label": "file"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "last_component (file)"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "*base = last_component (file)"
+          },
+          {
+            "source": 3,
+            "target": 14,
+            "label": "base"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "base_lim"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "base + base_len (base)"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "base_lim = base + base_len (base)"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "had_slash"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "*base_lim != '\\0'"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "had_slash = (*base_lim != '\\0')"
+          },
+          {
+            "source": 5,
+            "target": 9,
+            "label": "had_slash"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "*base_lim"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "*base_lim = '\\0'"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "*base"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "! *base"
+          },
+          {
+            "source": 8,
+            "target": 4,
+            "label": "*base"
+          },
+          {
+            "source": 8,
+            "target": 12,
+            "label": "*base"
+          },
+          {
+            "source": 8,
+            "target": 14,
+            "label": "*base"
+          },
+          {
+            "source": 9,
+            "target": 7,
+            "label": "had_slash"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "file"
+          },
+          {
+            "source": 10,
+            "target": 3,
+            "label": "file"
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "label": "file"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "file"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "base = file"
+          },
+          {
+            "source": 11,
+            "target": 14,
+            "label": "base"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "base"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "base_len (base)"
+          },
+          {
+            "source": 13,
+            "target": 5,
+            "label": "*base_lim"
+          },
+          {
+            "source": 13,
+            "target": 5,
+            "label": "'\\0'"
+          },
+          {
+            "source": 14,
+            "target": 4,
+            "label": "base"
+          },
+          {
+            "source": 14,
+            "target": 12,
+            "label": "base"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"strip_trailing_slashes\" {  \n\"111669149697\" [label = <(METHOD,strip_trailing_slashes)<SUB>155</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,bool)<SUB>155</SUB>> ]\n\"115964116992\" [label = <(PARAM,char *file)<SUB>157</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.assignment,*base = last_component (file))<SUB>159</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.assignment,base_lim = base + base_len (base))<SUB>169</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,had_slash = (*base_lim != '\\0'))<SUB>170</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,*base_lim = '\\0')<SUB>171</SUB>> ]\n\"146028888064\" [label = <(RETURN,return had_slash;,return had_slash;)<SUB>172</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.assignment,*base = last_component (file))<SUB>159</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.assignment,*base = last_component (file))<SUB>159</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.logicalNot,! *base)<SUB>167</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.assignment,base_lim = base + base_len (base))<SUB>169</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.assignment,base_lim = base + base_len (base))<SUB>169</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,had_slash = (*base_lim != '\\0'))<SUB>170</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,had_slash = (*base_lim != '\\0'))<SUB>170</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,*base_lim = '\\0')<SUB>171</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,*base_lim = '\\0')<SUB>171</SUB>> ]\n\"68719476747\" [label = <(IDENTIFIER,had_slash,return had_slash;)<SUB>172</SUB>> ]\n\"30064771073\" [label = <(last_component,last_component (file))<SUB>159</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.logicalNot,! *base)<SUB>167</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,base = file)<SUB>168</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.addition,base + base_len (base))<SUB>169</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.addition,base + base_len (base))<SUB>169</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.notEquals,*base_lim != '\\0')<SUB>170</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.notEquals,*base_lim != '\\0')<SUB>170</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,base = file)<SUB>168</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,base = file)<SUB>168</SUB>> ]\n\"30064771079\" [label = <(base_len,base_len (base))<SUB>169</SUB>> ]\n  \"146028888064\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771073\" -> \"128849018880\"  [ label = \"file\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"last_component (file)\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"*base = last_component (file)\"] \n  \"30064771074\" -> \"128849018880\"  [ label = \"*base\"] \n  \"30064771074\" -> \"128849018880\"  [ label = \"! *base\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"file\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"base = file\"] \n  \"30064771077\" -> \"128849018880\"  [ label = \"base_lim\"] \n  \"30064771078\" -> \"128849018880\"  [ label = \"base\"] \n  \"30064771078\" -> \"128849018880\"  [ label = \"base_len (base)\"] \n  \"30064771077\" -> \"128849018880\"  [ label = \"base + base_len (base)\"] \n  \"30064771077\" -> \"128849018880\"  [ label = \"base_lim = base + base_len (base)\"] \n  \"30064771080\" -> \"128849018880\"  [ label = \"had_slash\"] \n  \"30064771080\" -> \"128849018880\"  [ label = \"*base_lim != '\\0'\"] \n  \"30064771080\" -> \"128849018880\"  [ label = \"had_slash = (*base_lim != '\\0')\"] \n  \"30064771083\" -> \"128849018880\"  [ label = \"*base_lim\"] \n  \"30064771083\" -> \"128849018880\"  [ label = \"*base_lim = '\\0'\"] \n  \"111669149697\" -> \"115964116992\" \n  \"30064771073\" -> \"30064771072\"  [ label = \"file\"] \n  \"30064771074\" -> \"30064771077\"  [ label = \"*base\"] \n  \"30064771079\" -> \"30064771077\"  [ label = \"base\"] \n  \"111669149697\" -> \"30064771077\" \n  \"30064771081\" -> \"30064771080\"  [ label = \"*base_lim\"] \n  \"30064771081\" -> \"30064771080\"  [ label = \"'\\0'\"] \n  \"111669149697\" -> \"30064771083\" \n  \"68719476747\" -> \"146028888064\"  [ label = \"had_slash\"] \n  \"30064771080\" -> \"68719476747\"  [ label = \"had_slash\"] \n  \"111669149697\" -> \"68719476747\" \n  \"115964116992\" -> \"30064771073\"  [ label = \"file\"] \n  \"111669149697\" -> \"30064771073\" \n  \"30064771073\" -> \"30064771076\"  [ label = \"file\"] \n  \"111669149697\" -> \"30064771076\" \n  \"30064771074\" -> \"30064771078\"  [ label = \"*base\"] \n  \"30064771079\" -> \"30064771078\"  [ label = \"base\"] \n  \"111669149697\" -> \"30064771078\" \n  \"111669149697\" -> \"30064771081\" \n  \"30064771072\" -> \"30064771079\"  [ label = \"base\"] \n  \"30064771074\" -> \"30064771079\"  [ label = \"*base\"] \n  \"30064771076\" -> \"30064771079\"  [ label = \"base\"] \n  \"111669149697\" -> \"30064771079\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"strip_trailing_slashes\" {  \n\"30064771072\" [label = <(&lt;operator&gt;.assignment,*base = last_component (file))<SUB>159</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.assignment,base_lim = base + base_len (base))<SUB>169</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,had_slash = (*base_lim != '\\0'))<SUB>170</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,*base_lim = '\\0')<SUB>171</SUB>> ]\n\"146028888064\" [label = <(RETURN,return had_slash;,return had_slash;)<SUB>172</SUB>> ]\n\"30064771073\" [label = <(last_component,last_component (file))<SUB>159</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.logicalNot,! *base)<SUB>167</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.addition,base + base_len (base))<SUB>169</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.notEquals,*base_lim != '\\0')<SUB>170</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.indirection,*base_lim)<SUB>171</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.indirection,*base)<SUB>167</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,base = file)<SUB>168</SUB>> ]\n\"30064771079\" [label = <(base_len,base_len (base))<SUB>169</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.indirection,*base_lim)<SUB>170</SUB>> ]\n\"111669149697\" [label = <(METHOD,strip_trailing_slashes)<SUB>155</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,bool)<SUB>155</SUB>> ]\n  \"30064771072\" -> \"30064771075\" \n  \"30064771077\" -> \"30064771082\" \n  \"30064771080\" -> \"30064771084\" \n  \"30064771083\" -> \"146028888064\" \n  \"146028888064\" -> \"128849018880\" \n  \"30064771073\" -> \"30064771072\" \n  \"30064771074\" -> \"30064771076\" \n  \"30064771074\" -> \"30064771079\" \n  \"30064771078\" -> \"30064771077\" \n  \"30064771081\" -> \"30064771080\" \n  \"30064771084\" -> \"30064771083\" \n  \"30064771075\" -> \"30064771074\" \n  \"30064771076\" -> \"30064771079\" \n  \"30064771079\" -> \"30064771078\" \n  \"30064771082\" -> \"30064771081\" \n  \"111669149697\" -> \"30064771073\" \n}\n"
+      ]
+    },
+    "calloc": {
+      "name": "calloc",
+      "fullname": "calloc",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 18,
+      "end_line": 18,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 18,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,calloc",
+                    "source_line_number": 18,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t nmemb",
+                  "fields": {
+                    "raw_text": "PARAM,size_t nmemb",
+                    "source_line_number": 18,
+                    "type": "size_t",
+                    "name": "nmemb"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t size",
+                  "fields": {
+                    "raw_text": "PARAM,size_t size",
+                    "source_line_number": 18,
+                    "type": "size_t",
+                    "name": "size"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void*",
+                    "source_line_number": 18,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 18,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,calloc",
+                    "source_line_number": 18,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t nmemb",
+                  "fields": {
+                    "raw_text": "PARAM,size_t nmemb",
+                    "source_line_number": 18,
+                    "type": "size_t",
+                    "name": "nmemb"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t size",
+                  "fields": {
+                    "raw_text": "PARAM,size_t size",
+                    "source_line_number": 18,
+                    "type": "size_t",
+                    "name": "size"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void*",
+                    "source_line_number": 18,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,calloc)<SUB>18</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,void*)<SUB>18</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,size_t nmemb)<SUB>18</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,size_t size)<SUB>18</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "nmemb"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "size"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"calloc\" {  \n\"111669149698\" [label = <(METHOD,calloc)<SUB>18</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,void*)<SUB>18</SUB>> ]\n\"115964116993\" [label = <(PARAM,size_t nmemb)<SUB>18</SUB>> ]\n\"115964116994\" [label = <(PARAM,size_t size)<SUB>18</SUB>> ]\n  \"115964116993\" -> \"128849018882\"  [ label = \"nmemb\"] \n  \"115964116994\" -> \"128849018882\"  [ label = \"size\"] \n  \"111669149698\" -> \"115964116993\" \n  \"111669149698\" -> \"115964116994\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"calloc\" {  \n\"111669149698\" [label = <(METHOD,calloc)<SUB>18</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,void*)<SUB>18</SUB>> ]\n  \"111669149698\" -> \"128849018882\" \n}\n"
+      ]
+    },
+    "mdir_name": {
+      "name": "mdir_name",
+      "fullname": "mdir_name",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 147,
+      "end_line": 147,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 147,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,mdir_name",
+                    "source_line_number": 147,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *file)<SUB>147</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *file)<SUB>147</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 147,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 147,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 147,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,mdir_name",
+                    "source_line_number": 147,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *file)<SUB>147</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *file)<SUB>147</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 147,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 147,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,mdir_name)<SUB>147</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,char*)<SUB>147</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,char const *file)<SUB>147</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "file"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"mdir_name\" {  \n\"111669149699\" [label = <(METHOD,mdir_name)<SUB>147</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,char*)<SUB>147</SUB>> ]\n\"115964116995\" [label = <(PARAM,char const *file)<SUB>147</SUB>> ]\n  \"115964116995\" -> \"128849018883\"  [ label = \"file\"] \n  \"111669149699\" -> \"115964116995\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"mdir_name\" {  \n\"111669149699\" [label = <(METHOD,mdir_name)<SUB>147</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,char*)<SUB>147</SUB>> ]\n  \"111669149699\" -> \"128849018883\" \n}\n"
+      ]
+    },
+    "malloc": {
+      "name": "malloc",
+      "fullname": "malloc",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 51,
+      "end_line": 51,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 51,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,malloc",
+                    "source_line_number": 51,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t size",
+                  "fields": {
+                    "raw_text": "PARAM,size_t size",
+                    "source_line_number": 51,
+                    "type": "size_t",
+                    "name": "size"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void*",
+                    "source_line_number": 51,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 51,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,malloc",
+                    "source_line_number": 51,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t size",
+                  "fields": {
+                    "raw_text": "PARAM,size_t size",
+                    "source_line_number": 51,
+                    "type": "size_t",
+                    "name": "size"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void*",
+                    "source_line_number": 51,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,malloc)<SUB>51</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,void*)<SUB>51</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,size_t size)<SUB>51</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "size"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"malloc\" {  \n\"111669149700\" [label = <(METHOD,malloc)<SUB>51</SUB>> ]\n\"128849018884\" [label = <(METHOD_RETURN,void*)<SUB>51</SUB>> ]\n\"115964116996\" [label = <(PARAM,size_t size)<SUB>51</SUB>> ]\n  \"115964116996\" -> \"128849018884\"  [ label = \"size\"] \n  \"111669149700\" -> \"115964116996\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"malloc\" {  \n\"111669149700\" [label = <(METHOD,malloc)<SUB>51</SUB>> ]\n\"128849018884\" [label = <(METHOD_RETURN,void*)<SUB>51</SUB>> ]\n  \"111669149700\" -> \"128849018884\" \n}\n"
+      ]
+    },
+    "strdup": {
+      "name": "strdup",
+      "fullname": "strdup",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 116,
+      "end_line": 116,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 116,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,strdup",
+                    "source_line_number": 116,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *__s)<SUB>116</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *__s)<SUB>116</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 116,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 116,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 116,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,strdup",
+                    "source_line_number": 116,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *__s)<SUB>116</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *__s)<SUB>116</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 116,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 116,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,strdup)<SUB>116</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,char*)<SUB>116</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,char const *__s)<SUB>116</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "__s"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"strdup\" {  \n\"111669149701\" [label = <(METHOD,strdup)<SUB>116</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,char*)<SUB>116</SUB>> ]\n\"115964116997\" [label = <(PARAM,char const *__s)<SUB>116</SUB>> ]\n  \"115964116997\" -> \"128849018885\"  [ label = \"__s\"] \n  \"111669149701\" -> \"115964116997\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"strdup\" {  \n\"111669149701\" [label = <(METHOD,strdup)<SUB>116</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,char*)<SUB>116</SUB>> ]\n  \"111669149701\" -> \"128849018885\" \n}\n"
+      ]
+    },
+    "realloc": {
+      "name": "realloc",
+      "fullname": "realloc",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 67,
+      "end_line": 67,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 67,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,realloc",
+                    "source_line_number": 67,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "void *ptr",
+                  "fields": {
+                    "raw_text": "PARAM,void *ptr",
+                    "source_line_number": 67,
+                    "type": "void",
+                    "name": "*ptr"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t size",
+                  "fields": {
+                    "raw_text": "PARAM,size_t size",
+                    "source_line_number": 67,
+                    "type": "size_t",
+                    "name": "size"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void*",
+                    "source_line_number": 67,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 67,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,realloc",
+                    "source_line_number": 67,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "void *ptr",
+                  "fields": {
+                    "raw_text": "PARAM,void *ptr",
+                    "source_line_number": 67,
+                    "type": "void",
+                    "name": "*ptr"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t size",
+                  "fields": {
+                    "raw_text": "PARAM,size_t size",
+                    "source_line_number": 67,
+                    "type": "size_t",
+                    "name": "size"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 67,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void*",
+                    "source_line_number": 67,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,realloc)<SUB>67</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,void*)<SUB>67</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,void *ptr)<SUB>67</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,size_t size)<SUB>67</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "ptr"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "size"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"realloc\" {  \n\"111669149702\" [label = <(METHOD,realloc)<SUB>67</SUB>> ]\n\"128849018886\" [label = <(METHOD_RETURN,void*)<SUB>67</SUB>> ]\n\"115964116998\" [label = <(PARAM,void *ptr)<SUB>67</SUB>> ]\n\"115964116999\" [label = <(PARAM,size_t size)<SUB>67</SUB>> ]\n  \"115964116998\" -> \"128849018886\"  [ label = \"ptr\"] \n  \"115964116999\" -> \"128849018886\"  [ label = \"size\"] \n  \"111669149702\" -> \"115964116998\" \n  \"111669149702\" -> \"115964116999\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"realloc\" {  \n\"111669149702\" [label = <(METHOD,realloc)<SUB>67</SUB>> ]\n\"128849018886\" [label = <(METHOD_RETURN,void*)<SUB>67</SUB>> ]\n  \"111669149702\" -> \"128849018886\" \n}\n"
+      ]
+    },
+    "dir_len": {
+      "name": "dir_len",
+      "fullname": "dir_len",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 149,
+      "end_line": 149,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 149,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,dir_len",
+                    "source_line_number": 149,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *file)<SUB>149</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *file)<SUB>149</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 149,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,size_t",
+                    "source_line_number": 149,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 149,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,dir_len",
+                    "source_line_number": 149,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *file)<SUB>149</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *file)<SUB>149</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 149,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,size_t",
+                    "source_line_number": 149,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,dir_len)<SUB>149</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,size_t)<SUB>149</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,char const *file)<SUB>149</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "file"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"dir_len\" {  \n\"111669149703\" [label = <(METHOD,dir_len)<SUB>149</SUB>> ]\n\"128849018887\" [label = <(METHOD_RETURN,size_t)<SUB>149</SUB>> ]\n\"115964117000\" [label = <(PARAM,char const *file)<SUB>149</SUB>> ]\n  \"115964117000\" -> \"128849018887\"  [ label = \"file\"] \n  \"111669149703\" -> \"115964117000\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"dir_len\" {  \n\"111669149703\" [label = <(METHOD,dir_len)<SUB>149</SUB>> ]\n\"128849018887\" [label = <(METHOD_RETURN,size_t)<SUB>149</SUB>> ]\n  \"111669149703\" -> \"128849018887\" \n}\n"
+      ]
+    },
+    "base_len": {
+      "name": "base_len",
+      "fullname": "base_len",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 146,
+      "end_line": 146,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 146,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,base_len",
+                    "source_line_number": 146,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *filename)<SUB>146</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *filename)<SUB>146</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 146,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,size_t",
+                    "source_line_number": 146,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 146,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,base_len",
+                    "source_line_number": 146,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *filename)<SUB>146</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *filename)<SUB>146</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 146,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,size_t",
+                    "source_line_number": 146,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,base_len)<SUB>146</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,size_t)<SUB>146</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,char const *filename)<SUB>146</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "filename"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"base_len\" {  \n\"111669149704\" [label = <(METHOD,base_len)<SUB>146</SUB>> ]\n\"128849018888\" [label = <(METHOD_RETURN,size_t)<SUB>146</SUB>> ]\n\"115964117001\" [label = <(PARAM,char const *filename)<SUB>146</SUB>> ]\n  \"115964117001\" -> \"128849018888\"  [ label = \"filename\"] \n  \"111669149704\" -> \"115964117001\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"base_len\" {  \n\"111669149704\" [label = <(METHOD,base_len)<SUB>146</SUB>> ]\n\"128849018888\" [label = <(METHOD_RETURN,size_t)<SUB>146</SUB>> ]\n  \"111669149704\" -> \"128849018888\" \n}\n"
+      ]
+    },
+    "strndup": {
+      "name": "strndup",
+      "fullname": "strndup",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 126,
+      "end_line": 126,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 126,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,strndup",
+                    "source_line_number": 126,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *__s)<SUB>126</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *__s)<SUB>126</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 126,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t __n",
+                  "fields": {
+                    "raw_text": "PARAM,size_t __n",
+                    "source_line_number": 126,
+                    "type": "size_t",
+                    "name": "__n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 126,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 126,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 126,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,strndup",
+                    "source_line_number": 126,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *__s)<SUB>126</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *__s)<SUB>126</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 126,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t __n",
+                  "fields": {
+                    "raw_text": "PARAM,size_t __n",
+                    "source_line_number": 126,
+                    "type": "size_t",
+                    "name": "__n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 126,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 126,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,strndup)<SUB>126</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,char*)<SUB>126</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,char const *__s)<SUB>126</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,size_t __n)<SUB>126</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "__s"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "__n"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"strndup\" {  \n\"111669149705\" [label = <(METHOD,strndup)<SUB>126</SUB>> ]\n\"128849018889\" [label = <(METHOD_RETURN,char*)<SUB>126</SUB>> ]\n\"115964117002\" [label = <(PARAM,char const *__s)<SUB>126</SUB>> ]\n\"115964117003\" [label = <(PARAM,size_t __n)<SUB>126</SUB>> ]\n  \"115964117002\" -> \"128849018889\"  [ label = \"__s\"] \n  \"115964117003\" -> \"128849018889\"  [ label = \"__n\"] \n  \"111669149705\" -> \"115964117002\" \n  \"111669149705\" -> \"115964117003\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"strndup\" {  \n\"111669149705\" [label = <(METHOD,strndup)<SUB>126</SUB>> ]\n\"128849018889\" [label = <(METHOD_RETURN,char*)<SUB>126</SUB>> ]\n  \"111669149705\" -> \"128849018889\" \n}\n"
+      ]
+    },
+    "aligned_alloc": {
+      "name": "aligned_alloc",
+      "fullname": "aligned_alloc",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 13,
+      "end_line": 13,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 13,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,aligned_alloc",
+                    "source_line_number": 13,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t alignment",
+                  "fields": {
+                    "raw_text": "PARAM,size_t alignment",
+                    "source_line_number": 13,
+                    "type": "size_t",
+                    "name": "alignment"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t size",
+                  "fields": {
+                    "raw_text": "PARAM,size_t size",
+                    "source_line_number": 13,
+                    "type": "size_t",
+                    "name": "size"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void*",
+                    "source_line_number": 13,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 13,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,aligned_alloc",
+                    "source_line_number": 13,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t alignment",
+                  "fields": {
+                    "raw_text": "PARAM,size_t alignment",
+                    "source_line_number": 13,
+                    "type": "size_t",
+                    "name": "alignment"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t size",
+                  "fields": {
+                    "raw_text": "PARAM,size_t size",
+                    "source_line_number": 13,
+                    "type": "size_t",
+                    "name": "size"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void*",
+                    "source_line_number": 13,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,aligned_alloc)<SUB>13</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,void*)<SUB>13</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,size_t alignment)<SUB>13</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,size_t size)<SUB>13</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "alignment"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "size"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"aligned_alloc\" {  \n\"111669149706\" [label = <(METHOD,aligned_alloc)<SUB>13</SUB>> ]\n\"128849018890\" [label = <(METHOD_RETURN,void*)<SUB>13</SUB>> ]\n\"115964117004\" [label = <(PARAM,size_t alignment)<SUB>13</SUB>> ]\n\"115964117005\" [label = <(PARAM,size_t size)<SUB>13</SUB>> ]\n  \"115964117004\" -> \"128849018890\"  [ label = \"alignment\"] \n  \"115964117005\" -> \"128849018890\"  [ label = \"size\"] \n  \"111669149706\" -> \"115964117004\" \n  \"111669149706\" -> \"115964117005\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"aligned_alloc\" {  \n\"111669149706\" [label = <(METHOD,aligned_alloc)<SUB>13</SUB>> ]\n\"128849018890\" [label = <(METHOD_RETURN,void*)<SUB>13</SUB>> ]\n  \"111669149706\" -> \"128849018890\" \n}\n"
+      ]
+    },
+    "rpl_strerror_r": {
+      "name": "rpl_strerror_r",
+      "fullname": "rpl_strerror_r",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 136,
+      "end_line": 136,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 136,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,rpl_strerror_r",
+                    "source_line_number": 136,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 136,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int errnum",
+                  "fields": {
+                    "raw_text": "PARAM,int errnum",
+                    "source_line_number": 136,
+                    "type": "int",
+                    "name": "errnum"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 136,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char *buf",
+                  "fields": {
+                    "raw_text": "PARAM,char *buf",
+                    "source_line_number": 136,
+                    "type": "char",
+                    "name": "*buf"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 136,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t buflen",
+                  "fields": {
+                    "raw_text": "PARAM,size_t buflen",
+                    "source_line_number": 136,
+                    "type": "size_t",
+                    "name": "buflen"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 136,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 136,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 136,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,rpl_strerror_r",
+                    "source_line_number": 136,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 136,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int errnum",
+                  "fields": {
+                    "raw_text": "PARAM,int errnum",
+                    "source_line_number": 136,
+                    "type": "int",
+                    "name": "errnum"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 136,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char *buf",
+                  "fields": {
+                    "raw_text": "PARAM,char *buf",
+                    "source_line_number": 136,
+                    "type": "char",
+                    "name": "*buf"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 136,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "size_t buflen",
+                  "fields": {
+                    "raw_text": "PARAM,size_t buflen",
+                    "source_line_number": 136,
+                    "type": "size_t",
+                    "name": "buflen"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 136,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 136,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,rpl_strerror_r)<SUB>136</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>136</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int errnum)<SUB>136</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,char *buf)<SUB>136</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(PARAM,size_t buflen)<SUB>136</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "errnum"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "buf"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "buflen"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"rpl_strerror_r\" {  \n\"111669149707\" [label = <(METHOD,rpl_strerror_r)<SUB>136</SUB>> ]\n\"128849018891\" [label = <(METHOD_RETURN,int)<SUB>136</SUB>> ]\n\"115964117006\" [label = <(PARAM,int errnum)<SUB>136</SUB>> ]\n\"115964117007\" [label = <(PARAM,char *buf)<SUB>136</SUB>> ]\n\"115964117008\" [label = <(PARAM,size_t buflen)<SUB>136</SUB>> ]\n  \"115964117006\" -> \"128849018891\"  [ label = \"errnum\"] \n  \"115964117007\" -> \"128849018891\"  [ label = \"buf\"] \n  \"115964117008\" -> \"128849018891\"  [ label = \"buflen\"] \n  \"111669149707\" -> \"115964117006\" \n  \"111669149707\" -> \"115964117007\" \n  \"111669149707\" -> \"115964117008\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"rpl_strerror_r\" {  \n\"111669149707\" [label = <(METHOD,rpl_strerror_r)<SUB>136</SUB>> ]\n\"128849018891\" [label = <(METHOD_RETURN,int)<SUB>136</SUB>> ]\n  \"111669149707\" -> \"128849018891\" \n}\n"
+      ]
+    },
+    "last_component": {
+      "name": "last_component",
+      "fullname": "last_component",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 141,
+      "end_line": 141,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 141,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,last_component",
+                    "source_line_number": 141,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *filename)<SUB>141</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *filename)<SUB>141</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 141,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 141,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 141,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,last_component",
+                    "source_line_number": 141,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,char const *filename)<SUB>141</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,char const *filename)<SUB>141</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 141,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 141,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,last_component)<SUB>141</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,char*)<SUB>141</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,char const *filename)<SUB>141</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "filename"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"last_component\" {  \n\"111669149708\" [label = <(METHOD,last_component)<SUB>141</SUB>> ]\n\"128849018892\" [label = <(METHOD_RETURN,char*)<SUB>141</SUB>> ]\n\"115964117009\" [label = <(PARAM,char const *filename)<SUB>141</SUB>> ]\n  \"115964117009\" -> \"128849018892\"  [ label = \"filename\"] \n  \"111669149708\" -> \"115964117009\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"last_component\" {  \n\"111669149708\" [label = <(METHOD,last_component)<SUB>141</SUB>> ]\n\"128849018892\" [label = <(METHOD_RETURN,char*)<SUB>141</SUB>> ]\n  \"111669149708\" -> \"128849018892\" \n}\n"
+      ]
+    },
+    "free": {
+      "name": "free",
+      "fullname": "free",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 88,
+      "end_line": 88,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 88,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,free",
+                    "source_line_number": 88,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 88,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "void *",
+                  "fields": {
+                    "raw_text": "PARAM,void *",
+                    "source_line_number": 88,
+                    "type": "void",
+                    "name": "*"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 88,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void",
+                    "source_line_number": 88,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 88,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,free",
+                    "source_line_number": 88,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 88,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "void *",
+                  "fields": {
+                    "raw_text": "PARAM,void *",
+                    "source_line_number": 88,
+                    "type": "void",
+                    "name": "*"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 88,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void",
+                    "source_line_number": 88,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,free)<SUB>88</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,void)<SUB>88</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,void *)<SUB>88</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": ""
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"free\" {  \n\"111669149709\" [label = <(METHOD,free)<SUB>88</SUB>> ]\n\"128849018893\" [label = <(METHOD_RETURN,void)<SUB>88</SUB>> ]\n\"115964117010\" [label = <(PARAM,void *)<SUB>88</SUB>> ]\n  \"115964117010\" -> \"128849018893\" \n  \"111669149709\" -> \"115964117010\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"free\" {  \n\"111669149709\" [label = <(METHOD,free)<SUB>88</SUB>> ]\n\"128849018893\" [label = <(METHOD_RETURN,void)<SUB>88</SUB>> ]\n  \"111669149709\" -> \"128849018893\" \n}\n"
+      ]
+    },
+    "canonicalize_file_name": {
+      "name": "canonicalize_file_name",
+      "fullname": "canonicalize_file_name",
+      "filename": "libgzip_a-stripslash.c",
+      "start_line": 28,
+      "end_line": 28,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 28,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,canonicalize_file_name",
+                    "source_line_number": 28,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,const char *name)<SUB>28</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,const char *name)<SUB>28</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 28,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 28,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 28,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,canonicalize_file_name",
+                    "source_line_number": 28,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,const char *name)<SUB>28</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,const char *name)<SUB>28</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 28,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,char*",
+                    "source_line_number": 28,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,canonicalize_file_name)<SUB>28</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,char*)<SUB>28</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,const char *name)<SUB>28</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "name"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"canonicalize_file_name\" {  \n\"111669149710\" [label = <(METHOD,canonicalize_file_name)<SUB>28</SUB>> ]\n\"128849018894\" [label = <(METHOD_RETURN,char*)<SUB>28</SUB>> ]\n\"115964117011\" [label = <(PARAM,const char *name)<SUB>28</SUB>> ]\n  \"115964117011\" -> \"128849018894\"  [ label = \"name\"] \n  \"111669149710\" -> \"115964117011\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"canonicalize_file_name\" {  \n\"111669149710\" [label = <(METHOD,canonicalize_file_name)<SUB>28</SUB>> ]\n\"128849018894\" [label = <(METHOD_RETURN,char*)<SUB>28</SUB>> ]\n  \"111669149710\" -> \"128849018894\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "64b78dfcef070303e1138670790e850f796362daf16b4f42df259c9f02d053f6",
+  "prepared_sha256": "64b78dfcef070303e1138670790e850f796362daf16b4f42df259c9f02d053f6",
+  "language": "c",
+  "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/decbench/libgzip_a-stripslash.c",
+  "capture_worker_sha256": "e4eecfc047738814e953ddf5bf1596048f4bbde50694071263cffaa65d18056c"
+}
