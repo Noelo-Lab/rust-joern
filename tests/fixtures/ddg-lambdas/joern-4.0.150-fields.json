@@ -1,0 +1,4107 @@
+{
+  "generator": "Original Joern 4.0.150 / dataflowOss and ReachingDefProblem",
+  "source_sha256": "17497d40fb69aa965868368538fddaf1f282bbd7cb0197aa6e2b6bb69a6f0002",
+  "capture_sha256": "2b7017b294c34caa687bbec7a59f87016053c434561cb2a05f88bf1ad2684178",
+  "methods": [
+    {
+      "name": "<lambda>0",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 7,
+            "code": "[this]() { return value; }",
+            "id": 0,
+            "column": 30,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "<lambda>0",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "{ return value; }",
+            "id": 1,
+            "column": 39,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "return value;",
+            "id": 2,
+            "column": 41,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "this->value",
+            "id": 3,
+            "column": 48,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "this",
+            "id": 4,
+            "column": 48,
+            "type_name": "Counter*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "value",
+            "id": 5,
+            "column": 48,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 6,
+            "column": 0,
+            "kind": "MODIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "RET",
+            "id": 7,
+            "column": 30,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 7,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "Counter.capture:int().<lambda>0",
+      "start_line": 7,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 3,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 4,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 5,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 7,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "<lambda>1",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 8,
+            "code": "[value]() { return value; }",
+            "id": 0,
+            "column": 47,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "<lambda>1",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "{ return value; }",
+            "id": 1,
+            "column": 57,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "return value;",
+            "id": 2,
+            "column": 59,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "value",
+            "id": 3,
+            "column": 66,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 4,
+            "column": 0,
+            "kind": "MODIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "RET",
+            "id": 5,
+            "column": 47,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          }
+        ]
+      },
+      "filename": "fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 8,
+      "signature": "ANY()",
+      "return_type": "ANY",
+      "fullname": "Counter.captured_shadow:int(int).<lambda>1",
+      "start_line": 8,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 3,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 5,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "get",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 3,
+            "code": "int get() const { return value; }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "get",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "{ return value; }",
+            "id": 2,
+            "column": 21,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "return value;",
+            "id": 3,
+            "column": 23,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "this->value",
+            "id": 4,
+            "column": 30,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "this",
+            "id": 5,
+            "column": 30,
+            "type_name": "Counter*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "value",
+            "id": 6,
+            "column": 30,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "RET",
+            "id": 7,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "code": "this",
+            "id": 8,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 3,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "Counter.get:int()",
+      "start_line": 3,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "step",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 4,
+            "code": "int step(int n) { for (int i = 0; i < n; ++i) value += i; return value; }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "step",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "int n",
+            "id": 2,
+            "column": 14,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "{ for (int i = 0; i < n; ++i) value += i; return value; }",
+            "id": 3,
+            "column": 21,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "for (int i = 0;i < n;++i)",
+            "id": 4,
+            "column": 23,
+            "kind": "CONTROL_STRUCTURE",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "",
+            "id": 5,
+            "column": 23,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "int i",
+            "id": 6,
+            "column": 32,
+            "type_name": "int",
+            "kind": "LOCAL",
+            "end_byte": 0,
+            "name": "i",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.assignment",
+            "code": "i = 0",
+            "id": 7,
+            "column": 32,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.assignment",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "i",
+            "id": 8,
+            "column": 32,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "i",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "0",
+            "id": 9,
+            "column": 36,
+            "type_name": "int",
+            "kind": "LITERAL",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.lessThan",
+            "code": "i < n",
+            "id": 10,
+            "column": 39,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.lessThan",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "i",
+            "id": 11,
+            "column": 39,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "i",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "n",
+            "id": 12,
+            "column": 43,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.preIncrement",
+            "code": "++i",
+            "id": 13,
+            "column": 46,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.preIncrement",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "i",
+            "id": 14,
+            "column": 48,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "i",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.assignmentPlus",
+            "code": "value += i",
+            "id": 15,
+            "column": 51,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.assignmentPlus",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "this->value",
+            "id": 16,
+            "column": 51,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "this",
+            "id": 17,
+            "column": 51,
+            "type_name": "Counter*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "value",
+            "id": 18,
+            "column": 51,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "i",
+            "id": 19,
+            "column": 60,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "i",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "return value;",
+            "id": 20,
+            "column": 63,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "this->value",
+            "id": 21,
+            "column": 70,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "this",
+            "id": 22,
+            "column": 70,
+            "type_name": "Counter*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "value",
+            "id": 23,
+            "column": 70,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "RET",
+            "id": 24,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "this",
+            "id": 25,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "code": "int n",
+            "id": 26,
+            "column": 14,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "n",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 24,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 25,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 26,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 19,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 22,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 25,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 17,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 25,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 25,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 21,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 16,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 22,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 24,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 26,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 2,
+            "target": 26,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 20,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 13,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 15,
+            "kind": "AST"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 24,
+            "kind": "REACHING_DEF",
+            "label": "i = 0"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "REF"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 9,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "0"
+          },
+          {
+            "source": 9,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "0"
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 10,
+            "target": 12,
+            "kind": "AST"
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 10,
+            "target": 12,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 10,
+            "target": 17,
+            "kind": "CFG"
+          },
+          {
+            "source": 10,
+            "target": 22,
+            "kind": "CFG"
+          },
+          {
+            "source": 10,
+            "target": 24,
+            "kind": "REACHING_DEF",
+            "label": "i < n"
+          },
+          {
+            "source": 11,
+            "target": 12,
+            "kind": "CFG"
+          },
+          {
+            "source": 11,
+            "target": 19,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 11,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 11,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 11,
+            "target": 24,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 12,
+            "target": 10,
+            "kind": "CFG"
+          },
+          {
+            "source": 12,
+            "target": 2,
+            "kind": "REF"
+          },
+          {
+            "source": 12,
+            "target": 26,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 12,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 12,
+            "target": 24,
+            "kind": "REACHING_DEF",
+            "label": "n"
+          },
+          {
+            "source": 13,
+            "target": 14,
+            "kind": "AST"
+          },
+          {
+            "source": 13,
+            "target": 14,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 13,
+            "target": 11,
+            "kind": "CFG"
+          },
+          {
+            "source": 13,
+            "target": 24,
+            "kind": "REACHING_DEF",
+            "label": "++i"
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "kind": "CFG"
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 14,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 15,
+            "target": 16,
+            "kind": "AST"
+          },
+          {
+            "source": 15,
+            "target": 19,
+            "kind": "AST"
+          },
+          {
+            "source": 15,
+            "target": 16,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 15,
+            "target": 19,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 15,
+            "target": 14,
+            "kind": "CFG"
+          },
+          {
+            "source": 15,
+            "target": 24,
+            "kind": "REACHING_DEF",
+            "label": "value += i"
+          },
+          {
+            "source": 16,
+            "target": 17,
+            "kind": "AST"
+          },
+          {
+            "source": 16,
+            "target": 18,
+            "kind": "AST"
+          },
+          {
+            "source": 16,
+            "target": 17,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 16,
+            "target": 18,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 16,
+            "target": 19,
+            "kind": "CFG"
+          },
+          {
+            "source": 16,
+            "target": 17,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 16,
+            "target": 25,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 16,
+            "target": 21,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 16,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 16,
+            "target": 22,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 16,
+            "target": 24,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 17,
+            "target": 18,
+            "kind": "CFG"
+          },
+          {
+            "source": 17,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 18,
+            "target": 16,
+            "kind": "CFG"
+          },
+          {
+            "source": 19,
+            "target": 15,
+            "kind": "CFG"
+          },
+          {
+            "source": 19,
+            "target": 14,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 19,
+            "target": 16,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 19,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "i"
+          },
+          {
+            "source": 20,
+            "target": 21,
+            "kind": "AST"
+          },
+          {
+            "source": 20,
+            "target": 21,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 20,
+            "target": 24,
+            "kind": "CFG"
+          },
+          {
+            "source": 20,
+            "target": 24,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 21,
+            "target": 22,
+            "kind": "AST"
+          },
+          {
+            "source": 21,
+            "target": 23,
+            "kind": "AST"
+          },
+          {
+            "source": 21,
+            "target": 22,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 21,
+            "target": 23,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 21,
+            "target": 20,
+            "kind": "CFG"
+          },
+          {
+            "source": 21,
+            "target": 20,
+            "kind": "REACHING_DEF",
+            "label": "this->value"
+          },
+          {
+            "source": 22,
+            "target": 23,
+            "kind": "CFG"
+          },
+          {
+            "source": 22,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 23,
+            "target": 21,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 4,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "Counter.step:int(int)",
+      "start_line": 4,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 2,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2,
+            7,
+            8
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            2,
+            7,
+            8,
+            10,
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            1,
+            2,
+            7,
+            8,
+            10,
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            2,
+            7,
+            8,
+            10,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 12,
+          "incoming": [
+            1,
+            2,
+            7,
+            8,
+            10,
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            2,
+            7,
+            8,
+            10,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 13,
+          "incoming": [
+            1,
+            7,
+            10,
+            12,
+            13,
+            15,
+            16,
+            19
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 14,
+          "incoming": [
+            1,
+            7,
+            10,
+            12,
+            13,
+            15,
+            16,
+            19
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            12,
+            13,
+            15,
+            16,
+            19
+          ]
+        },
+        {
+          "node": 15,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            12,
+            13,
+            15,
+            16,
+            19
+          ]
+        },
+        {
+          "node": 16,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 17,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 18,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 19,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 20,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 21,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 22,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 23,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 24,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 25,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        },
+        {
+          "node": 26,
+          "incoming": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ],
+          "outgoing": [
+            1,
+            7,
+            10,
+            11,
+            12,
+            13,
+            15,
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "name": "shadow",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 5,
+            "code": "int shadow(int value) { return value; }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "shadow",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "int value",
+            "id": 2,
+            "column": 16,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "{ return value; }",
+            "id": 3,
+            "column": 27,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "return value;",
+            "id": 4,
+            "column": 29,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "value",
+            "id": 5,
+            "column": 36,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "RET",
+            "id": 6,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "this",
+            "id": 7,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "code": "int value",
+            "id": 8,
+            "column": 16,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 2,
+            "kind": "REF"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          }
+        ]
+      },
+      "filename": "fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 5,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "Counter.shadow:int(int)",
+      "start_line": 5,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 2,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "name": "later_get",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 6,
+            "code": "int later_get() const { return later; }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "later_get",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "{ return later; }",
+            "id": 2,
+            "column": 27,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "return later;",
+            "id": 3,
+            "column": 29,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "this->later",
+            "id": 4,
+            "column": 36,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "this",
+            "id": 5,
+            "column": 36,
+            "type_name": "Counter*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "later",
+            "id": 6,
+            "column": 36,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "RET",
+            "id": 7,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 6,
+            "code": "this",
+            "id": 8,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "this->later"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 6,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "Counter.later_get:int()",
+      "start_line": 6,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "capture",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 7,
+            "code": "int capture() { auto f = [this]() { return value; }; return f(); }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "capture",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "{ auto f = [this]() { return value; }; return f(); }",
+            "id": 2,
+            "column": 19,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "auto f",
+            "id": 3,
+            "column": 26,
+            "type_name": "auto",
+            "kind": "LOCAL",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "method_full_name": "<operator>.assignment",
+            "code": "f = [this]() { return value; }",
+            "id": 4,
+            "column": 26,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.assignment",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "f",
+            "id": 5,
+            "column": 26,
+            "type_name": "auto",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "method_full_name": "Counter.capture:int().<lambda>0",
+            "code": "[this]() { return value; }",
+            "id": 6,
+            "column": 30,
+            "type_name": "Counter.capture:int().<lambda>0",
+            "kind": "METHOD_REF",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "return f();",
+            "id": 7,
+            "column": 58,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "method_full_name": "<operator>():int()",
+            "code": "f()",
+            "id": 8,
+            "column": 65,
+            "type_name": "int",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "f",
+            "id": 9,
+            "column": 65,
+            "type_name": "auto",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "RET",
+            "id": 10,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 7,
+            "code": "this",
+            "id": 11,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "f = [this]() { return value; }"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 3,
+            "kind": "REF"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "f"
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "f"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "[this]() { return value; }"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "[this]() { return value; }"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "f()"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "f()"
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 9,
+            "target": 3,
+            "kind": "REF"
+          }
+        ]
+      },
+      "filename": "fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 7,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "Counter.capture:int()",
+      "start_line": 7,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            4,
+            5
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            4,
+            5,
+            8
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            4,
+            5
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            4,
+            5
+          ],
+          "outgoing": [
+            1,
+            4,
+            5
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            4,
+            5,
+            8
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            1,
+            4,
+            5,
+            8
+          ],
+          "outgoing": [
+            1,
+            4,
+            5,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "name": "captured_shadow",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 8,
+            "code": "int captured_shadow(int value) { auto f = [value]() { return value; }; return f(); }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "captured_shadow",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "int value",
+            "id": 2,
+            "column": 25,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "{ auto f = [value]() { return value; }; return f(); }",
+            "id": 3,
+            "column": 36,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "auto f",
+            "id": 4,
+            "column": 43,
+            "type_name": "auto",
+            "kind": "LOCAL",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "method_full_name": "<operator>.assignment",
+            "code": "f = [value]() { return value; }",
+            "id": 5,
+            "column": 43,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.assignment",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "f",
+            "id": 6,
+            "column": 43,
+            "type_name": "auto",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "method_full_name": "Counter.captured_shadow:int(int).<lambda>1",
+            "code": "[value]() { return value; }",
+            "id": 7,
+            "column": 47,
+            "type_name": "Counter.captured_shadow:int(int).<lambda>1",
+            "kind": "METHOD_REF",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "return f();",
+            "id": 8,
+            "column": 76,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "method_full_name": "<operator>():int()",
+            "code": "f()",
+            "id": 9,
+            "column": 83,
+            "type_name": "int",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>()",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "f",
+            "id": 10,
+            "column": 83,
+            "type_name": "auto",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "f",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "RET",
+            "id": 11,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "int value",
+            "id": 12,
+            "column": 25,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "value",
+            "start_byte": 0
+          },
+          {
+            "line": 8,
+            "code": "this",
+            "id": 13,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 13,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "value"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "f = [value]() { return value; }"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REF"
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "f"
+          },
+          {
+            "source": 6,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "f"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "[value]() { return value; }"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "[value]() { return value; }"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "kind": "RECEIVER"
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "f()"
+          },
+          {
+            "source": 9,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "f()"
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 10,
+            "target": 4,
+            "kind": "REF"
+          }
+        ]
+      },
+      "filename": "fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 8,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "Counter.captured_shadow:int(int)",
+      "start_line": 8,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 2,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            2,
+            5,
+            6,
+            9
+          ],
+          "outgoing": [
+            1,
+            2,
+            5,
+            6,
+            9
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            2,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            2,
+            5,
+            6,
+            9
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            2,
+            5,
+            6
+          ],
+          "outgoing": [
+            1,
+            2,
+            5,
+            6
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            1,
+            2,
+            5,
+            6,
+            9
+          ],
+          "outgoing": [
+            1,
+            2,
+            5,
+            6,
+            9
+          ]
+        },
+        {
+          "node": 12,
+          "incoming": [
+            1,
+            2,
+            5,
+            6,
+            9
+          ],
+          "outgoing": [
+            1,
+            2,
+            5,
+            6,
+            9
+          ]
+        },
+        {
+          "node": 13,
+          "incoming": [
+            1,
+            2,
+            5,
+            6,
+            9
+          ],
+          "outgoing": [
+            1,
+            2,
+            5,
+            6,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "name": "static_get",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 11,
+            "code": "static int static_get() { return shared; }",
+            "id": 0,
+            "column": 5,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "static_get",
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "this",
+            "id": 1,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "{ return shared; }",
+            "id": 2,
+            "column": 29,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "return shared;",
+            "id": 3,
+            "column": 31,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "shared",
+            "id": 4,
+            "column": 38,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "shared",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "code": "",
+            "id": 5,
+            "column": 0,
+            "kind": "MODIFIER",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "RET",
+            "id": 6,
+            "column": 5,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "start_byte": 0
+          },
+          {
+            "line": 11,
+            "code": "this",
+            "id": 7,
+            "column": 5,
+            "type_name": "Counter",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "this",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "this"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT",
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "shared"
+          }
+        ]
+      },
+      "filename": "fields.cpp",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 11,
+      "signature": "int()",
+      "return_type": "int",
+      "fullname": "Counter.static_get:int()",
+      "start_line": 11,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    }
+  ]
+}

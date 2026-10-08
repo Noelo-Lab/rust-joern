@@ -1,0 +1,26 @@
+{
+  "generator": "Original Joern 4.0.150 / c2cpg",
+  "methods": [
+    {
+      "name": "f",
+      "fullname": "n.A.f:int(int)",
+      "signature": "int(int)",
+      "filename": "namespaced.cpp",
+      "return_type": "int"
+    },
+    {
+      "name": "id",
+      "fullname": "n.id:ANY(ANY)",
+      "signature": "T(T)",
+      "filename": "namespaced.cpp",
+      "return_type": "T"
+    },
+    {
+      "name": "f",
+      "fullname": "n.A.f:int()",
+      "signature": "int()",
+      "filename": "using.cpp",
+      "return_type": "int"
+    }
+  ]
+}

@@ -75,6 +75,11 @@ struct Builder<'a> {
     functions: &'a HashSet<String>,
     methods: &'a HashMap<String, Vec<&'a Function>>,
     function_pointers: HashSet<NodeId>,
+    closures: HashMap<NodeId, Closure>,
+    inherited_bindings: HashMap<String, String>,
+    inherited_closures: HashMap<String, Closure>,
+    implicit_fields: HashMap<String, String>,
+    lambda: bool,
     method_scope: String,
     diagnostics: Vec<Diagnostic>,
     try_depth: usize,
@@ -97,6 +102,11 @@ pub fn build(
         functions: known_functions,
         methods,
         function_pointers: HashSet::new(),
+        closures: HashMap::new(),
+        inherited_bindings: function.inherited_bindings.iter().cloned().collect(),
+        inherited_closures: function.inherited_closures.iter().cloned().collect(),
+        implicit_fields: function.implicit_fields.iter().cloned().collect(),
+        lambda: function.lambda,
         method_scope: function.full_name.split(':').next().unwrap_or("")
             .rsplit_once('.').map(|(scope, _)| scope.to_string()).unwrap_or_default(),
         diagnostics: Vec::new(),
@@ -128,7 +138,9 @@ pub fn build(
             builder.function_pointers.insert(id);
         }
         builder.ast(entry, id, None);
-        builder.scopes[0].insert(parameter.name.clone(), (id, parameter.type_name.clone()));
+        if !function.lambda {
+            builder.scopes[0].insert(parameter.name.clone(), (id, parameter.type_name.clone()));
+        }
     }
     let body = if matches!(function.body.kind, StmtKind::Empty) {
         // Function declarations still have a body container in Joern's CPG.
@@ -138,6 +150,10 @@ pub fn build(
     } else {
         builder.statement(&function.body, entry, false)
     };
+    if function.lambda || function.is_static {
+        let modifier = builder.node("MODIFIER", &Span::default(), None, Some(""));
+        builder.ast(entry, modifier, None);
+    }
     builder.ast(entry, exit, None);
     let mut flow = Fragment::single(entry)
         .append(body)
@@ -171,6 +187,7 @@ pub fn build(
         cpg: builder.graph,
         cfg,
         ddg: None,
+        ddg_view: None,
         reaching_definitions: None,
     };
     (graph, builder.diagnostics)
@@ -188,7 +205,7 @@ impl Builder<'_> {
             code: code.unwrap_or_else(|| self.code(span)).into(),
             name: name.map(str::to_string),
             method_full_name: (kind == "CALL")
-                .then(|| name.filter(|name| !self.cpp || name.starts_with("<operator>.")))
+                .then(|| name.filter(|name| !self.cpp || name.starts_with("<operator>.") || name.starts_with("<operators>.")))
                 .flatten()
                 .map(str::to_string),
             cfg_nop: matches!(kind, "METHOD" | "METHOD_RETURN" | "METHOD_REF").then_some(true),
@@ -239,8 +256,33 @@ impl Builder<'_> {
         if let Some((target, type_name)) = binding {
             self.graph.nodes[id as usize].type_name = Some(type_name);
             self.edge(id, target, "REF", None);
+        } else if let Some(type_name) = self.inherited_bindings.get(name) {
+            self.graph.nodes[id as usize].type_name = Some(type_name.clone());
+        } else if self.lambda {
+            self.graph.nodes[id as usize].type_name = Some("ANY".into());
         }
         id
+    }
+    fn declaration_identifier(&mut self, declaration: &Declaration, parent: NodeId, argument: usize) -> NodeId {
+        let mut span = declaration.span.clone();
+        // A declarator starts at its pointer/reference operators, while CDT's
+        // generated initializer LHS identifier starts at the declared name.
+        if let Some(offset) = self.code(&span).match_indices(&declaration.name).find_map(|(offset, _)| {
+            let code = self.code(&span);
+            let word = |c: char| c == '_' || c.is_alphanumeric();
+            let before = code[..offset].chars().next_back();
+            let after = code[offset + declaration.name.len()..].chars().next();
+            (!before.is_some_and(word) && !after.is_some_and(word)).then_some(offset)
+        }) {
+            let prefix = &self.code(&span)[..offset];
+            let newlines = prefix.bytes().filter(|&byte| byte == b'\n').count();
+            span.line += newlines;
+            span.column = prefix.rsplit_once('\n').map_or(span.column + offset, |(_, tail)| tail.len() + 1);
+            span.start += offset;
+            span.end = span.start + declaration.name.len();
+            span.end_line = span.line;
+        }
+        self.identifier(&declaration.name, &span, parent, Some(argument))
     }
     fn finish_cfg_statement_kinds(&mut self) {
         let mut parents = vec![None; self.graph.nodes.len()];
@@ -309,6 +351,9 @@ impl Builder<'_> {
                 update.as_ref().map(|x| self.code(&x.span)).unwrap_or(""),
             )),
             StmtKind::Try { .. } if name == "TRY" => Some("try".into()),
+            StmtKind::Throw(expression) => Some(expression.as_ref()
+                .map(|expression| format!("throw {}", self.code(&expression.span)))
+                .unwrap_or_else(|| "throw".into())),
             _ => None,
         };
         let id = self.node("CONTROL_STRUCTURE", &statement.span, Some(name), code.as_deref());
@@ -340,6 +385,21 @@ impl Builder<'_> {
             ExprKind::MacroCall { name, arguments, expansion, arity } => {
                 self.macro_call(name, arguments, expansion, *arity, span, parent, argument)
             }
+            ExprKind::Identifier(name) if self.cpp && self.binding(name).is_none()
+                && !self.inherited_bindings.contains_key(name)
+                && self.implicit_fields.contains_key(name)
+                && (self.binding("this").is_some() || self.inherited_bindings.contains_key("this")) => {
+                let id = self.node("CALL", span, Some("<operator>.indirectFieldAccess"), Some(&format!("this->{name}")));
+                self.ast(parent, id, argument);
+                let this = self.identifier("this", span, id, Some(1));
+                // Type recovery gives the generated this expression a pointer
+                // to its owner, while the implicit parameter keeps owner type.
+                let owner = self.binding("this").map(|(_, ty)| ty).or_else(|| self.inherited_bindings.get("this"));
+                self.graph.nodes[this as usize].type_name = owner.map(|ty| format!("{}*", ty.trim_end_matches('*')));
+                let field = self.node("FIELD_IDENTIFIER", span, Some(name), Some(name));
+                self.ast(id, field, Some(2));
+                Fragment::single(this).append(Fragment::single(field)).append(Fragment::single(id))
+            }
             ExprKind::Identifier(name) if self.cpp && name.contains("::") => {
                 let names: Vec<_> = name.split("::").filter(|name| !name.is_empty()).collect();
                 let Some((&member, qualifier)) = names.split_last() else {
@@ -363,6 +423,13 @@ impl Builder<'_> {
             }
             ExprKind::Literal(value) => {
                 let id = self.node("LITERAL", span, None, Some(value));
+                self.ast(parent, id, argument);
+                Fragment::single(id)
+            }
+            ExprKind::Lambda(closure) => {
+                let id = self.node("METHOD_REF", span, None, None);
+                self.graph.nodes[id as usize].method_full_name = Some(closure.full_name.clone());
+                self.graph.nodes[id as usize].type_name = Some(closure.full_name.clone());
                 self.ast(parent, id, argument);
                 Fragment::single(id)
             }
@@ -463,7 +530,8 @@ impl Builder<'_> {
                 result.append(Fragment::single(id))
             }
             ExprKind::Call { callee, arguments } => {
-                let pointer = match &callee.kind {
+                let closure = self.closure_for_expression(callee).cloned();
+                let pointer = closure.is_none() && match &callee.kind {
                     ExprKind::Identifier(name) => {
                         self.binding(name).is_some_and(|(id, ty)|
                             ty.contains('*') || self.function_pointers.contains(id))
@@ -471,7 +539,9 @@ impl Builder<'_> {
                     ExprKind::Member { .. } => !self.cpp,
                     _ => true,
                 };
-                let name = if pointer {
+                let name = if closure.is_some() {
+                    "<operator>()"
+                } else if pointer {
                     "<operator>.pointerCall"
                 } else { match &callee.kind {
                     ExprKind::Identifier(name) if self.cpp => name.rsplit("::").next().unwrap(),
@@ -480,17 +550,21 @@ impl Builder<'_> {
                     _ => "<operator>.pointerCall",
                 }};
                 let id = self.node("CALL", span, Some(name), None);
-                if !pointer {
-                    if let Some((fullname, return_type)) = self.resolve_call(callee, arguments)
+                if let Some(closure) = &closure {
+                    self.graph.nodes[id as usize].method_full_name = Some(format!(
+                        "<operator>():{}({})", closure.return_type, closure.parameter_types.join(","),
+                    ));
+                    self.graph.nodes[id as usize].type_name = Some(closure.return_type.clone());
+                } else if !pointer
+                    && let Some((fullname, return_type)) = self.resolve_call(callee, arguments)
                         .map(|method| (method.full_name.clone(), method.return_type.clone()))
-                    {
+                {
                         self.graph.nodes[id as usize].method_full_name = Some(fullname);
                         self.graph.nodes[id as usize].type_name = Some(return_type);
-                    }
                 }
                 self.ast(parent, id, argument);
                 let mut flow = Fragment::default();
-                if pointer {
+                if pointer || closure.is_some() {
                     let receiver = self.graph.nodes.len() as NodeId;
                     flow = self.expression(callee, id, None);
                     if self.graph.nodes.len() != receiver as usize {
@@ -571,10 +645,9 @@ impl Builder<'_> {
             ExprKind::Statement(statement) => {
                 let before = self.graph.nodes.len();
                 let flow = self.statement(statement, parent, false);
-                if self.graph.nodes.len() != before {
-                    if let Some(argument) = argument {
+                if self.graph.nodes.len() != before
+                    && let Some(argument) = argument {
                         self.edge(parent, before as NodeId, "ARGUMENT", Some(argument.to_string()));
-                    }
                 }
                 flow
             }
@@ -595,6 +668,16 @@ impl Builder<'_> {
                 node.name.as_deref(),
                 Some("<operator>.conditional" | "<operator>.logicalAnd" | "<operator>.logicalOr")
             )
+    }
+    fn closure_for_expression<'a>(&'a self, expression: &'a Expr) -> Option<&'a Closure> {
+        match &expression.kind {
+            ExprKind::Lambda(closure) => Some(closure),
+            ExprKind::Identifier(name) => self.binding(name).and_then(|(id, _)| self.closures.get(id))
+                .or_else(|| self.inherited_closures.get(name)),
+            ExprKind::Bracketed(inner) | ExprKind::Generated {expression: inner, ..} => self.closure_for_expression(inner),
+            ExprKind::Unary {op, argument, ..} if matches!(op.as_str(), "*" | "&") => self.closure_for_expression(argument),
+            _ => None,
+        }
     }
     fn resolve_call(&self, callee: &Expr, arguments: &[Expr]) -> Option<&Function> {
         let mut keys = Vec::new();
@@ -633,10 +716,9 @@ impl Builder<'_> {
                     self.expression_type(argument).is_some_and(|ty| ty == parameter.type_name)
                 })
             });
-            if let Some(method) = typed.next() {
-                if typed.next().is_none() {
+            if let Some(method) = typed.next()
+                && typed.next().is_none() {
                     return Some(method);
-                }
             }
         }
         None
@@ -680,6 +762,7 @@ impl Builder<'_> {
             .append(self.qualified_owner(tail, span, id, Some(2)))
             .append(Fragment::single(id))
     }
+    #[allow(clippy::too_many_arguments)] // Syntax and AST placement are independent macro inputs.
     fn macro_call(
         &mut self,
         name: &str,
@@ -766,7 +849,7 @@ impl Builder<'_> {
                 );
                 self.graph.nodes[assignment as usize].type_name = Some(declaration.type_name.clone());
                 self.ast(parent, assignment, None);
-                let lhs = self.identifier(&declaration.name, &declaration.span, assignment, Some(1));
+                let lhs = self.declaration_identifier(declaration, assignment, 1);
                 let allocation = self.node(
                     "CALL", &declaration.span, Some("<operator>.alloc"), None,
                 );
@@ -785,6 +868,7 @@ impl Builder<'_> {
                 continue;
             }
             if let Some(initializer) = &declaration.initializer {
+                let closure = self.closure_for_expression(initializer).cloned();
                 let code = self.code(&declaration.span).to_string();
                 let id = self.node(
                     "CALL",
@@ -793,13 +877,17 @@ impl Builder<'_> {
                     Some(&code),
                 );
                 self.ast(parent, id, None);
-                let lhs = self.identifier(&declaration.name, &declaration.span, id, Some(1));
+                let lhs = self.declaration_identifier(declaration, id, 1);
                 let rhs = self.expression(initializer, id, Some(2));
                 flow = flow.append(
                     Fragment::single(lhs)
                         .append(rhs)
                         .append(Fragment::single(id)),
                 );
+                if let Some(closure) = closure
+                    && let Some(&(local, _)) = self.binding(&declaration.name) {
+                    self.closures.insert(local, closure);
+                }
             }
         }
         flow
@@ -1013,6 +1101,10 @@ impl Builder<'_> {
                     .as_ref()
                     .map(|initial| self.statement(initial, initial_block, false))
                     .unwrap_or_default();
+                // c2cpg converts the initializer in its own block scope and
+                // pops it before visiting the condition, update and body.
+                self.scopes.pop();
+                self.scopes.push(HashMap::new());
                 let has_condition = condition.is_some();
                 let has_update = update.is_some();
                 let compound_body = matches!(body.kind, StmtKind::Block(_));
@@ -1223,12 +1315,12 @@ fn binary_operator(operator: &str) -> &str {
         "-=" => "<operator>.assignmentMinus",
         "*=" => "<operator>.assignmentMultiplication",
         "/=" => "<operator>.assignmentDivision",
-        "%=" => "<operator>.assignmentModulo",
-        "&=" => "<operator>.assignmentAnd",
-        "|=" => "<operator>.assignmentOr",
-        "^=" => "<operator>.assignmentXor",
-        "<<=" => "<operator>.assignmentShiftLeft",
-        ">>=" => "<operator>.assignmentArithmeticShiftRight",
+        "%=" => "<operators>.assignmentModulo",
+        "&=" => "<operators>.assignmentAnd",
+        "|=" => "<operators>.assignmentOr",
+        "^=" => "<operators>.assignmentXor",
+        "<<=" => "<operators>.assignmentShiftLeft",
+        ">>=" => "<operators>.assignmentArithmeticShiftRight",
         "+" => "<operator>.addition",
         "-" => "<operator>.subtraction",
         "*" => "<operator>.multiplication",
@@ -1256,6 +1348,82 @@ mod tests {
     use crate::{analyze, graph::Options};
     use serde_json::Value;
     use std::collections::HashMap;
+
+    fn oracle_node_keys(graph: &crate::graph::FunctionGraph) -> HashMap<u32, String> {
+        graph.cpg.nodes.iter().map(|node| {
+            let symbol = matches!(node.kind.as_str(), "CALL" | "IDENTIFIER" | "LOCAL" | "METHOD" | "METHOD_PARAMETER_IN" | "METHOD_PARAMETER_OUT")
+                .then(|| node.name.as_deref().unwrap_or(""));
+            // CONTROL_STRUCTURE formatting is independent of its expression
+            // children and does not participate in CFG or dependence edges.
+            let code = if node.kind == "CONTROL_STRUCTURE" { "" } else { &node.code };
+            (node.id, serde_json::to_string(&(&node.kind, code, symbol, node.line, node.column)).unwrap())
+        }).collect()
+    }
+
+    fn assert_frontend_dependence_oracle(source: &str, filename: &str, oracle: &str) {
+        use crate::graph::FunctionGraph;
+        use std::collections::{BTreeMap, BTreeSet};
+        let reference: Value = serde_json::from_str(oracle).unwrap();
+        assert_eq!(reference["generator"], "Original Joern 4.0.150 / dataflowOss and ReachingDefProblem");
+        let expected: Vec<FunctionGraph> = serde_json::from_value(reference["methods"].clone()).unwrap();
+        let actual = analyze(source, filename, &Options {
+            strict: true, data_flow: true, reaching_definitions: true, ..Options::default()
+        }).unwrap();
+        assert_eq!(actual.functions.len(), expected.len(), "method coverage");
+        for original in expected {
+            let native = actual.functions.iter().find(|function| function.fullname == original.fullname)
+                .unwrap_or_else(|| panic!("missing {}", original.fullname));
+            assert_eq!(native.signature, original.signature, "{} signature", original.fullname);
+            assert_eq!(native.return_type, original.return_type, "{} return type", original.fullname);
+            let old_keys = oracle_node_keys(&original);
+            let new_keys = oracle_node_keys(native);
+            for keys in [&old_keys, &new_keys] {
+                assert_eq!(keys.len(), keys.values().collect::<BTreeSet<_>>().len(), "ambiguous source identities");
+            }
+            assert_eq!(new_keys.values().collect::<BTreeSet<_>>(), old_keys.values().collect::<BTreeSet<_>>(), "{} nodes", original.fullname);
+            let edge_keys = |function: &FunctionGraph, keys: &HashMap<u32, String>, kind| {
+                function.cpg.edges.iter().filter(|edge| edge.kind == kind).map(|edge| {
+                    let label = if kind == "ARGUMENT" && function.cpg.nodes[edge.source as usize].kind == "RETURN" {
+                        ""
+                    } else { edge.label.as_deref().unwrap_or("") };
+                    (keys[&edge.source].clone(), keys[&edge.target].clone(), label.to_string())
+                }).collect::<BTreeSet<_>>()
+            };
+            for kind in ["AST", "ARGUMENT", "RECEIVER", "CFG", "REF", "PARAMETER_LINK", "REACHING_DEF"] {
+                assert_eq!(edge_keys(native, &new_keys, kind), edge_keys(&original, &old_keys, kind), "{} {kind}", original.fullname);
+            }
+            let sets = |function: &FunctionGraph, keys: &HashMap<u32, String>| {
+                function.reaching_definitions.as_ref().unwrap().iter().map(|definition| {
+                    (keys[&definition.node].clone(), (
+                        definition.incoming.iter().map(|node| keys[node].clone()).collect::<BTreeSet<_>>(),
+                        definition.outgoing.iter().map(|node| keys[node].clone()).collect::<BTreeSet<_>>(),
+                    ))
+                }).collect::<BTreeMap<_, _>>()
+            };
+            assert_eq!(sets(native, &new_keys), sets(&original, &old_keys), "{} reaching-definition sets", original.fullname);
+            for old in original.cpg.nodes.iter().filter(|node| node.kind == "METHOD_REF" || node.name.as_deref() == Some("<operator>()") || original.name.starts_with("<lambda>") && node.kind == "IDENTIFIER") {
+                let new = native.cpg.nodes.iter().find(|node| new_keys[&node.id] == old_keys[&old.id]).unwrap();
+                assert_eq!(new.method_full_name, old.method_full_name, "{} method identity", original.fullname);
+                assert_eq!(new.type_name, old.type_name, "{} type", original.fullname);
+            }
+        }
+    }
+
+    #[test]
+    fn cpp_lambda_cfg_receivers_bindings_and_dependence_match_original_joern() {
+        assert_frontend_dependence_oracle(
+            include_str!("../tests/fixtures/ddg-lambdas/lambdas.cpp"), "lambdas.cpp",
+            include_str!("../tests/fixtures/ddg-lambdas/joern-4.0.150.json"),
+        );
+    }
+
+    #[test]
+    fn cpp_implicit_fields_and_this_capture_match_original_joern() {
+        assert_frontend_dependence_oracle(
+            include_str!("../tests/fixtures/ddg-lambdas/fields.cpp"), "fields.cpp",
+            include_str!("../tests/fixtures/ddg-lambdas/joern-4.0.150-fields.json"),
+        );
+    }
 
     fn assert_oracle(source: &str, oracle: &str) {
         let reference: Value = serde_json::from_str(oracle).unwrap();
