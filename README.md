@@ -155,6 +155,23 @@ original public statement graph and labeled DOT graph must match exactly.
 The source manifest, reference provenance, and final candidate hashes are
 recorded in [the summary](reports/ddg-parity/summary.json).
 
+## Inspect CFG pairs in the browser
+
+```sh
+python3 scripts/cfg_compare.py serve
+```
+
+Open `http://127.0.0.1:8765` to compare original PyJoern and Rust CFGs side by
+side. The viewer bundles 24 randomly sampled DecBench functions from eight
+inputs, so viewing them needs only Python 3.10+ and a browser. Select a node to
+inspect its counterpart, toggle attributes, or inspect prepared source and
+capture provenance. Directed topology and attribute agreement are reported
+separately: these samples match topology but expose public node-attribute
+differences, including statement classes and raw text.
+
+See [the viewer instructions](tools/cfg-compare/README.md) to capture another
+random sample, reproduce the recorded seed, or export and import pairs.
+
 ## O0/O2 corpus audit
 
 The [latest audit](reports/decbench-parity-latest/README.md) records the final
