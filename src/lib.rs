@@ -24,6 +24,19 @@ pub fn analyze_sources(sources: &[(&str, &str)], options: &Options) -> Result<An
         .iter()
         .map(|&(source, filename)| build_source(source, filename, options))
         .collect::<Result<Vec<_>, _>>()?;
+    // Joern emits source declarations only when no matching definition was
+    // recovered from any translation unit. Empty definitions are still real
+    // definitions, even though their CFG qualifies as a data-flow stub.
+    let defined_methods: HashSet<_> = units
+        .iter()
+        .flat_map(|unit| unit.defined_methods.iter().cloned())
+        .collect();
+    for unit in &mut units {
+        unit.functions.retain(|function| {
+            !unit.prototype_methods.contains(&function.fullname)
+                || !defined_methods.contains(&function.fullname)
+        });
+    }
     let internal_methods: HashSet<_> = units
         .iter()
         .flat_map(|unit| unit.internal_methods.iter().cloned())
@@ -84,6 +97,8 @@ struct BuiltSource {
     functions: Vec<FunctionGraph>,
     diagnostics: Vec<Diagnostic>,
     internal_methods: HashSet<String>,
+    prototype_methods: HashSet<String>,
+    defined_methods: HashSet<String>,
 }
 
 fn build_source(source: &str, filename: &str, options: &Options) -> Result<BuiltSource, String> {
@@ -164,6 +179,18 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
         // Source declarations are internal methods too, even when their CFG
         // is a stub. The DDG exporter uses these when hiding call arguments.
         internal_methods: unit.functions.iter().map(|f| f.full_name.clone()).collect(),
+        prototype_methods: unit
+            .functions
+            .iter()
+            .filter(|f| matches!(f.body.kind, syntax::StmtKind::Empty))
+            .map(|f| f.full_name.clone())
+            .collect(),
+        defined_methods: unit
+            .functions
+            .iter()
+            .filter(|f| !matches!(f.body.kind, syntax::StmtKind::Empty))
+            .map(|f| f.full_name.clone())
+            .collect(),
     })
 }
 

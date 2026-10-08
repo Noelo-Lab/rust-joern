@@ -49,6 +49,7 @@ fn options() -> Options {
 fn assert_matches_oracle(analysis: &Analysis) {
     let oracle = oracle();
     assert_eq!(oracle.len(), 2);
+    assert_eq!(analysis.functions.len(), oracle.len());
     for expected in oracle {
         let actual = analysis
             .functions
@@ -109,6 +110,9 @@ fn global_callee_context_is_confined_to_each_analysis() {
     let joined = analyze_sources(&[(CALLER, "caller.c"), (BODY, "body.c")], &options()).unwrap();
     let isolated = analyze_sources(&[(CALLER, "caller.c")], &options()).unwrap();
     let legacy = analyze(CALLER, "caller.c", &options()).unwrap();
+    assert_eq!(joined.functions.len(), 2);
+    assert_eq!(isolated.functions.len(), 2);
+    assert_eq!(legacy.functions.len(), 2);
     let caller =
         |functions: Vec<FunctionGraph>| functions.into_iter().find(|f| f.name == "caller").unwrap();
     let joined_edges = edges(&caller(joined.functions).cpg, "REACHING_DEF");
@@ -119,6 +123,58 @@ fn global_callee_context_is_confined_to_each_analysis() {
         isolated_edges,
         edges(&caller(legacy.functions).cpg, "REACHING_DEF")
     );
+}
+
+#[test]
+fn directory_reconciles_prototypes_against_empty_definitions_but_preserves_unresolved_methods() {
+    let sources = [
+        ("void empty(int x); void missing(int x);", "declarations.c"),
+        ("void empty(int x) {}", "body.c"),
+    ];
+    let analysis = analyze_sources(&sources, &options()).unwrap();
+    assert_eq!(analysis.functions.len(), 2);
+    let empty = analysis
+        .functions
+        .iter()
+        .find(|f| f.name == "empty")
+        .unwrap();
+    assert_eq!(empty.filename, "body.c");
+    assert!(empty.cpg.edges.iter().any(|e| e.kind == "CFG"
+        && empty.cpg.nodes[e.source as usize].kind == "METHOD"
+        && empty.cpg.nodes[e.target as usize].kind == "METHOD_RETURN"));
+    let missing = analysis
+        .functions
+        .iter()
+        .find(|f| f.name == "missing")
+        .unwrap();
+    assert_eq!(missing.filename, "declarations.c");
+}
+
+#[test]
+fn directory_matches_full_overload_identity_when_reconciling_cpp_prototypes() {
+    let sources = [
+        (
+            "int overloaded(int x); int overloaded(char x);",
+            "declarations.cpp",
+        ),
+        ("int overloaded(int x) { return x; }", "body.cpp"),
+    ];
+    let analysis = analyze_sources(&sources, &options()).unwrap();
+    assert_eq!(analysis.functions.len(), 2);
+    let definitions: Vec<_> = analysis
+        .functions
+        .iter()
+        .filter(|f| f.filename == "body.cpp")
+        .collect();
+    assert_eq!(definitions.len(), 1);
+    assert_eq!(definitions[0].signature, "int(int)");
+    let declarations: Vec<_> = analysis
+        .functions
+        .iter()
+        .filter(|f| f.filename == "declarations.cpp")
+        .collect();
+    assert_eq!(declarations.len(), 1);
+    assert_eq!(declarations[0].signature, "int(char)");
 }
 
 fn argument_flows_to_call(function: &FunctionGraph) -> bool {
@@ -181,6 +237,7 @@ fn batch_preserves_disabled_dataflow_strictness_and_preprocessed_options() {
         &Options::default(),
     )
     .unwrap();
+    assert_eq!(disabled.functions.len(), 2);
     assert!(
         disabled
             .functions

@@ -46,7 +46,11 @@ class DirectoryDataflowTests(unittest.TestCase):
         cls.oracle = json.loads((FIXTURES / "joern-4.0.150.json").read_text())["methods"]
 
     def assert_matches_oracle(self, functions):
+        functions = list(functions)
         self.assertEqual(len(self.oracle), 2)
+        self.assertEqual(len(functions), len(self.oracle))
+        self.assertEqual({(f.fullname, f.filename.name) for f in functions},
+                         {(f["fullname"], f["filename"]) for f in self.oracle})
         for expected in self.oracle:
             actual = next(f for f in functions if f.fullname == expected["fullname"]
                           and f.filename.name == expected["filename"])
@@ -83,6 +87,8 @@ class DirectoryDataflowTests(unittest.TestCase):
             ))
             legacy = rust_joern.parse_code(caller, filename="caller.c", data_flow=True, strict=True)
         self.assert_matches_oracle(joined.functions)
+        self.assertEqual(len(isolated.functions), 2)
+        self.assertEqual(len(legacy.functions), 2)
         joined_caller = next(f for f in joined.functions if f.name == "caller")
         isolated_caller = next(f for f in isolated.functions if f.name == "caller")
         legacy_caller = next(f for f in legacy.functions if f.name == "caller")
@@ -96,6 +102,7 @@ class DirectoryDataflowTests(unittest.TestCase):
         functions = rust_joern.parse_source(FIXTURES, no_ddg=True, no_cfg=True, no_ast=True,
                                            no_metadata=True, strict=True)
         self.assertTrue(functions)
+        self.assertEqual(len(functions), 2)
         for function in functions.values():
             self.assertIsNone(function.ddg)
             self.assertIsNone(function.ddg_raw)
@@ -112,6 +119,23 @@ class DirectoryDataflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             with patch.object(rust_joern, "_library", side_effect=AssertionError("empty directory needs no library")):
                 self.assertEqual(rust_joern.parse_source(directory), {})
+
+    def test_directory_keeps_empty_definitions_unresolved_prototypes_and_distinct_overloads(self):
+        sources = [
+            ("void empty(int x); void missing(int x);", "declarations.c"),
+            ("void empty(int x) {}", "body.c"),
+            ("int overloaded(int x); int overloaded(char x);", "declarations.cpp"),
+            ("int overloaded(int x) { return x; }", "body.cpp"),
+        ]
+        for data_flow in (False, True):
+            with self.subTest(data_flow=data_flow):
+                result = rust_joern.Analysis(rust_joern._analyze_many(sources, data_flow=data_flow, strict=True))
+                self.assertEqual({(f.name, f.signature, str(f.filename)) for f in result.functions}, {
+                    ("empty", "void(int)", "body.c"),
+                    ("missing", "void(int)", "declarations.c"),
+                    ("overloaded", "int(int)", "body.cpp"),
+                    ("overloaded", "int(char)", "declarations.cpp"),
+                })
 
     def test_preprocessed_and_strict_options_apply_to_every_file(self):
         source = "#define value 7\nint f(void) { return value; }\n"

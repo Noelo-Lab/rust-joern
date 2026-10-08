@@ -9,6 +9,7 @@ The scripts in `../dataflow-audit/` describe the capture and normalization.
 Tests compare endpoint identities and labeled edge sets, so repeated identical
 original REACHING_DEF edges and differing node IDs do not affect the result.
 
-The oracle has the two executable methods. The native frontend additionally
-retains `caller.c`'s prototype; these tests verify DDG overlay and projection
-parity for executable methods rather than the directory's full CPG schema.
+The oracle has exactly two methods. Joern removes `caller.c`'s declaration when
+the matching definition is recovered from `body.c`; the directory tests check
+that coverage as well as the raw overlay, DOT projection, and public graph.
+Unresolved declarations and empty real definitions remain present.
