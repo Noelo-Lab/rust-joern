@@ -1,0 +1,89 @@
+[
+  {
+    "line": 1,
+    "fullname": "body.c:<global>",
+    "filename": "body.c",
+    "is_external": false,
+    "parameters": [],
+    "is_stub": true,
+    "name": "<global>"
+  },
+  {
+    "line": 1,
+    "fullname": "external_body",
+    "filename": "body.c",
+    "is_external": false,
+    "parameters": [
+      {
+        "name": "x",
+        "index": 1,
+        "type_name": "int"
+      },
+      {
+        "name": "y",
+        "index": 2,
+        "type_name": "int"
+      }
+    ],
+    "is_stub": false,
+    "name": "external_body"
+  },
+  {
+    "line": 1,
+    "fullname": "caller.c:<global>",
+    "filename": "caller.c",
+    "is_external": false,
+    "parameters": [],
+    "is_stub": true,
+    "name": "<global>"
+  },
+  {
+    "line": 2,
+    "fullname": "caller",
+    "filename": "caller.c",
+    "is_external": false,
+    "parameters": [
+      {
+        "name": "x",
+        "index": 1,
+        "type_name": "int"
+      },
+      {
+        "name": "y",
+        "index": 2,
+        "type_name": "int"
+      }
+    ],
+    "is_stub": false,
+    "name": "caller"
+  },
+  {
+    "line": 1,
+    "fullname": "<includes>:<global>",
+    "filename": "<includes>",
+    "is_external": false,
+    "parameters": [],
+    "is_stub": true,
+    "name": "<global>"
+  },
+  {
+    "line": 0,
+    "fullname": "<operator>.addition",
+    "filename": "<empty>",
+    "is_external": true,
+    "parameters": [
+      {
+        "name": "p1",
+        "index": 1,
+        "type_name": "ANY"
+      },
+      {
+        "name": "p2",
+        "index": 2,
+        "type_name": "ANY"
+      }
+    ],
+    "is_stub": true,
+    "name": "<operator>.addition"
+  }
+]

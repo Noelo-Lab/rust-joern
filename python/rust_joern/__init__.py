@@ -28,6 +28,14 @@ __all__ = [
 ]
 
 
+class _NativeSource(ctypes.Structure):
+    _fields_ = [
+        ("source", ctypes.c_void_p),
+        ("source_len", ctypes.c_size_t),
+        ("filename", ctypes.c_char_p),
+    ]
+
+
 @lru_cache(maxsize=None)
 def _library(override: str | None) -> ctypes.CDLL:
     library_name = {"darwin": "librust_joern.dylib", "win32": "rust_joern.dll"}.get(
@@ -50,6 +58,10 @@ def _library(override: str | None) -> ctypes.CDLL:
     native = ctypes.CDLL(str(library_path.resolve()))
     native.rust_joern_analyze.argtypes = [ctypes.c_void_p, ctypes.c_size_t, ctypes.c_char_p, ctypes.c_char_p]
     native.rust_joern_analyze.restype = ctypes.c_void_p
+    analyze_many = getattr(native, "rust_joern_analyze_many", None)
+    if analyze_many is not None:
+        analyze_many.argtypes = [ctypes.POINTER(_NativeSource), ctypes.c_size_t, ctypes.c_char_p]
+        analyze_many.restype = ctypes.c_void_p
     native.rust_joern_free.argtypes = [ctypes.c_void_p]
     native.rust_joern_free.restype = None
     return native
@@ -504,6 +516,41 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
     native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
     buffer = ctypes.create_string_buffer(source_bytes)
     pointer = native.rust_joern_analyze(buffer, len(source_bytes), filename_bytes, options)
+    return _analysis_result(native, pointer)
+
+
+def _analyze_many(sources, language=None, data_flow=False, reaching_definitions=False, strict=False,
+                  preprocessed=False) -> dict:
+    """Analyze `(source, filename)` pairs with shared internal callee context."""
+    prepared = []
+    for source, filename in sources:
+        source_bytes = source.encode("utf-8") if isinstance(source, str) else source
+        filename_bytes = os.fspath(filename).encode("utf-8")
+        if b"\0" in filename_bytes:
+            raise ValueError("filename must not contain a null byte")
+        prepared.append((ctypes.create_string_buffer(source_bytes), len(source_bytes), filename_bytes))
+    if not prepared:
+        return {"schema_version": 1, "functions": [], "diagnostics": []}
+    options = json.dumps({
+        "language": language, "preprocessed": preprocessed, "data_flow": data_flow or reaching_definitions,
+        "reaching_definitions": reaching_definitions, "strict": strict,
+    }).encode("utf-8")
+    native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
+    analyze_many = getattr(native, "rust_joern_analyze_many", None)
+    if analyze_many is None:
+        raise RuntimeError(
+            "Rust Joern native library lacks directory analysis support. "
+            "Run `cargo build --release` in the rust-joern checkout."
+        )
+    inputs = (_NativeSource * len(prepared))(*(
+        _NativeSource(ctypes.cast(buffer, ctypes.c_void_p), length, filename)
+        for buffer, length, filename in prepared
+    ))
+    pointer = analyze_many(inputs, len(inputs), options)
+    return _analysis_result(native, pointer)
+
+
+def _analysis_result(native, pointer) -> dict:
     if not pointer:
         raise RuntimeError("Rust Joern returned a null result")
     try:
@@ -552,24 +599,31 @@ def parse_source(
     if not path.exists():
         raise FileNotFoundError(f"Source file {path} does not exist")
     paths = sorted(path.rglob("*")) if path.is_dir() else [path]
-    result = {}
     extensions = {".c", ".cc", ".cp", ".cpp", ".cxx", ".c++", ".C", ".h", ".hh", ".hpp", ".hxx", ".i", ".ii"}
     blacklist = ("<", "+", "*", "(", ">", "JUMPOUT", "__builtin_unreachable")
+    sources = []
     for filename in paths:
         if not filename.is_file() or (path.is_dir() and filename.suffix not in extensions):
             continue
         source = filename.read_bytes()
         if is_decompilation:
             source = _preprocess_decompilation(source.decode("utf-8", errors="replace")).encode("utf-8")
+        sources.append((source, filename))
+    if path.is_dir():
+        analysis = _analyze_many(sources, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
+                                 strict=strict, preprocessed=preprocessed)
+    else:
+        source, filename = sources[0]
         analysis = _analyze(source, filename, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
                             strict=strict, preprocessed=preprocessed)
-        for raw in analysis["functions"]:
-            function = Function(raw, no_metadata=no_metadata, no_cfg=no_cfg, no_ddg=no_ddg, no_ast=no_ast)
-            if function.name.startswith(blacklist) or not function.name or (not no_cfg and not function.cfg):
-                continue
-            key = (function.name, str(function.filename)) if path.is_dir() else function.name
-            previous = result.get(key)
-            if previous is not None and previous.cfg is not None and function.cfg is not None and len(function.cfg) < len(previous.cfg):
-                continue
-            result[key] = function
+    result = {}
+    for raw in analysis["functions"]:
+        function = Function(raw, no_metadata=no_metadata, no_cfg=no_cfg, no_ddg=no_ddg, no_ast=no_ast)
+        if function.name.startswith(blacklist) or not function.name or (not no_cfg and not function.cfg):
+            continue
+        key = (function.name, str(function.filename)) if path.is_dir() else function.name
+        previous = result.get(key)
+        if previous is not None and previous.cfg is not None and function.cfg is not None and len(function.cfg) < len(previous.cfg):
+            continue
+        result[key] = function
     return result
