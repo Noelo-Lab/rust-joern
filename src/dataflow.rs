@@ -5,7 +5,10 @@
 use crate::graph::{DefinitionSet, Edge, FunctionGraph, Node, PropertyGraph};
 use std::collections::{HashMap, HashSet, VecDeque};
 
-pub const LIMITATIONS: &str = "Data flow is intraprocedural: cross-method closure/global propagation is not yet implemented; callee resolution depends on recovered C/C++ types.";
+pub const LIMITATIONS: &str = "Data flow follows Joern's intraprocedural overlay; callee resolution depends on recovered C/C++ types.";
+
+// PyJoern runs the original overlay with its default ReachingDefPass limit.
+const MAX_DEFINITIONS: usize = 4000;
 
 #[derive(Clone, PartialEq, Eq)]
 struct Bits(Vec<u64>);
@@ -48,10 +51,12 @@ fn output(node: &Node) -> bool {
 fn call(node: &Node) -> bool {
     node.kind == "CALL"
 }
-fn expression(node: &Node) -> bool {
+pub(crate) fn expression(node: &Node) -> bool {
     matches!(
         node.kind.as_str(),
         "CALL"
+            | "RETURN"
+            | "CONTROL_STRUCTURE"
             | "IDENTIFIER"
             | "LITERAL"
             | "BLOCK"
@@ -72,7 +77,7 @@ fn ddg_node(node: &Node) -> bool {
             | "LOCAL"
     )
 }
-fn member(op: &str) -> bool {
+pub(crate) fn member(op: &str) -> bool {
     matches!(
         op,
         "<operator>.memberAccess"
@@ -191,6 +196,7 @@ pub fn apply_with_context(
     cpp: bool,
 ) {
     function.cpg.edges.retain(|e| e.kind != "REACHING_DEF");
+    function.ddg_view = None;
     let Some(entry_id) = function
         .cpg
         .nodes
@@ -369,6 +375,14 @@ pub fn apply_with_context(
         gens[at].retain(|&i| i != arg);
         lone.push(arg);
     }
+    // Joern counts definitions at each generating CFG node, after removing
+    // lone identifiers, rather than counting unique definition nodes.
+    let skip_overlay = gens.iter().map(Vec::len).sum::<usize>() > MAX_DEFINITIONS;
+    if skip_overlay && !expose_sets {
+        function.ddg = Some(PropertyGraph::default());
+        function.reaching_definitions = None;
+        return;
+    }
     let definitions: Vec<_> = gens
         .iter()
         .flatten()
@@ -461,10 +475,31 @@ pub fn apply_with_context(
             }
         }
     }
+    function.reaching_definitions = expose_sets.then(|| {
+        order
+            .iter()
+            .map(|&i| DefinitionSet {
+                node: nodes[i].id,
+                incoming: incoming[i]
+                    .iter()
+                    .map(|d| nodes[definitions[d]].id)
+                    .collect(),
+                outgoing: outgoing[i]
+                    .iter()
+                    .map(|d| nodes[definitions[d]].id)
+                    .collect(),
+            })
+            .collect()
+    });
+    // Explicit solver-set requests remain available independently of the
+    // overlay, matching an explicit ReachingDefProblem/DataFlowSolver query.
+    if skip_overlay {
+        function.ddg = Some(PropertyGraph::default());
+        return;
+    }
     let mut ddg = Edges {
         graph: &graph,
         edges: Vec::new(),
-        seen: HashSet::new(),
     };
     for &i in &order {
         let uses = graph.uses(i);
@@ -520,22 +555,6 @@ pub fn apply_with_context(
             .collect(),
         edges: edges.clone(),
     });
-    function.reaching_definitions = expose_sets.then(|| {
-        order
-            .iter()
-            .map(|&i| DefinitionSet {
-                node: nodes[i].id,
-                incoming: incoming[i]
-                    .iter()
-                    .map(|d| nodes[definitions[d]].id)
-                    .collect(),
-                outgoing: outgoing[i]
-                    .iter()
-                    .map(|d| nodes[definitions[d]].id)
-                    .collect(),
-            })
-            .collect()
-    });
     function.cpg.edges.extend(edges);
 }
 
@@ -573,7 +592,12 @@ impl Graph<'_> {
         let node = &self.nodes[at];
         match node.method_full_name.as_deref() {
             Some(full_name) => semantics(full_name),
-            None if !self.cpp || name(node).starts_with("<operator>.") => semantics(name(node)),
+            None if !self.cpp
+                || name(node).starts_with("<operator>.")
+                || name(node).starts_with("<operators>.") =>
+            {
+                semantics(name(node))
+            }
             None => None,
         }
     }
@@ -872,12 +896,10 @@ impl Graph<'_> {
 struct Edges<'g, 'n> {
     graph: &'g Graph<'n>,
     edges: Vec<Edge>,
-    seen: HashSet<(usize, usize, String)>,
 }
 impl Edges<'_, '_> {
     fn add(&mut self, source: usize, target: usize, label: &str) {
-        if self.graph.valid_edge(source, target) && self.seen.insert((source, target, label.into()))
-        {
+        if self.graph.valid_edge(source, target) {
             self.edges.push(Edge {
                 source: self.graph.nodes[source].id,
                 target: self.graph.nodes[target].id,
@@ -935,11 +957,11 @@ fn exact_path(a: &[Access], b: &[Access]) -> bool {
     !b[bh..].contains(&Access::VariableShift)
 }
 
-struct Semantic {
-    flows: &'static [(i32, i32)],
-    pass: bool,
+pub(crate) struct Semantic {
+    pub(crate) flows: &'static [(i32, i32)],
+    pub(crate) pass: bool,
 }
-fn semantics(name: &str) -> Option<Semantic> {
+pub(crate) fn semantics(name: &str) -> Option<Semantic> {
     let flows: &[(i32, i32)] = match name {
         "<operator>.addition"
         | "<operator>.cast"
@@ -961,6 +983,12 @@ fn semantics(name: &str) -> Option<Semantic> {
         | "<operator>.assignmentPlus"
         | "<operator>.assignmentShiftLeft"
         | "<operator>.assignmentXor" => &[(2, 1), (1, 1), (2, -1)],
+        "<operators>.assignmentAnd"
+        | "<operators>.assignmentArithmeticShiftRight"
+        | "<operators>.assignmentModulo"
+        | "<operators>.assignmentOr"
+        | "<operators>.assignmentShiftLeft"
+        | "<operators>.assignmentXor" => &[(2, 1), (1, 1), (2, -1)],
         "<operator>.addressOf"
         | "<operator>.computedMemberAccess"
         | "<operator>.notNullAssert"
@@ -1209,6 +1237,30 @@ mod tests {
             expected.filename,
             expected.fullname
         );
+        let edges = |function: &FunctionGraph, keys: &HashMap<u32, String>| {
+            let mut edges: Vec<_> = function
+                .cpg
+                .edges
+                .iter()
+                .filter(|e| e.kind == "REACHING_DEF")
+                .map(|e| {
+                    (
+                        keys[&e.source].clone(),
+                        keys[&e.target].clone(),
+                        e.label.clone().unwrap_or_default(),
+                    )
+                })
+                .collect();
+            edges.sort();
+            edges
+        };
+        assert_eq!(
+            edges(actual, &actual_keys),
+            edges(expected, &expected_keys),
+            "raw edge multiplicity {}:{}",
+            expected.filename,
+            expected.fullname
+        );
     }
 
     #[test]
@@ -1292,6 +1344,84 @@ mod tests {
     }
 
     #[test]
+    fn native_compound_assignment_operators_match_original_dataflow() {
+        let oracle: Oracle = serde_json::from_str(include_str!(
+            "../tests/fixtures/dataflow-audit/joern-4.0.150-assignments.json"
+        ))
+        .unwrap();
+        let analysis = crate::analyze(
+            include_str!("../tests/fixtures/dataflow-audit/assignment-operators.c"),
+            "assignment-operators.c",
+            &crate::graph::Options {
+                reaching_definitions: true,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        assert!(!analysis.diagnostics.iter().any(|d| d.severity == "error"));
+        assert_eq!(analysis.functions.len(), 10);
+        assert_eq!(oracle.methods.len(), 10);
+        for expected in oracle.methods {
+            let actual = analysis
+                .functions
+                .iter()
+                .find(|f| f.fullname == expected.fullname)
+                .unwrap_or_else(|| panic!("missing {}", expected.fullname));
+            assert_native_dataflow(actual, &expected);
+        }
+    }
+
+    #[test]
+    fn native_return_display_types_match_original_metadata() {
+        let oracle: Oracle = serde_json::from_str(include_str!(
+            "../tests/fixtures/dataflow-audit/joern-4.0.150-types.json"
+        ))
+        .unwrap();
+        for (filename, source) in [
+            (
+                "type-metadata.c",
+                include_str!("../tests/fixtures/dataflow-audit/type-metadata.c"),
+            ),
+            (
+                "type-metadata.cpp",
+                include_str!("../tests/fixtures/dataflow-audit/type-metadata.cpp"),
+            ),
+            (
+                "type-detail.c",
+                include_str!("../tests/fixtures/dataflow-audit/type-detail.c"),
+            ),
+            (
+                "type-detail.cpp",
+                include_str!("../tests/fixtures/dataflow-audit/type-detail.cpp"),
+            ),
+        ] {
+            let actual = crate::analyze(source, filename, &Default::default()).unwrap();
+            let expected: Vec<_> = oracle
+                .methods
+                .iter()
+                .filter(|f| f.filename == filename)
+                .collect();
+            assert_eq!(
+                actual.functions.len(),
+                expected.len(),
+                "coverage {filename}"
+            );
+            for expected in expected {
+                let function = actual
+                    .functions
+                    .iter()
+                    .find(|f| f.name == expected.name)
+                    .unwrap_or_else(|| panic!("missing {filename}:{}", expected.name));
+                assert_eq!(
+                    function.return_type, expected.return_type,
+                    "return display {filename}:{}",
+                    expected.name
+                );
+            }
+        }
+    }
+
+    #[test]
     fn original_joern_c_cpp_solver_snapshots_match_by_expression_role() {
         let mut count = 0;
         for snapshot in [
@@ -1340,6 +1470,90 @@ mod tests {
             }
         }
         assert_eq!(count, 60);
+    }
+
+    #[test]
+    fn broad_original_graphs_match_solver_overlay_and_labeled_dot_projection() {
+        #[derive(serde::Deserialize)]
+        struct Audit {
+            methods: Vec<FunctionGraph>,
+            internal_methods: HashMap<String, HashSet<String>>,
+            all_internal_methods: HashMap<String, HashSet<String>>,
+        }
+        for (snapshot, count) in [
+            (
+                include_str!("../tests/fixtures/dataflow-audit/joern-4.0.150.json"),
+                82,
+            ),
+            (
+                include_str!("../tests/fixtures/dataflow-audit/joern-4.0.150-types.json"),
+                108,
+            ),
+            (
+                include_str!("../tests/fixtures/dataflow-audit/joern-4.0.150-assignments.json"),
+                10,
+            ),
+            (
+                include_str!("../tests/fixtures/dataflow-audit/joern-4.0.150-construction.json"),
+                11,
+            ),
+        ] {
+            let oracle: Audit = serde_json::from_str(snapshot).unwrap();
+            assert_eq!(oracle.methods.len(), count);
+            for expected in oracle.methods {
+                let mut actual = expected.clone();
+                actual.ddg = None;
+                actual.ddg_view = None;
+                actual.reaching_definitions = None;
+                let nonstub = &oracle.internal_methods[&expected.filename];
+                let internal = &oracle.all_internal_methods[&expected.filename];
+                apply_with_methods(&mut actual, true, nonstub);
+                assert_eq!(
+                    definitions(&actual),
+                    definitions(&expected),
+                    "RD {}",
+                    expected.fullname
+                );
+                assert_eq!(
+                    dependencies(&actual),
+                    dependencies(&expected),
+                    "overlay {}",
+                    expected.fullname
+                );
+                let edges = |f: &FunctionGraph| {
+                    let mut edges: Vec<_> = f
+                        .cpg
+                        .edges
+                        .iter()
+                        .filter(|e| e.kind == "REACHING_DEF")
+                        .map(|e| (e.source, e.target, e.label.clone().unwrap_or_default()))
+                        .collect();
+                    edges.sort();
+                    edges
+                };
+                assert_eq!(
+                    edges(&actual),
+                    edges(&expected),
+                    "raw edge multiplicity {}",
+                    expected.fullname
+                );
+                let cpp = expected.filename.ends_with(".cpp");
+                let projected = crate::ddg::project(&actual, nonstub, internal, cpp);
+                let original = expected.ddg_view.as_ref().unwrap();
+                assert_eq!(
+                    projected.nodes.iter().map(|n| n.id).collect::<HashSet<_>>(),
+                    original.nodes.iter().map(|n| n.id).collect::<HashSet<_>>(),
+                    "projected vertices {}",
+                    expected.fullname,
+                );
+                assert_eq!(
+                    projected.edges.iter().collect::<HashSet<_>>(),
+                    original.edges.iter().collect::<HashSet<_>>(),
+                    "projected labeled edges {}",
+                    expected.fullname,
+                );
+            }
+        }
     }
 
     fn cross_argument_edges(function: &FunctionGraph, callee: &str) -> usize {
@@ -1575,6 +1789,7 @@ mod tests {
             cpg: graph,
             cfg: Cfg::default(),
             ddg: None,
+            ddg_view: None,
             reaching_definitions: None,
         }
     }
@@ -1633,6 +1848,48 @@ mod tests {
                 .cloned()
                 .collect::<HashSet<_>>(),
             edges
+        );
+    }
+
+    #[test]
+    fn original_overlay_cutoff_keeps_explicit_solver_queries_available() {
+        // The original live oracle produces edges at 3999 definitions and no
+        // edges at 4001. Check the exact 4000 boundary as well: each increment
+        // generates its CALL and IDENTIFIER, and an input parameter adds one.
+        let increments = "x++;".repeat(2000);
+        let at_limit = format!("int f() {{ int x; {increments} return x; }}");
+        let over_limit = format!("int f(int x) {{ {increments} return x; }}");
+        let options = crate::graph::Options {
+            data_flow: true,
+            ..Default::default()
+        };
+        let analyzed = crate::analyze(&at_limit, "threshold.c", &options).unwrap();
+        assert!(!analyzed.functions[0].ddg.as_ref().unwrap().edges.is_empty());
+        let skipped = crate::analyze(&over_limit, "threshold.c", &options).unwrap();
+        let function = &skipped.functions[0];
+        assert!(function.ddg.as_ref().unwrap().nodes.is_empty());
+        assert!(function.ddg_view.as_ref().unwrap().nodes.is_empty());
+        assert!(!function.cpg.edges.iter().any(|e| e.kind == "REACHING_DEF"));
+        assert!(function.reaching_definitions.is_none());
+
+        let analyzed = crate::analyze(
+            &over_limit,
+            "threshold.c",
+            &crate::graph::Options {
+                reaching_definitions: true,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        let function = &analyzed.functions[0];
+        assert!(function.ddg.as_ref().unwrap().edges.is_empty());
+        assert!(
+            function
+                .reaching_definitions
+                .as_ref()
+                .unwrap()
+                .iter()
+                .any(|set| !set.incoming.is_empty())
         );
     }
 

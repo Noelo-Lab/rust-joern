@@ -22,7 +22,9 @@ filename, including preprocessed `.i` and `.ii`; `--language c|cpp` overrides it
 The default computes CFG and CPG only. `--data-flow` adds DDG/`REACHING_DEF` edges;
 `--reaching-definitions` additionally exports the solver's incoming/outgoing sets.
 JSON contains per-function CPG nodes/edges and normalized CFG blocks with their
-statement IDs and explicit entry/exit roles. DOT supports `cfg`, `ddg`, and `cpg`.
+statement IDs and explicit entry/exit roles. `ddg` retains raw dependencies;
+`ddg_view` supplies Joern's labeled DOT projection. DOT supports `cfg`, `ddg`,
+and `cpg`.
 
 The parser targets already-preprocessed C/C++ and sanitized decompiler output,
 as supplied by DecBench. `.i`/`.ii` files are treated as preprocessed;
@@ -55,7 +57,8 @@ cfg = functions["f"].cfg
 
 flow = parse_code("int f(int x) { int y=x; return y; }",
                   data_flow=True, reaching_definitions=True)
-ddg = flow.functions[0].ddg
+ddg = flow.functions[0].ddg          # PyJoern-compatible DiGraph of Blocks
+raw_dependencies = flow.functions[0].ddg_raw  # CPG-node MultiDiGraph
 sets = flow.functions[0].reaching_definitions
 ```
 
@@ -64,6 +67,17 @@ temporary graph files. Set `RUST_JOERN_LIBRARY` to use a library outside the loc
 `target/release` or `target/debug` directories. `parse_source` accepts PyJoern's
 `no_metadata`, `no_cfg`, `no_ddg`, `no_ast`, and `is_decompilation` flags. Its generic
 DDG default follows PyJoern; `parse_code` defaults to CFG/CPG only.
+
+`Function.ddg` preserves PyJoern's statement lifting and Block entry/exit roles.
+The raw dependencies remain available through `Function.ddg_raw` and CPG
+`REACHING_DEF` edges. Directory parsing resolves internal callee context across
+files and removes declarations when a matching definition is present.
+
+The reaching-definition overlay uses Joern 4.0.150's default limit of 4,000
+generated definitions per method. Methods above that limit have empty DDGs;
+explicit `reaching_definitions=True` still returns their solver sets. The
+overlay follows Joern's intraprocedural behavior, including its call semantics
+and access-path matching.
 
 ## Run DecBench with the port
 
@@ -118,10 +132,28 @@ The IDA `bzip2recover` decompilation from the same DecBench run also matches all
 13 function graphs after DecBench's original preparation. The local combined
 report is `workspace/first-version-comparison.json`: 126 matches, no divergences,
 and no candidate diagnostics. These are bounded smoke checks, not a claim of
-parity on the entire dataset. DDG/CPG output is available, but its full parity
-with Joern has not been established.
+parity on the entire dataset. DDG measurements are recorded separately in
+[the DDG comparison report](reports/ddg-parity/README.md).
 Actual DecBench input provenance and upstream fixture licenses are retained in
 `tests/fixtures/decbench`. These initial fixtures do not establish corpus parity.
+
+The DDG comparator checks the actual original `Function.ddg` and original
+`dotDdg` independently. It preserves statement identity, all lifted statement
+fields, directed edges, complete node labels, labeled parallel edges, and
+function coverage. Frozen references come from unchanged PyJoern 4.0.150.4;
+input bytes and original/candidate versions are bound to hashes. Solver tests
+also replay original CPGs to distinguish analysis defects from frontend
+lowering differences.
+
+```sh
+cargo build --lib
+python3 scripts/compare_ddg_pyjoern.py \
+  tests/fixtures/control.c tests/fixtures/expressions.c tests/fixtures/functions.cpp \
+  --reference-dir tests/fixtures/ddg-parity/references \
+  --output workspace/ddg-comparison.json
+```
+
+See the DDG report for broader source, decompiler, type, and directory checks.
 
 ## O0/O2 corpus audit
 

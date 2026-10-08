@@ -1,0 +1,21 @@
+{
+  "generator": "Unmodified installed PyJoern 4.0.150.4 / Joern 4.0.150",
+  "source_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "captured_at": "2026-10-08T03:47:06.234908+00:00",
+  "method_count": 10,
+  "source_files": [
+    {
+      "file": "assignment-operators.c",
+      "sha256": "d5f09429ce67a81792871f649e193543f6ba19e0dc6abb4b0aee9886438d42a8"
+    }
+  ],
+  "capture_script_sha256": "de0b6b03aafb843c878a17e03933967b16b1805459b04f60adb68e89639485dd",
+  "normalizer_sha256": "1925df4201ca8c71e49779b4659d13b34c5c9dd4f17aa5cbbe194c7bc41891d4",
+  "snapshot_sha256": "ef0420f6210d234cf7d6f5299b6fd50f9922d089a36dd42b3ac7589b61c3d7d4",
+  "original_captures_sha256": "d1b851bc41a49d419ce02c600c3c6d07b12e09d5f921bfc54e2f20979ed53a9f",
+  "notes": [
+    "Original CPG/solver/raw RD and dotDdg capture for all ten compound assignment operators.",
+    "Singular and plural operator prefixes intentionally differ in the original frontend.",
+    "Native graphs never used as expected data."
+  ]
+}

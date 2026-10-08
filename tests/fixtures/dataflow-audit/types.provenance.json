@@ -1,0 +1,40 @@
+{
+  "generator": "Unmodified installed PyJoern 4.0.150.4 / Joern 4.0.150",
+  "source_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "captured_at": "2026-10-08T03:34:45.097083+00:00",
+  "source_files": [
+    {
+      "file": "type-metadata.c",
+      "sha256": "23c2c29fc8f92fa0fff813d77c47fd4cc08cc0676c2b0bc68e6cdfa19f1bb032",
+      "original_capture_sha256": "8b57581b4f43e715106ff0b9d5b1c37026422cc45e106ed59867a9737677e4df"
+    },
+    {
+      "file": "type-metadata.cpp",
+      "sha256": "d05fbc4a101f5baf88a06e96d99cde58129731ca60a0bf1c0aa575bf166b5f9f",
+      "original_capture_sha256": "b5136889e01cfbb55c444f01f4383d82ebcce78609f9f77dd668ab500213d5dc"
+    },
+    {
+      "file": "type-detail.c",
+      "sha256": "47c8cd4f85251f322f11f98f91f04f8f15a992b834fa46fa3e8c754979165a4e",
+      "original_capture_sha256": "388a14e66e737d60d2bd63af9445d3b84d0c089b93c7f99da1f8c66ef1bd5804"
+    },
+    {
+      "file": "type-detail.cpp",
+      "sha256": "be2bfb9dfc56add8e1ddaa2da37d75889029d2e6ec610051144be5692135db30",
+      "original_capture_sha256": "252a256bc7c79cd8c2aad6990fd10ad8c6d18ccc5a319c0b33c87478fb9769af"
+    }
+  ],
+  "capture_script_sha256": "de0b6b03aafb843c878a17e03933967b16b1805459b04f60adb68e89639485dd",
+  "normalizer_sha256": "1925df4201ca8c71e49779b4659d13b34c5c9dd4f17aa5cbbe194c7bc41891d4",
+  "snapshot_sha256": "df4b550fd5df5f732a27ac0b202707d90f3e7e3f33f2deb63e00d9d971a50996",
+  "original_captures_sha256": "298c3bd2f5d35d00801aea3166c37406dffa3ffa71e35fb1fbc1717bb96b0b32",
+  "method_count": 108,
+  "notes": [
+    "These are original metadata and raw CPG/DDG/solver captures. Native output never used as oracle.",
+    "C bare undefined parameter name is its token, type ANY; known typedef/primitive abstract parameters remain unnamed. C++ undefined type abstract parameters remain unnamed with raw type spelling and ANY in canonical method fullname.",
+    "C _Bool parameter and parameter identifier types remain _Bool; real primitive return types render bool.",
+    "Primitive real return types preserve const/volatile qualifiers and pointer qualifiers; source declarations clean reserved keywords. Named alias/type return metadata uses a separate frontend branch and can discard pointer/ref.",
+    "Distinct parameter type spelling, return display spelling and canonical C++ binding types are intentionally retained.",
+    "ddg_view nodes/edges are derived only from original DOT IDs and labels."
+  ]
+}

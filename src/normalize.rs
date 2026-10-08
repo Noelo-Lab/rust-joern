@@ -66,35 +66,36 @@ pub fn normalize(cpg: &PropertyGraph) -> Cfg {
     // that order, then METHOD and METHOD_RETURN. PyJoern's flag-dropping block
     // copies make this order observable when a METHOD_REF is merged.
     let mut vertices = Vec::new();
-    if let Some(method) = cpg.nodes.iter().position(|node| node.kind == "METHOD") {
-        if !ast_children[method].is_empty() {
-            let mut queue = VecDeque::from([method]);
-            let mut seen = vec![false; cpg.nodes.len()];
-            seen[method] = true;
-            while let Some(parent) = queue.pop_front() {
-                for &child in &ast_children[parent] {
-                    if seen[child] {
-                        continue;
-                    }
-                    seen[child] = true;
-                    if !matches!(
-                        cpg.nodes[child].kind.as_str(),
-                        "METHOD_RETURN" | "METHOD_PARAMETER_IN" | "LOCAL" | "MODIFIER" | "MEMBER"
-                    ) {
-                        vertices.push(child);
-                    }
-                    if !matches!(cpg.nodes[child].kind.as_str(), "METHOD" | "TYPE_DECL" | "FILE") {
-                        queue.push_back(child);
-                    }
+    if let Some(method) = cpg.nodes.iter().position(|node| node.kind == "METHOD")
+        && !ast_children[method].is_empty()
+    {
+        let mut queue = VecDeque::from([method]);
+        let mut seen = vec![false; cpg.nodes.len()];
+        seen[method] = true;
+        while let Some(parent) = queue.pop_front() {
+            for &child in &ast_children[parent] {
+                if seen[child] {
+                    continue;
+                }
+                seen[child] = true;
+                if !matches!(
+                    cpg.nodes[child].kind.as_str(),
+                    "METHOD_RETURN" | "METHOD_PARAMETER_IN" | "LOCAL" | "MODIFIER" | "MEMBER"
+                ) {
+                    vertices.push(child);
+                }
+                if !matches!(
+                    cpg.nodes[child].kind.as_str(),
+                    "METHOD" | "TYPE_DECL" | "FILE"
+                ) {
+                    queue.push_back(child);
                 }
             }
-            vertices.push(method);
-            vertices.extend(
-                cpg.nodes.iter().enumerate().filter_map(|(i, node)| {
-                    (node.kind == "METHOD_RETURN" || node.kind == "METHOD_PARAMETER_IN").then_some(i)
-                }),
-            );
         }
+        vertices.push(method);
+        vertices.extend(cpg.nodes.iter().enumerate().filter_map(|(i, node)| {
+            (node.kind == "METHOD_RETURN" || node.kind == "METHOD_PARAMETER_IN").then_some(i)
+        }));
     }
     if vertices.is_empty() {
         vertices.extend(0..cpg.nodes.len());
@@ -260,9 +261,7 @@ fn merge_target(blocks: &[Block], src: usize) -> Option<usize> {
 // PyJoern tests the DOT label with startswith("METHOD") after METHOD_RETURN;
 // this also marks function-pointer METHOD_REF nodes as function starts.
 fn is_start(node: &Node) -> bool {
-    node.cfg_nop != Some(false)
-        && node.kind != "METHOD_RETURN"
-        && node.kind.starts_with("METHOD")
+    node.cfg_nop != Some(false) && node.kind != "METHOD_RETURN" && node.kind.starts_with("METHOD")
 }
 
 #[cfg(test)]

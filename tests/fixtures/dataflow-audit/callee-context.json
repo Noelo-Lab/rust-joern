@@ -1,0 +1,457 @@
+{
+  "context.c": [
+    {
+      "line": 1,
+      "fullname": "context.c:<global>",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [],
+      "is_stub": true,
+      "name": "<global>"
+    },
+    {
+      "line": 4,
+      "fullname": "empty_internal",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": true,
+      "name": "empty_internal"
+    },
+    {
+      "line": 5,
+      "fullname": "body_internal",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "body_internal"
+    },
+    {
+      "line": 6,
+      "fullname": "empty_call",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "empty_call"
+    },
+    {
+      "line": 7,
+      "fullname": "body_call",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "body_call"
+    },
+    {
+      "line": 8,
+      "fullname": "proto_call",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "proto_call"
+    },
+    {
+      "line": 9,
+      "fullname": "sink_call",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "sink_call"
+    },
+    {
+      "line": 10,
+      "fullname": "free_call",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "void*"
+        }
+      ],
+      "is_stub": false,
+      "name": "free_call"
+    },
+    {
+      "line": 1,
+      "fullname": "sink",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": true,
+      "name": "sink"
+    },
+    {
+      "line": 2,
+      "fullname": "proto",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": true,
+      "name": "proto"
+    },
+    {
+      "line": 3,
+      "fullname": "free",
+      "filename": "context.c",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "",
+          "index": 1,
+          "type_name": "void*"
+        }
+      ],
+      "is_stub": true,
+      "name": "free"
+    },
+    {
+      "line": 1,
+      "fullname": "<includes>:<global>",
+      "filename": "<includes>",
+      "is_external": false,
+      "parameters": [],
+      "is_stub": true,
+      "name": "<global>"
+    }
+  ],
+  "context.cpp": [
+    {
+      "line": 1,
+      "fullname": "context.cpp:<global>",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [],
+      "is_stub": true,
+      "name": "<global>"
+    },
+    {
+      "line": 4,
+      "fullname": "empty_internal:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": true,
+      "name": "empty_internal"
+    },
+    {
+      "line": 5,
+      "fullname": "body_internal:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "body_internal"
+    },
+    {
+      "line": 6,
+      "fullname": "S.empty:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "this",
+          "index": 0,
+          "type_name": "S"
+        },
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": true,
+      "name": "empty"
+    },
+    {
+      "line": 6,
+      "fullname": "S.body:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "this",
+          "index": 0,
+          "type_name": "S"
+        },
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "body"
+    },
+    {
+      "line": 7,
+      "fullname": "empty_call:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "empty_call"
+    },
+    {
+      "line": 8,
+      "fullname": "body_call:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "body_call"
+    },
+    {
+      "line": 9,
+      "fullname": "proto_call:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "proto_call"
+    },
+    {
+      "line": 10,
+      "fullname": "sink_call:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "sink_call"
+    },
+    {
+      "line": 11,
+      "fullname": "free_call:int(void*)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "void*"
+        }
+      ],
+      "is_stub": false,
+      "name": "free_call"
+    },
+    {
+      "line": 12,
+      "fullname": "empty_member:int(S*,int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "s",
+          "index": 1,
+          "type_name": "S*"
+        },
+        {
+          "name": "x",
+          "index": 2,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "empty_member"
+    },
+    {
+      "line": 13,
+      "fullname": "body_member:int(S*,int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "s",
+          "index": 1,
+          "type_name": "S*"
+        },
+        {
+          "name": "x",
+          "index": 2,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "body_member"
+    },
+    {
+      "line": 14,
+      "fullname": "proto_member:int(S*,int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "s",
+          "index": 1,
+          "type_name": "S*"
+        },
+        {
+          "name": "x",
+          "index": 2,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": false,
+      "name": "proto_member"
+    },
+    {
+      "line": 1,
+      "fullname": "sink:void(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": true,
+      "name": "sink"
+    },
+    {
+      "line": 2,
+      "fullname": "proto:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": true,
+      "name": "proto"
+    },
+    {
+      "line": 6,
+      "fullname": "S.decl:int(int)",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "x",
+          "index": 1,
+          "type_name": "int"
+        }
+      ],
+      "is_stub": true,
+      "name": "decl"
+    },
+    {
+      "line": 3,
+      "fullname": "free",
+      "filename": "context.cpp",
+      "is_external": false,
+      "parameters": [
+        {
+          "name": "",
+          "index": 1,
+          "type_name": "void*"
+        }
+      ],
+      "is_stub": true,
+      "name": "free"
+    },
+    {
+      "line": 1,
+      "fullname": "<includes>:<global>",
+      "filename": "<includes>",
+      "is_external": false,
+      "parameters": [],
+      "is_stub": true,
+      "name": "<global>"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "generator": "Unmodified installed PyJoern 4.0.150.4 / Joern 4.0.150",
+  "source_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "captured_at": "2026-10-08T03:21:41.083915+00:00",
+  "source_files": [
+    {
+      "file": "globals.cpp",
+      "sha256": "946f1bf51e9f9284f824921b28bb3ceb7a9ce859d8cb6628031753d31c0cc1e0",
+      "original_capture_sha256": "8e32f123c4d5fa62bd88d3d7f006522ad0092f09ae51a44035f0d4925b9b2253"
+    },
+    {
+      "file": "operators.c",
+      "sha256": "f4610dabf02a07bc88b6d23aeca75056fba47c56a6c6b9081fee66ac60bf29c6",
+      "original_capture_sha256": "5af3e521233aa1668c18e2f5a780618d5ac451eb3d0166a6e1dbe3b9879b84fb"
+    },
+    {
+      "file": "control.c",
+      "sha256": "69a02728736b0e92b205b0b3b7fb138e9c3a7a8904e55eb7d0931413643b7842",
+      "original_capture_sha256": "d98a117d190c8ef8102c37eb018b7ade5dff71f5fe92aed73c6ff4ccc42fc422"
+    },
+    {
+      "file": "cpp_calls.cpp",
+      "sha256": "fdc8356e9e55dc567c7e1d8c5e077f14a63be2080fe43dd28599a73abbadca0a",
+      "original_capture_sha256": "5370e4581d13003f15f3a66488040840193347d9a1173348d8c2eb371e33785b"
+    },
+    {
+      "file": "context.c",
+      "sha256": "5acdf158632639d139e34553fcd542f7356298bcd0091e19a9708622a0433388",
+      "original_capture_sha256": "1edfe2959f21acaf8c2050b8f7aecaaea1b3c4560a95930bbd3f94e4f52f3046"
+    },
+    {
+      "file": "context.cpp",
+      "sha256": "044ee196565c610b578ec9c18e32ef3b99b2183840bb97dfcef116ab1dfbcd00",
+      "original_capture_sha256": "a05ceed5680fdf9f37afebeb90f70086ffc3b411bb2cf7090fbd0b5102395865"
+    }
+  ],
+  "capture_script_sha256": "80da2d50999e800a4d813ca8af070499985889e5a1e29ba4d2110a05aff25bc2",
+  "capture_context_script_sha256": "de0b6b03aafb843c878a17e03933967b16b1805459b04f60adb68e89639485dd",
+  "normalizer_sha256": "1925df4201ca8c71e49779b4659d13b34c5c9dd4f17aa5cbbe194c7bc41891d4",
+  "snapshot_sha256": "482773b764878763df66f057a6c08f3650b42df1f32ff38f000c6d97fcaf8f91",
+  "original_captures_sha256": "2912902b540d63f9291f4fc14a165038e2fb8dea1f46c0401e54eef2a4bb0bfa",
+  "callee_context_sha256": "6d407d8b43ead7dedceaeb90d32749aa858eae73cba689633bdf65e5b4d36f2f",
+  "method_count": 82,
+  "notes": [
+    "Original raw CPG nodes/edges and independently calculated ReachingDefProblem in/out solver sets. Native output was not used to create these snapshots.",
+    "Every ddg_view comes from numeric vertex and labeled edge identities in original method.dotDdg output, not native projection. HTML4 edge label escapes are decoded before freezing.",
+    "Flatgraph node IDs remapped to dense local u32 IDs; CANONICAL_NAME becomes FIELD_IDENTIFIER.name; argument indices preserved on ARGUMENT edge labels.",
+    "Only CPG edges with both endpoints in method AST retained. Source raw DOT/capture diagnostics retained in original-captures.json.",
+    "Nonstub internal method context determined from original method CFG. All-internal context includes source prototypes, empty real methods, and extern C declarations. Authoritative flags and resolved callees included for context.c/.cpp.",
+    "Source C++ captures yield no CAPTURE/CLOSURE_BINDING edges and no cross-method REACHING_DEF edges in this oracle version.",
+    "Large generated cutoff case excluded from committed snapshots: original ReachingDefPass skips raw DDG above 4000 generated definitions, while independent solver sets remain measurable."
+  ]
+}
