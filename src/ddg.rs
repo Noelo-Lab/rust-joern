@@ -147,7 +147,12 @@ impl<'a> Context<'a> {
                     .name
                     .as_deref()
                     .unwrap_or("")
-                    .starts_with("<operator>.") =>
+                    .starts_with("<operator>.")
+                || node
+                    .name
+                    .as_deref()
+                    .unwrap_or("")
+                    .starts_with("<operators>.") =>
             {
                 semantics(node.name.as_deref().unwrap_or(""))
             }
@@ -455,5 +460,152 @@ mod tests {
             .nodes
             .iter()
             .all(|node| node.kind != "METHOD_PARAMETER_OUT"));
+    }
+
+    #[test]
+    fn nested_pointer_declarator_retains_joern_explicit_empty_identifier_code() {
+        // Original Joern's generated Identifier getter and propertiesMap both
+        // expose CODE="", NAME="p", and no line/column for this initializer.
+        // The raw dependency label must remain empty, rather than "p" or the
+        // missing-CODE default <empty> used by generated designator blocks.
+        let source =
+            include_str!("../tests/fixtures/decbench-regressions/local_function_pointer_c.c");
+        for filename in ["pointer.c", "pointer.cpp"] {
+            let analysis = crate::analyze(
+                source,
+                filename,
+                &Options {
+                    data_flow: true,
+                    strict: true,
+                    ..Default::default()
+                },
+            )
+            .unwrap();
+            let function = analysis
+                .functions
+                .iter()
+                .find(|function| function.name == "fp_only_mixed_second")
+                .unwrap();
+            let assignment = function
+                .cpg
+                .nodes
+                .iter()
+                .find(|node| node.kind == "CALL" && node.code == "(*p)(int) = x ? target : second")
+                .unwrap();
+            let lhs = function
+                .cpg
+                .edges
+                .iter()
+                .find(|edge| {
+                    edge.kind == "ARGUMENT"
+                        && edge.source == assignment.id
+                        && edge.label.as_deref() == Some("1")
+                })
+                .unwrap()
+                .target;
+            let lhs = function
+                .cpg
+                .nodes
+                .iter()
+                .find(|node| node.id == lhs)
+                .unwrap();
+            assert_eq!(lhs.kind, "IDENTIFIER");
+            assert_eq!(lhs.name.as_deref(), Some("p"));
+            assert_eq!(lhs.code, "");
+            assert_eq!((lhs.line, lhs.column), (0, 0));
+            let exit = function
+                .cpg
+                .nodes
+                .iter()
+                .find(|node| node.kind == "METHOD_RETURN")
+                .unwrap()
+                .id;
+            let raw = function.ddg.as_ref().unwrap();
+            assert!(raw.edges.iter().any(|edge| edge.source == lhs.id
+                && edge.target == exit
+                && edge.label.as_deref() == Some("")));
+            let view = function.ddg_view.as_ref().unwrap();
+            assert!(view.edges.iter().any(|edge| edge.source == assignment.id
+                && edge.target == exit
+                && edge.label.as_deref() == Some("")));
+            assert!(!view.edges.iter().any(|edge| edge.source == assignment.id
+                && edge.target == exit
+                && edge.label.as_deref() == Some("p")));
+        }
+    }
+
+    #[test]
+    fn generated_designator_blocks_use_joern_code_default_in_raw_dependencies() {
+        // Original astForCASTDesignatedInitializer creates the two argument
+        // BLOCKs with absent CODE. Their raw <empty> dependency labels coalesce
+        // when the DOT projection maps both blocks to their initializer call.
+        let analysis = crate::analyze(
+            include_str!("../tests/fixtures/decbench-regressions/nested_designator.c"),
+            "designator.c",
+            &Options {
+                data_flow: true,
+                strict: true,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        let function = analysis
+            .functions
+            .iter()
+            .find(|function| function.name == "nested_designator")
+            .unwrap();
+        let initializer = function
+            .cpg
+            .nodes
+            .iter()
+            .find(|node| {
+                node.kind == "CALL" && node.code == "{ .buffers.first = 0, .buffers.second = 0 }"
+            })
+            .unwrap();
+        let blocks: Vec<_> = function
+            .cpg
+            .edges
+            .iter()
+            .filter(|edge| edge.kind == "ARGUMENT" && edge.source == initializer.id)
+            .map(|edge| {
+                function
+                    .cpg
+                    .nodes
+                    .iter()
+                    .find(|node| node.id == edge.target)
+                    .unwrap()
+            })
+            .collect();
+        assert_eq!(blocks.len(), 2);
+        for block in blocks {
+            assert_eq!(block.kind, "BLOCK");
+            assert_eq!(block.code, "<empty>");
+            assert_eq!(block.type_name.as_deref(), Some("void"));
+            let labels: HashSet<_> = function
+                .ddg
+                .as_ref()
+                .unwrap()
+                .edges
+                .iter()
+                .filter(|edge| edge.source == block.id && edge.target == initializer.id)
+                .map(|edge| edge.label.as_deref().unwrap())
+                .collect();
+            assert_eq!(labels, HashSet::from(["<empty>", ""]));
+        }
+        let labels: HashSet<_> = function
+            .ddg_view
+            .as_ref()
+            .unwrap()
+            .edges
+            .iter()
+            .filter(|edge| {
+                edge.source == initializer.id
+                    && edge.target != initializer.id
+                    && function.cpg.nodes[edge.target as usize].name.as_deref()
+                        == Some("<operator>.arrayInitializer")
+            })
+            .map(|edge| edge.label.as_deref().unwrap())
+            .collect();
+        assert_eq!(labels, HashSet::from(["<empty>", ""]));
     }
 }

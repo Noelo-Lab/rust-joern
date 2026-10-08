@@ -264,6 +264,20 @@ impl Builder<'_> {
         id
     }
     fn declaration_identifier(&mut self, declaration: &Declaration, parent: NodeId, argument: usize) -> NodeId {
+        let declarator = self.code(&declaration.span);
+        if declarator.trim_start().starts_with('(') {
+            let (tokens, _) = crate::lexer::lex_preprocessed(declarator, true);
+            let token = |index: usize| tokens.get(index)
+                .map(|token| &declarator[token.span.start..token.span.end]);
+            if token(0) == Some("(") && matches!(token(1), Some("*" | "&" | "&&")) {
+                // AstForInitializer visits the outer declarator's empty NAME,
+                // while binding resolution still recovers the nested symbol.
+                // Its CODE is explicitly empty and has no source location.
+                let id = self.identifier(&declaration.name, &Span::default(), parent, Some(argument));
+                self.graph.nodes[id as usize].code.clear();
+                return id;
+            }
+        }
         let mut span = declaration.span.clone();
         // A declarator starts at its pointer/reference operators, while CDT's
         // generated initializer LHS identifier starts at the declared name.
@@ -631,7 +645,17 @@ impl Builder<'_> {
                 flow.append(Fragment::single(id))
             }
             ExprKind::Block(expressions) => {
-                let id = self.node("BLOCK", span, None, None);
+                let designated = self.graph.nodes[parent as usize].name.as_deref()
+                    == Some("<operator>.arrayInitializer")
+                    && expressions.iter().all(|expression| {
+                        matches!(&expression.kind, ExprKind::Binary { op, .. } if op == "=")
+                    });
+                // astForCAST/CPPASTDesignatedInitializer constructs a BLOCK
+                // without CODE; its generated accessor returns <empty>.
+                let id = self.node("BLOCK", span, None, designated.then_some("<empty>"));
+                if designated {
+                    self.graph.nodes[id as usize].type_name = Some("void".into());
+                }
                 self.ast(parent, id, argument);
                 let mut flow = Fragment::default();
                 for expression in expressions {
