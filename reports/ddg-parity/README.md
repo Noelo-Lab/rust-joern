@@ -15,6 +15,16 @@ This prevents duplicate basenames from overwriting each other. Synthetic
 filenames are retained. Absolute candidate filenames are made relative to the
 same prepared input root for comparison.
 
+Ten additional `dataflow-audit` inputs are measured separately: four type
+metadata/detail sources select 108 original public functions, and six context,
+control, C++ call, global and operator sources select 74. Their rich original
+CPG captures contain 82 methods in the latter group; public name/CFG selection
+accounts for the smaller public scope. `audit-types-after.json` and
+`audit-sources-after.json` record both graph gates passing for all 182 selected
+functions on one candidate snapshot. These interim audit reports do not change
+the 589-function broad-corpus summary or establish a shared final revision with
+the directory reports.
+
 Each function must pass two independent graph checks:
 
 - Actual `Function.ddg`: directed graph isomorphism preserving Block boundary
@@ -48,6 +58,8 @@ prepared bytes. DecBench `.i/.ii` inputs use its original header stripping and
 decompiled inputs its original sanitation/macro expansion. Their absolute
 source paths and preparation flags are recorded in each reference.
 `directory` contains the two frozen multi-file references and input manifests.
+`audit-types` and `audit-sources` contain independently captured original
+references for the ten additional raw sources.
 
 `summary.json` identifies each report's scope and candidate hashes. Historical
 full divergence reports are losslessly compressed as `.json.gz`; read them
@@ -64,10 +76,11 @@ To replay the focused corpus from frozen references:
 ```sh
 cargo build --lib
 python3 scripts/compare_ddg_pyjoern.py \
-  tests/fixtures/*.c tests/fixtures/functions.cpp \
-  tests/fixtures/dataflow/*.c tests/fixtures/dataflow/extra.cpp \
-  tests/fixtures/decbench/*.c \
-  tests/fixtures/ddg-parity/*.c tests/fixtures/ddg-parity/*.cpp \
+  tests/fixtures/control.c tests/fixtures/expressions.c tests/fixtures/functions.cpp \
+  tests/fixtures/dataflow/flow.c tests/fixtures/dataflow/extra.cpp \
+  tests/fixtures/dataflow/semantics.c tests/fixtures/dataflow/builtins.c \
+  tests/fixtures/decbench/bits.c tests/fixtures/decbench/libgzip_a-stripslash.c \
+  tests/fixtures/ddg-parity/patterns.c tests/fixtures/ddg-parity/patterns.cpp \
   --reference-dir tests/fixtures/ddg-parity/references \
   --output reports/ddg-parity/after.json --jobs 2
 ```
@@ -80,6 +93,12 @@ directory. To capture new original references, replace `--reference-dir` with
 environment containing the original package. External DecBench inputs also
 need `--decbench`; decompiled inputs additionally need `--sanitize-decompiled`.
 
+Replay the four type sources using `tests/fixtures/dataflow-audit/type-*.c` and
+`tests/fixtures/dataflow-audit/type-*.cpp` with `references/audit-types`. Replay
+the other six audit sources with `references/audit-sources`. Frozen-reference
+replay requires the native library and Python graph dependencies; it does not
+start Joern.
+
 ```sh
 python3 -m unittest discover -s tests -p test_ddg_comparison.py -v
 ```
@@ -87,3 +106,7 @@ python3 -m unittest discover -s tests -p test_ddg_comparison.py -v
 These tests check identity-sensitive topology, directed/parallel labeled
 edges, allocation-independent relabeling, duplicate statements, source and
 oracle provenance, and agreement of independently captured original graphs.
+Ten tests also parse the additional audit sources through the native API and
+require exact public and labeled DDG parity, independent of original CPG replay.
+They freeze candidate bytes once per class and skip only when the debug library
+has not been built.

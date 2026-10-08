@@ -3,13 +3,15 @@ from pathlib import Path
 import copy
 import hashlib
 import json
+import shutil
 import sys
+import tempfile
 from types import SimpleNamespace
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from compare_ddg_pyjoern import FLAGS, SERIALIZERS, SOURCE_SUFFIXES, compare, directory_digest, directory_manifest, isomorphic, semantic_diff, validate_reference
+from compare_ddg_pyjoern import CANDIDATE_WORKER, FLAGS, SERIALIZERS, SOURCE_SUFFIXES, compare, directory_digest, directory_manifest, invoke, isomorphic, semantic_diff, validate_reference
 
 
 def graph(identities, edges, representation="directed_labeled_multigraph"):
@@ -149,8 +151,9 @@ class DdgComparisonTests(unittest.TestCase):
         references = ROOT / "tests/fixtures/ddg-parity/references"
         primary = {"control.c", "expressions.c", "functions.cpp", "flow.c", "extra.cpp", "semantics.c", "builtins.c",
                    "bits.c", "libgzip_a-stripslash.c", "patterns.c", "patterns.cpp"}
-        self.assertEqual({p.name.removesuffix(".ddg.pyjoern.json") for p in references.glob("*.json")}, primary)
-        for path in references.rglob("*.json"):
+        captured = {p.name.removesuffix(".ddg.pyjoern.json") for p in references.glob("*.ddg.pyjoern.json")}
+        self.assertTrue(primary <= captured, "A focused original DDG reference is missing")
+        for path in references.rglob("*.ddg.pyjoern.json"):
             value = json.loads(path.read_text())
             # Capture paths document the source worktree but references can be
             # checked after the work is moved to another checkout.
@@ -165,6 +168,59 @@ class DdgComparisonTests(unittest.TestCase):
                 validate_reference(value, source_sha, value["prepared_sha256"], value["language"], value.get("input_kind", "file"))
                 self.assertEqual(value["package_versions"]["pyjoern"], "4.0.150.4")
                 self.assertIn("public_parse_source_seconds", value["timings"])
+
+
+class NativeAuditDdgParityTests(unittest.TestCase):
+    """Exercise source -> native API, independently of original CPG replay.
+
+    Build the library with ``cargo build --lib`` before running these gates.
+    Candidate library/wrapper bytes are frozen once for all ten test cases.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        library = ROOT / "target/debug/librust_joern.so"
+        if not library.exists():
+            raise unittest.SkipTest("Native library unavailable; run cargo build --lib")
+        cls.temporary = tempfile.TemporaryDirectory(prefix="ddg-audit-native-tests-")
+        cls.snapshot = Path(cls.temporary.name)
+        cls.library = cls.snapshot / "librust_joern.so"
+        shutil.copyfile(library, cls.library)
+        shutil.copytree(ROOT / "python", cls.snapshot / "python", ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.so"))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.temporary.cleanup()
+
+    def assert_source_matches(self, filename, group):
+        source = ROOT / "tests/fixtures/dataflow-audit" / filename
+        reference = ROOT / "tests/fixtures/ddg-parity/references" / group / (filename + ".ddg.pyjoern.json")
+        baseline = json.loads(reference.read_text())
+        sha = hashlib.sha256(source.read_bytes()).hexdigest()
+        validate_reference(baseline, sha, sha, "cpp" if source.suffix == ".cpp" else "c")
+        with tempfile.TemporaryDirectory(prefix="ddg-audit-input-") as temporary:
+            cwd = Path(temporary)
+            prepared = cwd / source.name
+            prepared.write_bytes(source.read_bytes())
+            candidate = invoke(sys.executable, CANDIDATE_WORKER,
+                {"source": str(prepared), "prepared_sha256": sha, "flags": FLAGS,
+                 "python_package": str(self.snapshot / "python"), "library": str(self.library)}, cwd, 120, isolate=False)
+        rows = compare(baseline["functions"], candidate["functions"])
+        failed = [(row["function"], row["status"], row.get("mismatch_kind")) for row in rows if row["status"] != "match"]
+        self.assertEqual(failed, [], f"Exact source/public/labeled DDG parity failed for {filename}: {failed}")
+
+
+def _native_audit_case(filename, group):
+    def run(self):
+        self.assert_source_matches(filename, group)
+    return run
+
+
+for _filename in ("type-metadata.c", "type-metadata.cpp", "type-detail.c", "type-detail.cpp"):
+    setattr(NativeAuditDdgParityTests, "test_" + _filename.replace("-", "_").replace(".", "_"),
+            _native_audit_case(_filename, "audit-types"))
+for _filename in ("context.c", "context.cpp", "control.c", "cpp_calls.cpp", "globals.cpp", "operators.c"):
+    setattr(NativeAuditDdgParityTests, "test_" + _filename.replace(".", "_"), _native_audit_case(_filename, "audit-sources"))
 
 
 if __name__ == "__main__":
