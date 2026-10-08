@@ -41,6 +41,7 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         asm_problem_recovery: false,
         in_function_body: false,
         function_declarations: Vec::new(),
+        global_expressions: Vec::new(),
         macro_expansion: false,
     };
     let mut functions = Vec::new();
@@ -65,6 +66,7 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
     } else { (false, 0) });
     TranslationUnit {
         functions,
+        global_expressions: parser.global_expressions,
         diagnostics: parser.diagnostics,
     }
 }
@@ -230,6 +232,7 @@ struct Parser<'a> {
     asm_problem_recovery: bool,
     in_function_body: bool,
     function_declarations: Vec<Function>,
+    global_expressions: Vec<Expr>,
     macro_expansion: bool,
 }
 
@@ -432,6 +435,9 @@ impl Parser<'_> {
                     self.pos = cursor + 1;
                     continue;
                 }
+                if !is_typedef {
+                    self.collect_global_expressions(start, cursor);
+                }
                 if !is_typedef && !elaborated {
                     // A simple declaration shares its specifiers across every
                     // declarator; Joern converts each function declarator.
@@ -520,6 +526,9 @@ impl Parser<'_> {
                     let after = self.pos;
                     if class.is_some() {
                         self.pos = self.declaration_end(after);
+                        if !is_typedef {
+                            self.collect_global_expressions(after, self.pos);
+                        }
                         for (a, b) in self.split_ranges(after, self.pos, ",") {
                             if let (Some(name), _) = self.declarator_name(a, b) {
                                 if is_typedef {
@@ -543,6 +552,9 @@ impl Parser<'_> {
                     }
                     self.pos = self.declaration_end(close + 1);
                     self.remember_types(start, self.pos);
+                    if !is_typedef {
+                        self.collect_global_expressions(start, self.pos);
+                    }
                     self.eat(";");
                 } else {
                     self.diagnose(cursor, cursor + 1, "unclosed top-level brace");
@@ -1065,6 +1077,42 @@ impl Parser<'_> {
                     && self.text(i + 1) == "(" && self.text(i + 2) == "("
                     && self.text(i + 3) == ")" && self.text(i + 4) == ")")
         })
+    }
+
+    fn collect_global_expressions(&mut self, start: usize, end: usize) {
+        let base_end = self.specifier_end(start, end);
+        for (a, b) in self.split_ranges(base_end, end, ",") {
+            let mut cursor = a;
+            let mut ranges = Vec::new();
+            while cursor < b {
+                if self.text(cursor) == "=" {
+                    ranges.push((cursor + 1, b));
+                    break;
+                }
+                if matches!(self.text(cursor), "(" | "[" | "{") {
+                    let Some(close) = self.matching(cursor, b) else { break };
+                    if self.text(cursor) == "[" {
+                        ranges.push((cursor + 1, close));
+                    }
+                    if self.text(cursor) == "{" {
+                        ranges.push((cursor, b));
+                        break;
+                    }
+                    cursor = close + 1;
+                } else {
+                    cursor += 1;
+                }
+            }
+            for (a, b) in ranges {
+                if (a..b).any(|i| matches!(self.text(i),
+                    "__builtin_va_arg" | "__builtin_offsetof" |
+                    "__builtin_types_compatible_p" | "__offsetof__"))
+                {
+                    let expression = self.expression_range(a, b);
+                    self.global_expressions.push(expression);
+                }
+            }
+        }
     }
 
     fn remember_types(&mut self, start: usize, end: usize) {
@@ -2458,6 +2506,7 @@ impl Parser<'_> {
             function_returns: self.function_returns.clone(), function_full_name: self.function_full_name.clone(), lambda_counter: self.lambda_counter,
             imports: self.imports.clone(), using_namespaces: self.using_namespaces.clone(), lexical_scope: self.lexical_scope.clone(), extern_c: self.extern_c, extern_c_names:self.extern_c_names.clone(), class_scopes:self.class_scopes.clone(), class_fields: self.class_fields.clone(), function_fields: self.function_fields.clone(), function_member_cv: self.function_member_cv, asm_problem_recovery: false,
             in_function_body: self.in_function_body, function_declarations: Vec::new(),
+            global_expressions: Vec::new(),
             // The replacement for types_compatible_p contains its own name;
             // a disabled macro is not expanded a second time by CDT.
             macro_expansion: true,

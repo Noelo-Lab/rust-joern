@@ -167,7 +167,42 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             .join("\n"));
     }
     let mut functions: Vec<_> = built.into_iter().map(|(f, _)| f).collect();
-    append_macro_methods(&mut functions);
+    let global = (!unit.global_expressions.is_empty()).then(|| {
+        // Global initializers/bounds can register external builtin macro
+        // methods even though PyJoern does not expose the <global> method.
+        let function = syntax::Function {
+            name: "<global>".into(),
+            full_name: "<global>".into(),
+            return_type: "void".into(),
+            binding_return_type: "void".into(),
+            signature: "void()".into(),
+            implicit_this: None,
+            implicit_fields: Vec::new(),
+            member_cv_qualified: false,
+            lambda: false,
+            is_static: false,
+            inherited_bindings: Vec::new(),
+            inherited_closures: Vec::new(),
+            parameters: Vec::new(),
+            body: syntax::Stmt {
+                kind: syntax::StmtKind::Sequence(
+                    unit.global_expressions
+                        .iter()
+                        .map(|expression| syntax::Stmt {
+                            span: expression.span.clone(),
+                            kind: syntax::StmtKind::Expression(expression.clone()),
+                        })
+                        .collect(),
+                ),
+                span: syntax::Span::default(),
+            },
+            span: syntax::Span::default(),
+        };
+        builder::build(&function, source, filename, &known_functions, cpp, &methods)
+            .0
+            .cpg
+    });
+    append_macro_methods(&mut functions, global.as_ref());
     functions
         .par_iter_mut()
         .for_each(dataflow::decorate_parameters);
@@ -196,10 +231,14 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
 
 /// Joern's base pass creates external methods for CDT's predefined macros.
 /// Their missing METHOD_RETURN line also changes PyJoern's boundary lifting.
-fn append_macro_methods(functions: &mut Vec<FunctionGraph>) {
+fn append_macro_methods(functions: &mut Vec<FunctionGraph>, global: Option<&PropertyGraph>) {
     let mut macros = BTreeMap::new();
-    for function in functions.iter() {
-        for call in function.cpg.nodes.iter().filter(|node| node.kind == "CALL") {
+    for graph in functions
+        .iter()
+        .map(|function| &function.cpg)
+        .chain(global)
+    {
+        for call in graph.nodes.iter().filter(|node| node.kind == "CALL") {
             let Some(fullname) = call.method_full_name.as_deref() else {
                 continue;
             };
@@ -212,8 +251,7 @@ fn append_macro_methods(functions: &mut Vec<FunctionGraph>) {
             if arity.parse::<usize>().is_err() {
                 continue;
             }
-            let parameters = function
-                .cpg
+            let parameters = graph
                 .edges
                 .iter()
                 .filter(|edge| edge.kind == "ARGUMENT" && edge.source == call.id)

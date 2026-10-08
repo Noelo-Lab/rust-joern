@@ -202,5 +202,6 @@ pub struct ParseDiagnostic {
 #[derive(Clone, Debug, Default)]
 pub struct TranslationUnit {
     pub functions: Vec<Function>,
+    pub global_expressions: Vec<Expr>,
     pub diagnostics: Vec<ParseDiagnostic>,
 }
