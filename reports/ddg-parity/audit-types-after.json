@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "scope": "per-file original Function.ddg plus directed labeled dotDdg; statement identities and multiplicity preserved",
-  "candidate_library": "/tmp/ddg-audit-current/librust_joern.so",
-  "candidate_library_sha256": "4c3a757d84db87b2e794f9869abc908a75fc613427517d427bb8d820059a420b",
-  "candidate_package": "/tmp/ddg-audit-current/python",
+  "candidate_library": "/tmp/ddg-final-replay-6u47qqxc/librust_joern.so",
+  "candidate_library_sha256": "bbcc9029052314789b11ced7f495c0d63841112f59ae2ca46a569b739a1c76a6",
+  "candidate_package": "/tmp/ddg-final-replay-6u47qqxc/python",
   "candidate_python_sha256": {
     "rust_joern/__init__.py": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce"
   },
   "candidate_timing_kind": "parse_source_plus_lazy_ddg_materialization",
-  "seconds": 0.697115913964808,
+  "seconds": 0.6688770080218092,
   "requested_files": 4,
   "completed_files": 4,
   "files": [
@@ -23,12 +23,12 @@
         "public_parse_source_seconds": 13.014345133095048,
         "supplemental_raw_parse_seconds": 12.17652838898357
       },
-      "candidate_seconds": 0.02930292405653745,
+      "candidate_seconds": 0.02768270205706358,
       "candidate_timings": {
-        "public_parse_source_seconds": 0.02493916207458824,
-        "ddg_materialization_seconds": 0.00436376198194921
+        "public_parse_source_seconds": 0.02360037202015519,
+        "ddg_materialization_seconds": 0.004082330036908388
       },
-      "candidate_module": "/tmp/ddg-candidate-snapshot-8i1v1prt/python/rust_joern/__init__.py",
+      "candidate_module": "/tmp/ddg-candidate-snapshot-alx7ephg/python/rust_joern/__init__.py",
       "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
       "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
       "reference_warnings": "",
@@ -915,12 +915,12 @@
         "public_parse_source_seconds": 13.332814394962043,
         "supplemental_raw_parse_seconds": 12.011238423991017
       },
-      "candidate_seconds": 0.028658866067416966,
+      "candidate_seconds": 0.033610387006774545,
       "candidate_timings": {
-        "public_parse_source_seconds": 0.022757961065508425,
-        "ddg_materialization_seconds": 0.005900905001908541
+        "public_parse_source_seconds": 0.027891437988728285,
+        "ddg_materialization_seconds": 0.00571894901804626
       },
-      "candidate_module": "/tmp/ddg-candidate-snapshot-8i1v1prt/python/rust_joern/__init__.py",
+      "candidate_module": "/tmp/ddg-candidate-snapshot-alx7ephg/python/rust_joern/__init__.py",
       "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
       "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
       "reference_warnings": "",
@@ -1839,12 +1839,12 @@
         "public_parse_source_seconds": 11.677893063053489,
         "supplemental_raw_parse_seconds": 12.57096375792753
       },
-      "candidate_seconds": 0.03352352511137724,
+      "candidate_seconds": 0.02819338790141046,
       "candidate_timings": {
-        "public_parse_source_seconds": 0.02728079806547612,
-        "ddg_materialization_seconds": 0.00624272704590112
+        "public_parse_source_seconds": 0.023946045897901058,
+        "ddg_materialization_seconds": 0.004247342003509402
       },
-      "candidate_module": "/tmp/ddg-candidate-snapshot-8i1v1prt/python/rust_joern/__init__.py",
+      "candidate_module": "/tmp/ddg-candidate-snapshot-alx7ephg/python/rust_joern/__init__.py",
       "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
       "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
       "reference_warnings": "",
@@ -2667,12 +2667,12 @@
         "public_parse_source_seconds": 11.888603977975436,
         "supplemental_raw_parse_seconds": 12.361410607001744
       },
-      "candidate_seconds": 0.04033047903794795,
+      "candidate_seconds": 0.0340484669432044,
       "candidate_timings": {
-        "public_parse_source_seconds": 0.03619795595295727,
-        "ddg_materialization_seconds": 0.00413252308499068
+        "public_parse_source_seconds": 0.02948564395774156,
+        "ddg_materialization_seconds": 0.004562822985462844
       },
-      "candidate_module": "/tmp/ddg-candidate-snapshot-8i1v1prt/python/rust_joern/__init__.py",
+      "candidate_module": "/tmp/ddg-candidate-snapshot-alx7ephg/python/rust_joern/__init__.py",
       "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
       "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
       "reference_warnings": "",

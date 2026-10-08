@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "scope": "per-file original Function.ddg plus directed labeled dotDdg; statement identities and multiplicity preserved",
-  "candidate_library": "/home/mahaloz/github/rust-joern-ddg/target/debug/librust_joern.so",
-  "candidate_library_sha256": "f19247c8a377846306f69f040da200226be2dd0d7cd99b92565ce0cd81c92f07",
-  "candidate_package": "/home/mahaloz/github/rust-joern-ddg/python",
+  "candidate_library": "/tmp/ddg-final-replay-6u47qqxc/librust_joern.so",
+  "candidate_library_sha256": "bbcc9029052314789b11ced7f495c0d63841112f59ae2ca46a569b739a1c76a6",
+  "candidate_package": "/tmp/ddg-final-replay-6u47qqxc/python",
   "candidate_python_sha256": {
     "rust_joern/__init__.py": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce"
   },
   "candidate_timing_kind": "parse_source_plus_lazy_ddg_materialization",
-  "seconds": 20.1697449820349,
+  "seconds": 0.4708284679800272,
   "requested_files": 1,
   "completed_files": 1,
   "files": [
@@ -42,25 +42,25 @@
       "prepared_sha256": "0d73d282c993806b30241d12c3fe076f9c932a64c161e35c0a3c20537575e776",
       "language": "mixed_directory",
       "input_kind": "directory",
-      "status": "divergent",
+      "status": "match",
       "reference_timings": {
         "public_parse_source_seconds": 9.55287092702929,
         "supplemental_raw_parse_seconds": 9.754219294060022
       },
-      "candidate_seconds": 0.017495987005531788,
+      "candidate_seconds": 0.014630649937316775,
       "candidate_timings": {
-        "public_parse_source_seconds": 0.016288732993416488,
-        "ddg_materialization_seconds": 0.0012072540121152997
+        "public_parse_source_seconds": 0.013358038966543972,
+        "ddg_materialization_seconds": 0.0012726109707728028
       },
-      "candidate_module": "/tmp/ddg-candidate-snapshot-10n71oix/python/rust_joern/__init__.py",
+      "candidate_module": "/tmp/ddg-candidate-snapshot-k_mju7ej/python/rust_joern/__init__.py",
       "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
       "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
       "reference_warnings": "",
       "candidate_warnings": "",
       "reference_functions": 2,
-      "candidate_functions": 3,
+      "candidate_functions": 2,
       "matched": 2,
-      "failed": 1,
+      "failed": 0,
       "functions": [
         {
           "function": "[\"caller\",\"caller.c\"]",
@@ -123,285 +123,6 @@
               "nodes": 6,
               "edges": 8,
               "representation": "directed_labeled_multigraph"
-            }
-          }
-        },
-        {
-          "function": "[\"external_body\",\"caller.c\"]",
-          "name": "external_body",
-          "filename": "/tmp/ddg-parity-ltm7138x/ddg-directory/caller.c",
-          "status": "extra",
-          "reference": null,
-          "candidate": {
-            "name": "external_body",
-            "fullname": "external_body",
-            "filename": "/tmp/ddg-parity-ltm7138x/ddg-directory/caller.c",
-            "start_line": 1,
-            "end_line": 1,
-            "public": {
-              "representation": "DiGraph",
-              "invalid_block_nodes": false,
-              "nodes": [
-                {
-                  "id": 0,
-                  "identity": {
-                    "addr": 1,
-                    "entry": true,
-                    "exit": false,
-                    "statements": [
-                      {
-                        "class": "Nop",
-                        "text": "FUNCTION_START",
-                        "fields": {
-                          "raw_text": "METHOD,external_body",
-                          "source_line_number": 1,
-                          "type": 0
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": 1,
-                  "identity": {
-                    "addr": 1,
-                    "entry": false,
-                    "exit": false,
-                    "statements": [
-                      {
-                        "class": "Parameter",
-                        "text": "int x",
-                        "fields": {
-                          "raw_text": "PARAM,int x",
-                          "source_line_number": 1,
-                          "type": "int",
-                          "name": "x"
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": 2,
-                  "identity": {
-                    "addr": 1,
-                    "entry": false,
-                    "exit": false,
-                    "statements": [
-                      {
-                        "class": "Parameter",
-                        "text": "int y",
-                        "fields": {
-                          "raw_text": "PARAM,int y",
-                          "source_line_number": 1,
-                          "type": "int",
-                          "name": "y"
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": 3,
-                  "identity": {
-                    "addr": 1,
-                    "entry": false,
-                    "exit": true,
-                    "statements": [
-                      {
-                        "class": "Nop",
-                        "text": "FUNCTION_END",
-                        "fields": {
-                          "raw_text": "METHOD_RETURN,int",
-                          "source_line_number": 1,
-                          "type": 1
-                        }
-                      }
-                    ]
-                  }
-                }
-              ],
-              "edges": [
-                {
-                  "source": 0,
-                  "target": 1,
-                  "label": ""
-                },
-                {
-                  "source": 0,
-                  "target": 2,
-                  "label": ""
-                },
-                {
-                  "source": 1,
-                  "target": 3,
-                  "label": ""
-                },
-                {
-                  "source": 2,
-                  "target": 3,
-                  "label": ""
-                }
-              ]
-            },
-            "dot": {
-              "representation": "directed_labeled_multigraph",
-              "nodes": [
-                {
-                  "id": 0,
-                  "identity": {
-                    "dot_label": "(METHOD,external_body)<SUB>1</SUB>"
-                  }
-                },
-                {
-                  "id": 1,
-                  "identity": {
-                    "dot_label": "(METHOD_RETURN,int)<SUB>1</SUB>"
-                  }
-                },
-                {
-                  "id": 2,
-                  "identity": {
-                    "dot_label": "(PARAM,int x)<SUB>1</SUB>"
-                  }
-                },
-                {
-                  "id": 3,
-                  "identity": {
-                    "dot_label": "(PARAM,int y)<SUB>1</SUB>"
-                  }
-                }
-              ],
-              "edges": [
-                {
-                  "source": 2,
-                  "target": 1,
-                  "label": "x"
-                },
-                {
-                  "source": 3,
-                  "target": 1,
-                  "label": "y"
-                },
-                {
-                  "source": 0,
-                  "target": 2,
-                  "label": ""
-                },
-                {
-                  "source": 0,
-                  "target": 3,
-                  "label": ""
-                }
-              ]
-            },
-            "raw_ddg": {
-              "nodes": [
-                {
-                  "id": 0,
-                  "kind": "METHOD",
-                  "code": "int external_body(int x, int y);",
-                  "name": "external_body",
-                  "cfg_nop": true,
-                  "line": 1,
-                  "column": 5,
-                  "start_byte": 0,
-                  "end_byte": 32
-                },
-                {
-                  "id": 1,
-                  "kind": "METHOD_RETURN",
-                  "code": "RET",
-                  "cfg_nop": true,
-                  "type_name": "int",
-                  "line": 1,
-                  "column": 5,
-                  "start_byte": 0,
-                  "end_byte": 32
-                },
-                {
-                  "id": 2,
-                  "kind": "METHOD_PARAMETER_IN",
-                  "code": "int x",
-                  "name": "x",
-                  "type_name": "int",
-                  "line": 1,
-                  "column": 19,
-                  "start_byte": 18,
-                  "end_byte": 23
-                },
-                {
-                  "id": 3,
-                  "kind": "METHOD_PARAMETER_IN",
-                  "code": "int y",
-                  "name": "y",
-                  "type_name": "int",
-                  "line": 1,
-                  "column": 26,
-                  "start_byte": 25,
-                  "end_byte": 30
-                },
-                {
-                  "id": 5,
-                  "kind": "METHOD_PARAMETER_OUT",
-                  "code": "int x",
-                  "name": "x",
-                  "type_name": "int",
-                  "line": 1,
-                  "column": 19,
-                  "start_byte": 18,
-                  "end_byte": 23
-                },
-                {
-                  "id": 6,
-                  "kind": "METHOD_PARAMETER_OUT",
-                  "code": "int y",
-                  "name": "y",
-                  "type_name": "int",
-                  "line": 1,
-                  "column": 26,
-                  "start_byte": 25,
-                  "end_byte": 30
-                }
-              ],
-              "edges": [
-                {
-                  "source": 0,
-                  "target": 2,
-                  "kind": "REACHING_DEF",
-                  "label": ""
-                },
-                {
-                  "source": 0,
-                  "target": 3,
-                  "kind": "REACHING_DEF",
-                  "label": ""
-                },
-                {
-                  "source": 2,
-                  "target": 5,
-                  "kind": "REACHING_DEF",
-                  "label": "x"
-                },
-                {
-                  "source": 3,
-                  "target": 6,
-                  "kind": "REACHING_DEF",
-                  "label": "y"
-                },
-                {
-                  "source": 2,
-                  "target": 1,
-                  "kind": "REACHING_DEF",
-                  "label": "x"
-                },
-                {
-                  "source": 3,
-                  "target": 1,
-                  "kind": "REACHING_DEF",
-                  "label": "y"
-                }
-              ]
             }
           }
         }

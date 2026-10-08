@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "scope": "per-file original Function.ddg plus directed labeled dotDdg; statement identities and multiplicity preserved",
+  "candidate_library": "/tmp/ddg-final-replay-6u47qqxc/librust_joern.so",
+  "candidate_library_sha256": "bbcc9029052314789b11ced7f495c0d63841112f59ae2ca46a569b739a1c76a6",
+  "candidate_package": "/tmp/ddg-final-replay-6u47qqxc/python",
+  "candidate_python_sha256": {
+    "rust_joern/__init__.py": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce"
+  },
+  "candidate_timing_kind": "parse_source_plus_lazy_ddg_materialization",
+  "seconds": 0.4909332060487941,
+  "requested_files": 1,
+  "completed_files": 1,
+  "files": [
+    {
+      "source": "/home/mahaloz/github/rust-joern-ddg/tests/fixtures/ddg-parity/comma-conditions.c",
+      "source_sha256": "271edcb00734c0f4e8e38a49f05a7316aa24bac6591f1bb60d18b29b392fca9b",
+      "prepared_sha256": "271edcb00734c0f4e8e38a49f05a7316aa24bac6591f1bb60d18b29b392fca9b",
+      "language": "c",
+      "input_kind": "file",
+      "status": "match",
+      "reference_timings": {
+        "public_parse_source_seconds": 10.065786453080364,
+        "supplemental_raw_parse_seconds": 10.01024354994297
+      },
+      "candidate_seconds": 0.0230591680156067,
+      "candidate_timings": {
+        "public_parse_source_seconds": 0.021120268967933953,
+        "ddg_materialization_seconds": 0.0019388990476727486
+      },
+      "candidate_module": "/tmp/ddg-candidate-snapshot-6msu9m0_/python/rust_joern/__init__.py",
+      "candidate_module_sha256": "7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce",
+      "candidate_python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "reference_warnings": "",
+      "candidate_warnings": "",
+      "reference_functions": 6,
+      "candidate_functions": 6,
+      "matched": 6,
+      "failed": 0,
+      "functions": [
+        {
+          "function": "do_comma",
+          "name": "do_comma",
+          "filename": "comma-conditions.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 9,
+              "edges": 13,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 9,
+              "edges": 13,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 9,
+              "edges": 16,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 9,
+              "edges": 16,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "for_comma",
+          "name": "for_comma",
+          "filename": "comma-conditions.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 10,
+              "edges": 14,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 10,
+              "edges": 14,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 10,
+              "edges": 17,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 10,
+              "edges": 17,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "if_comma",
+          "name": "if_comma",
+          "filename": "comma-conditions.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 9,
+              "edges": 14,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 9,
+              "edges": 14,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 9,
+              "edges": 18,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 9,
+              "edges": 18,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "return_comma",
+          "name": "return_comma",
+          "filename": "comma-conditions.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 8,
+              "edges": 13,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 8,
+              "edges": 13,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 8,
+              "edges": 18,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 8,
+              "edges": 18,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "switch_comma",
+          "name": "switch_comma",
+          "filename": "comma-conditions.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 11,
+              "edges": 18,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 11,
+              "edges": 18,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 11,
+              "edges": 22,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 11,
+              "edges": 22,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        },
+        {
+          "function": "while_comma",
+          "name": "while_comma",
+          "filename": "comma-conditions.c",
+          "status": "match",
+          "public_match": true,
+          "labeled_dot_match": true,
+          "public": {
+            "reference": {
+              "nodes": 9,
+              "edges": 12,
+              "representation": "DiGraph"
+            },
+            "candidate": {
+              "nodes": 9,
+              "edges": 12,
+              "representation": "DiGraph"
+            }
+          },
+          "dot": {
+            "reference": {
+              "nodes": 9,
+              "edges": 15,
+              "representation": "directed_labeled_multigraph"
+            },
+            "candidate": {
+              "nodes": 9,
+              "edges": 15,
+              "representation": "directed_labeled_multigraph"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,21 @@
 These measurements compare unchanged PyJoern 4.0.150.4 / Joern v4.0.150 with
-native Rust output on identical prepared input bytes. The 57 measured files
-contain 589 functions selected by the original public `parse_source` API:
-221 functions from 11 focused files, 314 from all 40 existing parser/recovery
-and DecBench regression sources, and 54 from six additional actual DecBench
-compiled and decompiled files. This is a measured corpus, not a claim of parity
-for every C/C++ program or every DecBench input.
+native Rust output on identical prepared input bytes. The final corpus passes
+both graph gates for all 841 public function instances across 77 file parses
+and two directory parses. The original native baseline passed none. Every
+final group uses native library SHA-256
+`bbcc9029052314789b11ced7f495c0d63841112f59ae2ca46a569b739a1c76a6`
+and Python module SHA-256
+`7f547fb91adef18ea392c7ec0d81c214ae2c88a8fa1b609a253cd1ceb512a0ce`
+from production checkpoint `58f24d6dcb6276d2b4c2c3cfbbd15b0536c266c5`.
+
+The original broad scope comprises 589 function instances: 221 from 11 focused
+files, 314 from all 40 existing parser/recovery and DecBench regression sources,
+and 54 from six additional actual DecBench compiled and decompiled files.
+Two existing regression fixture pairs have identical bytes and language; the
+manifest identifies their 42 repeated method instances. The full corpus has
+77 unique prepared input contexts containing 799 public functions. These
+counts describe measured input contexts, not parity for every C/C++ program or
+every DecBench input.
 
 Two additional directory parses cover cross-file callee context and duplicate
 function names in `left/input.c` and `right/input.c`. Their six original public
@@ -15,15 +26,18 @@ This prevents duplicate basenames from overwriting each other. Synthetic
 filenames are retained. Absolute candidate filenames are made relative to the
 same prepared input root for comparison.
 
-Ten additional `dataflow-audit` inputs are measured separately: four type
+Ten additional `dataflow-audit` inputs are measured: four type
 metadata/detail sources select 108 original public functions, and six context,
 control, C++ call, global and operator sources select 74. Their rich original
 CPG captures contain 82 methods in the latter group; public name/CFG selection
 accounts for the smaller public scope. `audit-types-after.json` and
-`audit-sources-after.json` record both graph gates passing for all 182 selected
-functions on one candidate snapshot. These interim audit reports do not change
-the 589-function broad-corpus summary or establish a shared final revision with
-the directory reports.
+`audit-sources-after.json` contain these 182 selected functions. Two further
+audit sources cover assignment operators and construction with 19 original
+public functions; their rich original captures contain 21 methods, including
+two declarations excluded by public selection. Eight targeted files contribute
+45 functions covering comma expressions, global macro discovery, C++ classes,
+namespaces, field references, lambdas and member pointers. All groups retain
+separate reports and share the same final candidate revision.
 
 Each function must pass two independent graph checks:
 
@@ -59,17 +73,35 @@ decompiled inputs its original sanitation/macro expansion. Their absolute
 source paths and preparation flags are recorded in each reference.
 `directory` contains the two frozen multi-file references and input manifests.
 `audit-types` and `audit-sources` contain independently captured original
-references for the ten additional raw sources.
+references for the ten additional raw sources. `audit-extensions` contains the
+assignment/construction captures. Classes and lambdas have separate reference
+directories under their corresponding source fixture directories.
 
-`summary.json` identifies each report's scope and candidate hashes. Historical
+`corpus-manifest.json` records every input and reference, their hashes, selected
+public method counts and preparation requirements. `summary.json` identifies
+each report's scope, source checkpoint and candidate hashes. Historical
 full divergence reports are losslessly compressed as `.json.gz`; read them
-with `json.load(gzip.open(path, "rt"))`. Current `*-after.json` files retain
-full divergent graphs and semantic edge/node differences for localization.
-An intermediate summary can contain different candidate revisions and must
-not be treated as a single final validation. The `all_groups_same_candidate_revision`
-field records this explicitly. The initial native API matched none of the 589
-original public/labeled DDGs, because it exposed raw CPG nodes instead of the
-original lifted projection.
+with `json.load(gzip.open(path, "rt"))`. `*-550.json.gz` preserves the earlier
+550/589 revision; `*-interim.json.gz` preserves audit/directory measurements
+before the final shared revision. A divergent report retains full graphs and
+semantic edge/node differences for localization. Candidate hash agreement and
+all graph comparisons completing are checked explicitly by the final runner.
+
+To replay the entire manifest from one frozen candidate snapshot:
+
+```sh
+cargo build --lib
+python3 reports/ddg-parity/replay.py \
+  --reference-python /home/mahaloz/.virtualenvs/decbench/bin/python
+```
+
+The reference interpreter supplies original DecBench dependencies for preparing
+external inputs. Frozen-reference replay does not start Joern. Its original
+external source paths must be available; focused and audit fixtures are stored
+in this repository. Use `--candidate-library` and `--candidate-package` to
+select another build. The runner freezes both once, verifies reference and
+input hashes, checks candidate hashes for every group, and writes all reports
+plus the final summary.
 
 To replay the focused corpus from frozen references:
 
@@ -106,7 +138,7 @@ python3 -m unittest discover -s tests -p test_ddg_comparison.py -v
 These tests check identity-sensitive topology, directed/parallel labeled
 edges, allocation-independent relabeling, duplicate statements, source and
 oracle provenance, and agreement of independently captured original graphs.
-Ten tests also parse the additional audit sources through the native API and
+Twelve tests also parse the additional audit sources through the native API and
 require exact public and labeled DDG parity, independent of original CPG replay.
 They freeze candidate bytes once per class and skip only when the debug library
 has not been built.

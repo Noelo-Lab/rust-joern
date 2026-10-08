@@ -174,7 +174,7 @@ class NativeAuditDdgParityTests(unittest.TestCase):
     """Exercise source -> native API, independently of original CPG replay.
 
     Build the library with ``cargo build --lib`` before running these gates.
-    Candidate library/wrapper bytes are frozen once for all ten test cases.
+    Candidate library/wrapper bytes are frozen once for all twelve test cases.
     """
 
     @classmethod
@@ -221,6 +221,9 @@ for _filename in ("type-metadata.c", "type-metadata.cpp", "type-detail.c", "type
             _native_audit_case(_filename, "audit-types"))
 for _filename in ("context.c", "context.cpp", "control.c", "cpp_calls.cpp", "globals.cpp", "operators.c"):
     setattr(NativeAuditDdgParityTests, "test_" + _filename.replace(".", "_"), _native_audit_case(_filename, "audit-sources"))
+for _filename in ("assignment-operators.c", "constructors.cpp"):
+    setattr(NativeAuditDdgParityTests, "test_" + _filename.replace("-", "_").replace(".", "_"),
+            _native_audit_case(_filename, "audit-extensions"))
 
 
 if __name__ == "__main__":
