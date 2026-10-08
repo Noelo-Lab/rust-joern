@@ -124,7 +124,7 @@ fn builtin_cpg_lowering_and_cfg_match_original_joern() {
                 "{} source CODE, operator, and AST ancestry",
                 original.fullname
             );
-            for kind in ["AST", "CFG", "REF", "PARAMETER_LINK"] {
+            for kind in ["AST", "CFG", "REF", "PARAMETER_LINK", "REACHING_DEF"] {
                 assert_eq!(
                     edge_counts(&original, &old, kind),
                     edge_counts(native, &new, kind),
@@ -140,17 +140,6 @@ fn builtin_cpg_lowering_and_cfg_match_original_joern() {
                     .find(|n| n.kind == "IDENTIFIER" && n.code == "int")
                     .unwrap();
                 assert_eq!(specifier.type_name.as_deref(), Some("int"));
-            }
-            if matches!(
-                original.name.as_str(),
-                "alignof_value" | "alignof_branch" | "alignof_unbracketed" | "sizeof_value"
-            ) {
-                assert_eq!(
-                    edge_counts(&original, &old, "REACHING_DEF"),
-                    edge_counts(native, &new, "REACHING_DEF"),
-                    "{} raw expression operand dependencies",
-                    original.fullname
-                );
             }
         }
     }
