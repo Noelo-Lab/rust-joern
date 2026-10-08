@@ -212,6 +212,14 @@ def _ddg_limit(code: str) -> str:
     return code if len(encoded) <= 100 else encoded[:94].decode("utf-16-le", errors="surrogatepass") + "..."
 
 
+def _ddg_code(node: dict) -> str:
+    # Joern's generated CODE accessor defaults to <empty>, and propertiesMap
+    # omits that default. The native normalized CPG represents it as ""; apply
+    # the accessor behavior only when serializing expression labels.
+    code = node["code"]
+    return "<empty>" if not code and node["kind"] in _EXPRESSION_KINDS else code
+
+
 def _ddg_cfg_codes(cpg: dict) -> dict[int, str]:
     nodes = {node["id"]: node for node in cpg["nodes"]}
     parents = {edge["target"]: edge["source"] for edge in cpg["edges"] if edge["kind"] == "AST"}
@@ -228,14 +236,14 @@ def _ddg_cfg_codes(cpg: dict) -> dict[int, str]:
             if (parent["kind"] == "CALL" and parent.get("name") in _MEMBER_ACCESS_NAMES) or parent["kind"] == "ANNOTATION_PARAMETER_ASSIGN":
                 continue
             if parent["kind"] in _EXPRESSION_KINDS:
-                codes[node["id"]] = parent["code"]
+                codes[node["id"]] = _ddg_code(parent)
             break
     return codes
 
 
 def _ddg_label(node: dict, cpg: dict | None = None, *, cfg_code: str | None = None) -> str:
     """Joern 4.0.150 DOT label, before PyJoern's statement lifting."""
-    kind, code = node["kind"], node["code"]
+    kind, code = node["kind"], _ddg_code(node)
     if kind == "CALL":
         fields = (node.get("name", ""), _ddg_limit(code))
     elif kind == "CONTROL_STRUCTURE":

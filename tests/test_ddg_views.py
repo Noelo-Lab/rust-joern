@@ -130,6 +130,29 @@ class DdgViewTests(unittest.TestCase):
         self.assertIsInstance(blocks[2].statements[0], rust_joern.Parameter)
         self.assertTrue(all(block.addr is None for block in graph))
 
+    def test_omitted_expression_code_uses_generated_accessor_default_only_in_ddg(self):
+        # Joern's generated accessor returns <empty> for omitted CODE, which
+        # its propertiesMap/capture normalize to "". These are original DOT
+        # labels from nested_empty and the transparent __offsetof__ expansion.
+        block = node(1, "BLOCK", "", line=14)
+        identifier = node(2, "IDENTIFIER", "x", line=5)
+        expansion = node(3, "BLOCK", "", line=5)
+        literal = node(4, "LITERAL", '""', line=5)
+        cpg = {"nodes": [block, identifier, expansion, literal], "edges": [edge(3, 2, kind="AST")]}
+        view = {"nodes": [block, identifier, literal], "edges": [edge(1, 2), edge(2, 4)]}
+        self.assertEqual(rust_joern.Function._ddg_labels(view, cpg), {
+            1: "(BLOCK,&lt;empty&gt;,&lt;empty&gt;)<SUB>14</SUB>",
+            2: "(IDENTIFIER,x,&lt;empty&gt;)<SUB>5</SUB>",
+            4: "(LITERAL,&quot;&quot;,&quot;&quot;)<SUB>5</SUB>",
+        })
+        graph = rust_joern.Function._ddg(view, cpg)
+        statements = {statement.id: statement for node_ in graph for statement in node_.statements}
+        self.assertEqual(statements[1].raw_text, "BLOCK,&lt;empty&gt;,&lt;empty&gt;")
+        self.assertEqual(statements[2].raw_text, "IDENTIFIER,x,&lt;empty&gt;")
+        self.assertEqual(block["code"], "")
+        self.assertEqual(expansion["code"], "")
+        self.assertEqual(literal["code"], '""')
+
     def test_jil_statement_types_operands_and_fallback_match_pyjoern(self):
         cases = [
             ("(&lt;operator&gt;.assignment,y = x)<SUB>3</SUB>", "CALL", "Assignment", "y = x",
