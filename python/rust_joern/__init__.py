@@ -226,10 +226,11 @@ def _ddg_limit(code: str) -> str:
 
 def _ddg_code(node: dict) -> str:
     # Joern's generated CODE accessor defaults to <empty>, and propertiesMap
-    # omits that default. The native normalized CPG represents it as ""; apply
-    # the accessor behavior only when serializing expression labels.
+    # omits that default. Native empty blocks represent this omitted property.
+    # Other expressions can explicitly store "": a nested pointer declarator
+    # has an empty IASTName, which AstForIdentifier copies into its CODE field.
     code = node["code"]
-    return "<empty>" if not code and node["kind"] in _EXPRESSION_KINDS else code
+    return "<empty>" if not code and node["kind"] == "BLOCK" else code
 
 
 def _ddg_cfg_codes(cpg: dict) -> dict[int, str]:

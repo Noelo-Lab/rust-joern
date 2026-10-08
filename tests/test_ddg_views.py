@@ -153,6 +153,20 @@ class DdgViewTests(unittest.TestCase):
         self.assertEqual(expansion["code"], "")
         self.assertEqual(literal["code"], '""')
 
+    def test_explicit_empty_identifier_code_is_preserved(self):
+        # Original fp_only_mixed_second has IDENTIFIER name p, CODE="" with
+        # code_property_present=true, and no source location. The nested
+        # pointer declarator's empty IASTName supplies that explicit value.
+        identifier = node(1, "IDENTIFIER", "", line=0, name="p")
+        assignment = node(2, "CALL", "(*p)(int) = x ? target : second", line=8, name="<operator>.assignment")
+        cpg = {"nodes": [identifier, assignment], "edges": [edge(2, 1, kind="AST")]}
+        self.assertEqual(rust_joern._ddg_code(identifier), "")
+        self.assertEqual(
+            rust_joern._ddg_label(identifier, cpg),
+            "(IDENTIFIER,,(*p)(int) = x ? target : second)",
+        )
+        self.assertEqual(identifier["code"], "")
+
     def test_jil_statement_types_operands_and_fallback_match_pyjoern(self):
         cases = [
             ("(&lt;operator&gt;.assignment,y = x)<SUB>3</SUB>", "CALL", "Assignment", "y = x",
