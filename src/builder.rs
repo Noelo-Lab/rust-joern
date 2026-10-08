@@ -825,7 +825,19 @@ impl Builder<'_> {
     }
     fn condition(&mut self, expression: &Expr, parent: NodeId, _wrap: bool) -> Fragment {
         let before = self.graph.nodes.len();
-        let flow = self.expression(expression, parent, None);
+        let flow = if let ExprKind::List(expressions) = &expression.kind {
+            // CDT converts a comma-list condition to a CODE-less BLOCK,
+            // leaving its assignment expressions as direct CFG children.
+            let block = Expr {
+                kind: ExprKind::Block(expressions.clone()),
+                span: expression.span.clone(),
+            };
+            let flow = self.expression(&block, parent, None);
+            self.graph.nodes[before].code.clear();
+            flow
+        } else {
+            self.expression(expression, parent, None)
+        };
         if self.graph.nodes.len() > before {
             self.edge(parent, before as NodeId, "CONDITION", None);
         }
