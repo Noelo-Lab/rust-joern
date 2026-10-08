@@ -2647,8 +2647,16 @@ impl Parser<'_> {
                     let specifier = self.specifier_end(open + 1, end);
                     let typeof_specifier = matches!(self.text(open+1),"typeof"|"__typeof__"|"__typeof"|"decltype");
                     let argument_end = if typeof_specifier { open + 2 } else { specifier };
+                    let type_name = self.clean_type(open + 1, argument_end);
+                    let type_name = type_name.strip_prefix("struct ")
+                        .or_else(|| type_name.strip_prefix("union "))
+                        .or_else(|| type_name.strip_prefix("enum "))
+                        .unwrap_or(&type_name).to_string();
                     let argument = Expr {
-                        kind: ExprKind::Identifier(self.clean_type(open + 1, argument_end)),
+                        kind: ExprKind::TypeSpecifier {
+                            code: self.raw(open + 1, argument_end),
+                            type_name,
+                        },
                         span: self.span(open + 1, argument_end),
                     };
                     self.pos = end + 1;
@@ -3016,15 +3024,29 @@ fn expanded_code(expression: &Expr, source: &str) -> String {
     } else {expanded_code(e, source)};
     match &expression.kind {
         ExprKind::Identifier(name) | ExprKind::Literal(name) => name.clone(),
+        ExprKind::TypeSpecifier { code, .. } => code.clone(),
         ExprKind::Binary {op,left,right} => format!("{} {op} {}",code(left),code(right)),
         ExprKind::Conditional {condition,consequence,alternative} => format!("{} ? {} : {}",code(condition),code(consequence),code(alternative)),
-        ExprKind::Cast {type_name,argument} => format!("({}){}",macro_type_code(type_name),code(argument)),
+        ExprKind::Cast {type_name,argument} => {
+            let raw = &source[expression.span.start..expression.span.end];
+            let cast = ["static_cast", "reinterpret_cast", "const_cast", "dynamic_cast"]
+                .into_iter().find(|cast| raw.starts_with(cast));
+            if let Some(cast) = cast {
+                format!("{cast}<{}>({})", macro_type_code(type_name), code(argument))
+            } else {
+                format!("({}){}", macro_type_code(type_name), code(argument))
+            }
+        }
         ExprKind::Unary {op,argument,postfix} => {
             if *postfix {format!("{}{op}",code(argument))}
             else if matches!(op.as_str(),"sizeof"|"alignof"|"_Alignof"|"__alignof__"|"__alignof"|"typeof"|"__typeof__") {
                 let raw=&source[expression.span.start..expression.span.end];
-                let value = if matches!(&argument.kind,ExprKind::Identifier(n) if n=="typeof"||n=="__typeof__"||n=="decltype")
-                    || !matches!(argument.kind,ExprKind::Identifier(_)) {
+                // ASTSignatureUtil supplies the parentheses for a type-id;
+                // an expression operand already retains its bracketed syntax.
+                if !matches!(argument.kind, ExprKind::TypeSpecifier { .. }) {
+                    return format!("{op} {}", code(argument));
+                }
+                let value = if matches!(&argument.kind,ExprKind::TypeSpecifier {code,..} if code=="typeof"||code=="__typeof__"||code=="decltype") {
                     code(argument)
                 } else if let Some(inner)=raw.strip_prefix(op).and_then(|s| s.trim().strip_prefix('(')).and_then(|s| s.strip_suffix(')')) {
                     macro_type_code(inner)

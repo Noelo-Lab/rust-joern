@@ -435,6 +435,14 @@ impl Builder<'_> {
             ExprKind::Identifier(name) => {
                 Fragment::single(self.identifier(name, span, parent, argument))
             }
+            ExprKind::TypeSpecifier { code, type_name } => {
+                // A declaration specifier is not an IASTIdExpression, so
+                // Joern never turns it into a function reference.
+                let id = self.node("IDENTIFIER", span, Some(code), Some(code));
+                self.graph.nodes[id as usize].type_name = Some(type_name.clone());
+                self.ast(parent, id, argument);
+                Fragment::single(id)
+            }
             ExprKind::Literal(value) => {
                 let id = self.node("LITERAL", span, None, Some(value));
                 self.ast(parent, id, argument);
@@ -477,7 +485,11 @@ impl Builder<'_> {
                 argument: operand,
                 postfix,
             } => {
-                let name = unary_operator(op, *postfix);
+                let name = if type_id_operand(operand) {
+                    "<operator>.sizeOf"
+                } else {
+                    unary_operator(op, *postfix)
+                };
                 let id = self.node("CALL", span, Some(name), None);
                 self.ast(parent, id, argument);
                 self.expression(operand, id, Some(1))
@@ -1335,12 +1347,19 @@ fn unary_operator(operator: &str, postfix: bool) -> &str {
         "~" => "<operator>.not",
         "*" => "<operator>.indirection",
         "&" => "<operator>.addressOf",
-        "sizeof" | "alignof" | "_Alignof" | "__alignof__" | "typeof" | "__typeof__" | "typeid" => {
-            "<operator>.sizeOf"
-        }
+        "sizeof" => "<operator>.sizeOf",
+        "typeid" => "<operator>.typeOf",
         "new" => "<operator>.new",
         "delete" | "delete[]" => "<operator>.delete",
         _ => "<operator>.unknown",
+    }
+}
+
+fn type_id_operand(expression: &Expr) -> bool {
+    match &expression.kind {
+        ExprKind::TypeSpecifier { .. } => true,
+        ExprKind::Generated { expression, .. } => type_id_operand(expression),
+        _ => false,
     }
 }
 

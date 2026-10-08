@@ -64,6 +64,11 @@ pub struct Closure {
 #[derive(Clone, Debug)]
 pub enum ExprKind {
     Identifier(String),
+    /// The declaration specifier of a type-id operand is not a value expression.
+    TypeSpecifier {
+        code: String,
+        type_name: String,
+    },
     Literal(String),
     Lambda(Closure),
     Unary {
