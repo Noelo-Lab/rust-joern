@@ -1,0 +1,10 @@
+{
+  "pyjoern": "4.0.150.4",
+  "networkx": "3.6.1",
+  "cfgutils": "1.16.0",
+  "python": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "python_executable": "/home/mahaloz/.virtualenvs/decbench/bin/python",
+  "system": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "machine": "x86_64",
+  "rustc": "rustc 1.90.0 (1159e78c4 2025-09-14)"
+}

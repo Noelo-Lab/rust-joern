@@ -1,0 +1,2986 @@
+{
+  "generator": "Original Joern 4.0.150 (unmodified PyJoern 4.0.150.4)",
+  "methods": [
+    {
+      "name": "offset",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "int offset(void) { return __builtin_offsetof(struct Pair, y); }",
+            "id": 0,
+            "column": 1,
+            "type_name": null,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "offset",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "void",
+            "id": 1,
+            "column": 12,
+            "type_name": "void",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "{ return __builtin_offsetof(struct Pair, y); }",
+            "id": 2,
+            "column": 18,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "return __builtin_offsetof(struct Pair, y);",
+            "id": 3,
+            "column": 20,
+            "type_name": null,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": ":-1:-1:__builtin_offsetof:2",
+            "code": "__builtin_offsetof(struct Pair, y)",
+            "id": 4,
+            "column": 27,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "__builtin_offsetof",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "",
+            "id": 5,
+            "column": 27,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": "<operator>.and",
+            "code": "(size_t) & ((Pair *)0)->y",
+            "id": 6,
+            "column": 27,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.and",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "size_t",
+            "id": 7,
+            "column": 27,
+            "type_name": "ANY",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "size_t",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": "<operator>.indirectFieldAccess",
+            "code": "((Pair *)0)->y",
+            "id": 8,
+            "column": 27,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirectFieldAccess",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": "<operator>.cast",
+            "code": "(Pair *)0",
+            "id": 9,
+            "column": 27,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.cast",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "Pair *",
+            "id": 10,
+            "column": 27,
+            "type_name": null,
+            "kind": "UNKNOWN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "0",
+            "id": 11,
+            "column": 27,
+            "type_name": "int",
+            "kind": "LITERAL",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "y",
+            "id": 12,
+            "column": 27,
+            "type_name": null,
+            "kind": "FIELD_IDENTIFIER",
+            "end_byte": 0,
+            "name": "y",
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "RET",
+            "id": 13,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 2,
+            "method_full_name": null,
+            "code": "void",
+            "id": 14,
+            "column": 12,
+            "type_name": "void",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 1,
+            "target": 14,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 14,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 1,
+            "target": 14,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 1,
+            "target": 13,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT"
+          },
+          {
+            "source": 3,
+            "target": 13,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "__builtin_offsetof(struct Pair, y)"
+          },
+          {
+            "source": 4,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "__builtin_offsetof(struct Pair, y)"
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 6,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "(size_t) & ((Pair *)0)->y"
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "size_t"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "size_t"
+          },
+          {
+            "source": 7,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "size_t"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 12,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 8,
+            "target": 12,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "((Pair *)0)->y"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "((Pair *)0)->y"
+          },
+          {
+            "source": 8,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "((Pair *)0)->y"
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 9,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 9,
+            "target": 11,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 9,
+            "target": 12,
+            "kind": "CFG"
+          },
+          {
+            "source": 9,
+            "target": 13,
+            "kind": "REACHING_DEF",
+            "label": "(Pair *)0"
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "kind": "CFG"
+          },
+          {
+            "source": 11,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 11,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "0"
+          },
+          {
+            "source": 12,
+            "target": 8,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "builtins.c",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 2,
+      "signature": "int(void)",
+      "return_type": "int",
+      "fullname": "offset",
+      "start_line": 2,
+      "reaching_definitions": [
+        {
+          "node": 3,
+          "incoming": [
+            1,
+            4,
+            7,
+            9,
+            8,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            7,
+            9,
+            8,
+            6
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            1,
+            4
+          ],
+          "outgoing": [
+            1,
+            4,
+            9
+          ]
+        },
+        {
+          "node": 13,
+          "incoming": [
+            1,
+            4,
+            7,
+            9,
+            8,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            7,
+            9,
+            8,
+            6
+          ]
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1,
+            4,
+            9
+          ],
+          "outgoing": [
+            1,
+            4,
+            9
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1,
+            4
+          ],
+          "outgoing": [
+            1,
+            4
+          ]
+        },
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            4
+          ],
+          "outgoing": [
+            1,
+            4
+          ]
+        },
+        {
+          "node": 12,
+          "incoming": [
+            1,
+            4,
+            9
+          ],
+          "outgoing": [
+            1,
+            4,
+            9
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            4
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            1,
+            4
+          ],
+          "outgoing": [
+            1,
+            4
+          ]
+        },
+        {
+          "node": 6,
+          "incoming": [
+            1,
+            4,
+            9
+          ],
+          "outgoing": [
+            1,
+            4,
+            7,
+            9,
+            8,
+            6
+          ]
+        },
+        {
+          "node": 14,
+          "incoming": [
+            1,
+            4,
+            7,
+            9,
+            8,
+            6
+          ],
+          "outgoing": [
+            1,
+            4,
+            7,
+            9,
+            8,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "name": "vararg",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "int vararg(void *p) { return __builtin_va_arg(p, int); }",
+            "id": 0,
+            "column": 1,
+            "type_name": null,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "vararg",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "void *p",
+            "id": 1,
+            "column": 12,
+            "type_name": "void*",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "p",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "{ return __builtin_va_arg(p, int); }",
+            "id": 2,
+            "column": 21,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "return __builtin_va_arg(p, int);",
+            "id": 3,
+            "column": 23,
+            "type_name": null,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": ":-1:-1:__builtin_va_arg:2",
+            "code": "__builtin_va_arg(p, int)",
+            "id": 4,
+            "column": 30,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "__builtin_va_arg",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "p",
+            "id": 5,
+            "column": 30,
+            "type_name": "void*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "p",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "",
+            "id": 6,
+            "column": 30,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": "<operator>.indirection",
+            "code": "*(typeof *)p",
+            "id": 7,
+            "column": 30,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.indirection",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": "<operator>.cast",
+            "code": "(typeof *)p",
+            "id": 8,
+            "column": 30,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.cast",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "typeof *",
+            "id": 9,
+            "column": 30,
+            "type_name": null,
+            "kind": "UNKNOWN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "p",
+            "id": 10,
+            "column": 30,
+            "type_name": "void*",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "p",
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "RET",
+            "id": 11,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 3,
+            "method_full_name": null,
+            "code": "void *p",
+            "id": 12,
+            "column": 12,
+            "type_name": "void*",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "p",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 1,
+            "target": 12,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT"
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "__builtin_va_arg(p, int)"
+          },
+          {
+            "source": 4,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "__builtin_va_arg(p, int)"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 5,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 5,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 7,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "(typeof *)p"
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "kind": "CFG"
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 10,
+            "target": 12,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "kind": "REACHING_DEF",
+            "label": "p"
+          }
+        ]
+      },
+      "filename": "builtins.c",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 3,
+      "signature": "int(void*)",
+      "return_type": "int",
+      "fullname": "vararg",
+      "start_line": 3,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 3,
+          "incoming": [
+            5,
+            4,
+            10,
+            8
+          ],
+          "outgoing": [
+            5,
+            4,
+            10,
+            8
+          ]
+        },
+        {
+          "node": 12,
+          "incoming": [
+            5,
+            4,
+            10,
+            8
+          ],
+          "outgoing": [
+            5,
+            4,
+            10,
+            8
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            5,
+            4
+          ],
+          "outgoing": [
+            4,
+            10,
+            8
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            5,
+            4
+          ],
+          "outgoing": [
+            5,
+            4
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            4,
+            10,
+            8
+          ],
+          "outgoing": [
+            4,
+            10,
+            8
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            5,
+            4
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            5,
+            4,
+            10,
+            8
+          ],
+          "outgoing": [
+            5,
+            4,
+            10,
+            8
+          ]
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            5,
+            4
+          ],
+          "outgoing": [
+            5,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "name": "compatible",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "int compatible(int x) { return x + __builtin_types_compatible_p(int, int); }",
+            "id": 0,
+            "column": 1,
+            "type_name": null,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "compatible",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "int x",
+            "id": 1,
+            "column": 16,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "{ return x + __builtin_types_compatible_p(int, int); }",
+            "id": 2,
+            "column": 23,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "return x + __builtin_types_compatible_p(int, int);",
+            "id": 3,
+            "column": 25,
+            "type_name": null,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.addition",
+            "code": "x + __builtin_types_compatible_p(int, int)",
+            "id": 4,
+            "column": 32,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.addition",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "x",
+            "id": 5,
+            "column": 32,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": ":-1:-1:__builtin_types_compatible_p:2",
+            "code": "__builtin_types_compatible_p(int, int)",
+            "id": 6,
+            "column": 36,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "__builtin_types_compatible_p",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "int",
+            "id": 7,
+            "column": 36,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "int",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "int",
+            "id": 8,
+            "column": 36,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "int",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "",
+            "id": 9,
+            "column": 36,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "__builtin_types_compatible_p",
+            "code": "__builtin_types_compatible_p(sizeof (int), sizeof (int))",
+            "id": 10,
+            "column": 36,
+            "type_name": "int",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "__builtin_types_compatible_p",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.sizeOf",
+            "code": "sizeof (int)",
+            "id": 11,
+            "column": 36,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.sizeOf",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "int",
+            "id": 12,
+            "column": 36,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "int",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": "<operator>.sizeOf",
+            "code": "sizeof (int)",
+            "id": 13,
+            "column": 36,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "<operator>.sizeOf",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "int",
+            "id": 14,
+            "column": 36,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "int",
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "RET",
+            "id": 15,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 4,
+            "method_full_name": null,
+            "code": "int x",
+            "id": 16,
+            "column": 16,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 1,
+            "target": 16,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 16,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT"
+          },
+          {
+            "source": 3,
+            "target": 15,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "x + __builtin_types_compatible_p(int, int)"
+          },
+          {
+            "source": 4,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "x + __builtin_types_compatible_p(int, int)"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 5,
+            "target": 16,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 5,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 6,
+            "target": 12,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "__builtin_types_compatible_p(int, int)"
+          },
+          {
+            "source": 6,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "__builtin_types_compatible_p(int, int)"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "int"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "int"
+          },
+          {
+            "source": 7,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "int"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "CFG"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "kind": "REACHING_DEF",
+            "label": "int"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "int"
+          },
+          {
+            "source": 8,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "int"
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "kind": "AST"
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "kind": "AST"
+          },
+          {
+            "source": 10,
+            "target": 13,
+            "kind": "AST"
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 10,
+            "target": 13,
+            "kind": "ARGUMENT",
+            "label": "2"
+          },
+          {
+            "source": 10,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 10,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "__builtin_types_compatible_p(sizeof (int), sizeof (int))"
+          },
+          {
+            "source": 11,
+            "target": 12,
+            "kind": "AST"
+          },
+          {
+            "source": 11,
+            "target": 12,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 11,
+            "target": 14,
+            "kind": "CFG"
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "kind": "CFG"
+          },
+          {
+            "source": 13,
+            "target": 14,
+            "kind": "AST"
+          },
+          {
+            "source": 13,
+            "target": 14,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 13,
+            "target": 10,
+            "kind": "CFG"
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "kind": "CFG"
+          },
+          {
+            "source": 14,
+            "target": 15,
+            "kind": "REACHING_DEF",
+            "label": "int"
+          }
+        ]
+      },
+      "filename": "builtins.c",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 4,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "compatible",
+      "start_line": 4,
+      "reaching_definitions": [
+        {
+          "node": 6,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            7,
+            8,
+            6
+          ]
+        },
+        {
+          "node": 16,
+          "incoming": [
+            5,
+            7,
+            8,
+            6,
+            11,
+            14,
+            13,
+            10,
+            4
+          ],
+          "outgoing": [
+            5,
+            7,
+            8,
+            6,
+            11,
+            14,
+            13,
+            10,
+            4
+          ]
+        },
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 12,
+          "incoming": [
+            1,
+            7,
+            8,
+            6
+          ],
+          "outgoing": [
+            1,
+            7,
+            8,
+            6
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            5,
+            7,
+            8,
+            6,
+            11,
+            14,
+            13,
+            10,
+            4
+          ],
+          "outgoing": [
+            5,
+            7,
+            8,
+            6,
+            11,
+            14,
+            13,
+            10,
+            4
+          ]
+        },
+        {
+          "node": 7,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 13,
+          "incoming": [
+            1,
+            6,
+            12,
+            11
+          ],
+          "outgoing": [
+            1,
+            6,
+            14,
+            13
+          ]
+        },
+        {
+          "node": 15,
+          "incoming": [
+            5,
+            7,
+            8,
+            6,
+            11,
+            14,
+            13,
+            10,
+            4
+          ],
+          "outgoing": [
+            5,
+            7,
+            8,
+            6,
+            11,
+            14,
+            13,
+            10,
+            4
+          ]
+        },
+        {
+          "node": 10,
+          "incoming": [
+            1,
+            6,
+            14,
+            13
+          ],
+          "outgoing": [
+            1,
+            6,
+            11,
+            14,
+            13,
+            10
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1,
+            7,
+            8,
+            6,
+            11,
+            14,
+            13,
+            10
+          ],
+          "outgoing": [
+            5,
+            7,
+            8,
+            6,
+            11,
+            14,
+            13,
+            10,
+            4
+          ]
+        },
+        {
+          "node": 11,
+          "incoming": [
+            1,
+            7,
+            8,
+            6
+          ],
+          "outgoing": [
+            1,
+            6,
+            12,
+            11
+          ]
+        },
+        {
+          "node": 14,
+          "incoming": [
+            1,
+            6,
+            12,
+            11
+          ],
+          "outgoing": [
+            1,
+            6,
+            12,
+            11
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "transparent",
+      "cpg": {
+        "nodes": [
+          {
+            "line": 5,
+            "method_full_name": null,
+            "code": "int transparent(int x) { return __offsetof__(x); }",
+            "id": 0,
+            "column": 1,
+            "type_name": null,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "transparent",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": null,
+            "code": "int x",
+            "id": 1,
+            "column": 17,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": null,
+            "code": "{ return __offsetof__(x); }",
+            "id": 2,
+            "column": 24,
+            "type_name": "void",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": null,
+            "code": "return __offsetof__(x);",
+            "id": 3,
+            "column": 26,
+            "type_name": null,
+            "kind": "RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": ":-1:-1:__offsetof__:1",
+            "code": "__offsetof__(x)",
+            "id": 4,
+            "column": 33,
+            "type_name": "ANY",
+            "kind": "CALL",
+            "end_byte": 0,
+            "name": "__offsetof__",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": null,
+            "code": "x",
+            "id": 5,
+            "column": 33,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": null,
+            "code": "",
+            "id": 6,
+            "column": 33,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": null,
+            "code": "x",
+            "id": 7,
+            "column": 33,
+            "type_name": "int",
+            "kind": "IDENTIFIER",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": null,
+            "code": "RET",
+            "id": 8,
+            "column": 1,
+            "type_name": "int",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 5,
+            "method_full_name": null,
+            "code": "int x",
+            "id": 9,
+            "column": 17,
+            "type_name": "int",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "x",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "kind": "ARGUMENT"
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "kind": "CFG"
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "<RET>"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "kind": "ARGUMENT",
+            "label": "1"
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 4,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "__offsetof__(x)"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "__offsetof__(x)"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "kind": "REF"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 5,
+            "target": 9,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 5,
+            "target": 8,
+            "kind": "REACHING_DEF",
+            "label": "x"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "kind": "AST"
+          },
+          {
+            "source": 7,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "kind": "REF"
+          }
+        ]
+      },
+      "filename": "builtins.c",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": 5,
+      "signature": "int(int)",
+      "return_type": "int",
+      "fullname": "transparent",
+      "start_line": 5,
+      "reaching_definitions": [
+        {
+          "node": 4,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            5,
+            4
+          ]
+        },
+        {
+          "node": 8,
+          "incoming": [
+            5,
+            4
+          ],
+          "outgoing": [
+            5,
+            4
+          ]
+        },
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 7,
+          "incoming": [
+            5,
+            4
+          ],
+          "outgoing": [
+            5,
+            4
+          ]
+        },
+        {
+          "node": 9,
+          "incoming": [
+            5,
+            4
+          ],
+          "outgoing": [
+            5,
+            4
+          ]
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 3,
+          "incoming": [
+            5,
+            4
+          ],
+          "outgoing": [
+            5,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "name": "__builtin_offsetof",
+      "cpg": {
+        "nodes": [
+          {
+            "line": -1,
+            "method_full_name": null,
+            "code": "",
+            "id": 0,
+            "column": 0,
+            "type_name": null,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "__builtin_offsetof",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "",
+            "id": 1,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "RET",
+            "id": 2,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "CFG"
+          }
+        ]
+      },
+      "filename": "",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": -1,
+      "signature": "",
+      "return_type": "ANY",
+      "fullname": ":-1:-1:__builtin_offsetof:2",
+      "start_line": -1,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [],
+          "outgoing": []
+        }
+      ]
+    },
+    {
+      "name": "__builtin_va_arg",
+      "cpg": {
+        "nodes": [
+          {
+            "line": -1,
+            "method_full_name": null,
+            "code": "",
+            "id": 0,
+            "column": 0,
+            "type_name": null,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "__builtin_va_arg",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "p1",
+            "id": 1,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "p1",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "",
+            "id": 2,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "RET",
+            "id": 3,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "p1",
+            "id": 4,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "p1",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "p1"
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "p1"
+          }
+        ]
+      },
+      "filename": "",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": -1,
+      "signature": "",
+      "return_type": "ANY",
+      "fullname": ":-1:-1:__builtin_va_arg:2",
+      "start_line": -1,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "__builtin_types_compatible_p",
+      "cpg": {
+        "nodes": [
+          {
+            "line": -1,
+            "method_full_name": null,
+            "code": "",
+            "id": 0,
+            "column": 0,
+            "type_name": null,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "__builtin_types_compatible_p",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "p1",
+            "id": 1,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "p1",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "p2",
+            "id": 2,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "p2",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "",
+            "id": 3,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "RET",
+            "id": 4,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "p1",
+            "id": 5,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "p1",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "p2",
+            "id": 6,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "p2",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "kind": "REACHING_DEF",
+            "label": "p1"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "p1"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "kind": "REACHING_DEF",
+            "label": "p2"
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "p2"
+          }
+        ]
+      },
+      "filename": "",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": -1,
+      "signature": "",
+      "return_type": "ANY",
+      "fullname": ":-1:-1:__builtin_types_compatible_p:2",
+      "start_line": -1,
+      "reaching_definitions": [
+        {
+          "node": 6,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 4,
+          "incoming": [
+            1,
+            2
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        },
+        {
+          "node": 5,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 2,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "name": "__offsetof__",
+      "cpg": {
+        "nodes": [
+          {
+            "line": -1,
+            "method_full_name": null,
+            "code": "",
+            "id": 0,
+            "column": 0,
+            "type_name": null,
+            "kind": "METHOD",
+            "end_byte": 0,
+            "name": "__offsetof__",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "p1",
+            "id": 1,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_PARAMETER_IN",
+            "end_byte": 0,
+            "name": "p1",
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "",
+            "id": 2,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "BLOCK",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "RET",
+            "id": 3,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_RETURN",
+            "end_byte": 0,
+            "name": null,
+            "start_byte": 0
+          },
+          {
+            "line": 0,
+            "method_full_name": null,
+            "code": "p1",
+            "id": 4,
+            "column": 0,
+            "type_name": "ANY",
+            "kind": "METHOD_PARAMETER_OUT",
+            "end_byte": 0,
+            "name": "p1",
+            "start_byte": 0
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "kind": "AST"
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "kind": "CFG"
+          },
+          {
+            "source": 0,
+            "target": 1,
+            "kind": "REACHING_DEF"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "PARAMETER_LINK"
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "kind": "REACHING_DEF",
+            "label": "p1"
+          },
+          {
+            "source": 1,
+            "target": 3,
+            "kind": "REACHING_DEF",
+            "label": "p1"
+          }
+        ]
+      },
+      "filename": "",
+      "cfg": {
+        "nodes": [],
+        "edges": []
+      },
+      "end_line": -1,
+      "signature": "",
+      "return_type": "ANY",
+      "fullname": ":-1:-1:__offsetof__:1",
+      "start_line": -1,
+      "reaching_definitions": [
+        {
+          "node": 0,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 1,
+          "incoming": [],
+          "outgoing": [
+            1
+          ]
+        },
+        {
+          "node": 4,
+          "incoming": [],
+          "outgoing": []
+        },
+        {
+          "node": 3,
+          "incoming": [
+            1
+          ],
+          "outgoing": [
+            1
+          ]
+        }
+      ]
+    }
+  ],
+  "internal_methods": {
+    "builtins.c": [
+      "offset",
+      "vararg",
+      "compatible",
+      "transparent"
+    ],
+    "": []
+  }
+}

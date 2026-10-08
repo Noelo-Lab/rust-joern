@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 10.365397479035892,
+  "functions": {
+    "strip_trailing_slashes": {
+      "name": "strip_trailing_slashes",
+      "start_line": 155,
+      "end_line": 173,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "entry": [
+          1
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "168.0:\nbase = file\n",
+          "1": "155.0:\nFUNCTION_START\nlast_component(file)\n*base = last_component(file)\n<UnsupportedStmt: ['indirection', '*base']>\n<UnsupportedStmt: ['logicalNot', '!*base']>\n",
+          "2": "169.2:\nbase_len(base)\n<UnsupportedStmt: ['addition', 'base+base_len(base)']>\nbase_lim = base+base_len(base)\n<UnsupportedStmt: ['indirection', '*base_lim']>\n*base_lim != '\\0'\nhad_slash = (*base_lim!='\\0')\n<UnsupportedStmt: ['indirection', '*base_lim']>\n*base_lim = '\\0'\nreturn had_slash;,returnhad_slash;\nFUNCTION_END\n"
+        }
+      }
+    },
+    "calloc": {
+      "name": "calloc",
+      "start_line": 18,
+      "end_line": 18,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "18.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "mdir_name": {
+      "name": "mdir_name",
+      "start_line": 147,
+      "end_line": 147,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "147.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "malloc": {
+      "name": "malloc",
+      "start_line": 51,
+      "end_line": 51,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "51.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "strdup": {
+      "name": "strdup",
+      "start_line": 116,
+      "end_line": 116,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "116.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "realloc": {
+      "name": "realloc",
+      "start_line": 67,
+      "end_line": 67,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "67.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "dir_len": {
+      "name": "dir_len",
+      "start_line": 149,
+      "end_line": 149,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "149.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "base_len": {
+      "name": "base_len",
+      "start_line": 146,
+      "end_line": 146,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "146.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "strndup": {
+      "name": "strndup",
+      "start_line": 126,
+      "end_line": 126,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "126.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "aligned_alloc": {
+      "name": "aligned_alloc",
+      "start_line": 13,
+      "end_line": 13,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "13.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "rpl_strerror_r": {
+      "name": "rpl_strerror_r",
+      "start_line": 136,
+      "end_line": 136,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "136.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "last_component": {
+      "name": "last_component",
+      "start_line": 141,
+      "end_line": 141,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "141.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "free": {
+      "name": "free",
+      "start_line": 88,
+      "end_line": 88,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "88.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "canonicalize_file_name": {
+      "name": "canonicalize_file_name",
+      "start_line": 28,
+      "end_line": 28,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "28.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "64b78dfcef070303e1138670790e850f796362daf16b4f42df259c9f02d053f6",
+  "prepared_sha256": "64b78dfcef070303e1138670790e850f796362daf16b4f42df259c9f02d053f6",
+  "original_source_sha256": "1ef5d218531dd3f059d625203d149f8a43629e51982b21e7a86786e1cdd37fa1"
+}

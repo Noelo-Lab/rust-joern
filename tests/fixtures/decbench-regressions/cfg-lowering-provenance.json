@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "cases": {
+    "for_slots": {
+      "source": "for_slots.c",
+      "reference": "for_slots.pyjoern.json",
+      "source_sha256": "2dfc1f1846456de83b27920ca3f88512d1ad9d780a6246788fe34e0207fb85b3",
+      "reference_sha256": "3993ad3bf239e69f8a7f7328516fb94550fbeca2cf3d5270866f5d4d44445928",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "method_ref_lines": {
+      "source": "method_ref_lines.c",
+      "reference": "method_ref_lines.pyjoern.json",
+      "source_sha256": "81bfdfb1c16fb6b1100b0c84f6cfc514a7723ec5c85e5a8891b7ea8c7d9deb5a",
+      "reference_sha256": "b8d0bce2457257c448de03eaf04234ff4d12155cb1a652ff47f13a3afb43c709",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "nested_try": {
+      "source": "nested_try.cpp",
+      "reference": "nested_try.pyjoern.json",
+      "source_sha256": "d92fc58ffe8ed6a69023d2e62023930ac58cd548c04439878fd5dd65afe69b05",
+      "reference_sha256": "272b69af28eb7ab318d5136356568779f75144249d862693fa327cfba7adc733",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "qualified_names": {
+      "source": "qualified_names.cpp",
+      "reference": "qualified_names.pyjoern.json",
+      "source_sha256": "4ba71e59638081f5dd5cbb45ca4b0cc347c7e73190b8625193ed5881a9784c13",
+      "reference_sha256": "0743f06a54e44a18ac4c31333bd80f1ef4c66b6bcb81fa33a6eed2d6a773c872",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "local_arrays_c": {
+      "source": "local_arrays_c.c",
+      "reference": "local_arrays_c.pyjoern.json",
+      "source_sha256": "85107e6ce38feed6eb6bb91ca44e2930510dcf47cddd873861b270e629334570",
+      "reference_sha256": "230f8fcd09e32975a305782a58fb4cd9311e0a41765da8cda6f84b7b272088c1",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "local_arrays_cpp": {
+      "source": "local_arrays_cpp.cpp",
+      "reference": "local_arrays_cpp.pyjoern.json",
+      "source_sha256": "85107e6ce38feed6eb6bb91ca44e2930510dcf47cddd873861b270e629334570",
+      "reference_sha256": "b353dcd2ee06924ed35a0d186d8c8954306f75995c171a6bb33023dc9a46e9cd",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "empty_try": {
+      "source": "empty_try.cpp",
+      "reference": "empty_try.pyjoern.json",
+      "source_sha256": "85819af4dc5edeaab9172a9b0d9030dbbd7c5ce1cf203cd9704ec9bec0632a50",
+      "reference_sha256": "e42229d9c6b4625ba9e336834237f2604c162fe5b8b31e7ac4fcb959d14ba02f",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "local_function_pointer_c": {
+      "source": "local_function_pointer_c.c",
+      "reference": "local_function_pointer_c.pyjoern.json",
+      "source_sha256": "549f5c518346915a7dc8f51fc1ae485b2e87531c6952a5ef0ab9f3165f2737c8",
+      "reference_sha256": "646432bcb405bae9a6b6b07055598bbbceaac0597ea0da94f75c292401e30467",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "local_function_pointer_cpp": {
+      "source": "local_function_pointer_cpp.cpp",
+      "reference": "local_function_pointer_cpp.pyjoern.json",
+      "source_sha256": "549f5c518346915a7dc8f51fc1ae485b2e87531c6952a5ef0ab9f3165f2737c8",
+      "reference_sha256": "00473afe58901be3531425330c869a4b4182dd59b01bd47d49b33e7e6b27279b",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "gnu_builtins_c": {
+      "source": "gnu_builtins_c.c",
+      "reference": "gnu_builtins_c.pyjoern.json",
+      "source_sha256": "8c23ab4f8618eaf4919c3a09ffe878bc6355b467ad01e8bc612bb5484286bc0b",
+      "reference_sha256": "7cb41ac56fcfcdcb97e1e0dbe1fe686768e2802beeb2ce0ea7ee13c00c3e1a50",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "gnu_builtins_cpp": {
+      "source": "gnu_builtins_cpp.cpp",
+      "reference": "gnu_builtins_cpp.pyjoern.json",
+      "source_sha256": "8c23ab4f8618eaf4919c3a09ffe878bc6355b467ad01e8bc612bb5484286bc0b",
+      "reference_sha256": "ac39b0bc2b347e5ae7926b1fc15250a2f6e13adc3b51fcac0433912fbae12f1d",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "cdt_builtin_controls_c": {
+      "source": "cdt_builtin_controls_c.c",
+      "reference": "cdt_builtin_controls_c.pyjoern.json",
+      "source_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+      "reference_sha256": "350a5e679a50c8fbf0c026e987575e00cdfd87cf2306049145b74769f0a13e8f",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "cdt_builtin_controls_cpp": {
+      "source": "cdt_builtin_controls_cpp.cpp",
+      "reference": "cdt_builtin_controls_cpp.pyjoern.json",
+      "source_sha256": "558d8974ef28cb03147d6c75fe818b989227266352fd8950eeb8210930fb3ddb",
+      "reference_sha256": "caaf2723688dd47c47be6307421d90ac551465f3e658a3b35393720eb5abf3c2",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "gnu_assertions_c": {
+      "source": "gnu_assertions_c.c",
+      "reference": "gnu_assertions_c.pyjoern.json",
+      "source_sha256": "0ffb4214cf1a9dc969961cfb9252cfd4e2f798c9c0e63893c20e91b18ffb967b",
+      "reference_sha256": "db2eba5dfb689d91ba138a2fb4555ea297ab5992cadd0d13c24fcfee705766ac",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    },
+    "gnu_assertions_cpp": {
+      "source": "gnu_assertions_cpp.cpp",
+      "reference": "gnu_assertions_cpp.pyjoern.json",
+      "source_sha256": "0ffb4214cf1a9dc969961cfb9252cfd4e2f798c9c0e63893c20e91b18ffb967b",
+      "reference_sha256": "8588796f17852d80aa60117ba76428e3dfa263be84f011e2a4a6e1be21750d50",
+      "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+      "capture": "Unmodified original PyJoern, isolated single-file TU capture by contract agent; immutable reference copied verbatim."
+    }
+  }
+}

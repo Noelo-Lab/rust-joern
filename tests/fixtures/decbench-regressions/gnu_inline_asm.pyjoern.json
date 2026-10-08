@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 13.036298407940194,
+  "functions": {
+    "enable_irq": {
+      "name": "enable_irq",
+      "start_line": 1,
+      "end_line": 4,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "1.0:\nFUNCTION_START\n<UnsupportedStmt: UNKNOWN,__asmvolatile(&quot;cpsiei&quot;:::&quot;memory&quot;);,__asmvolatile(&quot;cpsiei&quot;:::&quot;memory&quot;);>\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "c2f0580cee745c9811130d24d6a8d6e52059ffc57a0477046489e1884bc2720c",
+  "prepared_sha256": "c2f0580cee745c9811130d24d6a8d6e52059ffc57a0477046489e1884bc2720c",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_ddg": true,
+    "no_ast": true
+  }
+}

@@ -1,0 +1,1770 @@
+{
+  "schema_version": 1,
+  "results_root": "/home/mahaloz/github/decbench/results/full_run_address_2026-09-11",
+  "scope": {
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "input_kinds": [
+      "source",
+      "ida",
+      "kuna"
+    ],
+    "source_selection": "All compiled .i/.ii, including recorded metric exclusions"
+  },
+  "files_expected": 8808,
+  "files_recorded": 8808,
+  "file_statuses": {
+    "match": 1447,
+    "usage_error": 5956,
+    "divergent": 1405
+  },
+  "all_inputs_accounted_for": true,
+  "all_graph_comparisons_completed": true,
+  "unresolved_input_errors": {},
+  "function_statuses": {
+    "match": 4031520,
+    "missing": 38039,
+    "divergent": 9785,
+    "extra": 67812
+  },
+  "non_degenerate_function_statuses": {
+    "match": 718338,
+    "missing": 26208,
+    "divergent": 9712
+  },
+  "degenerate_function_statuses": {
+    "match": 3313182,
+    "missing": 11831,
+    "divergent": 73
+  },
+  "empty_reference_files": 77,
+  "comparison_wall_seconds": 135.5362859730376,
+  "groups": {
+    "O0/source": {
+      "files": 3763,
+      "file_statuses": {
+        "match": 435,
+        "usage_error": 2673,
+        "divergent": 655
+      },
+      "usage_statuses": {
+        "ok": 1090,
+        "parse_error": 2673
+      },
+      "function_statuses": {
+        "match": 1869525,
+        "missing": 8982,
+        "divergent": 3557,
+        "extra": 30446
+      },
+      "non_degenerate_function_statuses": {
+        "match": 277627,
+        "missing": 3722,
+        "divergent": 3522
+      },
+      "degenerate_function_statuses": {
+        "match": 1591898,
+        "missing": 5260,
+        "divergent": 35
+      },
+      "files_with_diagnostics": 2673,
+      "metric_excluded_files": 5,
+      "candidate_timing": {
+        "preparation_seconds": {
+          "observations": 3763,
+          "total_seconds": 25.550199358025566,
+          "median_seconds": 0.0049509271048009396,
+          "p95_seconds": 0.018926279968582094,
+          "max_seconds": 0.06156190996989608
+        },
+        "native_seconds": {
+          "observations": 3763,
+          "total_seconds": 253.72322845715098,
+          "median_seconds": 0.04644105595070869,
+          "p95_seconds": 0.18499105796217918,
+          "max_seconds": 2.284725349978544
+        },
+        "python_seconds": {
+          "observations": 3763,
+          "total_seconds": 14.303693282417953,
+          "median_seconds": 0.00014664698392152786,
+          "p95_seconds": 0.01727745495736599,
+          "max_seconds": 0.4200544760096818
+        },
+        "graph_materialization_seconds": {
+          "observations": 3763,
+          "total_seconds": 10.214026019559242,
+          "median_seconds": 0.0,
+          "p95_seconds": 0.010886336327530444,
+          "max_seconds": 0.39564587036147714
+        },
+        "end_to_end_seconds": {
+          "observations": 3763,
+          "total_seconds": 293.5771210975945,
+          "median_seconds": 0.059392723022028804,
+          "p95_seconds": 0.21148639102466404,
+          "max_seconds": 2.3132966419216245
+        },
+        "serialization_seconds": {
+          "observations": 3763,
+          "total_seconds": 63.15882511273958,
+          "median_seconds": 0.009446608950383961,
+          "p95_seconds": 0.04294099798426032,
+          "max_seconds": 0.5002643099287525
+        }
+      },
+      "fallback_timing": {
+        "native_seconds": {
+          "observations": 2673,
+          "total_seconds": 374.99954031873494,
+          "median_seconds": 0.12405804800800979,
+          "p95_seconds": 0.3181909309932962,
+          "max_seconds": 2.6141703099710867
+        },
+        "python_seconds": {
+          "observations": 2673,
+          "total_seconds": 153.66663185716607,
+          "median_seconds": 0.041040658950805664,
+          "p95_seconds": 0.19123561109881848,
+          "max_seconds": 0.9963170930277556
+        },
+        "graph_materialization_seconds": {
+          "observations": 2673,
+          "total_seconds": 119.86739126511384,
+          "median_seconds": 0.028429409605450928,
+          "p95_seconds": 0.12269317160826176,
+          "max_seconds": 0.907694699941203
+        },
+        "end_to_end_seconds": {
+          "observations": 2673,
+          "total_seconds": 528.666172175901,
+          "median_seconds": 0.1734341790433973,
+          "p95_seconds": 0.4644652189454064,
+          "max_seconds": 3.6104874029988423
+        }
+      },
+      "reference_timing_unique_inputs": {
+        "observations": 2,
+        "total_seconds": 26.08898429106921,
+        "median_seconds": 13.044492145534605,
+        "p95_seconds": 14.963733884971589,
+        "max_seconds": 14.963733884971589
+      },
+      "successful_usage_timing": {
+        "preparation_seconds": {
+          "observations": 1090,
+          "total_seconds": 5.7846786652226,
+          "median_seconds": 0.00349318707594648,
+          "p95_seconds": 0.015229642973281443,
+          "max_seconds": 0.03830025589559227
+        },
+        "native_seconds": {
+          "observations": 1090,
+          "total_seconds": 27.05587684875354,
+          "median_seconds": 0.00739453750429675,
+          "p95_seconds": 0.10730908997356892,
+          "max_seconds": 0.33041539997793734
+        },
+        "python_seconds": {
+          "observations": 1090,
+          "total_seconds": 13.879063690081239,
+          "median_seconds": 0.004363818443380296,
+          "p95_seconds": 0.04872452490963042,
+          "max_seconds": 0.4200544760096818
+        },
+        "graph_materialization_seconds": {
+          "observations": 1090,
+          "total_seconds": 10.214026019559242,
+          "median_seconds": 0.0026058325893245637,
+          "p95_seconds": 0.03701695043127984,
+          "max_seconds": 0.39564587036147714
+        },
+        "end_to_end_seconds": {
+          "observations": 1090,
+          "total_seconds": 46.71961920405738,
+          "median_seconds": 0.016637212538626045,
+          "p95_seconds": 0.18679860304109752,
+          "max_seconds": 0.5604771299986169
+        },
+        "serialization_seconds": {
+          "observations": 1090,
+          "total_seconds": 3.3802303343545645,
+          "median_seconds": 0.0011812230222858489,
+          "p95_seconds": 0.012275232002139091,
+          "max_seconds": 0.20309467299375683
+        }
+      },
+      "failed_strict_timing": {
+        "preparation_seconds": {
+          "observations": 2673,
+          "total_seconds": 19.765520692802966,
+          "median_seconds": 0.005288333049975336,
+          "p95_seconds": 0.01951754803303629,
+          "max_seconds": 0.06156190996989608
+        },
+        "native_seconds": {
+          "observations": 2673,
+          "total_seconds": 226.66735160839744,
+          "median_seconds": 0.07538988895248622,
+          "p95_seconds": 0.20089232292957604,
+          "max_seconds": 2.284725349978544
+        },
+        "python_seconds": {
+          "observations": 2673,
+          "total_seconds": 0.42462959233671427,
+          "median_seconds": 0.00011725607328116894,
+          "p95_seconds": 0.0004305369220674038,
+          "max_seconds": 0.0021152780391275883
+        },
+        "graph_materialization_seconds": {
+          "observations": 2673,
+          "total_seconds": 0.0,
+          "median_seconds": 0.0,
+          "p95_seconds": 0.0,
+          "max_seconds": 0.0
+        },
+        "end_to_end_seconds": {
+          "observations": 2673,
+          "total_seconds": 246.85750189353712,
+          "median_seconds": 0.07965943694580346,
+          "p95_seconds": 0.21876816998701543,
+          "max_seconds": 2.3132966419216245
+        },
+        "serialization_seconds": {
+          "observations": 2673,
+          "total_seconds": 59.77859477838501,
+          "median_seconds": 0.013867435045540333,
+          "p95_seconds": 0.05008336598984897,
+          "max_seconds": 0.5002643099287525
+        }
+      },
+      "parity_matched_timing": {
+        "preparation_seconds": {
+          "observations": 435,
+          "total_seconds": 1.5372885514516383,
+          "median_seconds": 0.0018311500316485763,
+          "p95_seconds": 0.013990127015858889,
+          "max_seconds": 0.03548174200113863
+        },
+        "native_seconds": {
+          "observations": 435,
+          "total_seconds": 5.31810672476422,
+          "median_seconds": 0.003676216001622379,
+          "p95_seconds": 0.0674926929641515,
+          "max_seconds": 0.258415799937211
+        },
+        "python_seconds": {
+          "observations": 435,
+          "total_seconds": 3.1520383961033076,
+          "median_seconds": 0.0017603740561753511,
+          "p95_seconds": 0.02250336587894708,
+          "max_seconds": 0.4200544760096818
+        },
+        "graph_materialization_seconds": {
+          "observations": 435,
+          "total_seconds": 2.5061356647638604,
+          "median_seconds": 0.0010308839846402407,
+          "p95_seconds": 0.016861486597917974,
+          "max_seconds": 0.39564587036147714
+        },
+        "end_to_end_seconds": {
+          "observations": 435,
+          "total_seconds": 10.007433672319166,
+          "median_seconds": 0.0075848218984901905,
+          "p95_seconds": 0.11541886907070875,
+          "max_seconds": 0.554730215924792
+        },
+        "serialization_seconds": {
+          "observations": 435,
+          "total_seconds": 0.5563455062219873,
+          "median_seconds": 0.0004410280380398035,
+          "p95_seconds": 0.004539953079074621,
+          "max_seconds": 0.04993470199406147
+        }
+      }
+    },
+    "O0/ida": {
+      "files": 256,
+      "file_statuses": {
+        "match": 112,
+        "usage_error": 89,
+        "divergent": 55
+      },
+      "usage_statuses": {
+        "ok": 167,
+        "parse_error": 89
+      },
+      "function_statuses": {
+        "match": 23916,
+        "divergent": 639,
+        "missing": 9802,
+        "extra": 2
+      },
+      "non_degenerate_function_statuses": {
+        "match": 23795,
+        "divergent": 639,
+        "missing": 9569
+      },
+      "degenerate_function_statuses": {
+        "match": 121,
+        "missing": 233
+      },
+      "files_with_diagnostics": 89,
+      "metric_excluded_files": 0,
+      "candidate_timing": {
+        "preparation_seconds": {
+          "observations": 256,
+          "total_seconds": 23.740053549059667,
+          "median_seconds": 0.013612568960525095,
+          "p95_seconds": 0.6788445450365543,
+          "max_seconds": 1.5410410839831457
+        },
+        "native_seconds": {
+          "observations": 256,
+          "total_seconds": 22.12581016146578,
+          "median_seconds": 0.02071881853044033,
+          "p95_seconds": 0.38284937699791044,
+          "max_seconds": 2.673858738038689
+        },
+        "python_seconds": {
+          "observations": 256,
+          "total_seconds": 4.228714956669137,
+          "median_seconds": 0.0019964055973105133,
+          "p95_seconds": 0.05126500106416643,
+          "max_seconds": 0.5886340611614287
+        },
+        "graph_materialization_seconds": {
+          "observations": 256,
+          "total_seconds": 3.609669722500257,
+          "median_seconds": 0.0012960819294676185,
+          "p95_seconds": 0.045890422188676894,
+          "max_seconds": 0.5585459764115512
+        },
+        "end_to_end_seconds": {
+          "observations": 256,
+          "total_seconds": 50.09457866719458,
+          "median_seconds": 0.04044458700809628,
+          "p95_seconds": 1.0723083599004894,
+          "max_seconds": 3.839749681064859
+        },
+        "serialization_seconds": {
+          "observations": 256,
+          "total_seconds": 3.318858957849443,
+          "median_seconds": 0.0013634960050694644,
+          "p95_seconds": 0.07331339898519218,
+          "max_seconds": 0.3663145910250023
+        }
+      },
+      "fallback_timing": {
+        "native_seconds": {
+          "observations": 89,
+          "total_seconds": 42.7085757717723,
+          "median_seconds": 0.12678769405465573,
+          "p95_seconds": 1.9461892769904807,
+          "max_seconds": 6.381783002987504
+        },
+        "python_seconds": {
+          "observations": 89,
+          "total_seconds": 14.317947404342704,
+          "median_seconds": 0.040149976033717394,
+          "p95_seconds": 0.819466802990064,
+          "max_seconds": 1.5940825870493427
+        },
+        "graph_materialization_seconds": {
+          "observations": 89,
+          "total_seconds": 12.678028172580525,
+          "median_seconds": 0.03483663510996848,
+          "p95_seconds": 0.7420335984788835,
+          "max_seconds": 1.4433517863508314
+        },
+        "end_to_end_seconds": {
+          "observations": 89,
+          "total_seconds": 57.026523176115006,
+          "median_seconds": 0.176323716994375,
+          "p95_seconds": 2.7656560799805447,
+          "max_seconds": 7.975865590036847
+        }
+      },
+      "reference_timing_unique_inputs": {
+        "observations": 253,
+        "total_seconds": 5156.367710169172,
+        "median_seconds": 16.091804026975296,
+        "p95_seconds": 39.56849710596725,
+        "max_seconds": 136.29662445292342
+      },
+      "successful_usage_timing": {
+        "preparation_seconds": {
+          "observations": 167,
+          "total_seconds": 3.681100252084434,
+          "median_seconds": 0.00954015797469765,
+          "p95_seconds": 0.13231980602722615,
+          "max_seconds": 0.20108984084799886
+        },
+        "native_seconds": {
+          "observations": 167,
+          "total_seconds": 8.62006220384501,
+          "median_seconds": 0.019505812088027596,
+          "p95_seconds": 0.21538146899547428,
+          "max_seconds": 0.5417727030580863
+        },
+        "python_seconds": {
+          "observations": 167,
+          "total_seconds": 4.2067964324960485,
+          "median_seconds": 0.0039067830657586455,
+          "p95_seconds": 0.11931110499426723,
+          "max_seconds": 0.5886340611614287
+        },
+        "graph_materialization_seconds": {
+          "observations": 167,
+          "total_seconds": 3.609669722500257,
+          "median_seconds": 0.002730150241404772,
+          "p95_seconds": 0.08954935322981328,
+          "max_seconds": 0.5585459764115512
+        },
+        "end_to_end_seconds": {
+          "observations": 167,
+          "total_seconds": 16.50795888842549,
+          "median_seconds": 0.0332835199078545,
+          "p95_seconds": 0.4868090850068256,
+          "max_seconds": 1.3092595739290118
+        },
+        "serialization_seconds": {
+          "observations": 167,
+          "total_seconds": 0.606208750163205,
+          "median_seconds": 0.0008465289138257504,
+          "p95_seconds": 0.013726771925576031,
+          "max_seconds": 0.09567185409832746
+        }
+      },
+      "failed_strict_timing": {
+        "preparation_seconds": {
+          "observations": 89,
+          "total_seconds": 20.058953296975233,
+          "median_seconds": 0.04958485497627407,
+          "p95_seconds": 1.2417704459512606,
+          "max_seconds": 1.5410410839831457
+        },
+        "native_seconds": {
+          "observations": 89,
+          "total_seconds": 13.50574795762077,
+          "median_seconds": 0.02262243803124875,
+          "p95_seconds": 0.7367049329914153,
+          "max_seconds": 2.673858738038689
+        },
+        "python_seconds": {
+          "observations": 89,
+          "total_seconds": 0.021918524173088372,
+          "median_seconds": 0.00012166204396635294,
+          "p95_seconds": 0.0008142909500747919,
+          "max_seconds": 0.0033707580296322703
+        },
+        "graph_materialization_seconds": {
+          "observations": 89,
+          "total_seconds": 0.0,
+          "median_seconds": 0.0,
+          "p95_seconds": 0.0,
+          "max_seconds": 0.0
+        },
+        "end_to_end_seconds": {
+          "observations": 89,
+          "total_seconds": 33.58661977876909,
+          "median_seconds": 0.07314836897421628,
+          "p95_seconds": 1.9818461369723082,
+          "max_seconds": 3.839749681064859
+        },
+        "serialization_seconds": {
+          "observations": 89,
+          "total_seconds": 2.712650207686238,
+          "median_seconds": 0.006618608953431249,
+          "p95_seconds": 0.11199228698387742,
+          "max_seconds": 0.3663145910250023
+        }
+      },
+      "parity_matched_timing": {
+        "preparation_seconds": {
+          "observations": 112,
+          "total_seconds": 1.1050689421826974,
+          "median_seconds": 0.006762170989532024,
+          "p95_seconds": 0.0284676969749853,
+          "max_seconds": 0.14378615200985223
+        },
+        "native_seconds": {
+          "observations": 112,
+          "total_seconds": 2.2253976658685133,
+          "median_seconds": 0.012567106925416738,
+          "p95_seconds": 0.0758333639241755,
+          "max_seconds": 0.19441614404786378
+        },
+        "python_seconds": {
+          "observations": 112,
+          "total_seconds": 0.5267834814731032,
+          "median_seconds": 0.002577066537924111,
+          "p95_seconds": 0.019629825954325497,
+          "max_seconds": 0.039629071950912476
+        },
+        "graph_materialization_seconds": {
+          "observations": 112,
+          "total_seconds": 0.37875471636652946,
+          "median_seconds": 0.001781514030881226,
+          "p95_seconds": 0.014176580822095275,
+          "max_seconds": 0.035338629968464375
+        },
+        "end_to_end_seconds": {
+          "observations": 112,
+          "total_seconds": 3.857250089524314,
+          "median_seconds": 0.022003669990226626,
+          "p95_seconds": 0.1160660800524056,
+          "max_seconds": 0.3523952340474352
+        },
+        "serialization_seconds": {
+          "observations": 112,
+          "total_seconds": 0.2565334108658135,
+          "median_seconds": 0.000598305428866297,
+          "p95_seconds": 0.003628122969530523,
+          "max_seconds": 0.09567185409832746
+        }
+      }
+    },
+    "O0/kuna": {
+      "files": 256,
+      "file_statuses": {
+        "match": 177,
+        "usage_error": 79
+      },
+      "usage_statuses": {
+        "ok": 177,
+        "parse_error": 79
+      },
+      "function_statuses": {
+        "match": 34128,
+        "missing": 16,
+        "divergent": 47
+      },
+      "non_degenerate_function_statuses": {
+        "match": 34117,
+        "missing": 16,
+        "divergent": 47
+      },
+      "degenerate_function_statuses": {
+        "match": 11
+      },
+      "files_with_diagnostics": 79,
+      "metric_excluded_files": 0,
+      "candidate_timing": {
+        "preparation_seconds": {
+          "observations": 256,
+          "total_seconds": 18.491688279551454,
+          "median_seconds": 0.013737700006458908,
+          "p95_seconds": 0.4278360389871523,
+          "max_seconds": 1.5127268909709528
+        },
+        "native_seconds": {
+          "observations": 256,
+          "total_seconds": 30.590311890584417,
+          "median_seconds": 0.02259595604846254,
+          "p95_seconds": 0.47993040503934026,
+          "max_seconds": 4.266908039920963
+        },
+        "python_seconds": {
+          "observations": 256,
+          "total_seconds": 4.019704336649738,
+          "median_seconds": 0.0021998099400661886,
+          "p95_seconds": 0.05482396297156811,
+          "max_seconds": 0.9113222149899229
+        },
+        "graph_materialization_seconds": {
+          "observations": 256,
+          "total_seconds": 2.9961450260598212,
+          "median_seconds": 0.0015312705654650927,
+          "p95_seconds": 0.03887930198106915,
+          "max_seconds": 0.8062974356580526
+        },
+        "end_to_end_seconds": {
+          "observations": 256,
+          "total_seconds": 53.10170450678561,
+          "median_seconds": 0.04298234905581921,
+          "p95_seconds": 1.0438887879718095,
+          "max_seconds": 5.618119074963033
+        },
+        "serialization_seconds": {
+          "observations": 256,
+          "total_seconds": 2.859390557394363,
+          "median_seconds": 0.0014096395461820066,
+          "p95_seconds": 0.060782699030824006,
+          "max_seconds": 0.2854130120249465
+        }
+      },
+      "fallback_timing": {
+        "native_seconds": {
+          "observations": 79,
+          "total_seconds": 54.3041436484782,
+          "median_seconds": 0.20334670692682266,
+          "p95_seconds": 2.9994749850593507,
+          "max_seconds": 9.101141307968646
+        },
+        "python_seconds": {
+          "observations": 79,
+          "total_seconds": 17.528347910149023,
+          "median_seconds": 0.07338157715275884,
+          "p95_seconds": 0.9816024710889906,
+          "max_seconds": 1.9168929810402915
+        },
+        "graph_materialization_seconds": {
+          "observations": 79,
+          "total_seconds": 15.410315568442456,
+          "median_seconds": 0.06164684775285423,
+          "p95_seconds": 0.8788341213949025,
+          "max_seconds": 1.7307854185346514
+        },
+        "end_to_end_seconds": {
+          "observations": 79,
+          "total_seconds": 71.83249155862723,
+          "median_seconds": 0.2799302509520203,
+          "p95_seconds": 4.080737620941363,
+          "max_seconds": 11.018034289008938
+        }
+      },
+      "reference_timing_unique_inputs": {
+        "observations": 253,
+        "total_seconds": 4933.466091848328,
+        "median_seconds": 14.806972431950271,
+        "p95_seconds": 44.66719347401522,
+        "max_seconds": 119.2795320370933
+      },
+      "successful_usage_timing": {
+        "preparation_seconds": {
+          "observations": 177,
+          "total_seconds": 4.339918905170634,
+          "median_seconds": 0.00973528902977705,
+          "p95_seconds": 0.09275765297934413,
+          "max_seconds": 0.9047793630743399
+        },
+        "native_seconds": {
+          "observations": 177,
+          "total_seconds": 11.19551481504459,
+          "median_seconds": 0.021080815000459552,
+          "p95_seconds": 0.24930860695894808,
+          "max_seconds": 2.263472225982696
+        },
+        "python_seconds": {
+          "observations": 177,
+          "total_seconds": 4.003793102456257,
+          "median_seconds": 0.003904276993125677,
+          "p95_seconds": 0.09840942895971239,
+          "max_seconds": 0.9113222149899229
+        },
+        "graph_materialization_seconds": {
+          "observations": 177,
+          "total_seconds": 2.9961450260598212,
+          "median_seconds": 0.002678232383914292,
+          "p95_seconds": 0.061945198103785515,
+          "max_seconds": 0.8062974356580526
+        },
+        "end_to_end_seconds": {
+          "observations": 177,
+          "total_seconds": 19.53922682267148,
+          "median_seconds": 0.03588171803858131,
+          "p95_seconds": 0.4708192639518529,
+          "max_seconds": 4.079573804046959
+        },
+        "serialization_seconds": {
+          "observations": 177,
+          "total_seconds": 0.6114425851264969,
+          "median_seconds": 0.0009872280061244965,
+          "p95_seconds": 0.013829807983711362,
+          "max_seconds": 0.08714481699280441
+        }
+      },
+      "failed_strict_timing": {
+        "preparation_seconds": {
+          "observations": 79,
+          "total_seconds": 14.15176937438082,
+          "median_seconds": 0.058364879922010005,
+          "p95_seconds": 0.8650328090880066,
+          "max_seconds": 1.5127268909709528
+        },
+        "native_seconds": {
+          "observations": 79,
+          "total_seconds": 19.394797075539827,
+          "median_seconds": 0.0358615240547806,
+          "p95_seconds": 1.2586427569622174,
+          "max_seconds": 4.266908039920963
+        },
+        "python_seconds": {
+          "observations": 79,
+          "total_seconds": 0.015911234193481505,
+          "median_seconds": 0.000126452068798244,
+          "p95_seconds": 0.0006302400724962354,
+          "max_seconds": 0.0014394799945876002
+        },
+        "graph_materialization_seconds": {
+          "observations": 79,
+          "total_seconds": 0.0,
+          "median_seconds": 0.0,
+          "p95_seconds": 0.0,
+          "max_seconds": 0.0
+        },
+        "end_to_end_seconds": {
+          "observations": 79,
+          "total_seconds": 33.56247768411413,
+          "median_seconds": 0.09580872801598161,
+          "p95_seconds": 1.9814084470272064,
+          "max_seconds": 5.618119074963033
+        },
+        "serialization_seconds": {
+          "observations": 79,
+          "total_seconds": 2.247947972267866,
+          "median_seconds": 0.007749674958176911,
+          "p95_seconds": 0.12112445500679314,
+          "max_seconds": 0.2854130120249465
+        }
+      },
+      "parity_matched_timing": {
+        "preparation_seconds": {
+          "observations": 177,
+          "total_seconds": 4.339918905170634,
+          "median_seconds": 0.00973528902977705,
+          "p95_seconds": 0.09275765297934413,
+          "max_seconds": 0.9047793630743399
+        },
+        "native_seconds": {
+          "observations": 177,
+          "total_seconds": 11.19551481504459,
+          "median_seconds": 0.021080815000459552,
+          "p95_seconds": 0.24930860695894808,
+          "max_seconds": 2.263472225982696
+        },
+        "python_seconds": {
+          "observations": 177,
+          "total_seconds": 4.003793102456257,
+          "median_seconds": 0.003904276993125677,
+          "p95_seconds": 0.09840942895971239,
+          "max_seconds": 0.9113222149899229
+        },
+        "graph_materialization_seconds": {
+          "observations": 177,
+          "total_seconds": 2.9961450260598212,
+          "median_seconds": 0.002678232383914292,
+          "p95_seconds": 0.061945198103785515,
+          "max_seconds": 0.8062974356580526
+        },
+        "end_to_end_seconds": {
+          "observations": 177,
+          "total_seconds": 19.53922682267148,
+          "median_seconds": 0.03588171803858131,
+          "p95_seconds": 0.4708192639518529,
+          "max_seconds": 4.079573804046959
+        },
+        "serialization_seconds": {
+          "observations": 177,
+          "total_seconds": 0.6114425851264969,
+          "median_seconds": 0.0009872280061244965,
+          "p95_seconds": 0.013829807983711362,
+          "max_seconds": 0.08714481699280441
+        }
+      }
+    },
+    "O2/source": {
+      "files": 4019,
+      "file_statuses": {
+        "match": 445,
+        "usage_error": 2913,
+        "divergent": 661
+      },
+      "usage_statuses": {
+        "ok": 1106,
+        "parse_error": 2913
+      },
+      "function_statuses": {
+        "match": 2063625,
+        "missing": 10292,
+        "divergent": 4940,
+        "extra": 37354
+      },
+      "non_degenerate_function_statuses": {
+        "match": 342644,
+        "missing": 4165,
+        "divergent": 4905
+      },
+      "degenerate_function_statuses": {
+        "match": 1720981,
+        "missing": 6127,
+        "divergent": 35
+      },
+      "files_with_diagnostics": 2913,
+      "metric_excluded_files": 5,
+      "candidate_timing": {
+        "preparation_seconds": {
+          "observations": 4019,
+          "total_seconds": 24.342416321393102,
+          "median_seconds": 0.004705025115981698,
+          "p95_seconds": 0.015859417035244405,
+          "max_seconds": 0.11794497910887003
+        },
+        "native_seconds": {
+          "observations": 4019,
+          "total_seconds": 284.9988741041161,
+          "median_seconds": 0.04877247894182801,
+          "p95_seconds": 0.19974182697478682,
+          "max_seconds": 2.1379556889878586
+        },
+        "python_seconds": {
+          "observations": 4019,
+          "total_seconds": 11.681975339888595,
+          "median_seconds": 0.00011809996794909239,
+          "p95_seconds": 0.014170285081490874,
+          "max_seconds": 0.3348685899982229
+        },
+        "graph_materialization_seconds": {
+          "observations": 4019,
+          "total_seconds": 7.8355216439813375,
+          "median_seconds": 0.0,
+          "p95_seconds": 0.00866578530985862,
+          "max_seconds": 0.32259307336062193
+        },
+        "end_to_end_seconds": {
+          "observations": 4019,
+          "total_seconds": 321.0232657653978,
+          "median_seconds": 0.061427639913745224,
+          "p95_seconds": 0.21882148191798478,
+          "max_seconds": 2.1533546230057254
+        },
+        "serialization_seconds": {
+          "observations": 4019,
+          "total_seconds": 51.67082276789006,
+          "median_seconds": 0.00886049889959395,
+          "p95_seconds": 0.030537121929228306,
+          "max_seconds": 0.3540893499739468
+        }
+      },
+      "fallback_timing": {
+        "native_seconds": {
+          "observations": 2913,
+          "total_seconds": 415.29350078559946,
+          "median_seconds": 0.12683228007517755,
+          "p95_seconds": 0.33275287109427154,
+          "max_seconds": 2.0302811909932643
+        },
+        "python_seconds": {
+          "observations": 2913,
+          "total_seconds": 149.92615778301843,
+          "median_seconds": 0.03933862200938165,
+          "p95_seconds": 0.1880994379753247,
+          "max_seconds": 0.5394865770358592
+        },
+        "graph_materialization_seconds": {
+          "observations": 2913,
+          "total_seconds": 112.35705181676894,
+          "median_seconds": 0.026908571366220713,
+          "p95_seconds": 0.1625092850299552,
+          "max_seconds": 0.4112171260640025
+        },
+        "end_to_end_seconds": {
+          "observations": 2913,
+          "total_seconds": 565.2196585686179,
+          "median_seconds": 0.17176055000163615,
+          "p95_seconds": 0.45416445506270975,
+          "max_seconds": 2.264366666902788
+        }
+      },
+      "reference_timing_unique_inputs": {
+        "observations": 2,
+        "total_seconds": 26.08898429106921,
+        "median_seconds": 13.044492145534605,
+        "p95_seconds": 14.963733884971589,
+        "max_seconds": 14.963733884971589
+      },
+      "successful_usage_timing": {
+        "preparation_seconds": {
+          "observations": 1106,
+          "total_seconds": 5.2305669924244285,
+          "median_seconds": 0.0033895549713633955,
+          "p95_seconds": 0.013387794140726328,
+          "max_seconds": 0.05278431298211217
+        },
+        "native_seconds": {
+          "observations": 1106,
+          "total_seconds": 24.1060959022725,
+          "median_seconds": 0.0077420835150405765,
+          "p95_seconds": 0.08999687398318201,
+          "max_seconds": 0.27840704598929733
+        },
+        "python_seconds": {
+          "observations": 1106,
+          "total_seconds": 11.322737847571261,
+          "median_seconds": 0.003952616534661502,
+          "p95_seconds": 0.03516292595304549,
+          "max_seconds": 0.3348685899982229
+        },
+        "graph_materialization_seconds": {
+          "observations": 1106,
+          "total_seconds": 7.8355216439813375,
+          "median_seconds": 0.002272648736834526,
+          "p95_seconds": 0.024915642105042934,
+          "max_seconds": 0.32259307336062193
+        },
+        "end_to_end_seconds": {
+          "observations": 1106,
+          "total_seconds": 40.65940074226819,
+          "median_seconds": 0.015669572516344488,
+          "p95_seconds": 0.14137801399920136,
+          "max_seconds": 0.42076374299358577
+        },
+        "serialization_seconds": {
+          "observations": 1106,
+          "total_seconds": 2.60626807983499,
+          "median_seconds": 0.0009662859956733882,
+          "p95_seconds": 0.009910932974889874,
+          "max_seconds": 0.031023595947772264
+        }
+      },
+      "failed_strict_timing": {
+        "preparation_seconds": {
+          "observations": 2913,
+          "total_seconds": 19.111849328968674,
+          "median_seconds": 0.004959717043675482,
+          "p95_seconds": 0.016284194076433778,
+          "max_seconds": 0.11794497910887003
+        },
+        "native_seconds": {
+          "observations": 2913,
+          "total_seconds": 260.8927782018436,
+          "median_seconds": 0.08070305304136127,
+          "p95_seconds": 0.22073526703752577,
+          "max_seconds": 2.1379556889878586
+        },
+        "python_seconds": {
+          "observations": 2913,
+          "total_seconds": 0.3592374923173338,
+          "median_seconds": 0.00010198005475103855,
+          "p95_seconds": 0.0002753519220277667,
+          "max_seconds": 0.0032077989308163524
+        },
+        "graph_materialization_seconds": {
+          "observations": 2913,
+          "total_seconds": 0.0,
+          "median_seconds": 0.0,
+          "p95_seconds": 0.0,
+          "max_seconds": 0.0
+        },
+        "end_to_end_seconds": {
+          "observations": 2913,
+          "total_seconds": 280.3638650231296,
+          "median_seconds": 0.08513939008116722,
+          "p95_seconds": 0.2343914050143212,
+          "max_seconds": 2.1533546230057254
+        },
+        "serialization_seconds": {
+          "observations": 2913,
+          "total_seconds": 49.06455468805507,
+          "median_seconds": 0.012453981908038259,
+          "p95_seconds": 0.03389265399891883,
+          "max_seconds": 0.3540893499739468
+        }
+      },
+      "parity_matched_timing": {
+        "preparation_seconds": {
+          "observations": 445,
+          "total_seconds": 1.4211767434608191,
+          "median_seconds": 0.0017421140801161528,
+          "p95_seconds": 0.009274348965846002,
+          "max_seconds": 0.05278431298211217
+        },
+        "native_seconds": {
+          "observations": 445,
+          "total_seconds": 4.271078982506879,
+          "median_seconds": 0.003619957948103547,
+          "p95_seconds": 0.04186226089950651,
+          "max_seconds": 0.1693644030019641
+        },
+        "python_seconds": {
+          "observations": 445,
+          "total_seconds": 1.6147677683038637,
+          "median_seconds": 0.0017125720623880625,
+          "p95_seconds": 0.011956257978454232,
+          "max_seconds": 0.06881727604195476
+        },
+        "graph_materialization_seconds": {
+          "observations": 445,
+          "total_seconds": 1.06002352735959,
+          "median_seconds": 0.0010329687502235174,
+          "p95_seconds": 0.008524373290129006,
+          "max_seconds": 0.0590080568799749
+        },
+        "end_to_end_seconds": {
+          "observations": 445,
+          "total_seconds": 7.3070234942715615,
+          "median_seconds": 0.007552401046268642,
+          "p95_seconds": 0.06470121000893414,
+          "max_seconds": 0.25514551997184753
+        },
+        "serialization_seconds": {
+          "observations": 445,
+          "total_seconds": 0.370732260402292,
+          "median_seconds": 0.00035306799691170454,
+          "p95_seconds": 0.00285616097971797,
+          "max_seconds": 0.01717834803275764
+        }
+      }
+    },
+    "O2/ida": {
+      "files": 257,
+      "file_statuses": {
+        "divergent": 34,
+        "usage_error": 85,
+        "match": 138
+      },
+      "usage_statuses": {
+        "ok": 172,
+        "parse_error": 85
+      },
+      "function_statuses": {
+        "match": 15381,
+        "divergent": 497,
+        "missing": 8947,
+        "extra": 10
+      },
+      "non_degenerate_function_statuses": {
+        "match": 15291,
+        "divergent": 494,
+        "missing": 8736
+      },
+      "degenerate_function_statuses": {
+        "match": 90,
+        "divergent": 3,
+        "missing": 211
+      },
+      "files_with_diagnostics": 85,
+      "metric_excluded_files": 0,
+      "candidate_timing": {
+        "preparation_seconds": {
+          "observations": 257,
+          "total_seconds": 19.86781837674789,
+          "median_seconds": 0.01469080289825797,
+          "p95_seconds": 0.4130697309738025,
+          "max_seconds": 1.2009243118809536
+        },
+        "native_seconds": {
+          "observations": 257,
+          "total_seconds": 17.221221329877153,
+          "median_seconds": 0.019557419000193477,
+          "p95_seconds": 0.2991750839864835,
+          "max_seconds": 1.4768636830849573
+        },
+        "python_seconds": {
+          "observations": 257,
+          "total_seconds": 2.5412964884890243,
+          "median_seconds": 0.001368365017697215,
+          "p95_seconds": 0.034237417043186724,
+          "max_seconds": 0.40401836996898055
+        },
+        "graph_materialization_seconds": {
+          "observations": 257,
+          "total_seconds": 2.128972284379415,
+          "median_seconds": 0.0008850391022861004,
+          "p95_seconds": 0.029228112078271806,
+          "max_seconds": 0.3856756134191528
+        },
+        "end_to_end_seconds": {
+          "observations": 257,
+          "total_seconds": 39.63033619511407,
+          "median_seconds": 0.04202400497160852,
+          "p95_seconds": 0.8095414829440415,
+          "max_seconds": 2.6785621629096568
+        },
+        "serialization_seconds": {
+          "observations": 257,
+          "total_seconds": 1.7309213125845417,
+          "median_seconds": 0.0009790599578991532,
+          "p95_seconds": 0.03647302801255137,
+          "max_seconds": 0.1398183759301901
+        }
+      },
+      "fallback_timing": {
+        "native_seconds": {
+          "observations": 85,
+          "total_seconds": 34.38808129983954,
+          "median_seconds": 0.13751874107401818,
+          "p95_seconds": 1.6760680139996111,
+          "max_seconds": 3.4828741709934548
+        },
+        "python_seconds": {
+          "observations": 85,
+          "total_seconds": 12.162613986991346,
+          "median_seconds": 0.0314662141026929,
+          "p95_seconds": 0.6358096699696034,
+          "max_seconds": 1.1733555279206485
+        },
+        "graph_materialization_seconds": {
+          "observations": 85,
+          "total_seconds": 10.03735639131628,
+          "median_seconds": 0.023361285566352308,
+          "p95_seconds": 0.5718013257719576,
+          "max_seconds": 1.0427383685018867
+        },
+        "end_to_end_seconds": {
+          "observations": 85,
+          "total_seconds": 46.55069528683089,
+          "median_seconds": 0.16451682103797793,
+          "p95_seconds": 2.1784925250103697,
+          "max_seconds": 4.656229698914103
+        }
+      },
+      "reference_timing_unique_inputs": {
+        "observations": 254,
+        "total_seconds": 5004.866578020155,
+        "median_seconds": 14.613052587548736,
+        "p95_seconds": 42.94091521401424,
+        "max_seconds": 122.19832652504556
+      },
+      "successful_usage_timing": {
+        "preparation_seconds": {
+          "observations": 172,
+          "total_seconds": 3.2927769373636693,
+          "median_seconds": 0.008231699001044035,
+          "p95_seconds": 0.11087323806714267,
+          "max_seconds": 0.22844941087532789
+        },
+        "native_seconds": {
+          "observations": 172,
+          "total_seconds": 7.878765281406231,
+          "median_seconds": 0.018250121967867017,
+          "p95_seconds": 0.2586931240512058,
+          "max_seconds": 0.6313222429016605
+        },
+        "python_seconds": {
+          "observations": 172,
+          "total_seconds": 2.5272671309066936,
+          "median_seconds": 0.0029282524483278394,
+          "p95_seconds": 0.10003985196817666,
+          "max_seconds": 0.40401836996898055
+        },
+        "graph_materialization_seconds": {
+          "observations": 172,
+          "total_seconds": 2.128972284379415,
+          "median_seconds": 0.002108099521137774,
+          "p95_seconds": 0.0847286117495969,
+          "max_seconds": 0.3856756134191528
+        },
+        "end_to_end_seconds": {
+          "observations": 172,
+          "total_seconds": 13.698809349676594,
+          "median_seconds": 0.03049360151635483,
+          "p95_seconds": 0.4211395279271528,
+          "max_seconds": 1.0548602999188006
+        },
+        "serialization_seconds": {
+          "observations": 172,
+          "total_seconds": 0.2738988286582753,
+          "median_seconds": 0.0005400939844548702,
+          "p95_seconds": 0.006959569058381021,
+          "max_seconds": 0.035390659933909774
+        }
+      },
+      "failed_strict_timing": {
+        "preparation_seconds": {
+          "observations": 85,
+          "total_seconds": 16.575041439384222,
+          "median_seconds": 0.06065297999884933,
+          "p95_seconds": 0.9009880559751764,
+          "max_seconds": 1.2009243118809536
+        },
+        "native_seconds": {
+          "observations": 85,
+          "total_seconds": 9.342456048470922,
+          "median_seconds": 0.028970459010452032,
+          "p95_seconds": 0.4127247639698908,
+          "max_seconds": 1.4768636830849573
+        },
+        "python_seconds": {
+          "observations": 85,
+          "total_seconds": 0.014029357582330704,
+          "median_seconds": 0.00010430300608277321,
+          "p95_seconds": 0.0005284319631755352,
+          "max_seconds": 0.0007741679437458515
+        },
+        "graph_materialization_seconds": {
+          "observations": 85,
+          "total_seconds": 0.0,
+          "median_seconds": 0.0,
+          "p95_seconds": 0.0,
+          "max_seconds": 0.0
+        },
+        "end_to_end_seconds": {
+          "observations": 85,
+          "total_seconds": 25.931526845437475,
+          "median_seconds": 0.0961353579768911,
+          "p95_seconds": 1.0722702069906518,
+          "max_seconds": 2.6785621629096568
+        },
+        "serialization_seconds": {
+          "observations": 85,
+          "total_seconds": 1.4570224839262664,
+          "median_seconds": 0.005157572915777564,
+          "p95_seconds": 0.07026430999394506,
+          "max_seconds": 0.1398183759301901
+        }
+      },
+      "parity_matched_timing": {
+        "preparation_seconds": {
+          "observations": 138,
+          "total_seconds": 1.584658107953146,
+          "median_seconds": 0.006814734544605017,
+          "p95_seconds": 0.03291926102247089,
+          "max_seconds": 0.12443368893582374
+        },
+        "native_seconds": {
+          "observations": 138,
+          "total_seconds": 3.4823081543436274,
+          "median_seconds": 0.01404754346003756,
+          "p95_seconds": 0.07547529204748571,
+          "max_seconds": 0.1683901089709252
+        },
+        "python_seconds": {
+          "observations": 138,
+          "total_seconds": 0.9766539710108191,
+          "median_seconds": 0.002307482936885208,
+          "p95_seconds": 0.016977098071947694,
+          "max_seconds": 0.15966332599055022
+        },
+        "graph_materialization_seconds": {
+          "observations": 138,
+          "total_seconds": 0.7983332530129701,
+          "median_seconds": 0.0015489466022700071,
+          "p95_seconds": 0.014501650934107602,
+          "max_seconds": 0.15652735414914787
+        },
+        "end_to_end_seconds": {
+          "observations": 138,
+          "total_seconds": 6.043620233307593,
+          "median_seconds": 0.023783014505170286,
+          "p95_seconds": 0.16741205705329776,
+          "max_seconds": 0.3644029159331694
+        },
+        "serialization_seconds": {
+          "observations": 138,
+          "total_seconds": 0.11164654488675296,
+          "median_seconds": 0.00046182150254026055,
+          "p95_seconds": 0.002502480987459421,
+          "max_seconds": 0.006187885068356991
+        }
+      }
+    },
+    "O2/kuna": {
+      "files": 257,
+      "file_statuses": {
+        "match": 140,
+        "usage_error": 117
+      },
+      "usage_statuses": {
+        "ok": 140,
+        "parse_error": 117
+      },
+      "function_statuses": {
+        "match": 24945,
+        "divergent": 105
+      },
+      "non_degenerate_function_statuses": {
+        "match": 24864,
+        "divergent": 105
+      },
+      "degenerate_function_statuses": {
+        "match": 81
+      },
+      "files_with_diagnostics": 117,
+      "metric_excluded_files": 0,
+      "candidate_timing": {
+        "preparation_seconds": {
+          "observations": 257,
+          "total_seconds": 16.17552536702715,
+          "median_seconds": 0.010983024025335908,
+          "p95_seconds": 0.35038898698985577,
+          "max_seconds": 1.3931749509647489
+        },
+        "native_seconds": {
+          "observations": 257,
+          "total_seconds": 19.422641021199524,
+          "median_seconds": 0.01512534508947283,
+          "p95_seconds": 0.3494891779264435,
+          "max_seconds": 3.633211647043936
+        },
+        "python_seconds": {
+          "observations": 257,
+          "total_seconds": 1.2754050638759509,
+          "median_seconds": 0.000634443131275475,
+          "p95_seconds": 0.01447866193484515,
+          "max_seconds": 0.39982461591716856
+        },
+        "graph_materialization_seconds": {
+          "observations": 257,
+          "total_seconds": 1.016689089476131,
+          "median_seconds": 0.00037090200930833817,
+          "p95_seconds": 0.01129105850122869,
+          "max_seconds": 0.3550710037816316
+        },
+        "end_to_end_seconds": {
+          "observations": 257,
+          "total_seconds": 36.873571452102624,
+          "median_seconds": 0.030264092958532274,
+          "p95_seconds": 0.7001387979835272,
+          "max_seconds": 4.705817480105907
+        },
+        "serialization_seconds": {
+          "observations": 257,
+          "total_seconds": 2.06337262049783,
+          "median_seconds": 0.0010208890307694674,
+          "p95_seconds": 0.0373604129999876,
+          "max_seconds": 0.29738199699204415
+        }
+      },
+      "fallback_timing": {
+        "native_seconds": {
+          "observations": 117,
+          "total_seconds": 47.496971182874404,
+          "median_seconds": 0.08838012907654047,
+          "p95_seconds": 1.9618815450230613,
+          "max_seconds": 6.132949304999784
+        },
+        "python_seconds": {
+          "observations": 117,
+          "total_seconds": 15.457470645895228,
+          "median_seconds": 0.024278563912957907,
+          "p95_seconds": 0.6479756149929017,
+          "max_seconds": 1.4179318859241903
+        },
+        "graph_materialization_seconds": {
+          "observations": 117,
+          "total_seconds": 12.9696817365475,
+          "median_seconds": 0.019152271910570562,
+          "p95_seconds": 0.5610339436680079,
+          "max_seconds": 1.238783887703903
+        },
+        "end_to_end_seconds": {
+          "observations": 117,
+          "total_seconds": 62.95444182876963,
+          "median_seconds": 0.11695120797958225,
+          "p95_seconds": 2.610246730968356,
+          "max_seconds": 7.550881190923974
+        }
+      },
+      "reference_timing_unique_inputs": {
+        "observations": 254,
+        "total_seconds": 4959.3568055426,
+        "median_seconds": 14.58777340548113,
+        "p95_seconds": 43.44013318896759,
+        "max_seconds": 120.69020261301193
+      },
+      "successful_usage_timing": {
+        "preparation_seconds": {
+          "observations": 140,
+          "total_seconds": 1.6560508178081363,
+          "median_seconds": 0.0061258270288817585,
+          "p95_seconds": 0.03606722806580365,
+          "max_seconds": 0.22062831511721015
+        },
+        "native_seconds": {
+          "observations": 140,
+          "total_seconds": 4.103102367371321,
+          "median_seconds": 0.013645066996105015,
+          "p95_seconds": 0.08452036406379193,
+          "max_seconds": 0.7709514090092853
+        },
+        "python_seconds": {
+          "observations": 140,
+          "total_seconds": 1.260673237615265,
+          "median_seconds": 0.002261710003949702,
+          "p95_seconds": 0.021319912862963974,
+          "max_seconds": 0.39982461591716856
+        },
+        "graph_materialization_seconds": {
+          "observations": 140,
+          "total_seconds": 1.016689089476131,
+          "median_seconds": 0.0016005894867703319,
+          "p95_seconds": 0.016051168087869883,
+          "max_seconds": 0.3550710037816316
+        },
+        "end_to_end_seconds": {
+          "observations": 140,
+          "total_seconds": 7.019826422794722,
+          "median_seconds": 0.021835077030118555,
+          "p95_seconds": 0.13163708604406565,
+          "max_seconds": 1.391404340043664
+        },
+        "serialization_seconds": {
+          "observations": 140,
+          "total_seconds": 0.1646149397129193,
+          "median_seconds": 0.00047546299174427986,
+          "p95_seconds": 0.0030857620295137167,
+          "max_seconds": 0.03467762400396168
+        }
+      },
+      "failed_strict_timing": {
+        "preparation_seconds": {
+          "observations": 117,
+          "total_seconds": 14.519474549219012,
+          "median_seconds": 0.02977997495327145,
+          "p95_seconds": 0.6506783618824556,
+          "max_seconds": 1.3931749509647489
+        },
+        "native_seconds": {
+          "observations": 117,
+          "total_seconds": 15.319538653828204,
+          "median_seconds": 0.017067654989659786,
+          "p95_seconds": 0.6868490059860051,
+          "max_seconds": 3.633211647043936
+        },
+        "python_seconds": {
+          "observations": 117,
+          "total_seconds": 0.01473182626068592,
+          "median_seconds": 8.513801731169224e-05,
+          "p95_seconds": 0.00041562493424862623,
+          "max_seconds": 0.0006361040286719799
+        },
+        "graph_materialization_seconds": {
+          "observations": 117,
+          "total_seconds": 0.0,
+          "median_seconds": 0.0,
+          "p95_seconds": 0.0,
+          "max_seconds": 0.0
+        },
+        "end_to_end_seconds": {
+          "observations": 117,
+          "total_seconds": 29.853745029307902,
+          "median_seconds": 0.048816347029060125,
+          "p95_seconds": 1.2689270119881257,
+          "max_seconds": 4.705817480105907
+        },
+        "serialization_seconds": {
+          "observations": 117,
+          "total_seconds": 1.898757680784911,
+          "median_seconds": 0.0035937129287049174,
+          "p95_seconds": 0.07262995094060898,
+          "max_seconds": 0.29738199699204415
+        }
+      },
+      "parity_matched_timing": {
+        "preparation_seconds": {
+          "observations": 140,
+          "total_seconds": 1.6560508178081363,
+          "median_seconds": 0.0061258270288817585,
+          "p95_seconds": 0.03606722806580365,
+          "max_seconds": 0.22062831511721015
+        },
+        "native_seconds": {
+          "observations": 140,
+          "total_seconds": 4.103102367371321,
+          "median_seconds": 0.013645066996105015,
+          "p95_seconds": 0.08452036406379193,
+          "max_seconds": 0.7709514090092853
+        },
+        "python_seconds": {
+          "observations": 140,
+          "total_seconds": 1.260673237615265,
+          "median_seconds": 0.002261710003949702,
+          "p95_seconds": 0.021319912862963974,
+          "max_seconds": 0.39982461591716856
+        },
+        "graph_materialization_seconds": {
+          "observations": 140,
+          "total_seconds": 1.016689089476131,
+          "median_seconds": 0.0016005894867703319,
+          "p95_seconds": 0.016051168087869883,
+          "max_seconds": 0.3550710037816316
+        },
+        "end_to_end_seconds": {
+          "observations": 140,
+          "total_seconds": 7.019826422794722,
+          "median_seconds": 0.021835077030118555,
+          "p95_seconds": 0.13163708604406565,
+          "max_seconds": 1.391404340043664
+        },
+        "serialization_seconds": {
+          "observations": 140,
+          "total_seconds": 0.1646149397129193,
+          "median_seconds": 0.00047546299174427986,
+          "p95_seconds": 0.0030857620295137167,
+          "max_seconds": 0.03467762400396168
+        }
+      }
+    }
+  },
+  "timing_notes": [
+    "Native times include the C ABI analysis, JSON serialization and Python JSON decoding; CFG-only disables data flow but also constructs CPG.",
+    "Python graph materialization and exact DecBench end-to-end extraction are timed separately.",
+    "Failed strict usage and permissive fallback timings are recorded separately; fallback graphs are never reported as successful default usage.",
+    "Historical source cache has no CFG generation timing or parser version; missing measurements remain null.",
+    "Fresh oracle timing measures isolated original CFG-only parse_source including JVM startup, DOT export and lifting.",
+    "Repeated identical oracle inputs share one capture; reference timing totals count unique captures within each group.",
+    "Concurrent wall times are observations under the recorded worker configuration, not single-thread microbenchmarks.",
+    "successful_usage_timing includes successful strict extractions even if their CFGs diverge; parity_matched_timing includes only fully matching files."
+  ],
+  "parity_criteria": [
+    "function coverage",
+    "directed graph isomorphism",
+    "entry and exit roles",
+    "DecBench source degeneracy",
+    "same prepared input SHA-256"
+  ],
+  "tolerated_divergences": [],
+  "comparison_engine": {
+    "name": "igraph BLISS (exact directed, role-colored)",
+    "version": "1.0.0"
+  },
+  "candidate_generation": {
+    "schema_version": 1,
+    "manifest": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/manifest.json",
+    "available_cases": 8808,
+    "checked_cases": 8808,
+    "complete": true,
+    "statuses": {
+      "ok": 2852,
+      "parse_error": 5956
+    },
+    "metric_excluded_cases": 10,
+    "coverage": {
+      "O0/ida": 256,
+      "O0/kuna": 256,
+      "O0/source": 3763,
+      "O2/ida": 257,
+      "O2/kuna": 257,
+      "O2/source": 4019
+    },
+    "seconds": 296.1722005129559,
+    "native_library": {
+      "path": "/home/mahaloz/github/rust-joern/target/release/librust_joern.so",
+      "sha256": "8931941162360639cb07fd8713670295d21dbfe525005965623503b86fc72a11"
+    },
+    "source_build_fingerprint": "15735216d5f5b63680aecc98aa4ec4024d1ca13af6d7fd7dc689b56915c11c01",
+    "worker_config": {
+      "workers": 8,
+      "start_method": "spawn",
+      "rayon_threads": 2,
+      "cache_disabled": true
+    },
+    "timing_notes": "native_seconds includes C ABI/JSON decoding; preparation includes temp-file I/O and cleanup; fallback timings are secondary",
+    "case_records": "Per-case JSON files at <case-id>.json under this directory"
+  },
+  "oracle_capture": {
+    "schema_version": 1,
+    "manifest": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/manifest.json",
+    "mode": "isolated_file",
+    "workers": 8,
+    "reference_python": "/home/mahaloz/.virtualenvs/decbench/bin/python",
+    "wall_seconds": 2618.489091553027,
+    "counts": {
+      "captured": 1014,
+      "reused": 5363,
+      "error": 0
+    }
+  },
+  "native_source_sha256": "4246d9ab87f592ba6943a2beb5f0e00903df3c5592a164c58895705ddabe2c7c",
+  "candidate_timing": {
+    "preparation_seconds": {
+      "observations": 8808,
+      "total_seconds": 128.16770125180483,
+      "median_seconds": 0.005052867985796183,
+      "p95_seconds": 0.024399000918492675,
+      "max_seconds": 1.5410410839831457
+    },
+    "native_seconds": {
+      "observations": 8808,
+      "total_seconds": 628.082086964394,
+      "median_seconds": 0.04167799698188901,
+      "p95_seconds": 0.20000127598177642,
+      "max_seconds": 4.266908039920963
+    },
+    "python_seconds": {
+      "observations": 8808,
+      "total_seconds": 38.0507894679904,
+      "median_seconds": 0.00014202052261680365,
+      "p95_seconds": 0.017411320935934782,
+      "max_seconds": 0.9113222149899229
+    },
+    "graph_materialization_seconds": {
+      "observations": 8808,
+      "total_seconds": 27.801023785956204,
+      "median_seconds": 0.0,
+      "p95_seconds": 0.01129105850122869,
+      "max_seconds": 0.8062974356580526
+    },
+    "end_to_end_seconds": {
+      "observations": 8808,
+      "total_seconds": 794.3005776841892,
+      "median_seconds": 0.05673630099045113,
+      "p95_seconds": 0.23421862092800438,
+      "max_seconds": 5.618119074963033
+    },
+    "serialization_seconds": {
+      "observations": 8808,
+      "total_seconds": 124.80219132895581,
+      "median_seconds": 0.008039047534111887,
+      "p95_seconds": 0.036837143008597195,
+      "max_seconds": 0.5002643099287525
+    }
+  },
+  "fallback_timing": {
+    "native_seconds": {
+      "observations": 5956,
+      "total_seconds": 969.1908130072989,
+      "median_seconds": 0.12552430300274864,
+      "p95_seconds": 0.36371494899503887,
+      "max_seconds": 9.101141307968646
+    },
+    "python_seconds": {
+      "observations": 5956,
+      "total_seconds": 363.0591695875628,
+      "median_seconds": 0.040282204980030656,
+      "p95_seconds": 0.21394919499289244,
+      "max_seconds": 1.9168929810402915
+    },
+    "graph_materialization_seconds": {
+      "observations": 5956,
+      "total_seconds": 283.31982495076954,
+      "median_seconds": 0.02764155180193484,
+      "p95_seconds": 0.18157710693776608,
+      "max_seconds": 1.7307854185346514
+    },
+    "end_to_end_seconds": {
+      "observations": 5956,
+      "total_seconds": 1332.2499825948616,
+      "median_seconds": 0.1726973070180975,
+      "p95_seconds": 0.5217751560267061,
+      "max_seconds": 11.018034289008938
+    }
+  },
+  "timing_percentile_method": "nearest rank: sorted_values[ceil(0.95 * observations) - 1]",
+  "successful_usage_timing": {
+    "preparation_seconds": {
+      "observations": 2852,
+      "total_seconds": 23.985092570073903,
+      "median_seconds": 0.004134203540161252,
+      "p95_seconds": 0.023953840951435268,
+      "max_seconds": 0.9047793630743399
+    },
+    "native_seconds": {
+      "observations": 2852,
+      "total_seconds": 82.95941741869319,
+      "median_seconds": 0.010096191486809403,
+      "p95_seconds": 0.10588191100396216,
+      "max_seconds": 2.263472225982696
+    },
+    "python_seconds": {
+      "observations": 2852,
+      "total_seconds": 37.200331441126764,
+      "median_seconds": 0.003965535433962941,
+      "p95_seconds": 0.046224926016293466,
+      "max_seconds": 0.9113222149899229
+    },
+    "graph_materialization_seconds": {
+      "observations": 2852,
+      "total_seconds": 27.801023785956204,
+      "median_seconds": 0.0023802061332389712,
+      "p95_seconds": 0.0338128877338022,
+      "max_seconds": 0.8062974356580526
+    },
+    "end_to_end_seconds": {
+      "observations": 2852,
+      "total_seconds": 144.14484142989386,
+      "median_seconds": 0.018525873485486954,
+      "p95_seconds": 0.17584874702151865,
+      "max_seconds": 4.079573804046959
+    },
+    "serialization_seconds": {
+      "observations": 2852,
+      "total_seconds": 7.642663517850451,
+      "median_seconds": 0.0009516974678263068,
+      "p95_seconds": 0.010781468939967453,
+      "max_seconds": 0.20309467299375683
+    }
+  },
+  "failed_strict_timing": {
+    "preparation_seconds": {
+      "observations": 5956,
+      "total_seconds": 104.18260868173093,
+      "median_seconds": 0.005310897482559085,
+      "p95_seconds": 0.024834976065903902,
+      "max_seconds": 1.5410410839831457
+    },
+    "native_seconds": {
+      "observations": 5956,
+      "total_seconds": 545.1226695457008,
+      "median_seconds": 0.07581104896962643,
+      "p95_seconds": 0.21916570200119168,
+      "max_seconds": 4.266908039920963
+    },
+    "python_seconds": {
+      "observations": 5956,
+      "total_seconds": 0.8504580268636346,
+      "median_seconds": 0.00010771153029054403,
+      "p95_seconds": 0.0003615299938246608,
+      "max_seconds": 0.0033707580296322703
+    },
+    "graph_materialization_seconds": {
+      "observations": 5956,
+      "total_seconds": 0.0,
+      "median_seconds": 0.0,
+      "p95_seconds": 0.0,
+      "max_seconds": 0.0
+    },
+    "end_to_end_seconds": {
+      "observations": 5956,
+      "total_seconds": 650.1557362542953,
+      "median_seconds": 0.08313054800964892,
+      "p95_seconds": 0.2475102689350024,
+      "max_seconds": 5.618119074963033
+    },
+    "serialization_seconds": {
+      "observations": 5956,
+      "total_seconds": 117.15952781110536,
+      "median_seconds": 0.01272759900894016,
+      "p95_seconds": 0.04529750894289464,
+      "max_seconds": 0.5002643099287525
+    }
+  },
+  "parity_matched_timing": {
+    "preparation_seconds": {
+      "observations": 1447,
+      "total_seconds": 11.644162068027072,
+      "median_seconds": 0.0027916489634662867,
+      "p95_seconds": 0.026079861912876368,
+      "max_seconds": 0.9047793630743399
+    },
+    "native_seconds": {
+      "observations": 1447,
+      "total_seconds": 30.59550870989915,
+      "median_seconds": 0.006138085969723761,
+      "p95_seconds": 0.07796627306379378,
+      "max_seconds": 2.263472225982696
+    },
+    "python_seconds": {
+      "observations": 1447,
+      "total_seconds": 11.534709956962615,
+      "median_seconds": 0.0022073499858379364,
+      "p95_seconds": 0.023048311937600374,
+      "max_seconds": 0.9113222149899229
+    },
+    "graph_materialization_seconds": {
+      "observations": 1447,
+      "total_seconds": 8.756081277038902,
+      "median_seconds": 0.001395098865032196,
+      "p95_seconds": 0.016293375985696912,
+      "max_seconds": 0.8062974356580526
+    },
+    "end_to_end_seconds": {
+      "observations": 1447,
+      "total_seconds": 53.77438073488884,
+      "median_seconds": 0.011521819978952408,
+      "p95_seconds": 0.12609435501508415,
+      "max_seconds": 4.079573804046959
+    },
+    "serialization_seconds": {
+      "observations": 1447,
+      "total_seconds": 2.071315247216262,
+      "median_seconds": 0.0004898539045825601,
+      "p95_seconds": 0.004044531029649079,
+      "max_seconds": 0.09567185409832746
+    }
+  }
+}

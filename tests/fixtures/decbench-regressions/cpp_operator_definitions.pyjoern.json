@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 13.237222612951882,
+  "functions": {
+    "==": {
+      "name": "==",
+      "start_line": 8,
+      "end_line": 11,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "8.0:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,value,value>\n<UnsupportedStmt: ['indirectFieldAccess', 'this-&gt;value']>\n<UnsupportedStmt: FIELD_IDENTIFIER,value,value>\n<UnsupportedStmt: ['fieldAccess', 'other.value']>\nvalue == other.value\nreturn value==other.value;,returnvalue==other.value;\nFUNCTION_END\n"
+        }
+      }
+    },
+    "!=": {
+      "name": "!=",
+      "start_line": 13,
+      "end_line": 16,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "13.0:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,value,value>\n<UnsupportedStmt: ['indirectFieldAccess', 'this-&gt;value']>\n<UnsupportedStmt: FIELD_IDENTIFIER,value,value>\n<UnsupportedStmt: ['fieldAccess', 'other.value']>\nvalue != other.value\nreturn value!=other.value;,returnvalue!=other.value;\nFUNCTION_END\n"
+        }
+      }
+    },
+    "=": {
+      "name": "=",
+      "start_line": 18,
+      "end_line": 22,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "18.0:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,value,value>\n<UnsupportedStmt: ['indirectFieldAccess', 'this-&gt;value']>\n<UnsupportedStmt: FIELD_IDENTIFIER,value,value>\n<UnsupportedStmt: ['fieldAccess', 'other.value']>\nvalue = other.value\n<UnsupportedStmt: ['indirection', '*this']>\nreturn *this;,return*this;\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "c10f47f7b7ff126fa418b43d9ff6ec4040a78bdc120fcb507ab479ceb1ef28e9",
+  "prepared_sha256": "c10f47f7b7ff126fa418b43d9ff6ec4040a78bdc120fcb507ab479ceb1ef28e9",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_ddg": true,
+    "no_ast": true
+  }
+}

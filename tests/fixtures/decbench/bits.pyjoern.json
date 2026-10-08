@@ -1,0 +1,1374 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 11.280192382982932,
+  "functions": {
+    "bi_init": {
+      "name": "bi_init",
+      "start_line": 400,
+      "end_line": 416,
+      "cfg": {
+        "nodes": [
+          0,
+          1
+        ],
+        "edges": [
+          [
+            1,
+            0
+          ]
+        ],
+        "entry": [
+          0,
+          1
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "414.1:\nFUNCTION_START\nread_buf = file_read\n",
+          "1": "400.0:\nFUNCTION_START\nzfile = zipfile\nbi_buf = 0\nbi_valid = 0\n-1 - \nzfile != (-1)\n"
+        }
+      }
+    },
+    "send_bits": {
+      "name": "send_bits",
+      "start_line": 422,
+      "end_line": 435,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "edges": [
+          [
+            0,
+            7
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            8
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            8,
+            6
+          ]
+        ],
+        "entry": [
+          4
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "428.27:\nflush_outbuf()\n",
+          "1": "428.31:\nflush_outbuf()\n",
+          "2": "427.1:\n<UnsupportedStmt: ['shiftLeft', 'value&lt;&lt;bi_valid']>\n<UnsupportedStmt: &lt;operators&gt;.assignmentOr,bi_buf|=(value&lt;&lt;bi_valid)>\n<UnsupportedStmt: ['subtraction', '0x40000-2']>\noutcnt < 0x40000-2\n",
+          "3": "432.1:\n<UnsupportedStmt: ['shiftLeft', 'value&lt;&lt;bi_valid']>\n<UnsupportedStmt: &lt;operators&gt;.assignmentOr,bi_buf|=value&lt;&lt;bi_valid>\n<UnsupportedStmt: ['assignmentPlus', 'bi_valid+=length']>\n",
+          "4": "422.0:\nFUNCTION_START\n<UnsupportedStmt: UNKNOWN,int,int>\n<UnsupportedStmt: ['multiplication', '8*2']>\n<UnsupportedStmt: ['sizeOf', 'sizeof(char)']>\n<UnsupportedStmt: ['multiplication', '8*2*sizeof(char)']>\n<UnsupportedStmt: ['cast', '(int)(8*2*sizeof(char))']>\n<UnsupportedStmt: ['subtraction', '(int)(8*2*sizeof(char))-length']>\nbi_valid > (int)(8*2*sizeof(char))-length\n",
+          "5": "428.24:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: ['and', '(bi_buf)&amp;0xff']>\n<UnsupportedStmt: ['cast', '(uch)((bi_buf)&amp;0xff)']>\n<UnsupportedStmt: ['cast', '(uch)((uch)((bi_buf)&amp;0xff))']>\noutbuf[outcnt++] = (uch)((uch)((bi_buf)&amp;0xff))\noutcnt == 0x40000\n",
+          "6": "429.4:\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['cast', '(ush)value']>\n<UnsupportedStmt: ['multiplication', '8*2']>\n<UnsupportedStmt: ['sizeOf', 'sizeof(char)']>\n<UnsupportedStmt: ['multiplication', '8*2*sizeof(char)']>\n<UnsupportedStmt: ['subtraction', '(8*2*sizeof(char))-bi_valid']>\n<UnsupportedStmt: ['arithmeticShiftRight', '(ush)value&gt;&gt;((8*2*sizeof(char))-bi_valid)']>\nbi_buf = (ush)value&gt;&gt;((8*2*sizeof(char))-...\n<UnsupportedStmt: ['multiplication', '8*2']>\n<UnsupportedStmt: ['sizeOf', 'sizeof(char)']>\n<UnsupportedStmt: ['multiplication', '8*2*sizeof(char)']>\n<UnsupportedStmt: ['subtraction', 'length-(8*2*sizeof(char))']>\n<UnsupportedStmt: ['assignmentPlus', 'bi_valid+=length-(8*2*sizeof(char))']>\n",
+          "7": "428.28:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['cast', '(ush)(bi_buf)']>\n<UnsupportedStmt: ['arithmeticShiftRight', '(ush)(bi_buf)&gt;&gt;8']>\n<UnsupportedStmt: ['cast', '(uch)((ush)(bi_buf)&gt;&gt;8)']>\n<UnsupportedStmt: ['cast', '(uch)((uch)((ush)(bi_buf)&gt;&gt;8))']>\noutbuf[outcnt++] = (uch)((uch)((ush)(bi_buf)&gt;&gt;8))\noutcnt == 0x40000\n",
+          "8": "428.8:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: ['and', '(bi_buf)&amp;0xff']>\n<UnsupportedStmt: ['cast', '(uch)((bi_buf)&amp;0xff)']>\noutbuf[outcnt++] = (uch)((bi_buf)&amp;0xff)\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['cast', '(ush)(bi_buf)']>\n<UnsupportedStmt: ['arithmeticShiftRight', '(ush)(bi_buf)&gt;&gt;8']>\n<UnsupportedStmt: ['cast', '(uch)((ush)(bi_buf)&gt;&gt;8)']>\noutbuf[outcnt++] = (uch)((ush)(bi_buf)&gt;&gt;8)\n"
+        }
+      }
+    },
+    "bi_reverse": {
+      "name": "bi_reverse",
+      "start_line": 442,
+      "end_line": 452,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "entry": [
+          1
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "451.1:\n<UnsupportedStmt: ['arithmeticShiftRight', 'res&gt;&gt;1']>\nreturn res&gt;&gt;1;,returnres&gt;&gt;1;\nFUNCTION_END\n",
+          "1": "442.0:\nFUNCTION_START\nres = 0\n",
+          "2": "448.1:\n<UnsupportedStmt: ['and', 'code&amp;1']>\n<UnsupportedStmt: &lt;operators&gt;.assignmentOr,res|=code&amp;1>\n<UnsupportedStmt: &lt;operators&gt;.assignmentArithmeticShiftRight,code&gt;&gt;=1>\n<UnsupportedStmt: &lt;operators&gt;.assignmentShiftLeft,res&lt;&lt;=1>\n<UnsupportedStmt: ['expressionList', 'code&gt;&gt;=1', 'res&lt;&lt;=1']>\n<UnsupportedStmt: ['preDecrement', '--len']>\n--len > 0\n"
+        }
+      }
+    },
+    "bi_windup": {
+      "name": "bi_windup",
+      "start_line": 457,
+      "end_line": 469,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "edges": [
+          [
+            0,
+            6
+          ],
+          [
+            0,
+            8
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            2,
+            9
+          ],
+          [
+            3,
+            6
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            4,
+            10
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            7,
+            2
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            8,
+            6
+          ],
+          [
+            9,
+            3
+          ],
+          [
+            9,
+            6
+          ],
+          [
+            10,
+            6
+          ]
+        ],
+        "entry": [
+          5
+        ],
+        "exit": [
+          6
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "461.0:\nbi_valid > 0\n",
+          "1": "462.6:\nflush_outbuf()\n",
+          "2": "460.27:\nflush_outbuf()\n",
+          "3": "460.31:\nflush_outbuf()\n",
+          "4": "460.1:\n<UnsupportedStmt: ['subtraction', '0x40000-2']>\noutcnt < 0x40000-2\n",
+          "5": "457.0:\nFUNCTION_START\nbi_valid > 8\n",
+          "6": "464.0:\nbi_buf = 0\nbi_valid = 0\nFUNCTION_END\n",
+          "7": "460.24:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: ['and', '(bi_buf)&amp;0xff']>\n<UnsupportedStmt: ['cast', '(uch)((bi_buf)&amp;0xff)']>\n<UnsupportedStmt: ['cast', '(uch)((uch)((bi_buf)&amp;0xff))']>\noutbuf[outcnt++] = (uch)((uch)((bi_buf)&amp;0xff))\noutcnt == 0x40000\n",
+          "8": "462.4:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: ['cast', '(uch)(bi_buf)']>\noutbuf[outcnt++] = (uch)(bi_buf)\noutcnt == 0x40000\n",
+          "9": "460.28:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['cast', '(ush)(bi_buf)']>\n<UnsupportedStmt: ['arithmeticShiftRight', '(ush)(bi_buf)&gt;&gt;8']>\n<UnsupportedStmt: ['cast', '(uch)((ush)(bi_buf)&gt;&gt;8)']>\n<UnsupportedStmt: ['cast', '(uch)((uch)((ush)(bi_buf)&gt;&gt;8))']>\noutbuf[outcnt++] = (uch)((uch)((ush)(bi_buf)&gt;&gt;8))\noutcnt == 0x40000\n",
+          "10": "460.8:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: ['and', '(bi_buf)&amp;0xff']>\n<UnsupportedStmt: ['cast', '(uch)((bi_buf)&amp;0xff)']>\noutbuf[outcnt++] = (uch)((bi_buf)&amp;0xff)\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['cast', '(ush)(bi_buf)']>\n<UnsupportedStmt: ['arithmeticShiftRight', '(ush)(bi_buf)&gt;&gt;8']>\n<UnsupportedStmt: ['cast', '(uch)((ush)(bi_buf)&gt;&gt;8)']>\noutbuf[outcnt++] = (uch)((ush)(bi_buf)&gt;&gt;8)\n"
+        }
+      }
+    },
+    "copy_block": {
+      "name": "copy_block",
+      "start_line": 475,
+      "end_line": 495,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "edges": [
+          [
+            0,
+            9
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            12
+          ],
+          [
+            3,
+            7
+          ],
+          [
+            4,
+            13
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            10
+          ],
+          [
+            6,
+            14
+          ],
+          [
+            7,
+            11
+          ],
+          [
+            7,
+            15
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            6
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            11,
+            13
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            7
+          ],
+          [
+            13,
+            0
+          ],
+          [
+            13,
+            5
+          ],
+          [
+            14,
+            7
+          ],
+          [
+            15,
+            0
+          ]
+        ],
+        "entry": [
+          8
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "492.0:\n<UnsupportedStmt: ['postDecrement', 'len--']>\n",
+          "1": "493.7:\nflush_outbuf()\n",
+          "2": "483.30:\nflush_outbuf()\n",
+          "3": "483.34:\nflush_outbuf()\n",
+          "4": "484.31:\nflush_outbuf()\n",
+          "5": "484.35:\nflush_outbuf()\n",
+          "6": "483.1:\n<UnsupportedStmt: ['subtraction', '0x40000-2']>\noutcnt < 0x40000-2\n",
+          "7": "484.1:\n<UnsupportedStmt: ['subtraction', '0x40000-2']>\noutcnt < 0x40000-2\n",
+          "8": "475.0:\nFUNCTION_START\nbi_windup()\n<UnsupportedStmt: IDENTIFIER,header,if(header)>\n",
+          "9": "493.4:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: ['postIncrement', 'buf++']>\n<UnsupportedStmt: ['indirection', '*buf++']>\n<UnsupportedStmt: ['cast', '(uch)(*buf++)']>\noutbuf[outcnt++] = (uch)(*buf++)\noutcnt == 0x40000\n",
+          "10": "483.27:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['cast', '(ush)len']>\n<UnsupportedStmt: ['and', '((ush)len)&amp;0xff']>\n<UnsupportedStmt: ['cast', '(uch)(((ush)len)&amp;0xff)']>\n<UnsupportedStmt: ['cast', '(uch)((uch)(((ush)len)&amp;0xff))']>\noutbuf[outcnt++] = (uch)((uch)(((ush)len)&amp;0xff))\noutcnt == 0x40000\n",
+          "11": "484.28:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['not', '~len']>\n<UnsupportedStmt: ['cast', '(ush)~len']>\n<UnsupportedStmt: ['and', '((ush)~len)&amp;0xff']>\n<UnsupportedStmt: ['cast', '(uch)(((ush)~len)&amp;0xff)']>\n<UnsupportedStmt: ['cast', '(uch)((uch)(((ush)~len)&amp;0xff))']>\noutbuf[outcnt++] = (uch)((uch)(((ush)~len)&amp;0xff))\noutcnt == 0x40000\n",
+          "12": "483.31:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['cast', '(ush)len']>\n<UnsupportedStmt: ['cast', '(ush)((ush)len)']>\n<UnsupportedStmt: ['arithmeticShiftRight', '(ush)((ush)len)&gt;&gt;8']>\n<UnsupportedStmt: ['cast', '(uch)((ush)((ush)len)&gt;&gt;8)']>\n<UnsupportedStmt: ['cast', '(uch)((uch)((ush)((ush)len)&gt;&gt;8))']>\noutbuf[outcnt++] = (uch)((uch)((ush)((ush)len)&gt;&gt;...\noutcnt == 0x40000\n",
+          "13": "484.32:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['not', '~len']>\n<UnsupportedStmt: ['cast', '(ush)~len']>\n<UnsupportedStmt: ['cast', '(ush)((ush)~len)']>\n<UnsupportedStmt: ['arithmeticShiftRight', '(ush)((ush)~len)&gt;&gt;8']>\n<UnsupportedStmt: ['cast', '(uch)((ush)((ush)~len)&gt;&gt;8)']>\n<UnsupportedStmt: ['cast', '(uch)((uch)((ush)((ush)~len)&gt;&gt;8))']>\noutbuf[outcnt++] = (uch)((uch)((ush)((ush)~len)&gt;...\noutcnt == 0x40000\n",
+          "14": "483.8:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['cast', '(ush)len']>\n<UnsupportedStmt: ['and', '((ush)len)&amp;0xff']>\n<UnsupportedStmt: ['cast', '(uch)(((ush)len)&amp;0xff)']>\noutbuf[outcnt++] = (uch)(((ush)len)&amp;0xff)\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['cast', '(ush)len']>\n<UnsupportedStmt: ['cast', '(ush)((ush)len)']>\n<UnsupportedStmt: ['arithmeticShiftRight', '(ush)((ush)len)&gt;&gt;8']>\n<UnsupportedStmt: ['cast', '(uch)((ush)((ush)len)&gt;&gt;8)']>\noutbuf[outcnt++] = (uch)((ush)((ush)len)&gt;&gt;8)\n",
+          "15": "484.8:\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['not', '~len']>\n<UnsupportedStmt: ['cast', '(ush)~len']>\n<UnsupportedStmt: ['and', '((ush)~len)&amp;0xff']>\n<UnsupportedStmt: ['cast', '(uch)(((ush)~len)&amp;0xff)']>\noutbuf[outcnt++] = (uch)(((ush)~len)&amp;0xff)\n<UnsupportedStmt: ['postIncrement', 'outcnt++']>\n<UnsupportedStmt: ['indirectIndexAccess', 'outbuf[outcnt++]']>\n<UnsupportedStmt: UNKNOWN,uch,uch>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: UNKNOWN,ush,ush>\n<UnsupportedStmt: ['not', '~len']>\n<UnsupportedStmt: ['cast', '(ush)~len']>\n<UnsupportedStmt: ['cast', '(ush)((ush)~len)']>\n<UnsupportedStmt: ['arithmeticShiftRight', '(ush)((ush)~len)&gt;&gt;8']>\n<UnsupportedStmt: ['cast', '(uch)((ush)((ush)~len)&gt;&gt;8)']>\noutbuf[outcnt++] = (uch)((ush)((ush)~len)&gt;&gt;8)\n"
+        }
+      }
+    },
+    "read_error": {
+      "name": "read_error",
+      "start_line": 377,
+      "end_line": 377,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "377.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "fill_inbuf": {
+      "name": "fill_inbuf",
+      "start_line": 358,
+      "end_line": 358,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "358.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "zip": {
+      "name": "zip",
+      "start_line": 313,
+      "end_line": 313,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "313.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "deflate": {
+      "name": "deflate",
+      "start_line": 333,
+      "end_line": 333,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "333.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "rpl_fclose": {
+      "name": "rpl_fclose",
+      "start_line": 16,
+      "end_line": 16,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "16.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "tmpfile": {
+      "name": "tmpfile",
+      "start_line": 174,
+      "end_line": 174,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "174.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "display_ratio": {
+      "name": "display_ratio",
+      "start_line": 381,
+      "end_line": 381,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "381.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "flush_outbuf": {
+      "name": "flush_outbuf",
+      "start_line": 359,
+      "end_line": 359,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "359.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "flush_block": {
+      "name": "flush_block",
+      "start_line": 338,
+      "end_line": 338,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "338.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "read_buffer": {
+      "name": "read_buffer",
+      "start_line": 362,
+      "end_line": 362,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "362.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "fprint_off": {
+      "name": "fprint_off",
+      "start_line": 382,
+      "end_line": 382,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "382.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "abort_gzip": {
+      "name": "abort_gzip",
+      "start_line": 330,
+      "end_line": 330,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "330.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "fdopen": {
+      "name": "fdopen",
+      "start_line": 29,
+      "end_line": 29,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "29.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "getcrc": {
+      "name": "getcrc",
+      "start_line": 355,
+      "end_line": 355,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "355.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "unzip": {
+      "name": "unzip",
+      "start_line": 318,
+      "end_line": 318,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "318.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "strdup": {
+      "name": "strdup",
+      "start_line": 239,
+      "end_line": 239,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "239.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "file_read": {
+      "name": "file_read",
+      "start_line": 314,
+      "end_line": 314,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "314.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "unpack": {
+      "name": "unpack",
+      "start_line": 322,
+      "end_line": 322,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "322.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "clear_bufs": {
+      "name": "clear_bufs",
+      "start_line": 357,
+      "end_line": 357,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "357.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "strlwr": {
+      "name": "strlwr",
+      "start_line": 363,
+      "end_line": 363,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "363.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "inflate": {
+      "name": "inflate",
+      "start_line": 385,
+      "end_line": 385,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "385.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "xalloc_die": {
+      "name": "xalloc_die",
+      "start_line": 373,
+      "end_line": 373,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "373.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "gzip_error": {
+      "name": "gzip_error",
+      "start_line": 370,
+      "end_line": 370,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "370.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "strndup": {
+      "name": "strndup",
+      "start_line": 249,
+      "end_line": 249,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "249.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "warning": {
+      "name": "warning",
+      "start_line": 374,
+      "end_line": 374,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "374.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "make_simple_name": {
+      "name": "make_simple_name",
+      "start_line": 366,
+      "end_line": 366,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "366.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "rpl_strerror_r": {
+      "name": "rpl_strerror_r",
+      "start_line": 259,
+      "end_line": 259,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "259.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "gzip_base_name": {
+      "name": "gzip_base_name",
+      "start_line": 364,
+      "end_line": 364,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "364.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "add_envopt": {
+      "name": "add_envopt",
+      "start_line": 367,
+      "end_line": 367,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "367.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "ct_tally": {
+      "name": "ct_tally",
+      "start_line": 337,
+      "end_line": 337,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "337.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "write_buf": {
+      "name": "write_buf",
+      "start_line": 361,
+      "end_line": 361,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "361.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "setcrc": {
+      "name": "setcrc",
+      "start_line": 356,
+      "end_line": 356,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "356.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "copy": {
+      "name": "copy",
+      "start_line": 353,
+      "end_line": 353,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "353.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "check_zipfile": {
+      "name": "check_zipfile",
+      "start_line": 319,
+      "end_line": 319,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "319.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "write_error": {
+      "name": "write_error",
+      "start_line": 380,
+      "end_line": 380,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "380.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "ct_init": {
+      "name": "ct_init",
+      "start_line": 336,
+      "end_line": 336,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "336.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "fopen": {
+      "name": "fopen",
+      "start_line": 60,
+      "end_line": 64,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "60.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "rpl_fseek": {
+      "name": "rpl_fseek",
+      "start_line": 103,
+      "end_line": 103,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "103.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "unlzh": {
+      "name": "unlzh",
+      "start_line": 325,
+      "end_line": 325,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "325.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "flush_window": {
+      "name": "flush_window",
+      "start_line": 360,
+      "end_line": 360,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "360.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "rpl_fflush": {
+      "name": "rpl_fflush",
+      "start_line": 41,
+      "end_line": 41,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "41.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "updcrc": {
+      "name": "updcrc",
+      "start_line": 354,
+      "end_line": 354,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "354.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "rpl_fseeko": {
+      "name": "rpl_fseeko",
+      "start_line": 111,
+      "end_line": 111,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "111.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "fpurge": {
+      "name": "fpurge",
+      "start_line": 78,
+      "end_line": 78,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "78.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "xunlink": {
+      "name": "xunlink",
+      "start_line": 365,
+      "end_line": 365,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "365.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "free": {
+      "name": "free",
+      "start_line": 211,
+      "end_line": 211,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "211.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "e410ee8ddbf80cb868a013642c66b17d0f34ba38a63b006950cfe4564ee6c53b",
+  "prepared_sha256": "e410ee8ddbf80cb868a013642c66b17d0f34ba38a63b006950cfe4564ee6c53b",
+  "original_source_sha256": "a8d206a1f0f2985944163854a419d54d0f99acb3eb08e85fc293b149b3786631"
+}

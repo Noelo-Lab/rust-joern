@@ -1,0 +1,1194 @@
+{
+  "schema_version": 1,
+  "reference_generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "capture": "Each reduced TU parsed independently in a temporary cwd by the installed original PyJoern; PYTHONPATH removed. No compatibility shim, no mixed-TU Joern run.",
+  "cases": {
+    "knr_const": {
+      "source": "knr_const.c",
+      "reference": "knr_const.pyjoern.json",
+      "source_sha256": "5a13b9089e77313ba0095f7e832d16f8ceee695bc45549867d5ef30c942c8ea1",
+      "reference_sha256": "b8fde69a4d230a405b5abad9039e82faf7d93e1f6f206ce178581ae0f5d20a21",
+      "expected_functions": [
+        "knr_const",
+        "knr_integer"
+      ],
+      "expected_failure_reason": "K&R parameter declarations beginning with const are mistaken for trailing C++ method qualifiers, so a real definition becomes a prototype.",
+      "initial_observed_differences": [
+        "divergent",
+        "diagnostics"
+      ],
+      "initial_diagnostics": [
+        "unrecognized top-level brace; possible omitted function definition"
+      ],
+      "initial_comparison": [
+        {
+          "function": "knr_const",
+          "status": "divergent",
+          "reference": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1,
+              2
+            ],
+            "edges": [
+              [
+                2,
+                0
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "entry": [
+              2
+            ],
+            "exit": [],
+            "degenerate": false,
+            "labels": {
+              "0": "12.0:\nreturn 0;,return0;\n",
+              "1": "11.1:\nreturn 1;,return1;\n",
+              "2": "8.0:\nFUNCTION_START\n<UnsupportedStmt: ['indirection', '*p']>\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": true
+          }
+        },
+        {
+          "function": "knr_integer",
+          "status": "match",
+          "reference": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/bash/source/wcsnwidth.i",
+          "optimization": "O0",
+          "input_kind": "source",
+          "source": "O0/bash/compiled/wcsnwidth.i",
+          "source_sha256": "098cbdb3838136eb1e7246e60d75695421712b8e9b67de61ce4cf1171a65905e",
+          "prepared_sha256": "1c1bd06b83c214530be5c7be65f878182c013eaa30be78ca3e8bf576563c5b44",
+          "reference_sha256": "a9bcc1e03d7e6a141186f0285a618342c5c4d4d7bcc447c0fc25565de560658e",
+          "reference_origin": "source_cache",
+          "function": "wcsnwidth",
+          "prepared_line": 21,
+          "full_reference_function_count": 1,
+          "full_candidate_function_count": 1,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 12,
+            "edges": 13,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        },
+        {
+          "case_id": "O2/bash/source/wcsnwidth.i",
+          "optimization": "O2",
+          "input_kind": "source",
+          "source": "O2/bash/compiled/wcsnwidth.i",
+          "source_sha256": "6454124f46afab288bd9f16212990d600afd215fb0eb3f58a99851912ff9461b",
+          "prepared_sha256": "1c1bd06b83c214530be5c7be65f878182c013eaa30be78ca3e8bf576563c5b44",
+          "reference_sha256": "a9bcc1e03d7e6a141186f0285a618342c5c4d4d7bcc447c0fc25565de560658e",
+          "reference_origin": "source_cache",
+          "function": "wcsnwidth",
+          "prepared_line": 21,
+          "full_reference_function_count": 1,
+          "full_candidate_function_count": 1,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 12,
+            "edges": 13,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        }
+      ]
+    },
+    "global_struct_initializer": {
+      "source": "global_struct_initializer.c",
+      "reference": "global_struct_initializer.pyjoern.json",
+      "source_sha256": "35fa60ff09f87e5ace0e46f70818b7c4321497b0946d93857afaf0df1d6b6aab",
+      "reference_sha256": "503289dc90a2a2860e0c65a19979438038da8e99ec83c60aeb8ed1684591702f",
+      "expected_functions": [
+        "after_initializer"
+      ],
+      "expected_failure_reason": "A global struct object initializer is mistaken for a record definition and later function bodies are lost.",
+      "initial_observed_differences": [
+        "missing",
+        "diagnostics"
+      ],
+      "initial_diagnostics": [
+        "expected '}', found '\"config\"'"
+      ],
+      "initial_comparison": [
+        {
+          "function": "after_initializer",
+          "status": "missing",
+          "reference": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/bash/source/findcmd.i",
+          "optimization": "O0",
+          "input_kind": "source",
+          "source": "O0/bash/compiled/findcmd.i",
+          "source_sha256": "3a6b6e9a074f780bb951115c80c787058ff7ef6f630624a7dbc76add224ab546",
+          "prepared_sha256": "b9595630abfef1d0355485f184ed681077c8ac4688e85b90df306f11eba982ce",
+          "reference_sha256": "dee2064b9533edcb4a57fcb8122791fdd1bc0d3329b76f2d3fffc8f955a080b3",
+          "reference_origin": "source_cache",
+          "function": "executable_file",
+          "prepared_line": 2083,
+          "full_reference_function_count": 747,
+          "full_candidate_function_count": 750,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 5,
+            "edges": 6,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        },
+        {
+          "case_id": "O2/bash/source/findcmd.i",
+          "optimization": "O2",
+          "input_kind": "source",
+          "source": "O2/bash/compiled/findcmd.i",
+          "source_sha256": "4a8dc226466856f30d96e8e3bb0f4e5ca792bcf17513ee90a857eaa5e3988678",
+          "prepared_sha256": "b9595630abfef1d0355485f184ed681077c8ac4688e85b90df306f11eba982ce",
+          "reference_sha256": "dee2064b9533edcb4a57fcb8122791fdd1bc0d3329b76f2d3fffc8f955a080b3",
+          "reference_origin": "source_cache",
+          "function": "executable_file",
+          "prepared_line": 2083,
+          "full_reference_function_count": 747,
+          "full_candidate_function_count": 750,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 5,
+            "edges": 6,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        }
+      ]
+    },
+    "gnu_inline_asm": {
+      "source": "gnu_inline_asm.c",
+      "reference": "gnu_inline_asm.pyjoern.json",
+      "source_sha256": "c2f0580cee745c9811130d24d6a8d6e52059ffc57a0477046489e1884bc2720c",
+      "reference_sha256": "83bc726365295bce9b7d34f8b3fc297f4540a533c8f16efea2f50ad9cb6a3b06",
+      "expected_functions": [
+        "enable_irq"
+      ],
+      "expected_failure_reason": "GNU inline assembly retains a matching permissive CFG but emits unsupported-expression diagnostics that reject strict DecBench usage.",
+      "initial_observed_differences": [
+        "diagnostics"
+      ],
+      "initial_diagnostics": [
+        "unsupported expression; CFG parity is unverified"
+      ],
+      "initial_comparison": [
+        {
+          "function": "enable_irq",
+          "status": "match",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/betaflight/source/stm32f4xx_syscfg.i",
+          "optimization": "O0",
+          "input_kind": "source",
+          "source": "O0/betaflight/compiled/stm32f4xx_syscfg.i",
+          "source_sha256": "b28e7d40a6bfc63e4455bb109cbbb53a1f40cd32b342fea1c587e3646b509a84",
+          "prepared_sha256": "7207f420d4275b38223e5ed9e44c51a2888126be9788c46878f1c3883626c164",
+          "reference_sha256": "7fae9278df6516b692005ae695b9bb56b0b87bb1a681d38ba89e47d0da1f0b7f",
+          "reference_origin": "source_cache",
+          "function": "__enable_irq",
+          "prepared_line": 146,
+          "full_reference_function_count": 756,
+          "full_candidate_function_count": 756,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "case_id": "O2/betaflight/source/stm32f4xx_syscfg.i",
+          "optimization": "O2",
+          "input_kind": "source",
+          "source": "O2/betaflight/compiled/stm32f4xx_syscfg.i",
+          "source_sha256": "055c152c2b924fedbd4483cd193927f4f7e14dc7e63dafe02e785b356c5e1b0f",
+          "prepared_sha256": "7207f420d4275b38223e5ed9e44c51a2888126be9788c46878f1c3883626c164",
+          "reference_sha256": "7fae9278df6516b692005ae695b9bb56b0b87bb1a681d38ba89e47d0da1f0b7f",
+          "reference_origin": "source_cache",
+          "function": "__enable_irq",
+          "prepared_line": 146,
+          "full_reference_function_count": 756,
+          "full_candidate_function_count": 756,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "microsoft_asm_block": {
+      "source": "microsoft_asm_block.c",
+      "reference": "microsoft_asm_block.pyjoern.json",
+      "source_sha256": "2bd1fc9d45d7008c89fd0bf844d609a4af65d1290eb2d86d84e87633c658f177",
+      "reference_sha256": "4109154621ec9da748872e11d22e3d82789f471e1b84f0d9be98b06862538a1b",
+      "expected_functions": [
+        "after_asm_block",
+        "asm_block"
+      ],
+      "expected_failure_reason": "A Microsoft-style braced inline assembly statement ends method recovery early and prevents recovery of later functions.",
+      "initial_observed_differences": [
+        "missing",
+        "divergent",
+        "diagnostics"
+      ],
+      "initial_diagnostics": [
+        "missing semicolon after statement",
+        "unsupported expression; CFG parity is unverified"
+      ],
+      "initial_comparison": [
+        {
+          "function": "after_asm_block",
+          "status": "missing",
+          "reference": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        },
+        {
+          "function": "asm_block",
+          "status": "divergent",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": true,
+            "labels": {
+              "0": "1.0:\nFUNCTION_START\nFUNCTION_END\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/betaflight/ida/ida_betaflight_STM32F405.c",
+          "optimization": "O0",
+          "input_kind": "ida",
+          "source": "O0/betaflight/decompiled/ida_betaflight_STM32F405.c",
+          "source_sha256": "52adbe3acf1390855970f74044c093ae40e2b9e3006857458c3f255dba3227ae",
+          "prepared_sha256": "52adbe3acf1390855970f74044c093ae40e2b9e3006857458c3f255dba3227ae",
+          "reference_sha256": "75522fca85ef759b690f7c670dfd07e7f5a82f1e11d7419faa1b417aa0747ccd",
+          "reference_origin": "needs_capture",
+          "function": "bbSwitchToOutput",
+          "prepared_line": 3569,
+          "full_reference_function_count": 3977,
+          "full_candidate_function_count": 123,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "casted_indirect_call": {
+      "source": "casted_indirect_call.c",
+      "reference": "casted_indirect_call.pyjoern.json",
+      "source_sha256": "e43c2a00353ddf0b28288217b196eed5cfbe96b58c173b8c9f319b4406614fd8",
+      "reference_sha256": "d8998ff67f0103eeb25258f4f24062c32e5ad7ca54a27b4b05596242121964ad",
+      "expected_functions": [
+        "casted_indirect_call"
+      ],
+      "expected_failure_reason": "A dereferenced callee containing nested casts and parentheses is mistaken for an abstract type, creating a missing-expression diagnostic.",
+      "initial_observed_differences": [
+        "diagnostics"
+      ],
+      "initial_diagnostics": [
+        "missing expression"
+      ],
+      "initial_comparison": [
+        {
+          "function": "casted_indirect_call",
+          "status": "match",
+          "reference": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/betaflight/kuna/kuna_betaflight_STM32F405.c",
+          "optimization": "O0",
+          "input_kind": "kuna",
+          "source": "O0/betaflight/decompiled/kuna_betaflight_STM32F405.c",
+          "source_sha256": "d79b6396019433dd6d73434636a4a33faf2b53a8ff6f9fd665e2bd152ac5b610",
+          "prepared_sha256": "d79b6396019433dd6d73434636a4a33faf2b53a8ff6f9fd665e2bd152ac5b610",
+          "reference_sha256": "6370b519e5ac89dea3dc2410ec6d3037875ee0dd5a448b051a871c9d1a756292",
+          "reference_origin": "needs_capture",
+          "function": "EXTI_IRQHandler",
+          "prepared_line": 3230,
+          "full_reference_function_count": 3745,
+          "full_candidate_function_count": 3745,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 4,
+            "edges": 4,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 4,
+            "edges": 4,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "terminal_label": {
+      "source": "terminal_label.c",
+      "reference": "terminal_label.pyjoern.json",
+      "source_sha256": "412aeeb989111a48faf600643acb01ab7e2f9be891dfc8f8a2a067b5eebd1c33",
+      "reference_sha256": "25275f9944fc51706862c1714b26be7779371cf37f4caf317747c4eded390a2a",
+      "expected_functions": [
+        "terminal_label"
+      ],
+      "expected_failure_reason": "Labels immediately before a closing block brace cause missing-expression diagnostics and add incorrect loop edges.",
+      "initial_observed_differences": [
+        "divergent",
+        "diagnostics"
+      ],
+      "initial_diagnostics": [
+        "missing expression",
+        "missing semicolon after statement"
+      ],
+      "initial_comparison": [
+        {
+          "function": "terminal_label",
+          "status": "divergent",
+          "reference": {
+            "nodes": 4,
+            "edges": 4,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 6,
+            "edges": 7,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "edges": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                3
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "entry": [
+              2
+            ],
+            "exit": [
+              1
+            ],
+            "degenerate": false,
+            "labels": {
+              "0": "3.0:\ni < x\n",
+              "1": "8.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+              "2": "1.0:\nFUNCTION_START\ni = 0\n",
+              "3": "4.0:\n<UnsupportedStmt: IDENTIFIER,i,if(i)>\n<UnsupportedStmt: ['postIncrement', 'x++']>\n<UnsupportedStmt: ['preIncrement', '++i']>\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              9,
+              16,
+              12,
+              20,
+              0,
+              23
+            ],
+            "edges": [
+              [
+                9,
+                16
+              ],
+              [
+                9,
+                23
+              ],
+              [
+                16,
+                12
+              ],
+              [
+                16,
+                20
+              ],
+              [
+                12,
+                9
+              ],
+              [
+                20,
+                12
+              ],
+              [
+                0,
+                9
+              ]
+            ],
+            "entry": [
+              0
+            ],
+            "exit": [
+              23
+            ],
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/betaflight/kuna/kuna_betaflight_STM32F405.c",
+          "optimization": "O0",
+          "input_kind": "kuna",
+          "source": "O0/betaflight/decompiled/kuna_betaflight_STM32F405.c",
+          "source_sha256": "d79b6396019433dd6d73434636a4a33faf2b53a8ff6f9fd665e2bd152ac5b610",
+          "prepared_sha256": "d79b6396019433dd6d73434636a4a33faf2b53a8ff6f9fd665e2bd152ac5b610",
+          "reference_sha256": "6370b519e5ac89dea3dc2410ec6d3037875ee0dd5a448b051a871c9d1a756292",
+          "reference_origin": "needs_capture",
+          "function": "applyStatusProfile",
+          "prepared_line": 55433,
+          "full_reference_function_count": 3745,
+          "full_candidate_function_count": 3745,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 19,
+            "edges": 25,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 19,
+            "edges": 26,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "global_qualification": {
+      "source": "global_qualification.c",
+      "reference": "global_qualification.pyjoern.json",
+      "source_sha256": "48503386685c62694fae61bd4493123d8eaf549489fbfdbfd3965ec3506cea22",
+      "reference_sha256": "a3d41ffa9f87e5bbb044c35720d2f165246a8ab1604f17d0e27b3e8c61116823",
+      "expected_functions": [
+        "global_qualification"
+      ],
+      "expected_failure_reason": "The original frontend accepts leading C++ global qualification in a .c decompiler input; the native prefix parser rejects ::.",
+      "initial_observed_differences": [
+        "diagnostics"
+      ],
+      "initial_diagnostics": [
+        "unsupported expression token '::'",
+        "unsupported expression statement syntax",
+        "unsupported expression token '::'",
+        "unparsed executable expression tokens",
+        "unsupported statement; CFG parity is unverified",
+        "unsupported expression; CFG parity is unverified",
+        "unsupported expression; CFG parity is unverified"
+      ],
+      "initial_comparison": [
+        {
+          "function": "global_qualification",
+          "status": "match",
+          "reference": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/bzip2/ida/ida_bzip2.c",
+          "optimization": "O0",
+          "input_kind": "ida",
+          "source": "O0/bzip2/decompiled/ida_bzip2.c",
+          "source_sha256": "80b06a2785c9734136d4fa33992a0ea8130dce54d49578528e73078c1a545675",
+          "prepared_sha256": "36f2bbbfebe6aac31931de9c39f9fe9a98e09331cb6d7cb95c7c0a573c87948b",
+          "reference_sha256": "b6ce3483a5f77b0f5469862c21bb1284263d0195456d88449f11402ff9e23b15",
+          "reference_origin": "needs_capture",
+          "function": "compress",
+          "prepared_line": 1007,
+          "full_reference_function_count": 107,
+          "full_candidate_function_count": 107,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 80,
+            "edges": 116,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 80,
+            "edges": 115,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "missing_goto_target": {
+      "source": "missing_goto_target.c",
+      "reference": "missing_goto_target.pyjoern.json",
+      "source_sha256": "f41bd873db939fdde08910d0b860c195cdb300d3684ebb1106df8d5d4adbaa97",
+      "reference_sha256": "4f8f69289b86921a1aa0d45be03c2a19c004a94ed0c6b8d3f288a22e678dd803",
+      "expected_functions": [
+        "missing_goto_target"
+      ],
+      "expected_failure_reason": "The original frontend emits a CFG for an unresolved goto in the actual input; the native strict wrapper rejects it. The source really has no corresponding target label.",
+      "initial_observed_differences": [
+        "diagnostics"
+      ],
+      "initial_diagnostics": [
+        "goto target \"absent\" is missing"
+      ],
+      "initial_comparison": [
+        {
+          "function": "missing_goto_target",
+          "status": "match",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/coreutils/kuna/kuna_chmod.c",
+          "optimization": "O0",
+          "input_kind": "kuna",
+          "source": "O0/coreutils/decompiled/kuna_chmod.c",
+          "source_sha256": "ed3dacc88eac0ca949772e63786e527b0a9b1724c1e627235af5d0293de8b5a2",
+          "prepared_sha256": "ed3dacc88eac0ca949772e63786e527b0a9b1724c1e627235af5d0293de8b5a2",
+          "reference_sha256": "6b208fc3d172d1abe1fc347f6087e9dfed92e4a1af98d5b373b03aa6edcd82b3",
+          "reference_origin": "needs_capture",
+          "function": "process_file",
+          "prepared_line": 109,
+          "full_reference_function_count": 38,
+          "full_candidate_function_count": 38,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 49,
+            "edges": 72,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 49,
+            "edges": 72,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "nested_designator": {
+      "source": "nested_designator.c",
+      "reference": "nested_designator.pyjoern.json",
+      "source_sha256": "11e8b16ebae2f770e441509989e1409a62cb858cc2d80bd03a17170fa9e50d9b",
+      "reference_sha256": "8da38b04d02d4b3c2dd66b377e55d80577c3aa32ccff2c97292b93814936266b",
+      "expected_functions": [
+        "nested_designator"
+      ],
+      "expected_failure_reason": "Chained member initializer designators such as .u.buffers cannot be parsed. The reduced graph matches permissively but strict diagnostics reject it.",
+      "initial_observed_differences": [
+        "diagnostics"
+      ],
+      "initial_diagnostics": [
+        "expected '=', found '.'",
+        "unsupported expression token '.'",
+        "expected '}', found 'first'",
+        "expected '}', found 'first'",
+        "unparsed executable expression tokens",
+        "unsupported expression; CFG parity is unverified"
+      ],
+      "initial_comparison": [
+        {
+          "function": "nested_designator",
+          "status": "match",
+          "reference": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/betaflight/source/accgyro_spi_lsm6dsv16x.i",
+          "optimization": "O0",
+          "input_kind": "source",
+          "source": "O0/betaflight/compiled/accgyro_spi_lsm6dsv16x.i",
+          "source_sha256": "1f7fadff267b39bb95bfd7af11a7db74b9834cd5717d877cd3dc6f55505185dc",
+          "prepared_sha256": "c0ec6ac3fbf672e231f09beb0ad5ab6ba4a0c6bd1e4596cc70c54219ed47d084",
+          "reference_sha256": "f594245d3832c74756245290e39cb09d348337e84eb034e8373d5adcc5882efa",
+          "reference_origin": "source_cache",
+          "function": "lsm6dsv16xAccReadSPI",
+          "prepared_line": 6532,
+          "full_reference_function_count": 1005,
+          "full_candidate_function_count": 1006,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 4,
+            "edges": 5,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 4,
+            "edges": 5,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "case_id": "O2/betaflight/source/accgyro_spi_lsm6dsv16x.i",
+          "optimization": "O2",
+          "input_kind": "source",
+          "source": "O2/betaflight/compiled/accgyro_spi_lsm6dsv16x.i",
+          "source_sha256": "900f4cbd21daaf36df593bcdd150dcaeb84bfcd2d024a4ee7aca950d0b578fe0",
+          "prepared_sha256": "c0ec6ac3fbf672e231f09beb0ad5ab6ba4a0c6bd1e4596cc70c54219ed47d084",
+          "reference_sha256": "f594245d3832c74756245290e39cb09d348337e84eb034e8373d5adcc5882efa",
+          "reference_origin": "source_cache",
+          "function": "lsm6dsv16xAccReadSPI",
+          "prepared_line": 6532,
+          "full_reference_function_count": 1005,
+          "full_candidate_function_count": 1006,
+          "full_candidate_status": "parse_error",
+          "reference_function_counts": {
+            "nodes": 4,
+            "edges": 5,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 4,
+            "edges": 5,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "cpp_operator_declarations": {
+      "source": "cpp_operator_declarations.cpp",
+      "reference": "cpp_operator_declarations.pyjoern.json",
+      "source_sha256": "678fa4dc9d57bbbb1e6e642f1ea77cbce17238d1dcf1cc84e7a824d70d9eebc5",
+      "reference_sha256": "81bb12be0c5ab6fe6b3788b6e30ced7079028a194f5bbb496fb2aaa58e58e128",
+      "expected_functions": [
+        "operator !=",
+        "operator =",
+        "operator =="
+      ],
+      "expected_failure_reason": "C++ operator prototypes use the original frontend name operator ==, whereas the native parser emits operator== and changes function coverage.",
+      "initial_observed_differences": [
+        "missing",
+        "missing",
+        "missing",
+        "extra",
+        "extra",
+        "extra"
+      ],
+      "initial_diagnostics": [],
+      "initial_comparison": [
+        {
+          "function": "operator !=",
+          "status": "missing",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        },
+        {
+          "function": "operator =",
+          "status": "missing",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        },
+        {
+          "function": "operator ==",
+          "status": "missing",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        },
+        {
+          "function": "operator!=",
+          "status": "extra",
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        },
+        {
+          "function": "operator=",
+          "status": "extra",
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        },
+        {
+          "function": "operator==",
+          "status": "extra",
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/nuttx/source/libxx_dynamic_cast.ii",
+          "optimization": "O0",
+          "input_kind": "source",
+          "source": "O0/nuttx/compiled/libxx_dynamic_cast.ii",
+          "source_sha256": "748005c23cf06c886bbf3be51d986c6c923bcba4b85351393b8163030b87dbf0",
+          "prepared_sha256": "6ac69d3a97225c5c1ec28f8a59623676306c6f496bf5204d944a17c1a469464e",
+          "reference_sha256": "d12c90c1934383dd69638759104712b7d6698a5874a4f1ccd60200b693c0f40d",
+          "reference_origin": "source_cache",
+          "function": "operator ==",
+          "prepared_line": 358,
+          "full_reference_function_count": 20,
+          "full_candidate_function_count": 20,
+          "full_candidate_status": "ok",
+          "reference_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        },
+        {
+          "case_id": "O2/nuttx/source/libxx_dynamic_cast.ii",
+          "optimization": "O2",
+          "input_kind": "source",
+          "source": "O2/nuttx/compiled/libxx_dynamic_cast.ii",
+          "source_sha256": "848a0af658154cb00ee889b9e5aeadde1ed6fbd1b8115c59aecc4e7dcc9704b8",
+          "prepared_sha256": "6ac69d3a97225c5c1ec28f8a59623676306c6f496bf5204d944a17c1a469464e",
+          "reference_sha256": "d12c90c1934383dd69638759104712b7d6698a5874a4f1ccd60200b693c0f40d",
+          "reference_origin": "source_cache",
+          "function": "operator ==",
+          "prepared_line": 358,
+          "full_reference_function_count": 20,
+          "full_candidate_function_count": 20,
+          "full_candidate_status": "ok",
+          "reference_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        }
+      ]
+    },
+    "cpp_operator_definitions": {
+      "source": "cpp_operator_definitions.cpp",
+      "reference": "cpp_operator_definitions.pyjoern.json",
+      "source_sha256": "c10f47f7b7ff126fa418b43d9ff6ec4040a78bdc120fcb507ab479ceb1ef28e9",
+      "reference_sha256": "77e8482a0e6f1abdd88a2d5298836f3dfd57148f88b7ad181f03b740842a1709",
+      "expected_functions": [
+        "!=",
+        "=",
+        "=="
+      ],
+      "expected_failure_reason": "C++ operator definitions use the original frontend name ==, whereas the native parser emits operator== and changes function coverage.",
+      "initial_observed_differences": [
+        "missing",
+        "missing",
+        "missing",
+        "extra",
+        "extra",
+        "extra"
+      ],
+      "initial_diagnostics": [],
+      "initial_comparison": [
+        {
+          "function": "!=",
+          "status": "missing",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "function": "=",
+          "status": "missing",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "function": "==",
+          "status": "missing",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "function": "operator!=",
+          "status": "extra",
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "function": "operator=",
+          "status": "extra",
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "function": "operator==",
+          "status": "extra",
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O2/nuttx/source/libxx_typeinfo.ii",
+          "optimization": "O2",
+          "input_kind": "source",
+          "source": "O2/nuttx/compiled/libxx_typeinfo.ii",
+          "source_sha256": "43c6fc935e85b97c08c372c41f6876251d423799d378ca2c1b5f4a5bc09b6f6b",
+          "prepared_sha256": "0f200dd7a82441de8fb7603da91781e8cad4b5a447d882b03d63ebac3d2caf7e",
+          "reference_sha256": "ab60a7cd565633b783a01be18a011647a883741e9483ecf3c6038d93d9330c37",
+          "reference_origin": "source_cache",
+          "function": "==",
+          "prepared_line": 543,
+          "full_reference_function_count": 20,
+          "full_candidate_function_count": 20,
+          "full_candidate_status": "ok",
+          "reference_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "case_id": "O0/nuttx/source/libxx_typeinfo.ii",
+          "optimization": "O0",
+          "input_kind": "source",
+          "source": "O0/nuttx/compiled/libxx_typeinfo.ii",
+          "source_sha256": "8b0d0b7c0cf3ccc9b73fd7c9761e9b54dc2b2101fea607df97fde048653229d4",
+          "prepared_sha256": "0f200dd7a82441de8fb7603da91781e8cad4b5a447d882b03d63ebac3d2caf7e",
+          "reference_sha256": "ab60a7cd565633b783a01be18a011647a883741e9483ecf3c6038d93d9330c37",
+          "reference_origin": "source_cache",
+          "function": "==",
+          "prepared_line": 543,
+          "full_reference_function_count": 20,
+          "full_candidate_function_count": 20,
+          "full_candidate_status": "ok",
+          "reference_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        }
+      ]
+    }
+  },
+  "initial_native_library_sha256": "8931941162360639cb07fd8713670295d21dbfe525005965623503b86fc72a11"
+}

@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "artifact_integrity_passed": true,
+  "manifest": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/manifest.json",
+  "verification_seconds": 51.42138116294518,
+  "coverage": {
+    "manifest_cases": 8808,
+    "inventory_source_files": 8808,
+    "candidate_files": 8808,
+    "unique_prepared_inputs": 6377,
+    "unique_references": 6377,
+    "references_present": 6377,
+    "reference_kinds": {
+      "fresh_original_capture": 1014,
+      "historical_source_cache": 5363
+    },
+    "reference_functions": {
+      "fresh_original_capture": 110099,
+      "historical_source_cache": 2877093
+    },
+    "empty_references": {
+      "fresh_original_capture": 0,
+      "historical_source_cache": 31
+    },
+    "reference_error_files": 0,
+    "metric_excluded_cases_still_verified": 10
+  },
+  "native": {
+    "core_sha256": "4246d9ab87f592ba6943a2beb5f0e00903df3c5592a164c58895705ddabe2c7c",
+    "frozen_core_sha256": "4246d9ab87f592ba6943a2beb5f0e00903df3c5592a164c58895705ddabe2c7c",
+    "source_build_fingerprint": "15735216d5f5b63680aecc98aa4ec4024d1ca13af6d7fd7dc689b56915c11c01",
+    "generation_source_build_fingerprint": "15735216d5f5b63680aecc98aa4ec4024d1ca13af6d7fd7dc689b56915c11c01",
+    "cdylib_path": "/home/mahaloz/github/rust-joern/target/release/librust_joern.so",
+    "cdylib_sha256": "8931941162360639cb07fd8713670295d21dbfe525005965623503b86fc72a11"
+  },
+  "candidate_usage_statuses": {
+    "ok": 2852,
+    "parse_error": 5956
+  },
+  "primary_timing_observations": {
+    "preparation_seconds": 8808,
+    "native_seconds": 8808,
+    "python_seconds": 8808,
+    "graph_materialization_seconds": 8808,
+    "end_to_end_seconds": 8808,
+    "serialization_seconds": 8808
+  },
+  "strict_failure_timing_observations": {
+    "preparation_seconds": 5956,
+    "native_seconds": 5956,
+    "python_seconds": 5956,
+    "graph_materialization_seconds": 5956,
+    "end_to_end_seconds": 5956,
+    "serialization_seconds": 5956
+  },
+  "fallback_cases": 5956,
+  "fallback_timing_observations": {
+    "native_seconds": 5956,
+    "python_seconds": 5956,
+    "graph_materialization_seconds": 5956,
+    "end_to_end_seconds": 5956
+  },
+  "comparison_report": {
+    "status": "complete",
+    "path": "reports/decbench-parity",
+    "files": 8808,
+    "file_statuses": {
+      "match": 1447,
+      "usage_error": 5956,
+      "divergent": 1405
+    },
+    "function_rows": 4147156,
+    "function_statuses": {
+      "match": 4031520,
+      "missing": 38039,
+      "extra": 67812,
+      "divergent": 9785
+    },
+    "divergence_rows": 121592,
+    "divergence_statuses": {
+      "missing": 38039,
+      "extra": 67812,
+      "usage_error": 5956,
+      "divergent": 9785
+    },
+    "adjacency_rows_verified": 115636,
+    "timing_groups_recomputed_from_csv": {
+      "candidate_timing": {
+        "end_to_end_seconds": 8808,
+        "graph_materialization_seconds": 8808,
+        "native_seconds": 8808,
+        "preparation_seconds": 8808,
+        "python_seconds": 8808,
+        "serialization_seconds": 8808
+      },
+      "successful_usage_timing": {
+        "end_to_end_seconds": 2852,
+        "graph_materialization_seconds": 2852,
+        "native_seconds": 2852,
+        "preparation_seconds": 2852,
+        "python_seconds": 2852,
+        "serialization_seconds": 2852
+      },
+      "failed_strict_timing": {
+        "end_to_end_seconds": 5956,
+        "graph_materialization_seconds": 5956,
+        "native_seconds": 5956,
+        "preparation_seconds": 5956,
+        "python_seconds": 5956,
+        "serialization_seconds": 5956
+      },
+      "parity_matched_timing": {
+        "end_to_end_seconds": 1447,
+        "graph_materialization_seconds": 1447,
+        "native_seconds": 1447,
+        "preparation_seconds": 1447,
+        "python_seconds": 1447,
+        "serialization_seconds": 1447
+      },
+      "fallback_timing": {
+        "end_to_end_seconds": 5956,
+        "graph_materialization_seconds": 5956,
+        "native_seconds": 5956,
+        "python_seconds": 5956
+      }
+    },
+    "tolerated_divergences": []
+  },
+  "issue_counts": {},
+  "issues": [],
+  "provenance_notes": [
+    "All original, prepared and referenced pickle bytes were hashed independently.",
+    "All candidate records request strict=True and data_flow=False; strict failures retain separate permissive fallback timing.",
+    "Historical source cache records contain no parser version or generation timing; these remain unknown.",
+    "Artifact integrity does not waive strict failures or any CFG difference."
+  ],
+  "report_verification_seconds": 52.32839198608417
+}

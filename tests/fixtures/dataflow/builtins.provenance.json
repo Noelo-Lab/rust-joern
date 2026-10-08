@@ -1,0 +1,16 @@
+{
+  "generator": "Original Joern 4.0.150 (unmodified PyJoern 4.0.150.4)",
+  "source_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "captured_at": "2026-10-08T02:51:01.648812+00:00",
+  "source_file": "builtins.c",
+  "source_sha256": "3c88a36f55dba62224393dac68ab319f769522dd22240790f5ba1ee64834295c",
+  "capture_script_sha256": "903849f3bd0d833cb5b7765a4834cf9b7d617ced0a327708eb7c00220d63cba6",
+  "original_capture_sha256": "be07b92d1f2608804ca8f340f9516e16a8c5ee793196b9caad9a890fd10d17b0",
+  "snapshot_sha256": "b8ec7ad8c74d926c6ec4a37cc25ab7996c54e70eb5ed0ac75c6610bbc397fb3c",
+  "notes": [
+    "Separate original-only snapshot of four builtin-macro callers and four synthetic builtin methods; native output was not used.",
+    "Flatgraph IDs remapped to local u32 IDs; fields use the same mapping and intra-method capture scope as joern-4.0.150.json.",
+    "The (void) parameter and generated expression CODE remain exactly as original Joern emitted them.",
+    "Do not overwrite this snapshot with native results."
+  ]
+}

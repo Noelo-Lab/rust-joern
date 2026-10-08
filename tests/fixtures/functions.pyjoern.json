@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "source_sha256": "39dcad051dce5080ea412b247d43d5911d1bda954486237f2d56703cce0d24c8",
+  "functions": {
+    "branch": {
+      "name": "branch",
+      "start_line": 2,
+      "end_line": 2,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [],
+        "labels": {
+          "0": "2.0:\nreturn 0;,return0;\n",
+          "1": "2.2:\nreturn 1;,return1;\n",
+          "2": "2.3:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,x,if(x)>\n"
+        },
+        "degenerate": false
+      }
+    },
+    "get": {
+      "name": "get",
+      "start_line": 5,
+      "end_line": 5,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "labels": {
+          "0": "5.3:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,value,value>\n<UnsupportedStmt: ['indirectFieldAccess', 'this-&gt;value']>\nreturn value;,returnvalue;\nFUNCTION_END\n"
+        },
+        "degenerate": false
+      }
+    },
+    "step": {
+      "name": "step",
+      "start_line": 6,
+      "end_line": 6,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          1
+        ],
+        "labels": {
+          "0": "6.1:\ni < n\n",
+          "1": "6.0:\nreturn value;,returnvalue;\nFUNCTION_END\n",
+          "2": "6.3:\n<UnsupportedStmt: ['assignmentPlus', 'value+=i']>\n<UnsupportedStmt: ['preIncrement', '++i']>\n",
+          "3": "6.5:\nFUNCTION_START\ni = 0\n"
+        },
+        "degenerate": false
+      }
+    },
+    "scope": {
+      "name": "scope",
+      "start_line": 8,
+      "end_line": 8,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [],
+        "labels": {
+          "0": "8.0:\nreturn 0;,return0;\n",
+          "1": "8.2:\nreturn y;,returny;\n",
+          "2": "8.3:\nFUNCTION_START\ny = x\n"
+        },
+        "degenerate": false
+      }
+    },
+    "loop": {
+      "name": "loop",
+      "start_line": 9,
+      "end_line": 9,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "entry": [
+          1
+        ],
+        "exit": [
+          2
+        ],
+        "labels": {
+          "0": "9.1:\n<UnsupportedStmt: ['assignmentPlus', 'x+=v']>\n",
+          "1": "9.2:\nFUNCTION_START\n",
+          "2": "9.0:\nreturn x;,returnx;\nFUNCTION_END\n"
+        },
+        "degenerate": false
+      }
+    },
+    "exception": {
+      "name": "exception",
+      "start_line": 10,
+      "end_line": 10,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "edges": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        "entry": [
+          4
+        ],
+        "exit": [],
+        "labels": {
+          "0": "10.0:\nreturn x;,returnx;\n",
+          "1": "10.1:\n<UnsupportedStmt: ['postIncrement', 'x++']>\n",
+          "2": "10.3:\nx = e\n",
+          "3": "10.4:\n<UnsupportedStmt: IDENTIFIER,x,throwx>\n",
+          "4": "10.5:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,x,if(x)>\n"
+        },
+        "degenerate": false
+      }
+    },
+    "choose": {
+      "name": "choose",
+      "start_line": 11,
+      "end_line": 11,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "labels": {
+          "0": "11.3:\nFUNCTION_START\na > b\na&gt;b ? a : &\nreturn a&gt;b?a:b;,returna&gt;b?a:b;\nFUNCTION_END\n"
+        },
+        "degenerate": false
+      }
+    },
+    "main": {
+      "name": "main",
+      "start_line": 13,
+      "end_line": 13,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "labels": {
+          "0": "13.5:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,value,value>\n<UnsupportedStmt: ['fieldAccess', 'c.value']>\nc.value = 0\n<UnsupportedStmt: step,c.step(3)>\nreturn c.step(3);,returnc.step(3);\nFUNCTION_END\n"
+        },
+        "degenerate": false
+      }
+    }
+  }
+}

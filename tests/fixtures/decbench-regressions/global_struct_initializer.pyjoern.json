@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 13.132533184019849,
+  "functions": {
+    "after_initializer": {
+      "name": "after_initializer",
+      "start_line": 4,
+      "end_line": 8,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "7.0:\nreturn 0;,return0;\n",
+          "1": "6.1:\nreturn 1;,return1;\n",
+          "2": "4.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,x,if(x)>\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "35fa60ff09f87e5ace0e46f70818b7c4321497b0946d93857afaf0df1d6b6aab",
+  "prepared_sha256": "35fa60ff09f87e5ace0e46f70818b7c4321497b0946d93857afaf0df1d6b6aab",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_ddg": true,
+    "no_ast": true
+  }
+}

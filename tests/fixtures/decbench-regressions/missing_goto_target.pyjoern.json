@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 13.58367806498427,
+  "functions": {
+    "missing_goto_target": {
+      "name": "missing_goto_target",
+      "start_line": 1,
+      "end_line": 5,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "1.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,x,if(x)>\nreturn 0;,return0;\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "f41bd873db939fdde08910d0b860c195cdb300d3684ebb1106df8d5d4adbaa97",
+  "prepared_sha256": "f41bd873db939fdde08910d0b860c195cdb300d3684ebb1106df8d5d4adbaa97",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_ddg": true,
+    "no_ast": true
+  }
+}

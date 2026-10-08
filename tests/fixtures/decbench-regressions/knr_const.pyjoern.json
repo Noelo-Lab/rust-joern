@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 13.047402172000147,
+  "functions": {
+    "knr_integer": {
+      "name": "knr_integer",
+      "start_line": 1,
+      "end_line": 6,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "5.0:\nreturn 0;,return0;\n",
+          "1": "4.1:\nreturn 1;,return1;\n",
+          "2": "1.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,x,if(x)>\n"
+        }
+      }
+    },
+    "knr_const": {
+      "name": "knr_const",
+      "start_line": 8,
+      "end_line": 13,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "12.0:\nreturn 0;,return0;\n",
+          "1": "11.1:\nreturn 1;,return1;\n",
+          "2": "8.0:\nFUNCTION_START\n<UnsupportedStmt: ['indirection', '*p']>\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "5a13b9089e77313ba0095f7e832d16f8ceee695bc45549867d5ef30c942c8ea1",
+  "prepared_sha256": "5a13b9089e77313ba0095f7e832d16f8ceee695bc45549867d5ef30c942c8ea1",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_ddg": true,
+    "no_ast": true
+  }
+}

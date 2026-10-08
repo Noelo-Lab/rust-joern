@@ -1,0 +1,31 @@
+{
+  "generator": "Original Joern 4.0.150 (installed with unmodified PyJoern 4.0.150.4)",
+  "source_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "captured_at": "2026-10-08T02:19:59.896739+00:00",
+  "source_files": [
+    {
+      "file": "flow.c",
+      "sha256": "1d533490cde5749ccc40d4c413ccf82608e10a7d25d65cdeed2e867e54e4d120",
+      "original_capture_sha256": "77b1f7486aab9dd2ea1e999777953cd07e099b7f7fa452a4acc6f191df8c2fb5"
+    },
+    {
+      "file": "extra.cpp",
+      "sha256": "e9a4042867bdc48013a75f93ec6b67ef9468180c6313c5655d3feae502051b3d",
+      "original_capture_sha256": "bb5dac2ef507f6f47c3cb214144c9ed99f4b4d7418d360cb9c075ff0c5ef4c66"
+    },
+    {
+      "file": "semantics.c",
+      "sha256": "3166e781186ad5c6327652c17c0448cd8ada7e842750653cc4f5f832949c33af",
+      "original_capture_sha256": "a6b2c5b40de87a907cb5c76883fbabc0da201c1906baae4159371aaba82c5dfb"
+    }
+  ],
+  "capture_script_sha256": "903849f3bd0d833cb5b7765a4834cf9b7d617ced0a327708eb7c00220d63cba6",
+  "snapshot_sha256": "5d817e59f13d49ec337b90f37b995b9379bec9cfe73fb5e38ce9e8abd60ced2f",
+  "notes": [
+    "These are original Joern CPG nodes/edges and original in/out solver sets; native output was not used to create the snapshots.",
+    "Flatgraph node IDs are remapped to dense local u32 IDs. ARGUMENT_INDEX is represented on ARGUMENT edge labels; FIELD_IDENTIFIER.CANONICAL_NAME is represented as Node.name.",
+    "Only edges whose endpoints belong to the method AST are retained; this suite establishes intraprocedural solver parity, not closure/global propagation parity.",
+    "Reference callee context includes methods with raw METHOD CFG edges to nodes other than METHOD_RETURN, matching Joern MethodTraversal.isNotStub. Empty real definitions and prototypes are both stubs for this rule.",
+    "Recapture using an isolated original Joern 4.0.150 process with capture.sc and target_dir=<one source file>. Do not overwrite these snapshots with native output."
+  ]
+}

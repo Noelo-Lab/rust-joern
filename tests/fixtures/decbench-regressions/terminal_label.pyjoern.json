@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 12.86166608100757,
+  "functions": {
+    "terminal_label": {
+      "name": "terminal_label",
+      "start_line": 1,
+      "end_line": 9,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "3.0:\ni < x\n",
+          "1": "8.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+          "2": "1.0:\nFUNCTION_START\ni = 0\n",
+          "3": "4.0:\n<UnsupportedStmt: IDENTIFIER,i,if(i)>\n<UnsupportedStmt: ['postIncrement', 'x++']>\n<UnsupportedStmt: ['preIncrement', '++i']>\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "412aeeb989111a48faf600643acb01ab7e2f9be891dfc8f8a2a067b5eebd1c33",
+  "prepared_sha256": "412aeeb989111a48faf600643acb01ab7e2f9be891dfc8f8a2a067b5eebd1c33",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_ddg": true,
+    "no_ast": true
+  }
+}
