@@ -6,6 +6,15 @@ and DecBench regression sources, and 54 from six additional actual DecBench
 compiled and decompiled files. This is a measured corpus, not a claim of parity
 for every C/C++ program or every DecBench input.
 
+Two additional directory parses cover cross-file callee context and duplicate
+function names in `left/input.c` and `right/input.c`. Their six original public
+functions are reported separately in `directory-after.json` and
+`directory-paths-after.json`. Directory hashes bind sorted full relative paths
+and every file's bytes; function keys preserve `(name, relative filename)`.
+This prevents duplicate basenames from overwriting each other. Synthetic
+filenames are retained. Absolute candidate filenames are made relative to the
+same prepared input root for comparison.
+
 Each function must pass two independent graph checks:
 
 - Actual `Function.ddg`: directed graph isomorphism preserving Block boundary
@@ -38,6 +47,7 @@ references cover focused sources; `tier2` covers existing regressions;
 prepared bytes. DecBench `.i/.ii` inputs use its original header stripping and
 decompiled inputs its original sanitation/macro expansion. Their absolute
 source paths and preparation flags are recorded in each reference.
+`directory` contains the two frozen multi-file references and input manifests.
 
 `summary.json` identifies each report's scope and candidate hashes. Historical
 full divergence reports are losslessly compressed as `.json.gz`; read them

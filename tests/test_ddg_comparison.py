@@ -4,11 +4,12 @@ import copy
 import hashlib
 import json
 import sys
+from types import SimpleNamespace
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from compare_ddg_pyjoern import FLAGS, SERIALIZERS, compare, isomorphic, semantic_diff, validate_reference
+from compare_ddg_pyjoern import FLAGS, SERIALIZERS, SOURCE_SUFFIXES, compare, directory_digest, directory_manifest, isomorphic, semantic_diff, validate_reference
 
 
 def graph(identities, edges, representation="directed_labeled_multigraph"):
@@ -95,6 +96,22 @@ class DdgComparisonTests(unittest.TestCase):
         escaped_source = graph({0: {"dot_label": "(CALL,sink)"}, 1: {"dot_label": "(METHOD_RETURN,int)"}}, [(0, 1, '"<"')])
         self.assertFalse(isomorphic(actual, escaped_source))
 
+    def test_directory_hash_and_function_key_preserve_full_relative_paths(self):
+        # Same basenames and function names in separate directories must be
+        # separate compared functions; renaming an input changes the binding.
+        files = {"left/input.c": b"int f(void) { return 1; }", "right/input.c": b"int f(void) { return 2; }"}
+        self.assertEqual(directory_digest(files), directory_digest(dict(reversed(list(files.items())))))
+        renamed = {"renamed/input.c": files["left/input.c"], "right/input.c": files["right/input.c"]}
+        self.assertNotEqual(directory_digest(files), directory_digest(renamed))
+        namespace = {}
+        exec(SERIALIZERS, namespace)
+        source = Path("/temporary/input")
+        absolute = SimpleNamespace(name="f", filename=source / "left/input.c")
+        relative = SimpleNamespace(name="f", filename=Path("left/input.c"))
+        other = SimpleNamespace(name="f", filename=Path("right/input.c"))
+        self.assertEqual(namespace["function_key"](absolute, source), namespace["function_key"](relative, source))
+        self.assertNotEqual(namespace["function_key"](relative, source), namespace["function_key"](other, source))
+
     def test_frozen_reference_provenance_and_both_input_hashes_are_required(self):
         g = graph({0: "x"}, [])
         value = {"schema_version": 1, "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
@@ -112,6 +129,22 @@ class DdgComparisonTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "captures disagree"):
             validate_reference(invalid, "source", "prepared", "c")
 
+    def test_directory_reference_manifest_is_bound_to_names_and_hashes(self):
+        files = {"left/input.c": b"return 1;", "right/input.c": b"return 2;"}
+        sha = directory_digest(files)
+        g = graph({0: "x"}, [])
+        value = {"schema_version": 1, "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+                 "source_sha256": sha, "prepared_sha256": sha, "language": "mixed_directory", "parse_flags": FLAGS,
+                 "input_kind": "directory", "source_inputs": directory_manifest(files), "prepared_inputs": directory_manifest(files),
+                 "reference_module": "/original/pyjoern/__init__.py", "oracle_file_sha256": {"a": "b"},
+                 "functions": {"f": {"public": g, "supplemental_public": g}}}
+        validate_reference(value, sha, sha, "mixed_directory", "directory")
+        for field in ("source_inputs", "prepared_inputs"):
+            invalid = copy.deepcopy(value)
+            invalid[field][0]["filename"] = "renamed/input.c"
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, "manifest hash differs"):
+                validate_reference(invalid, sha, sha, "mixed_directory", "directory")
+
     def test_frozen_sources_and_independent_public_captures(self):
         references = ROOT / "tests/fixtures/ddg-parity/references"
         primary = {"control.c", "expressions.c", "functions.cpp", "flow.c", "extra.cpp", "semantics.c", "builtins.c",
@@ -123,9 +156,13 @@ class DdgComparisonTests(unittest.TestCase):
             # checked after the work is moved to another checkout.
             prefix, marker, suffix = value["source"].partition("/tests/")
             source = ROOT / "tests" / suffix if marker else Path(value["source"])
-            source_sha = hashlib.sha256(source.read_bytes()).hexdigest() if source.exists() else value["source_sha256"]
+            if source.is_dir():
+                source_sha = directory_digest({p.relative_to(source).as_posix(): p.read_bytes()
+                    for p in source.rglob("*") if p.is_file() and p.suffix in SOURCE_SUFFIXES})
+            else:
+                source_sha = hashlib.sha256(source.read_bytes()).hexdigest() if source.exists() else value["source_sha256"]
             with self.subTest(reference=path.name):
-                validate_reference(value, source_sha, value["prepared_sha256"], value["language"])
+                validate_reference(value, source_sha, value["prepared_sha256"], value["language"], value.get("input_kind", "file"))
                 self.assertEqual(value["package_versions"]["pyjoern"], "4.0.150.4")
                 self.assertIn("public_parse_source_seconds", value["timings"])
 

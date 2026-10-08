@@ -27,7 +27,8 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_VERSION = 1
 FLAGS = {"no_metadata": True, "no_cfg": False, "no_ddg": False, "no_ast": True}
-CXX_SUFFIXES = {".cpp", ".cc", ".cxx", ".c++", ".C", ".ii"}
+CXX_SUFFIXES = {".cpp", ".cc", ".cp", ".cxx", ".c++", ".C", ".hh", ".hpp", ".hxx", ".ii"}
+SOURCE_SUFFIXES = {".c", ".cc", ".cp", ".cpp", ".cxx", ".c++", ".C", ".h", ".hh", ".hpp", ".hxx", ".i", ".ii"}
 
 # Execute these functions in each worker, without importing this checkout into
 # the original interpreter. Statement IDs and duplicate-line Block indices are
@@ -35,6 +36,7 @@ CXX_SUFFIXES = {".cpp", ".cc", ".cxx", ".c++", ".C", ".ii"}
 # part of the identity. Duplicate identities remain separate graph vertices.
 SERIALIZERS = r'''
 import hashlib, html, json, pathlib, re, sys, time
+SOURCE_SUFFIXES = {".c", ".cc", ".cp", ".cpp", ".cxx", ".c++", ".C", ".h", ".hh", ".hpp", ".hxx", ".i", ".ii"}
 FIELDS = ("raw_text", "source_line_number", "type", "src", "dst", "ret", "func", "args",
           "name", "arg1", "arg2", "cond", "true", "false", "total_nodes")
 def public_graph(graph):
@@ -79,6 +81,21 @@ def native_projection(view, labels):
         {"id": n["id"], "identity": label_identity(labels[n["id"]])} for n in view["nodes"]],
         "edges": [{"source": e["source"], "target": e["target"], "label": e.get("label", "") or ""}
                   for e in view["edges"]]}
+def input_digest(source):
+    if source.is_file():
+        return hashlib.sha256(source.read_bytes()).hexdigest()
+    records = [(p.relative_to(source).as_posix(), hashlib.sha256(p.read_bytes()).hexdigest())
+               for p in sorted(source.rglob("*")) if p.is_file() and p.suffix in SOURCE_SUFFIXES]
+    return hashlib.sha256(json.dumps(records, separators=(",", ":")).encode()).hexdigest()
+def function_key(function, source):
+    if source.is_file():
+        return function.name
+    filename = pathlib.Path(function.filename)
+    if filename.is_absolute():
+        filename = filename.relative_to(source)
+    # Preserve the entire relative filename, including subdirectories and
+    # duplicate basenames. Synthetic original filename "" becomes ".".
+    return json.dumps([function.name, filename.as_posix()], separators=(",", ":"))
 '''
 
 REFERENCE_WORKER = SERIALIZERS + r'''
@@ -96,7 +113,7 @@ package_files = ["__init__.py", "parsing/fast_parser.py", "parsing/function.py",
                  "cfg/jil/lifter.py", "cfg/jil/statement.py", "scala/FastParser.sc"]
 fingerprint = {name: hashlib.sha256((module.parent / name).read_bytes()).hexdigest() for name in package_files}
 source = pathlib.Path(config["source"])
-if hashlib.sha256(source.read_bytes()).hexdigest() != config["prepared_sha256"]:
+if input_digest(source) != config["prepared_sha256"]:
     raise RuntimeError("Prepared bytes changed before oracle parse")
 flags = config["flags"]
 started = time.perf_counter()
@@ -110,11 +127,11 @@ raw_functions = Function.from_many(raw, ignore_cfg=flags["no_cfg"])
 raw_seconds = time.perf_counter() - started
 raw_by_key = {(f["name"], str(pathlib.Path(f["filename"])), f["fullname"]): f for f in raw}
 functions = {}
-for name, f in parsed.items():
+for f in parsed.values():
     key = (f.name, str(f.filename), f.fullname)
     original = raw_by_key[key]
     supplemental = raw_functions[f.name, str(f.filename)]
-    functions[name] = {"name": f.name, "fullname": f.fullname, "filename": str(f.filename),
+    functions[function_key(f, source)] = {"name": f.name, "fullname": f.fullname, "filename": str(f.filename),
         "start_line": f.start_line, "end_line": f.end_line,
         "public": public_graph(f.ddg), "supplemental_public": public_graph(supplemental.ddg),
         "dot": dot_graph(original["ddg"]), "ddg_dot": original["ddg"], "cfg_dot": original["cfg"]}
@@ -135,7 +152,7 @@ sys.path.insert(0, config["python_package"])
 os.environ["RUST_JOERN_LIBRARY"] = config["library"]
 import rust_joern
 source = pathlib.Path(config["source"])
-if hashlib.sha256(source.read_bytes()).hexdigest() != config["prepared_sha256"]:
+if input_digest(source) != config["prepared_sha256"]:
     raise RuntimeError("Prepared bytes changed before native parse")
 started = time.perf_counter()
 parsed = rust_joern.parse_source(source, **config["flags"])
@@ -146,13 +163,13 @@ for f in parsed.values():
 materialization_seconds = time.perf_counter() - started
 elapsed = parse_seconds + materialization_seconds
 functions = {}
-for name, f in parsed.items():
+for f in parsed.values():
     view = f.raw.get("ddg_view")
     dot = None
     if view is not None:
         labels = f._ddg_labels(view, f.raw["cpg"])
         dot = native_projection(view, labels)
-    functions[name] = {"name": f.name, "fullname": f.fullname, "filename": str(f.filename),
+    functions[function_key(f, source)] = {"name": f.name, "fullname": f.fullname, "filename": str(f.filename),
         "start_line": f.start_line, "end_line": f.end_line,
         "public": public_graph(f.ddg), "dot": dot, "raw_ddg": f.raw.get("ddg")}
 print(json.dumps({"module": rust_joern.__file__, "module_sha256": hashlib.sha256(pathlib.Path(rust_joern.__file__).read_bytes()).hexdigest(),
@@ -163,6 +180,15 @@ print(json.dumps({"module": rust_joern.__file__, "module_sha256": hashlib.sha256
 
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def directory_manifest(files: dict[str, bytes]) -> list[dict]:
+    return [{"filename": name, "sha256": digest(data), "bytes": len(data)} for name, data in sorted(files.items())]
+
+
+def directory_digest(files: dict[str, bytes]) -> str:
+    records = [(name, digest(data)) for name, data in sorted(files.items())]
+    return digest(json.dumps(records, separators=(",", ":")).encode())
 
 
 def invoke(python: str, worker: str, config: dict, cwd: Path, timeout: float, *, isolate=True) -> dict:
@@ -265,6 +291,9 @@ def compare(reference: dict, candidate: dict) -> list[dict]:
     rows = []
     for name in sorted(reference.keys() | candidate.keys()):
         row = {"function": name}
+        selected = reference.get(name, candidate.get(name))
+        if selected and "name" in selected:
+            row.update(name=selected["name"], filename=selected.get("filename"))
         if name not in reference or name not in candidate:
             row["status"] = "extra" if name not in reference else "missing"
         else:
@@ -291,13 +320,26 @@ def compare(reference: dict, candidate: dict) -> list[dict]:
     return rows
 
 
-def validate_reference(value: dict, source_sha256: str, prepared_sha256: str, language: str) -> None:
+def validate_reference(value: dict, source_sha256: str, prepared_sha256: str, language: str, input_kind="file") -> None:
     if value.get("schema_version") != SCHEMA_VERSION or value.get("generator") != "pyjoern 4.0.150.4 / Joern v4.0.150":
         raise ValueError("Frozen reference has an unsupported generator/schema")
     for field, expected in (("source_sha256", source_sha256), ("prepared_sha256", prepared_sha256),
                             ("language", language), ("parse_flags", FLAGS)):
         if value.get(field) != expected:
             raise ValueError(f"Frozen reference {field} differs; recapture explicitly")
+    if value.get("input_kind", "file") != input_kind:
+        raise ValueError("Frozen reference input_kind differs; recapture explicitly")
+    if input_kind == "directory":
+        for field, expected in (("source_inputs", source_sha256), ("prepared_inputs", prepared_sha256)):
+            inputs = value.get(field)
+            if not isinstance(inputs, list) or not inputs:
+                raise ValueError("Frozen directory reference lacks " + field)
+            names = [item["filename"] for item in inputs]
+            if len(set(names)) != len(names):
+                raise ValueError("Frozen directory reference contains duplicate filenames")
+            records = sorted((item["filename"], item["sha256"]) for item in inputs)
+            if digest(json.dumps(records, separators=(",", ":")).encode()) != expected:
+                raise ValueError("Frozen directory reference manifest hash differs")
     if not value.get("oracle_file_sha256") or not value.get("reference_module"):
         raise ValueError("Frozen reference lacks original oracle provenance")
     for name, function in value["functions"].items():
@@ -343,16 +385,34 @@ def run_source(source: Path, args) -> dict:
     row = {"source": str(source)}
     phase = "preparation"
     try:
-        original = source.read_bytes()
-        prepared = prepare(source, args)
-        source_sha, prepared_sha = digest(original), digest(prepared)
-        language = "cpp" if source.suffix in CXX_SUFFIXES else "c"
-        row.update(source_sha256=source_sha, prepared_sha256=prepared_sha, language=language)
+        input_kind = "directory" if source.is_dir() else "file"
+        if input_kind == "directory":
+            source_files = {p.relative_to(source).as_posix(): p.read_bytes()
+                for p in sorted(source.rglob("*")) if p.is_file() and p.suffix in SOURCE_SUFFIXES}
+            if not source_files:
+                raise ValueError("Directory contains no eligible C/C++ source files")
+            prepared_files = {name: prepare(source / name, args) for name in source_files}
+            source_sha, prepared_sha = directory_digest(source_files), directory_digest(prepared_files)
+            language = "mixed_directory"
+            row.update(source_inputs=directory_manifest(source_files), prepared_inputs=directory_manifest(prepared_files))
+        else:
+            original = source.read_bytes()
+            prepared = prepare(source, args)
+            source_sha, prepared_sha = digest(original), digest(prepared)
+            language = "cpp" if source.suffix in CXX_SUFFIXES else "c"
+        row.update(source_sha256=source_sha, prepared_sha256=prepared_sha, language=language, input_kind=input_kind)
         reference_path = args.reference_dir / (source.name + ".ddg.pyjoern.json") if args.reference_dir else None
         with tempfile.TemporaryDirectory(prefix="ddg-parity-") as temporary:
             cwd = Path(temporary)
-            parse_path = cwd / (source.stem + (".cpp" if language == "cpp" else ".c"))
-            parse_path.write_bytes(prepared)
+            if input_kind == "directory":
+                parse_path = cwd / source.name
+                for name, data in prepared_files.items():
+                    target = parse_path / name
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(data)
+            else:
+                parse_path = cwd / (source.stem + (".cpp" if language == "cpp" else ".c"))
+                parse_path.write_bytes(prepared)
             config = {"source": str(parse_path), "prepared_sha256": prepared_sha,
                       "flags": FLAGS, "checkout": str(ROOT)}
             phase = "reference"
@@ -361,15 +421,21 @@ def run_source(source: Path, args) -> dict:
             else:
                 baseline = invoke(args.reference_python, REFERENCE_WORKER, config, cwd, args.timeout)
                 baseline.update(source_sha256=source_sha, prepared_sha256=prepared_sha,
-                                language=language, source=str(source), capture_worker_sha256=digest(REFERENCE_WORKER.encode()),
+                                language=language, input_kind=input_kind, source=str(source), capture_worker_sha256=digest(REFERENCE_WORKER.encode()),
                                 captured_at=datetime.now(timezone.utc).isoformat(),
                                 preparation={"strip_system_headers": source.suffix in (".i", ".ii"),
                                     "sanitize_decompiled": args.sanitize_decompiled and source.suffix not in (".i", ".ii"),
                                     "decbench": str(args.decbench.resolve()) if args.decbench else None})
-                validate_reference(baseline, source_sha, prepared_sha, language)
+                if input_kind == "directory":
+                    baseline.update(source_inputs=directory_manifest(source_files), prepared_inputs=directory_manifest(prepared_files))
+                    baseline["preparation"]["per_input"] = {name: {
+                        "strip_system_headers": Path(name).suffix in (".i", ".ii"),
+                        "sanitize_decompiled": args.sanitize_decompiled and Path(name).suffix not in (".i", ".ii")}
+                        for name in source_files}
+                validate_reference(baseline, source_sha, prepared_sha, language, input_kind)
                 if args.save_reference_dir:
                     write_json(args.save_reference_dir / (source.name + ".ddg.pyjoern.json"), baseline)
-            validate_reference(baseline, source_sha, prepared_sha, language)
+            validate_reference(baseline, source_sha, prepared_sha, language, input_kind)
             if not baseline["functions"]:
                 raise ValueError("Original parser returned no public functions; this is not a parity pass")
             phase = "candidate"
