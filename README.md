@@ -34,8 +34,8 @@ source offsets. Active macros in raw inputs require preparation by the caller.
 Unsupported executable syntax produces diagnostics; `--strict` rejects error
 diagnostics. Recovery supported by the original CDT frontend follows its CFG.
 This is an initial port of the relevant frontend behavior, not a complete port of
-Eclipse CDT's compiler, type system, or full Joern schema. Data-flow diagnostics
-report the current intraprocedural limitations. CFG parity is checked separately
+Eclipse CDT's compiler, type system, or full Joern schema. Data flow follows
+Joern's intraprocedural overlay. CFG parity is checked separately
 from DDG/CPG parity.
 
 ## Python API
@@ -154,6 +154,11 @@ python3 scripts/compare_ddg_pyjoern.py \
 ```
 
 See the DDG report for broader source, decompiler, type, and directory checks.
+Its final frozen build passes all 841 DDG comparisons, covering 799 unique
+function contexts across 77 file parses and two directory parses. Both the
+original public statement graph and labeled DOT graph must match exactly.
+The source manifest, reference provenance, and final candidate hashes are
+recorded in [the summary](reports/ddg-parity/summary.json).
 
 ## O0/O2 corpus audit
 
