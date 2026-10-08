@@ -610,6 +610,8 @@ def parse_source(
         if is_decompilation:
             source = _preprocess_decompilation(source.decode("utf-8", errors="replace")).encode("utf-8")
         sources.append((source, filename))
+    if not sources:
+        return {}
     if path.is_dir():
         analysis = _analyze_many(sources, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
                                  strict=strict, preprocessed=preprocessed)

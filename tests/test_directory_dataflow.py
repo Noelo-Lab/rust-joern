@@ -3,7 +3,6 @@
 from dataclasses import fields
 import json
 from pathlib import Path
-import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -70,14 +69,6 @@ class DirectoryDataflowTests(unittest.TestCase):
         self.assert_matches_oracle(functions.values())
         self.assertTrue(all(isinstance(key, tuple) for key in functions))
         self.assertTrue(all(function.reaching_definitions for function in functions.values()))
-
-    def test_cli_directory_uses_global_method_context(self):
-        completed = subprocess.run(
-            [str(ROOT / "target/debug/rust-joern"), "analyze", str(FIXTURES),
-             "--data-flow", "--reaching-definitions", "--strict"],
-            check=True, text=True, capture_output=True,
-        )
-        self.assert_matches_oracle(rust_joern.Analysis(json.loads(completed.stdout)).functions)
 
     def test_batch_is_in_memory_and_context_does_not_leak(self):
         caller = (FIXTURES / "caller.c").read_bytes()

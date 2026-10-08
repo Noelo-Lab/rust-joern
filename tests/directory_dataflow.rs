@@ -1,6 +1,6 @@
 use rust_joern::{
     analyze, analyze_sources,
-    graph::{FunctionGraph, Node, Options, PropertyGraph},
+    graph::{Analysis, FunctionGraph, Node, Options, PropertyGraph},
 };
 use std::collections::{BTreeSet, HashMap};
 
@@ -46,17 +46,18 @@ fn options() -> Options {
     }
 }
 
-#[test]
-fn directory_ddg_matches_original_joern_for_both_source_methods() {
-    let analysis = analyze_sources(&[(BODY, "body.c"), (CALLER, "caller.c")], &options()).unwrap();
-    assert!(!analysis.diagnostics.iter().any(|d| d.severity == "error"));
+fn assert_matches_oracle(analysis: &Analysis) {
     let oracle = oracle();
     assert_eq!(oracle.len(), 2);
     for expected in oracle {
         let actual = analysis
             .functions
             .iter()
-            .find(|f| f.fullname == expected.fullname && f.filename == expected.filename)
+            .find(|f| {
+                f.fullname == expected.fullname
+                    && std::path::Path::new(&f.filename).file_name().unwrap()
+                        == expected.filename.as_str()
+            })
             .unwrap();
         assert_eq!(
             edges(&actual.cpg, "REACHING_DEF"),
@@ -72,6 +73,35 @@ fn directory_ddg_matches_original_joern_for_both_source_methods() {
         );
         assert!(actual.reaching_definitions.is_some());
     }
+}
+
+#[test]
+fn directory_ddg_matches_original_joern_for_both_source_methods() {
+    let analysis = analyze_sources(&[(BODY, "body.c"), (CALLER, "caller.c")], &options()).unwrap();
+    assert!(!analysis.diagnostics.iter().any(|d| d.severity == "error"));
+    assert_matches_oracle(&analysis);
+}
+
+#[test]
+fn cli_directory_uses_global_method_context() {
+    let directory = concat!(env!("CARGO_MANIFEST_DIR"), "/tests/fixtures/ddg-directory");
+    let output = std::process::Command::new(env!("CARGO_BIN_EXE_rust-joern"))
+        .args([
+            "analyze",
+            directory,
+            "--data-flow",
+            "--reaching-definitions",
+            "--strict",
+        ])
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let analysis: Analysis = serde_json::from_slice(&output.stdout).unwrap();
+    assert_matches_oracle(&analysis);
 }
 
 #[test]
