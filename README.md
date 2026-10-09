@@ -6,7 +6,7 @@ by use in [DecBench](https://decbench.com). It is largely used to generate CFGs
 from C/C++ decompilation that may not compile. Other features include DDG, CPG,
 and reaching definitions generation.
 
-In a paired eight-file benchmark, Rust Joern was around **151×** faster for CFG
+In testing, Rust Joern was around **151×** faster for CFG
 generation. See the [evaluation and timing details](docs/eval/cfg_parity.md).
 
 ## Install
@@ -82,15 +82,6 @@ sets for methods above that limit.
 
 See [DecBench integration](docs/decbench.md) for setup, saved-artifact GED
 rescoring, and the recorded reevaluation results.
-
-## Verification
-
-- **CFG:** all 8,808 saved cases pass directed topology and entry/exit checks,
-  covering 6,377 unique prepared inputs. Five original DOT-exporter failures
-  were checked against recovered original graphs. See [CFG parity](docs/eval/cfg_parity.md).
-- **DDG:** the [recorded DDG audit](docs/eval/ddg_parity.md) passes 841
-  comparisons against original public and labeled DOT graphs. Its build
-  predates the latest CFG recovery changes.
 
 ## Development
 
