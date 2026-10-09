@@ -1,269 +1,140 @@
 # rust-joern
 
-A small native Rust port of the C/C++ parsing and graph-generation behavior used
-by Joern and PyJoern. DecBench CFG compatibility is the first target.
+Generate C/C++ control-flow graphs (CFG), code property graphs (CPG), data
+dependency graphs (DDG), and reaching-definition sets. Export JSON or DOT from
+the CLI, or access graphs in memory through Python.
 
-The core has no JVM, external parser, graph database, or Tree-sitter dependency.
-It uses a native lexer and recursive parser, Joern's expression/statement lowering
-and CFG construction, and the DOT projection and basic-block normalization that
-PyJoern applies. Parsing and analysis can run entirely in memory.
+The parser follows Joern's C/C++ frontend behavior and PyJoern's basic-block
+normalization. Parsing and graph construction run in Rust; the Python API calls
+the shared library in process. DecBench compatibility is the main target.
 
-## Build and use
+## Install
+
+Requires Rust 1.90+. The Python API requires Python 3.10+.
+
+From the checkout:
 
 ```sh
 cargo build --release
+python -m pip install -e .
+```
+
+## CLI
+
+```sh
 ./target/release/rust-joern analyze input.c --output graphs.json
 ./target/release/rust-joern analyze input.cpp --format dot --graph cfg --output cfg.dot
 ./target/release/rust-joern analyze input.c --data-flow --reaching-definitions --output all.json
 ```
 
-Files, directories, and stdin (`analyze -`) are accepted. C/C++ detection uses the
-filename, including preprocessed `.i` and `.ii`; `--language c|cpp` overrides it.
-The default computes CFG and CPG only. `--data-flow` adds DDG/`REACHING_DEF` edges;
-`--reaching-definitions` additionally exports the solver's incoming/outgoing sets.
-JSON contains per-function CPG nodes/edges and normalized CFG blocks with their
-statement IDs and explicit entry/exit roles. `ddg` retains raw dependencies;
-`ddg_view` supplies Joern's labeled DOT projection. DOT supports `cfg`, `ddg`,
-and `cpg`.
+Accepts files, directories, or `-` for stdin. Language detection uses the file
+extension; `--language c|cpp` overrides it.
 
-The parser targets already-preprocessed C/C++ and sanitized decompiler output,
-as supplied by DecBench. `.i`/`.ii` files are treated as preprocessed;
-`--preprocessed` or Python `preprocessed=True` selects this mode for other
-filenames. Retained compiler macro definitions and line directives preserve
-source offsets. Active macros in raw inputs require preparation by the caller.
-Unsupported executable syntax produces diagnostics; `--strict` rejects error
-diagnostics. Recovery supported by the original CDT frontend follows its CFG.
-This is an initial port of the relevant frontend behavior, not a complete port of
-Eclipse CDT's compiler, type system, or full Joern schema. Data flow follows
-Joern's intraprocedural overlay. CFG parity is checked separately
-from DDG/CPG parity.
+CFG and CPG generation are enabled by default. `--data-flow` adds DDG edges;
+`--reaching-definitions` exports incoming and outgoing definition sets. DOT
+output supports `--graph cfg|ddg|cpg`. Run `./target/release/rust-joern --help`
+for all options.
 
-## Python API
-
-Build the library above, then install the thin wrapper (`pip install -e .`).
-NetworkX supplies graph views and orjson decodes native results. Direct
-`PYTHONPATH=python` usage also works with NetworkX alone, using standard JSON.
+## Python
 
 ```python
 from rust_joern import parse_code, parse_source
 
-analysis = parse_code("int f(int n) { if (n) return 1; return 0; }")
+analysis = parse_code(
+    "int f(int x) { int y = x; return y; }",
+    data_flow=True,
+    reaching_definitions=True,
+)
 function = analysis.functions[0]
-cfg = function.cfg                  # NetworkX DiGraph, matching PyJoern roles
-cpg = function.cpg                  # AST, CFG, argument and reference edges
+
+cfg = function.cfg                  # NetworkX DiGraph of basic blocks
+cpg = function.cpg                  # NetworkX MultiDiGraph
+ddg = function.ddg                  # PyJoern-compatible block graph
+definitions = function.reaching_definitions
 diagnostics = analysis.diagnostics
 
-functions = parse_source("input.c", no_ddg=True)
+# Parse a file without running data-flow analysis.
+functions = parse_source("input.c", no_ddg=True, no_ast=True)
 cfg = functions["f"].cfg
-
-flow = parse_code("int f(int x) { int y=x; return y; }",
-                  data_flow=True, reaching_definitions=True)
-ddg = flow.functions[0].ddg          # PyJoern-compatible DiGraph of Blocks
-raw_dependencies = flow.functions[0].ddg_raw  # CPG-node MultiDiGraph
-displayed_ddg = flow.functions[0].ddg_projection
-sets = flow.functions[0].reaching_definitions
 ```
 
-The wrapper calls the Rust shared library through ctypes, with no subprocess or
-temporary graph files. Set `RUST_JOERN_LIBRARY` to use a library outside the local
-`target/release` or `target/debug` directories. `parse_source` accepts PyJoern's
-`no_metadata`, `no_cfg`, `no_ddg`, `no_ast`, and `is_decompilation` flags. Its generic
-DDG default follows PyJoern; `parse_code` defaults to CFG/CPG only.
+`parse_code` defaults to CFG/CPG generation. `parse_source` follows PyJoern's
+DDG-enabled default; use `no_ddg=True` for CFG-only work. It also accepts
+`no_metadata`, `no_cfg`, `no_ast`, and `is_decompilation`.
 
-`Function.ddg` preserves PyJoern's statement lifting and Block entry/exit roles.
-The raw dependencies remain available through `Function.ddg_raw` and CPG
-`REACHING_DEF` edges. Directory parsing resolves internal callee context across
-files and removes declarations when a matching definition is present.
+Raw dependencies are available through `function.ddg_raw`; the labeled Joern
+projection is `function.ddg_projection`. Use `analysis.to_json()` to serialize
+an in-memory result. Set `RUST_JOERN_LIBRARY` to select a shared library outside
+the checkout's `target/release` or `target/debug` directories.
 
-The reaching-definition overlay uses Joern 4.0.150's default limit of 4,000
-generated definitions per method. Methods above that limit have empty DDGs;
-explicit `reaching_definitions=True` still returns their solver sets. The
-overlay follows Joern's intraprocedural behavior, including its call semantics
-and access-path matching.
+## Input and analysis scope
 
-## Run DecBench with the port
+Inputs should be preprocessed C/C++ or sanitized decompiler output. `.i` and
+`.ii` files select preprocessed mode automatically; use `--preprocessed` or
+Python `preprocessed=True` for other filenames. The caller handles active macro
+expansion and headers.
 
-DecBench uses `pyjoern.parse_source`, `Function.name`, and `Function.cfg`. Its GED
-metric reads graph topology and block entry/exit flags; source selection also
-checks whether singleton blocks contain only `Nop` statements. The compatibility
-wrapper exposes those fields, including PyJoern's normalization quirks.
+Parsing returns diagnostics. `--strict` or Python `strict=True` rejects error
+diagnostics. The frontend implements the Joern/CDT behavior needed by DecBench,
+with partial coverage of the full CDT type system and Joern CPG schema.
 
-The opt-in `compat/pyjoern` shim lets existing DecBench use this implementation
-without modifying DecBench or replacing the installed PyJoern oracle:
+Data flow is intraprocedural. Joern's 4,000-generated-definition limit applies
+to DDG generation; requesting reaching-definition sets still returns the solver
+sets for methods above that limit.
+
+## DecBench
+
+Run DecBench in its own Python environment with the compatibility shim:
 
 ```sh
-PYTHONPATH="$PWD/compat:$PWD/python" /home/mahaloz/.virtualenvs/decbench/bin/decbench --help
+PYTHONPATH="$PWD/compat:$PWD/python" decbench --help
 ```
 
-Use the same environment for an existing DecBench driver. The shim defaults to
-`no_ddg=True` because DecBench only consumes CFGs and `strict=True` so unsupported
-executable syntax fails extraction; explicit flags still work.
-DecBench continues to own its original sanitization, macro expansion, system
-header stripping, translation-unit selection, and metric calculations. Use an
-isolated metric cache for candidate results so old backend caches cannot mask a
-change in graph recovery.
+The shim forwards `pyjoern.parse_source` to Rust and defaults to
+`no_ddg=True`, `strict=True`, and `preprocessed=True`. DecBench handles source
+preparation, function selection, and GED scoring. Use a separate metric cache
+when comparing backends.
 
-## Compare with unchanged PyJoern
+For saved artifacts, [rescore_decbench_ged.py](scripts/rescore_decbench_ged.py)
+generates fresh CFGs and GED results;
+[summarize_decbench_ged.py](scripts/summarize_decbench_ged.py) produces score
+comparisons for the main dataset and standalone Astra samples. See each
+script's `--help` for arguments.
 
-The comparison tool checks function coverage, directed graph isomorphism with
-entry/exit roles, and source-CFG degeneracy. Equal node/edge counts alone do not
-pass. Candidate diagnostics, missing/extra functions, and every divergence fail.
-Reference and candidate receive the same prepared input bytes, checked by SHA-256.
+The [latest reevaluation](reports/ged-reevaluation-2026-10-09/README.md) completed
+in **9m 1s** with 16 workers, including CFG extraction and GED scoring. It
+contains per-function changes, all-decompiler score tables, timings, and audit
+evidence. The original DecBench results remain unchanged.
+
+## Verification
+
+- **CFG:** all 8,808 saved cases match, covering 6,377 unique prepared inputs.
+  Five original DOT-exporter failures were checked against recovered original
+  graphs. See the [CFG certificate](reports/ged-reevaluation-2026-10-09/evidence/cfg-certificate/certification-status-root.json).
+- **DDG:** the [recorded DDG audit](reports/ddg-parity/README.md) passes 841
+  comparisons against original public and labeled DOT graphs. Its build
+  predates the latest CFG recovery changes.
+- **Speed:** an earlier paired eight-file benchmark measured **110.82s for
+  PyJoern and 0.73s for Rust** (151×). These are complete API call intervals,
+  including PyJoern's JVM startup and Python graph construction. See the
+  [timing details](tools/cfg-compare/README.md).
+
+Compare local fixtures with frozen PyJoern references:
 
 ```sh
-PYTHONPATH=python /home/mahaloz/.virtualenvs/decbench/bin/python scripts/compare_pyjoern.py \
-    tests/fixtures/control.c tests/fixtures/expressions.c tests/fixtures/functions.cpp \
-    --reference-dir tests/fixtures --output workspace/fixture-comparison.json
-
-PYTHONPATH=python /home/mahaloz/.virtualenvs/decbench/bin/python scripts/compare_pyjoern.py \
-    tests/fixtures/decbench/bits.c tests/fixtures/decbench/libgzip_a-stripslash.c \
-    --reference-dir tests/fixtures/decbench --output workspace/decbench-comparison.json
+python scripts/compare_pyjoern.py tests/fixtures/control.c \
+    --reference-dir tests/fixtures --output workspace/cfg-comparison.json
 ```
 
-For a new DecBench input, supply `--reference-python` pointing to an interpreter
-with the original PyJoern and `--decbench` pointing to that checkout. `.i`/`.ii`
-inputs use DecBench's original preparation; `--sanitize-decompiled` prepares
-decompiler output. The oracle runs in an isolated subprocess with the replacement
-import path removed. See `scripts/compare_pyjoern.py --help`. Frozen references
-can be written with `--save-reference-dir PATH` for later comparisons.
+For a visual comparison, run `python scripts/cfg_compare.py serve` and open
+`http://127.0.0.1:8765`. The [viewer instructions](tools/cfg-compare/README.md)
+cover capturing and exporting pairs.
 
-Frozen fixtures come from unchanged PyJoern 4.0.150.4 and Joern 4.0.150.
-Actual DecBench input provenance and upstream fixture licenses are retained in
-`tests/fixtures/decbench`. Additional original snapshots cover C/C++ declarations,
-parser recovery, expressions, function references, CFG projection and selection.
-
-The DDG comparator checks the actual original `Function.ddg` and original
-`dotDdg` independently. It preserves statement identity, all lifted statement
-fields, directed edges, complete node labels, labeled parallel edges, and
-function coverage. Frozen references come from unchanged PyJoern 4.0.150.4;
-input bytes and original/candidate versions are bound to hashes. Solver tests
-also replay original CPGs to distinguish analysis defects from frontend
-lowering differences.
+## Development
 
 ```sh
-cargo build --lib
-python3 scripts/compare_ddg_pyjoern.py \
-  tests/fixtures/control.c tests/fixtures/expressions.c tests/fixtures/functions.cpp \
-  --reference-dir tests/fixtures/ddg-parity/references \
-  --output workspace/ddg-comparison.json
-```
-
-See the DDG report for broader source, decompiler, type, and directory checks.
-Its final frozen build passes all 841 DDG comparisons, covering 799 unique
-function contexts across 77 file parses and two directory parses. Both the
-original public statement graph and labeled DOT graph must match exactly.
-The source manifest, reference provenance, and final candidate hashes are
-recorded in [the summary](reports/ddg-parity/summary.json).
-
-## Inspect CFG pairs in the browser
-
-```sh
-python3 scripts/cfg_compare.py serve
-```
-
-Open `http://127.0.0.1:8765` to compare original PyJoern and Rust CFGs side by
-side. The viewer bundles 24 randomly sampled DecBench functions from eight
-inputs, so viewing them needs only Python 3.10+ and a browser. Select a node to
-inspect its counterpart, toggle attributes, or inspect prepared source and
-capture provenance. Directed topology and attribute agreement are reported
-separately: these samples match topology but expose public node-attribute
-differences, including statement classes and raw text.
-
-See [the viewer instructions](tools/cfg-compare/README.md) to capture another
-random sample, reproduce the recorded seed, or export and import pairs.
-
-## O0/O2 corpus audit
-
-The [latest audit](reports/decbench-parity-latest/README.md) records the final
-frozen build against `full_run_address_2026-09-11`: all **8,808 inputs**
-(6,377 unique prepared inputs), including O0/O2 source, IDA and Kuna output.
-The raw cache comparison has **8,803 exact matches**, zero strict extraction
-failures, zero missing functions and zero differing CFGs. The remaining five
-cases have empty original references; isolated original Joern recaptures on
-these exact inputs reproduce recursive DOT exporter stack overflows.
-Separately recovered original graphs match all 2,609 function occurrences in
-those five cases, giving **8,808/8,808 CFG matches**.
-
-Recovery changes only traversal of existing original CFG edges; it preserves
-original parsing, graph construction, DOT labels and PyJoern normalization.
-It was checked against 892 byte-identical original DOT exports. Original cached
-references and raw differences remain unchanged. The certificate is separate
-and applies only to the five proven exporter failures.
-
-The direct native audit completed in **101.14 seconds** with eight workers and
-two Rayon threads per worker. It measures native analysis/serialization plus
-standard Python JSON decoding and comparison, excluding DecBench preparation
-and graph materialization. The actual DecBench extraction audit completed in
-**142.49 seconds**, including preparation, graph construction and audit checks.
-Its native call median/p95 is **51.60/141.98 ms**, and its complete extraction
-median/p95 is **87.26/250.35 ms**. Per-file CFG timings and source
-ownership results are linked from the latest report.
-
-The actual Python/DecBench path also matches all inputs. Real DWARF ownership
-checks cover **513 binaries and 60,704 named functions**: all **57,499 available
-original source bodies** match, with zero selected-TU differences. The same
-3,205 names have no source body on either side. Older published per-binary JSON
-has separate snapshot/selection differences, retained in the audit evidence.
-
-The [initial audit](reports/decbench-parity/README.md) retains the earlier build
-and its failures for comparison. Its numbers describe that historical snapshot.
-
-The full audit inventories every compiled `.i`/`.ii` and IDA/Kuna `.c` input in
-the canonical results tree. Source references are loaded from the original
-content-addressed PyJoern cache. Missing references are captured with isolated
-original PyJoern 4.0.150.4 invocations. Neither DecBench nor the installed oracle
-is modified.
-
-Install `pip install -e '.[parity]'` for the compiled exact graph matcher used
-by the corpus audit. Symmetric switch CFGs can make the Python matcher very slow.
-The Rust parser and runtime do not depend on this extra.
-
-```sh
-PY=/home/mahaloz/.virtualenvs/decbench/bin/python
-DEC=/home/mahaloz/github/decbench
-$PY scripts/inventory_decbench.py --results "$DEC/results/full_run_address_2026-09-11" --decbench "$DEC" --output workspace/decbench-parity
-$PY scripts/capture_pyjoern_corpus.py --manifest workspace/decbench-parity/manifest.json
-RAYON_NUM_THREADS=2 $PY scripts/check_decbench_usage.py --manifest workspace/decbench-parity/manifest.json --output workspace/decbench-parity/candidates
-$PY scripts/compare_decbench.py --manifest workspace/decbench-parity/manifest.json --candidates workspace/decbench-parity/candidates --output reports/decbench-parity
-$PY scripts/check_source_ownership.py --manifest workspace/decbench-parity/manifest.json --candidates workspace/decbench-parity/candidates --dataset /home/mahaloz/github/decbench-dataset --output workspace/decbench-parity/ownership.json
-```
-
-The usage checker runs DecBench's actual extractor through the opt-in shim. It
-records default strict failures separately from permissive fallback graphs.
-Every file retains preparation hashes, diagnostics, graph coverage and measured
-generation times. Native timing includes analysis, serialization and Python JSON
-decoding; graph materialization and end-to-end DecBench extraction are separate.
-The historical source cache has no CFG-generation timing, so that field remains
-null. Fresh reference timings include original PyJoern JVM startup and lifting.
-Checks return a nonzero status when differences are recorded.
-
-The report includes raw and recovered-reference summaries, per-file `files.csv`,
-compressed function comparisons, binary ownership records, timings, build
-fingerprints and artifact hashes. Degenerate graphs are counted separately.
-No ordinary corpus comparison tolerates a divergence.
-
-## Focused checks
-
-```sh
-cargo test
+cargo fmt --all -- --check
+cargo test --all-targets
 cargo clippy --all-targets -- -D warnings
-PYTHONPATH=python:workspace/decbench-parity/tools /home/mahaloz/.virtualenvs/decbench/bin/python -m unittest discover -s tests -p 'test_*.py' -v
+python -m unittest discover -s tests -p 'test_*.py'
 ```
-
-The Rust suite includes comparisons against all 60 original data-flow fixture
-methods: CFG/reference edges, raw DDG, displayed DDG and reaching-definition
-sets. These establish the supported intraprocedural behavior; the full DecBench
-corpus audit establishes CFG parity. The corpus does not exercise or certify the
-entire Joern CPG schema or interprocedural data flow.
-
-The final check has 132 passing Rust tests and 84 passing Python tests;
-formatting and Clippy pass. C/C++ JSON and CFG/DDG/CPG DOT exports are checked.
-The runtime consists of nine Rust files and the thin Python wrapper. The
-rewrite removes 2,209 old files; the old frontends and JVM build are unnecessary.
-
-The original Joern checkout is retained in git history at
-`82456558d52ea127e005a74391ca06e3f16b17a6`; the conversion reference for this session
-is `/tmp/rust-joern-reference-82456558`. Exact DecBench behavior is also checked
-against Joern v4.0.150 at `958fdd3d976197a783f8ade1254b43e977648f28`
-in `/tmp/joern-v4.0.150`. None of the old implementation is required to build or
-run the port.
