@@ -1,0 +1,33 @@
+{
+  "verified_at": "2026-10-09T01:06:49.978289+00:00",
+  "scope": "Root compared every numeric and display CSV field against the authoritative summarizer rows, with exact identity/preset/normalization coverage and site visibility filtering.",
+  "all_csv_cells_match_authoritative_summary": true,
+  "scalar_cells_checked": 9614,
+  "summary_sha256": "293b8e14ae86d74fc48611cf20a95b2c4a1c8c99a26630817cedc349b80f83d7",
+  "files": {
+    "main/scores.all-identities.csv": {
+      "sha256": "70921980a53e295282057ab2c0758787d46db42abd71a8ad55b55a04ee1343be",
+      "rows": 160
+    },
+    "main/scores.site-visible.csv": {
+      "sha256": "8f2108a0ed2e852ba68177a8b290a762359d1decb561b6c58fbc1dfc12414f73",
+      "rows": 86
+    },
+    "main/scores.site.csv": {
+      "sha256": "e7fdf83a44af6ad5d7f9478c6cf244910fd7ce56b8bbdbc34b374d0141173e6f",
+      "rows": 150
+    },
+    "sample/scores.all-identities.csv": {
+      "sha256": "fa5a6d80738714b17fe88882780902de675710b721a2925bfb86dd35b85f3736",
+      "rows": 10
+    },
+    "sample/scores.site-visible.csv": {
+      "sha256": "45cc8a9b12b4714418630b6ba39927399bc24ac1e4e8d76524fea87386418af2",
+      "rows": 2
+    },
+    "sample/scores.site.csv": {
+      "sha256": "01e67e25f497ce2520f26080b9d39ce224f0c26dc4954e86e4e4271fc95e6da4",
+      "rows": 10
+    }
+  }
+}

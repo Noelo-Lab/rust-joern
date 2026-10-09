@@ -1,0 +1,769 @@
+{
+  "name": "main baseline",
+  "description": "",
+  "version": "1.1",
+  "generated_at": "2026-10-09T00:51:36.349169",
+  "projects_evaluated": [
+    "base-passwd",
+    "bash",
+    "betaflight",
+    "bzip2",
+    "chibios",
+    "cleanflight",
+    "coreutils",
+    "crazyflie",
+    "cronie",
+    "dash",
+    "dexter",
+    "diffutils",
+    "dpkg",
+    "e2fsprogs",
+    "findutils",
+    "freertos",
+    "gnutls",
+    "grep",
+    "gzip",
+    "iproute2",
+    "kmod",
+    "libacl",
+    "libbsd",
+    "libedit",
+    "libexpat",
+    "libopencm3",
+    "libselinux",
+    "minipig",
+    "mirai",
+    "mydoom",
+    "nuttx",
+    "openssh-portable",
+    "riot-os",
+    "rsyslog",
+    "shadow",
+    "sysvinit",
+    "tar",
+    "u-boot",
+    "x0r-usb",
+    "zlib"
+  ],
+  "optimization_levels": [
+    "O0",
+    "O2",
+    "O2-noinline"
+  ],
+  "decompilers": [
+    "angr",
+    "binja",
+    "claude-code",
+    "codex",
+    "codex@gpt-6-astra",
+    "dewolf",
+    "fission",
+    "ghidra",
+    "glaurung",
+    "ida",
+    "kuna",
+    "manifold",
+    "r2dec",
+    "reko",
+    "retdec",
+    "ventris"
+  ],
+  "metrics": [
+    "byte_match",
+    "ged",
+    "type_match"
+  ],
+  "decompiler_scores": {
+    "angr": {
+      "name": "angr",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "angr",
+          "perfect_count": 3162,
+          "total_count": 56465,
+          "perfect_percentage": 5.5999291596564245,
+          "mean": 0.47963311260901514,
+          "median": 0.46853146853146854,
+          "rank": 3
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "angr",
+          "perfect_count": 32788,
+          "total_count": 91062,
+          "perfect_percentage": 36.00623750851069,
+          "mean": 14.315044207816259,
+          "median": 5.0,
+          "rank": 3
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "angr",
+          "perfect_count": 7477,
+          "total_count": 88236,
+          "perfect_percentage": 8.473865542408994,
+          "mean": 0.31626559807985366,
+          "median": 0.25,
+          "rank": 3
+        }
+      },
+      "overall_perfect_count": 37769,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 39.58143385627901,
+      "overall_rank": 3,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "binja": {
+      "name": "binja",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "binja",
+          "perfect_count": 1202,
+          "total_count": 56465,
+          "perfect_percentage": 2.1287523244487736,
+          "mean": 0.37812800510671774,
+          "median": 0.36933760683760686,
+          "rank": 6
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "binja",
+          "perfect_count": 26221,
+          "total_count": 91062,
+          "perfect_percentage": 28.79466736948453,
+          "mean": 16.29359186268277,
+          "median": 7.0,
+          "rank": 4
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "binja",
+          "perfect_count": 7788,
+          "total_count": 88236,
+          "perfect_percentage": 8.826329389364885,
+          "mean": 0.3595937841809356,
+          "median": 0.3333333333333333,
+          "rank": 2
+        }
+      },
+      "overall_perfect_count": 31085,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 32.5766864736274,
+      "overall_rank": 4,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "claude-code": {
+      "name": "claude-code",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "claude-code",
+          "perfect_count": 19,
+          "total_count": 56465,
+          "perfect_percentage": 0.03364916319844151,
+          "mean": 0.5325005080604468,
+          "median": 0.5619517543859649,
+          "rank": 9
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "claude-code",
+          "perfect_count": 135,
+          "total_count": 91062,
+          "perfect_percentage": 0.1482506424194505,
+          "mean": 19.70204081632653,
+          "median": 0.0,
+          "rank": 9
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "claude-code",
+          "perfect_count": 23,
+          "total_count": 88236,
+          "perfect_percentage": 0.026066458135001587,
+          "mean": 0.34453152729892933,
+          "median": 0.2792207792207792,
+          "rank": 10
+        }
+      },
+      "overall_perfect_count": 142,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 0.14881420232443593,
+      "overall_rank": 10,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "codex": {
+      "name": "codex",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "codex",
+          "perfect_count": 42,
+          "total_count": 56465,
+          "perfect_percentage": 0.07438236075444966,
+          "mean": 0.7169068089685522,
+          "median": 0.9069264069264069,
+          "rank": 8
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "codex",
+          "perfect_count": 133,
+          "total_count": 91062,
+          "perfect_percentage": 0.146054336605829,
+          "mean": 13.926530612244898,
+          "median": 0.0,
+          "rank": 10
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "codex",
+          "perfect_count": 50,
+          "total_count": 88236,
+          "perfect_percentage": 0.056666213336959974,
+          "mean": 0.4867249941631046,
+          "median": 0.5,
+          "rank": 9
+        }
+      },
+      "overall_perfect_count": 150,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 0.15719810104693935,
+      "overall_rank": 9,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "codex@gpt-6-astra": {
+      "name": "codex@gpt-6-astra",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "codex@gpt-6-astra",
+          "perfect_count": 8515,
+          "total_count": 56465,
+          "perfect_percentage": 15.080138138669973,
+          "mean": 0.8476662848210699,
+          "median": 0.9811320754716981,
+          "rank": 1
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "codex@gpt-6-astra",
+          "perfect_count": 21835,
+          "total_count": 91062,
+          "perfect_percentage": 23.9781687202126,
+          "mean": 7.5135815039980836,
+          "median": 0.0,
+          "rank": 6
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "codex@gpt-6-astra",
+          "perfect_count": 8176,
+          "total_count": 88236,
+          "perfect_percentage": 9.266059204859694,
+          "mean": 0.5342857571847008,
+          "median": 0.5,
+          "rank": 1
+        }
+      },
+      "overall_perfect_count": 25281,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 26.494167950451157,
+      "overall_rank": 6,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "dewolf": {
+      "name": "dewolf",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "dewolf",
+          "perfect_count": 0,
+          "total_count": 56465,
+          "perfect_percentage": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "rank": 16
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "dewolf",
+          "perfect_count": 3320,
+          "total_count": 91062,
+          "perfect_percentage": 3.645867650611671,
+          "mean": 35.95678239673233,
+          "median": 19.0,
+          "rank": 8
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "dewolf",
+          "perfect_count": 4059,
+          "total_count": 88236,
+          "perfect_percentage": 4.6001631986944105,
+          "mean": 0.30926280900061887,
+          "median": 0.25,
+          "rank": 7
+        }
+      },
+      "overall_perfect_count": 7053,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 7.391454711227088,
+      "overall_rank": 8,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "fission": {
+      "name": "fission",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "fission",
+          "perfect_count": 2,
+          "total_count": 56465,
+          "perfect_percentage": 0.0035420171787833173,
+          "mean": 0.21402177104799128,
+          "median": 0.19475928627538996,
+          "rank": 13
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "fission",
+          "perfect_count": 65,
+          "total_count": 91062,
+          "perfect_percentage": 0.07137993894269838,
+          "mean": 39.857142857142854,
+          "median": 13.0,
+          "rank": 13
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "fission",
+          "perfect_count": 13,
+          "total_count": 88236,
+          "perfect_percentage": 0.014733215467609593,
+          "mean": 0.20858000261963952,
+          "median": 0.07142857142857142,
+          "rank": 12
+        }
+      },
+      "overall_perfect_count": 73,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 0.07650307584284381,
+      "overall_rank": 13,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "ghidra": {
+      "name": "ghidra",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "ghidra",
+          "perfect_count": 2551,
+          "total_count": 56465,
+          "perfect_percentage": 4.517842911538121,
+          "mean": 0.4612692466459084,
+          "median": 0.4358974358974359,
+          "rank": 4
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "ghidra",
+          "perfect_count": 25907,
+          "total_count": 91062,
+          "perfect_percentage": 28.449847356745952,
+          "mean": 15.26818764667457,
+          "median": 7.0,
+          "rank": 5
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "ghidra",
+          "perfect_count": 6674,
+          "total_count": 88236,
+          "perfect_percentage": 7.563806156217417,
+          "mean": 0.3160291891110898,
+          "median": 0.25,
+          "rank": 4
+        }
+      },
+      "overall_perfect_count": 30781,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 32.258098322172266,
+      "overall_rank": 5,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "glaurung": {
+      "name": "glaurung",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "glaurung",
+          "perfect_count": 4,
+          "total_count": 56465,
+          "perfect_percentage": 0.007084034357566635,
+          "mean": 0.1709551605088632,
+          "median": 0.0,
+          "rank": 12
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "glaurung",
+          "perfect_count": 69,
+          "total_count": 91062,
+          "perfect_percentage": 0.07577255056994135,
+          "mean": 28.45528455284553,
+          "median": 10.0,
+          "rank": 12
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "glaurung",
+          "perfect_count": 23,
+          "total_count": 88236,
+          "perfect_percentage": 0.026066458135001587,
+          "mean": 0.24902335322584193,
+          "median": 0.09090909090909091,
+          "rank": 11
+        }
+      },
+      "overall_perfect_count": 83,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 0.0869829492459731,
+      "overall_rank": 11,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "ida": {
+      "name": "ida",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "ida",
+          "perfect_count": 2033,
+          "total_count": 56465,
+          "perfect_percentage": 3.600460462233242,
+          "mean": 0.4626862386767727,
+          "median": 0.4380952380952381,
+          "rank": 5
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "ida",
+          "perfect_count": 34308,
+          "total_count": 91062,
+          "perfect_percentage": 37.67542992686302,
+          "mean": 13.618362578457873,
+          "median": 5.0,
+          "rank": 2
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "ida",
+          "perfect_count": 6584,
+          "total_count": 88236,
+          "perfect_percentage": 7.461806972210889,
+          "mean": 0.3103290220462461,
+          "median": 0.25,
+          "rank": 5
+        }
+      },
+      "overall_perfect_count": 38370,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 40.21127424780709,
+      "overall_rank": 2,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "kuna": {
+      "name": "kuna",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "kuna",
+          "perfect_count": 3284,
+          "total_count": 56465,
+          "perfect_percentage": 5.815992207562207,
+          "mean": 0.5115728952218844,
+          "median": 0.49693251533742333,
+          "rank": 2
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "kuna",
+          "perfect_count": 35562,
+          "total_count": 91062,
+          "perfect_percentage": 39.05251367200369,
+          "mean": 12.320308883796018,
+          "median": 4.0,
+          "rank": 1
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "kuna",
+          "perfect_count": 6095,
+          "total_count": 88236,
+          "perfect_percentage": 6.9076114057754205,
+          "mean": 0.25425566266260274,
+          "median": 0.14285714285714285,
+          "rank": 6
+        }
+      },
+      "overall_perfect_count": 39179,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 41.05909600612025,
+      "overall_rank": 1,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "manifold": {
+      "name": "manifold",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "manifold",
+          "perfect_count": 5,
+          "total_count": 56465,
+          "perfect_percentage": 0.008855042946958293,
+          "mean": 0.2943423652128974,
+          "median": 0.26026647691024196,
+          "rank": 11
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "manifold",
+          "perfect_count": 21,
+          "total_count": 91062,
+          "perfect_percentage": 0.02306121104302563,
+          "mean": 48.54609929078014,
+          "median": 26.0,
+          "rank": 16
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "manifold",
+          "perfect_count": 2,
+          "total_count": 88236,
+          "perfect_percentage": 0.0022666485334783986,
+          "mean": 0.12140344446412801,
+          "median": 0.030303030303030304,
+          "rank": 15
+        }
+      },
+      "overall_perfect_count": 22,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 0.023055721486884437,
+      "overall_rank": 16,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "r2dec": {
+      "name": "r2dec",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "r2dec",
+          "perfect_count": 111,
+          "total_count": 56465,
+          "perfect_percentage": 0.1965819534224741,
+          "mean": 0.09117002380025355,
+          "median": 0.0,
+          "rank": 7
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "r2dec",
+          "perfect_count": 18463,
+          "total_count": 91062,
+          "perfect_percentage": 20.275197118446773,
+          "mean": 18.204742858848462,
+          "median": 8.0,
+          "rank": 7
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "r2dec",
+          "perfect_count": 2204,
+          "total_count": 88236,
+          "perfect_percentage": 2.4978466838931954,
+          "mean": 0.1473541026673794,
+          "median": 0.0,
+          "rank": 8
+        }
+      },
+      "overall_perfect_count": 20098,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 21.06244956560925,
+      "overall_rank": 7,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "reko": {
+      "name": "reko",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "reko",
+          "perfect_count": 2,
+          "total_count": 56465,
+          "perfect_percentage": 0.0035420171787833173,
+          "mean": 0.13121048298543753,
+          "median": 0.0,
+          "rank": 14
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "reko",
+          "perfect_count": 40,
+          "total_count": 91062,
+          "perfect_percentage": 0.043926116272429774,
+          "mean": 28.50326797385621,
+          "median": 9.0,
+          "rank": 15
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "reko",
+          "perfect_count": 0,
+          "total_count": 88236,
+          "perfect_percentage": 0.0,
+          "mean": 0.0324478911000092,
+          "median": 0.0,
+          "rank": 16
+        }
+      },
+      "overall_perfect_count": 40,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 0.041919493612517164,
+      "overall_rank": 15,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "retdec": {
+      "name": "retdec",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "retdec",
+          "perfect_count": 1,
+          "total_count": 56465,
+          "perfect_percentage": 0.0017710085893916587,
+          "mean": 0.2556960567001609,
+          "median": 0.21752464403066812,
+          "rank": 15
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "retdec",
+          "perfect_count": 50,
+          "total_count": 91062,
+          "perfect_percentage": 0.054907645340537214,
+          "mean": 38.71861471861472,
+          "median": 13.0,
+          "rank": 14
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "retdec",
+          "perfect_count": 10,
+          "total_count": 88236,
+          "perfect_percentage": 0.011333242667391994,
+          "mean": 0.11963588731414115,
+          "median": 0.0,
+          "rank": 13
+        }
+      },
+      "overall_perfect_count": 55,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 0.0576393037172111,
+      "overall_rank": 14,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    },
+    "ventris": {
+      "name": "ventris",
+      "version": null,
+      "metric_scores": {
+        "byte_match": {
+          "metric_name": "byte_match",
+          "decompiler_name": "ventris",
+          "perfect_count": 11,
+          "total_count": 56465,
+          "perfect_percentage": 0.019481094483308245,
+          "mean": 0.43945685204079316,
+          "median": 0.3903043170559094,
+          "rank": 10
+        },
+        "ged": {
+          "metric_name": "ged",
+          "decompiler_name": "ventris",
+          "perfect_count": 77,
+          "total_count": 91062,
+          "perfect_percentage": 0.08455777382442731,
+          "mean": 28.254545454545454,
+          "median": 3.0,
+          "rank": 11
+        },
+        "type_match": {
+          "metric_name": "type_match",
+          "decompiler_name": "ventris",
+          "perfect_count": 9,
+          "total_count": 88236,
+          "perfect_percentage": 0.010199918400652794,
+          "mean": 0.2141583918069427,
+          "median": 0.10526315789473684,
+          "rank": 14
+        }
+      },
+      "overall_perfect_count": 81,
+      "overall_total_count": 95421,
+      "overall_perfect_percentage": 0.08488697456534725,
+      "overall_rank": 12,
+      "total_functions_evaluated": 0,
+      "total_binaries_evaluated": 0,
+      "evaluation_time_seconds": 0.0
+    }
+  },
+  "total_functions": 96103,
+  "total_binaries": 770,
+  "raw_data_path": null
+}

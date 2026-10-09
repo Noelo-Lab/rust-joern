@@ -387,14 +387,19 @@ fn append_macro_methods(
     }
 }
 
-/// CDT converts lambda bodies while the surrounding lexical scopes are still
-/// active. Its own parameter scope is already popped at that point. Retain
-/// cross-method references explicitly because node IDs are local to each CPG.
+/// CDT converts nested bodies while the surrounding lexical scopes are active.
+/// Lambda parameter scopes are already popped, unlike GNU nested methods.
+/// Retain cross-method references because node IDs are local to each CPG.
 fn bind_lambda_captures(syntax: &[syntax::Function], functions: &mut [FunctionGraph]) {
     for (index, lambda) in syntax.iter().enumerate() {
         if lambda.lambda_parent.is_none() {
             continue;
         }
+        let marker_kind = if lambda.lambda {
+            "METHOD_REF"
+        } else {
+            "METHOD"
+        };
         let mut ancestors: Vec<_> = syntax
             .iter()
             .enumerate()
@@ -416,7 +421,8 @@ fn bind_lambda_captures(syntax: &[syntax::Function], functions: &mut [FunctionGr
                 .nodes
                 .iter()
                 .filter(|node| {
-                    node.kind == "METHOD_REF"
+                    node.kind == marker_kind
+                        && node.id != 0
                         && node.start_byte <= lambda.span.start
                         && node.end_byte >= lambda.span.end
                 })
@@ -438,12 +444,11 @@ fn bind_lambda_captures(syntax: &[syntax::Function], functions: &mut [FunctionGr
             }
             for &scope in scopes.iter().rev() {
                 for node in &graph.nodes {
-                    let visible = node.kind == "METHOD_PARAMETER_IN"
-                        && parent.lambda_parent.is_none()
-                        && scope == 0
-                        || node.kind == "LOCAL"
-                            && node.start_byte <= call.start_byte
-                            && parents[node.id as usize] == Some(scope);
+                    let visible =
+                        node.kind == "METHOD_PARAMETER_IN" && !parent.lambda && scope == 0
+                            || node.kind == "LOCAL"
+                                && node.start_byte <= call.start_byte
+                                && parents[node.id as usize] == Some(scope);
                     if visible && let Some(name) = &node.name {
                         bindings.insert(
                             name.clone(),

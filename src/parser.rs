@@ -3,7 +3,8 @@
 use std::collections::{HashMap, HashSet};
 
 use crate::lexer::{
-    RetainedMacroInvocation, Token, TokenKind, lex_preprocessed, lex_preprocessed_with_macros,
+    RetainedMacroInvocation, Token, TokenKind, lex_preprocessed,
+    lex_preprocessed_with_macros_for_language,
 };
 use crate::syntax::*;
 
@@ -14,7 +15,7 @@ pub fn parse(source: &str, cpp: bool) -> TranslationUnit {
 
 pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> TranslationUnit {
     let (tokens, diagnostics, retained_macro_invocations) =
-        lex_preprocessed_with_macros(source, preprocessed);
+        lex_preprocessed_with_macros_for_language(source, preprocessed, cpp);
     let limit = tokens.len();
     let mut parser = Parser {
         source,
@@ -53,7 +54,7 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         retained_macro_call_ends: HashSet::new(),
     };
     let mut functions = Vec::new();
-    parser.translation_scope("", &mut functions);
+    parser.translation_scope("", &mut functions, false);
     functions.append(&mut parser.function_declarations);
     let declaration_count = functions
         .iter()
@@ -156,6 +157,60 @@ fn joern_declaration_order(names: &[String], registered_count: usize) -> HashMap
 #[cfg(test)]
 mod expression_port_tests {
     use super::*;
+
+    #[test]
+    fn consecutive_casts_keep_the_prefix_increment_operand() {
+        for cpp in [false, true] {
+            let unit = parse(
+                "int f(int x) { short *p; p = (short *)(unsigned char)++x; return x; }",
+                cpp,
+            );
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            let StmtKind::Expression(Expr {
+                kind: ExprKind::Binary { right, .. },
+                ..
+            }) = &body[1].kind
+            else {
+                panic!()
+            };
+            let ExprKind::Cast { argument, .. } = &right.kind else {
+                panic!()
+            };
+            let ExprKind::Cast { argument, .. } = &argument.kind else {
+                panic!()
+            };
+            assert!(matches!(&argument.kind,
+                ExprKind::Unary {op,argument,postfix:false}
+                    if op == "++" && matches!(&argument.kind,ExprKind::Identifier(name) if name == "x")));
+            assert!(matches!(body[2].kind, StmtKind::Return(_)));
+        }
+    }
+
+    #[test]
+    fn unfinished_switch_retains_its_body_and_complete_inner_switch() {
+        for cpp in [false, true] {
+            let unit = parse(
+                "int f(int n) { n++; switch(n) { case 1: n--; switch(n) { case 2: return n; default: n++; }",
+                cpp,
+            );
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            assert_eq!(body.len(), 2);
+            let StmtKind::Block(recovered) = &body[1].kind else {
+                panic!()
+            };
+            assert!(
+                recovered
+                    .iter()
+                    .any(|s| matches!(s.kind, StmtKind::Switch { .. }))
+            );
+        }
+    }
 
     #[test]
     fn indirect_calls_retain_cast_and_dereference_receiver() {
@@ -392,6 +447,160 @@ mod expression_port_tests {
                     .all(|s| matches!(s.kind, StmtKind::Expression(_)))
             );
         }
+    }
+
+    #[test]
+    fn grouped_calls_with_pointer_operands_remain_executable() {
+        fn unbracketed(expression: &Expr) -> &Expr {
+            if let ExprKind::Bracketed(inner) = &expression.kind {
+                unbracketed(inner)
+            } else {
+                expression
+            }
+        }
+        let source = "int compare(char **s,char **t){return (strcoll(*s,*t));} int checked(char *s){return (legal(s,(int*)((void*)0)));} int rounded(int x){return (rounder(x*10000));} int loop(int *p,int x){while((*(int*)((long)x*8+42) && (compare((char*)((long)x*8+42),p))))x++;return x;}";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            for name in ["compare", "checked", "rounded"] {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!()
+                };
+                assert!(
+                    matches!(&body[0].kind, StmtKind::Return(Some(value)) if matches!(unbracketed(value).kind, ExprKind::Call { .. })),
+                    "{name}: {:?}",
+                    body[0]
+                );
+            }
+            let function = unit.functions.iter().find(|f| f.name == "loop").unwrap();
+            let StmtKind::Block(body) = &function.body.kind else {
+                panic!()
+            };
+            assert!(
+                matches!(&body[0].kind, StmtKind::While { condition, .. } if matches!(&unbracketed(condition).kind, ExprKind::Binary { op, .. } if op=="&&"))
+            );
+        }
+    }
+
+    #[test]
+    fn grouped_products_and_array_bounds_remain_expressions() {
+        fn unbracketed(expression: &Expr) -> &Expr {
+            if let ExprKind::Bracketed(inner) = &expression.kind {
+                unbracketed(inner)
+            } else {
+                expression
+            }
+        }
+        let source = "typedef unsigned int I; typedef unsigned int U; int product(int n){return(n*(2+sizeof(int)));} int bounds(char*p,char*a){return p==&(a[60*1024-1]);} int cast_bounds(char*p,char*a){return ((char*)p>=&(a[0]))&&((char*)p<=&(a[(I)(60*1024)-1]));} int cast_product(int bits){return ((U)(84000000*0.000125/(U)((84000000/0xFFFF)*0.0005+1))+((bits*(U)(84000000*0.000125/(U)((84000000/0xFFFF)*0.0005+1)))/0xFFFF));}";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            for (name, expected_operator) in [
+                ("product", "*"),
+                ("bounds", "=="),
+                ("cast_bounds", "&&"),
+                ("cast_product", "+"),
+            ] {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!()
+                };
+                assert!(
+                    matches!(&body[0].kind, StmtKind::Return(Some(value)) if matches!(&unbracketed(value).kind, ExprKind::Binary { op, .. } if op == expected_operator)),
+                    "{name}: {:?}",
+                    body[0]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn cast_statement_expressions_keep_their_inner_statements() {
+        let source = "int direct(int x){return (int)({x++;x;});} int assigned(int x){x=(int)({if(x)x--;x;});return x;} int argument(int x){known((int)({if(x)x--;x;}));return x;} int pointer(int*x){int*p;p=(int*)({x++;x;});return *p;} int bare(int x){known({0});return x;} int bad_condition(int x){if(!({0}<x))x++;return x;}";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let body = |name| {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!()
+                };
+                body
+            };
+            assert!(
+                matches!(&body("direct")[0].kind, StmtKind::Return(Some(Expr { kind: ExprKind::Cast { argument, .. }, .. })) if matches!(argument.kind, ExprKind::Statement(_)))
+            );
+            for name in ["assigned", "argument"] {
+                assert!(
+                    matches!(body(name)[0].kind, StmtKind::Expression(_)),
+                    "{name}: {:?}",
+                    body(name)
+                );
+            }
+            assert!(matches!(body("pointer")[1].kind, StmtKind::Expression(_)));
+            if !cpp {
+                assert!(matches!(body("bare")[0].kind, StmtKind::Problem));
+            }
+            assert!(
+                matches!(&body("bad_condition")[0].kind, StmtKind::If { condition, .. } if matches!(condition.kind, ExprKind::Problem(_)))
+            );
+        }
+    }
+
+    #[test]
+    fn abstract_pointer_types_remain_distinct_from_grouped_calls() {
+        for cpp in [false, true] {
+            for type_id in [
+                "int(*)(int)",
+                "int(*)[4]",
+                "int[sizeof(int)]",
+                "int(*)(int n, char *p)",
+                "int(*const)[60*1024-1]",
+                "int(*(*)(int))[4]",
+                "Unknown(*)(int)",
+                "Unknown**const",
+            ] {
+                let source = format!(
+                    "int f(void*p){{return ({type_id})p;}} int missing(void){{return ({type_id});}}"
+                );
+                let unit = parse(&source, cpp);
+                assert!(
+                    unit.diagnostics.is_empty(),
+                    "{type_id}: {:?}",
+                    unit.diagnostics
+                );
+                let function = unit.functions.iter().find(|f| f.name == "f").unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!()
+                };
+                assert!(
+                    matches!(&body[0].kind, StmtKind::Return(Some(value)) if matches!(value.kind, ExprKind::Cast { .. })),
+                    "{type_id}: {:?}",
+                    body[0]
+                );
+                let function = unit.functions.iter().find(|f| f.name == "missing").unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!()
+                };
+                assert!(
+                    matches!(body[0].kind, StmtKind::Problem),
+                    "{type_id}: {:?}",
+                    body[0]
+                );
+            }
+        }
+        let unit = parse(
+            "struct Box{}; int f(void*p){return (int(Box::*)(int))p;}",
+            true,
+        );
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(
+            matches!(&body[0].kind, StmtKind::Return(Some(value)) if matches!(value.kind, ExprKind::Cast { .. }))
+        );
     }
 
     #[test]
@@ -638,10 +847,83 @@ impl Parser<'_> {
         None
     }
 
-    fn translation_scope(&mut self, prefix: &str, functions: &mut Vec<Function>) {
+    fn brace_end(&self, start: usize, limit: usize) -> Option<usize> {
+        if !matches!(self.text(start), "{" | "<%") {
+            return None;
+        }
+        let mut depth = 0usize;
+        for i in start..limit {
+            match self.text(i) {
+                "{" | "<%" => depth += 1,
+                "}" | "%>" => {
+                    depth -= 1;
+                    if depth == 0 {
+                        return Some(i);
+                    }
+                }
+                _ => {}
+            }
+        }
+        None
+    }
+
+    fn problem_initializer_end(&self, open: usize) -> Option<usize> {
+        let mut depth = 1usize;
+        for i in open + 1..self.limit {
+            if self.text(i) == "\\"
+                || (self.tokens[i].kind == TokenKind::Literal
+                    && unclosed_quoted_literal(self.text(i)))
+            {
+                // AbstractGNUSourceCodeParser.skipProblemDeclaration starts
+                // at the failed operand, then balances only subsequent braces.
+                return Some(self.problem_declaration_end(i));
+            }
+            match self.text(i) {
+                "{" | "<%" => depth += 1,
+                "}" | "%>" => {
+                    depth -= 1;
+                    if depth == 0 {
+                        return None;
+                    }
+                }
+                _ => {}
+            }
+        }
+        None
+    }
+
+    fn problem_declaration_end(&self, start: usize) -> usize {
+        let mut balance = 0isize;
+        for end in start..self.limit {
+            match self.text(end) {
+                ";" if balance == 0 => return end + 1,
+                "{" | "<%" => balance += 1,
+                "}" | "%>" => {
+                    balance -= 1;
+                    if balance <= 0 {
+                        let after = end + 1;
+                        return after + usize::from(self.text(after) == ";");
+                    }
+                }
+                _ => {}
+            }
+        }
+        self.limit
+    }
+
+    fn translation_scope(&mut self, prefix: &str, functions: &mut Vec<Function>, enclosed: bool) {
         let old_scope = std::mem::replace(&mut self.lexical_scope, prefix.to_string());
         let old_using_namespaces = self.using_namespaces.clone();
-        while self.pos < self.limit && !self.at("}") {
+        while self.pos < self.limit {
+            if self.at("}") {
+                if enclosed {
+                    break;
+                }
+                // At translation-unit scope a stray closing brace is a CDT
+                // problem declaration; it does not end the translation unit.
+                self.pos += 1;
+                continue;
+            }
             if self.eat(";") {
                 continue;
             }
@@ -695,14 +977,24 @@ impl Parser<'_> {
                 }
             }
             if cursor == self.limit {
-                if start < cursor {
-                    self.diagnose(start, cursor, "unfinished top-level declaration");
-                }
+                // An unterminated translation-unit declaration is a CDT
+                // problem declaration, including a header without its final
+                // semicolon. It contributes no method or executable AST.
                 self.pos = cursor;
                 break;
             }
             if self.text(cursor) == "}" {
-                break;
+                if enclosed {
+                    break;
+                }
+                self.pos = cursor + 1;
+                continue;
+            }
+            if matches!(self.text(cursor), "(" | "[") {
+                // An unmatched declaration group is a CDT problem, whose
+                // recovery ignores group delimiters and skips its brace body.
+                self.pos = self.problem_declaration_end(cursor);
+                continue;
             }
             let is_typedef = (start..cursor).any(|i| self.text(i) == "typedef");
             let header = if is_typedef {
@@ -737,6 +1029,13 @@ impl Parser<'_> {
                     self.pos = cursor + 1;
                     continue;
                 }
+                if !is_typedef && header.is_none() && self.declaration_shape_problem(start, cursor)
+                {
+                    // A cast/address expression cannot name a global object.
+                    // Avoid creating bindings from omitted problem declarators.
+                    self.pos = cursor + 1;
+                    continue;
+                }
                 // CDT's elaborated-type declaration path creates declarator
                 // locals, including function declarators, rather than methods.
                 let elaborated = (start..self.specifier_end(start, cursor))
@@ -759,6 +1058,24 @@ impl Parser<'_> {
                         |header| self.specifier_end(start, cursor).min(header.name_start),
                     );
                     let base_type = self.clean_type(start, base_end);
+                    let record_scope = if self.cpp {
+                        self.class_scopes.contains(prefix)
+                    } else {
+                        !prefix.is_empty()
+                    };
+                    if record_scope
+                        && header.as_ref().is_some_and(|header| {
+                            header.name_start < self.specifier_end(start, cursor)
+                                && self
+                                    .unknown_function_suffix(header.parameters_end + 1, cursor)
+                                    .is_some()
+                        })
+                    {
+                        // A function-shaped macro followed by a field name
+                        // is one CDT problem member, not a method declaration.
+                        self.pos = cursor + 1;
+                        continue;
+                    }
                     if let Some(header) = header.filter(|h| h.name_start < base_end) {
                         // A C++ constructor has no return decl-specifier;
                         // specifier recovery may consume its class-name token.
@@ -839,7 +1156,7 @@ impl Parser<'_> {
                         self.extern_c = self.text(start + 1) == "\"C\"";
                     }
                     self.pos = cursor + 1;
-                    self.translation_scope(&nested, functions);
+                    self.translation_scope(&nested, functions, true);
                     self.extern_c = previous_linkage;
                     if let Some(variables) = outer_variables {
                         self.variables = variables;
@@ -888,6 +1205,10 @@ impl Parser<'_> {
                         }
                     }
                     self.eat(";");
+                } else if (start..cursor).any(|i| self.text(i) == "=")
+                    && let Some(after) = self.problem_initializer_end(cursor)
+                {
+                    self.pos = after;
                 } else {
                     self.diagnose(cursor, cursor + 1, "unclosed top-level brace");
                     self.pos = self.limit;
@@ -1254,24 +1575,75 @@ impl Parser<'_> {
         definition: bool,
         functions: &mut Vec<Function>,
     ) {
-        if self.cdt_problem_declaration(start, body_start) {
+        if self.cdt_problem_declaration(start, body_start)
+            || self.cdt_problem_record_header(start, body_start)
+            || self.cdt_problem_return_prefix(start, &header)
+            || self.cdt_problem_parameters(&header)
+        {
             // The original CDT version recovers these as problem declarations;
             // Joern's declaration conversion emits no method for them.
             if definition {
                 self.pos = self
-                    .matching(body_start, self.limit)
+                    .brace_end(body_start, self.limit)
                     .map_or(self.limit, |close| close + 1);
             }
             return;
         }
-        let mut return_start = start;
-        if self.text(return_start) == "template"
-            && self.text(return_start + 1) == "<"
-            && let Some(close) = self.angle_close(return_start + 1, header.name_start)
+        if !definition
+            && let Some(marker) =
+                self.unknown_function_suffix(header.parameters_end + 1, body_start)
         {
-            return_start = close + 1;
+            let declaration_end = header.parameters_end;
+            self.add_function(start, declaration_end, header, prefix, false, functions);
+            if !self.cpp
+                && let Some(mut recovered) = self.function_header(marker, body_start)
+            {
+                recovered.return_type = Some("ANY".into());
+                self.add_function(marker, body_start, recovered, prefix, false, functions);
+            }
+            return;
         }
-        let original_return_start = return_start;
+        let mut direct_parameters = header.parameters_end + 1;
+        while self.cpp && matches!(self.text(direct_parameters), "const" | "volatile") {
+            direct_parameters += 1;
+        }
+        if definition && self.text(direct_parameters) == "(" {
+            // CDT ends the first function declarator before a second direct
+            // parameter list, leaving a method declaration and no body.
+            let body_end = self.matching(body_start, self.limit);
+            self.add_function(
+                start,
+                header.parameters_end,
+                header,
+                prefix,
+                false,
+                functions,
+            );
+            self.pos = body_end.map_or(self.limit, |close| close + 1);
+            return;
+        }
+        if definition
+            && let Some(marker) =
+                self.unknown_function_suffix(header.parameters_end + 1, body_start)
+        {
+            // CDT finishes the initial declarator before an unknown suffix.
+            // Its following brace body belongs to a recovered declaration,
+            // not to that method's declaration stub.
+            let declaration_end = header.parameters_end;
+            let body_end = self.matching(body_start, self.limit);
+            self.add_function(start, declaration_end, header, prefix, false, functions);
+            if !self.cpp
+                && let Some(mut recovered) = self.function_header(marker, body_start)
+            {
+                recovered.return_type = Some("ANY".into());
+                self.add_function(marker, body_start, recovered, prefix, true, functions);
+            } else {
+                self.pos = body_end.map_or(self.limit, |close| close + 1);
+            }
+            return;
+        }
+        let (return_start, recovered_return_type) =
+            self.return_specifier_start(start, header.name_start);
         let base_end = self.specifier_end(return_start, header.name_start);
         let primitive_return = (return_start..base_end).any(|i| type_word(self.text(i)));
         if (!self.cpp && self.text(base_end) == "<")
@@ -1292,20 +1664,7 @@ impl Parser<'_> {
             }
             return;
         }
-        while return_start + 1 < header.name_start
-            && self.tokens[return_start].kind == TokenKind::Identifier
-            && self.tokens[return_start + 1].kind == TokenKind::Identifier
-            && !self.explicit_types.contains(self.text(return_start))
-            && !type_word(self.text(return_start))
-            && !qualifier(self.text(return_start))
-            && !type_word(self.text(return_start + 1))
-            && !qualifier(self.text(return_start + 1))
-        {
-            // CDT emits a leading unbound specifier as a global problem node
-            // and recovers the final named return type as a real definition.
-            return_start += 1;
-        }
-        let return_type = if return_start != original_return_start {
+        let return_type = if recovered_return_type {
             self.clean_type(return_start, header.name_start)
         } else {
             header
@@ -1313,6 +1672,42 @@ impl Parser<'_> {
                 .clone()
                 .unwrap_or_else(|| self.clean_type(return_start, header.name_start))
         };
+        let return_type = canonical_primitive_specifiers(&return_type);
+        if self.cpp && return_type.is_empty() {
+            let method = header.name.rsplit("::").next().unwrap_or(&header.name);
+            let owner = header
+                .name
+                .rsplit_once("::")
+                .and_then(|(owner, _)| self.resolve_class_name(owner))
+                .or_else(|| {
+                    self.class_scopes
+                        .contains(prefix)
+                        .then(|| prefix.to_string())
+                });
+            let constructor = owner.as_ref().is_some_and(|owner| {
+                method.strip_prefix('~').unwrap_or(method)
+                    == owner.rsplit("::").next().unwrap_or(owner)
+            });
+            let conversion = owner.is_some()
+                && (header.name_start..header.parameters_start - 1).any(|i| {
+                    self.text(i) == "operator"
+                        && self
+                            .tokens
+                            .get(i + 1)
+                            .is_some_and(|t| t.kind == TokenKind::Identifier)
+                        && !matches!(self.text(i + 1), "new" | "delete" | "co_await")
+                });
+            if !constructor && !conversion {
+                // Unlike C, CDT's C++ parser does not accept an omitted
+                // return specifier on an ordinary function declaration.
+                if definition {
+                    self.pos = self
+                        .brace_end(body_start, self.limit)
+                        .map_or(self.limit, |close| close + 1);
+                }
+                return;
+            }
+        }
         let return_binding_type = if return_type.is_empty() && self.cpp {
             "ANY".into()
         } else if return_type.is_empty() {
@@ -1381,6 +1776,30 @@ impl Parser<'_> {
                     }
                 })
                 .collect()
+        } else if definition
+            && !self.cpp
+            && self
+                .split_ranges(header.parameters_start, header.parameters_end, ",")
+                .iter()
+                .all(|&(a, b)| {
+                    a == b
+                        || b == a + 1
+                            && self.tokens[a].kind == TokenKind::Identifier
+                            && !type_word(self.text(a))
+                            && !qualifier(self.text(a))
+                            && !self.explicit_types.contains(self.text(a))
+                })
+        {
+            self.split_ranges(header.parameters_start, header.parameters_end, ",")
+                .into_iter()
+                .filter(|(a, b)| a < b)
+                .map(|(a, b)| Parameter {
+                    name: self.raw(a, b),
+                    type_name: "ANY".into(),
+                    function_pointer: false,
+                    span: self.span(a, b),
+                })
+                .collect()
         } else {
             self.parameters(header.parameters_start, header.parameters_end)
         };
@@ -1399,7 +1818,10 @@ impl Parser<'_> {
             .next()
             .unwrap_or(&header.name)
             .to_string();
-        let name = if let Some(operator) = lexical_name.strip_prefix("operator") {
+        let name = if let Some(operator) = lexical_name.strip_prefix("operator")
+            && self.cpp
+            && (header.name_start..header.parameters_start).any(|i| self.text(i) == "operator")
+        {
             if definition {
                 operator.to_string()
             } else {
@@ -1509,8 +1931,15 @@ impl Parser<'_> {
                 .next()
                 .unwrap_or(&qualified_name)
                 .to_string()
+        } else if (header.name_start..header.parameters_start - 1).any(|i| self.text(i) == ")") {
+            // A C function's outer declarator has no name when only its name
+            // is grouped. FullNameProvider falls back to unresolvedNamespace;
+            // a parameter list inside the group still names the declarator.
+            format!("<unresolvedNamespace>.{name}")
         } else {
-            qualified_name
+            // C function bindings have a bare name, including declarations
+            // encountered while converting a record's members.
+            name.clone()
         };
         for parameter in &parameters {
             self.variables.insert(parameter.name.clone());
@@ -1552,7 +1981,10 @@ impl Parser<'_> {
         let old_ast_parent = std::mem::replace(&mut self.lambda_ast_parent, full_name.clone());
         self.in_function_body = definition;
         let original_body_end = definition
-            .then(|| self.matching(body_start, self.limit))
+            .then(|| {
+                self.matching(body_start, self.limit)
+                    .or_else(|| self.brace_end(body_start, self.limit))
+            })
             .flatten();
         self.asm_problem_recovery = false;
         let body = if definition {
@@ -1609,15 +2041,169 @@ impl Parser<'_> {
         });
     }
 
+    fn return_specifier_start(&self, start: usize, name_start: usize) -> (usize, bool) {
+        let mut cursor = start;
+        if self.text(cursor) == "template"
+            && self.text(cursor + 1) == "<"
+            && let Some(close) = self.angle_close(cursor + 1, name_start)
+        {
+            cursor = close + 1;
+        }
+        let original = cursor;
+        while cursor + 1 < name_start
+            && self.tokens[cursor].kind == TokenKind::Identifier
+            && self.tokens[cursor + 1].kind == TokenKind::Identifier
+            && !self.explicit_types.contains(self.text(cursor))
+            && !type_word(self.text(cursor))
+            && !qualifier(self.text(cursor))
+            && !type_word(self.text(cursor + 1))
+            && !qualifier(self.text(cursor + 1))
+        {
+            // Leading unbound specifiers become separate CDT problem nodes.
+            cursor += 1;
+        }
+        (cursor, cursor != original)
+    }
+
+    fn cdt_problem_parameters(&self, header: &Header) -> bool {
+        self.split_ranges(header.parameters_start, header.parameters_end, ",")
+            .into_iter()
+            .any(|(start, end)| {
+                if start == end || self.text(start) != "(" {
+                    return false;
+                }
+                if self
+                    .matching(start, end)
+                    .is_some_and(|close| close + 1 < end)
+                    && self.grouped_declarator_problem(start, end)
+                {
+                    // Formal parameters may contain grouped declarators, but
+                    // a cast type-id followed by an address is an expression.
+                    return true;
+                }
+                if self.cpp {
+                    return true;
+                }
+                let specifier = self.text(start + 1);
+                self.text(start + 2) == "("
+                    && !type_word(specifier)
+                    && !qualifier(specifier)
+                    && !self.explicit_types.contains(specifier)
+                    && !matches!(specifier, "typeof" | "__typeof__" | "__typeof" | "_Atomic")
+            })
+    }
+
+    fn cdt_problem_return_prefix(&self, start: usize, header: &Header) -> bool {
+        // Shared declaration specifiers precede all comma-separated declarators.
+        // A later declarator must not reparse an earlier function's parameter list
+        // as part of its own return type.
+        let start = if header.return_type.is_some() {
+            self.split_ranges(start, header.name_start, ",")
+                .last()
+                .map_or(start, |&(from, _)| from)
+        } else {
+            start
+        };
+        let (start, _) = self.return_specifier_start(start, header.name_start);
+        let mut cursor = self.specifier_end(start, header.name_start);
+        while cursor < header.name_start {
+            if let Some(after) = self.skip_attribute(cursor, header.name_start) {
+                cursor = after;
+            } else if matches!(self.text(cursor), "*" | "&" | "&&" | "(" | ")")
+                || qualifier(self.text(cursor))
+            {
+                cursor += 1;
+            } else if self.cpp
+                && self.tokens[cursor].kind == TokenKind::Identifier
+                && self.text(cursor + 1) == "::"
+            {
+                // A C++ member-pointer operator owns a qualified scope.
+                cursor += 2;
+            } else {
+                return true;
+            }
+        }
+        false
+    }
+
+    fn unknown_function_suffix(&self, start: usize, end: usize) -> Option<usize> {
+        if (start..end).any(|i| self.text(i) == ";") {
+            return None;
+        }
+        let mut i = start;
+        while i < end {
+            if self.text(i) == "," {
+                return None;
+            }
+            if let Some(after) = self.skip_attribute(i, end) {
+                i = after;
+            } else if matches!(
+                self.text(i),
+                "__cdecl" | "__fastcall" | "__pascal" | "__stdcall" | "__thread"
+            ) {
+                // Joern's default defines and the GNU scanner expand these
+                // calling convention/storage macros to attributes or nothing.
+                i += 1;
+            } else if matches!(self.text(i), "__asm__" | "__asm" | "asm") {
+                i += 1;
+                if self.text(i) == "(" {
+                    i = self.matching(i, end).map_or(end, |close| close + 1);
+                }
+            } else if self.cpp
+                && matches!(
+                    self.text(i),
+                    "const" | "volatile" | "override" | "final" | "throw" | "noexcept"
+                )
+            {
+                i += 1;
+                if self.text(i) == "(" {
+                    i = self.matching(i, end).map_or(end, |close| close + 1);
+                }
+            } else if matches!(self.text(i), "->" | ":" | "requires") {
+                return None;
+            } else if matches!(self.text(i), "(" | "[") {
+                i = self.matching(i, end).map_or(end, |close| close + 1);
+            } else if matches!(self.text(i), ")" | "*" | "&" | "&&") {
+                i += 1;
+            } else {
+                return Some(i);
+            }
+        }
+        None
+    }
+
     fn cdt_problem_declaration(&self, start: usize, end: usize) -> bool {
+        if (start..end).any(|i| self.tokens[i].macro_recovery) {
+            return true;
+        }
+        if !self.cpp {
+            let mut cursor = start;
+            while cursor < end {
+                if let Some(after) = self.skip_attribute(cursor, end) {
+                    cursor = after;
+                } else if self.text(cursor) == "[" {
+                    cursor = self.matching(cursor, end).map_or(end, |close| close + 1);
+                } else if matches!(self.text(cursor), "&" | "&&") {
+                    // C reference declarators are CDT problem declarations;
+                    // expressions within valid array bounds remain supported.
+                    return true;
+                } else {
+                    cursor += 1;
+                }
+            }
+        }
         let mut specifier_start = start;
         while let Some(after) = self.skip_attribute(specifier_start, end) {
             specifier_start = after;
         }
         (start..end).any(|i| {
             (self.text(i) == "_Noreturn"
-                && (self.cpp
-                    || self.tokens[specifier_start].span.line == self.tokens[i + 1].span.line))
+                && if self.cpp {
+                    i != start
+                } else {
+                    !self.in_function_body
+                        && self.tokens[specifier_start].span.line == self.tokens[i + 1].span.line
+                })
                 || self.text(i) == "@"
                 || (!self.cpp && self.text(i) == "::")
                 || (!self.cpp && self.text(i) == "[" && self.text(i + 1) == "[")
@@ -1629,7 +2215,68 @@ impl Parser<'_> {
         })
     }
 
+    fn cdt_problem_record_header(&self, start: usize, end: usize) -> bool {
+        let mut cursor = start;
+        while cursor < end {
+            if let Some(after) = self.skip_attribute(cursor, end) {
+                cursor = after;
+                continue;
+            }
+            if matches!(self.text(cursor), "struct" | "union" | "class" | "enum") {
+                let mut tag = cursor + 1;
+                while let Some(after) = self.skip_attribute(tag, end) {
+                    tag = after;
+                }
+                if self
+                    .tokens
+                    .get(tag)
+                    .is_some_and(|token| token.kind == TokenKind::Identifier)
+                {
+                    let name = tag;
+                    tag += 1;
+                    while let Some(after) = self.skip_attribute(tag, end) {
+                        tag = after;
+                    }
+                    if self.text(tag) == "(" {
+                        // A parenthesized function declarator can follow a
+                        // record return type. Its name belongs inside that
+                        // declarator, rather than to the preceding record tag.
+                        return self
+                            .function_header(start, end)
+                            .is_none_or(|header| header.name_start <= name);
+                    }
+                }
+            }
+            cursor = if matches!(self.text(cursor), "(" | "[") {
+                self.matching(cursor, end).map_or(end, |close| close + 1)
+            } else {
+                cursor + 1
+            };
+        }
+        false
+    }
+
     fn cdt_problem_function_header(&self, start: usize, end: usize) -> bool {
+        if self.cdt_problem_record_header(start, end) {
+            return true;
+        }
+        if (start..end).any(|i| self.tokens[i].macro_recovery) {
+            return true;
+        }
+        if self.specifier_end(start, end) == end || (start..end).any(|i| self.text(i) == ":") {
+            // A type-only brace header has no declarator. A global label or
+            // colon-bearing problem preamble likewise creates no function.
+            return true;
+        }
+        if end >= start + 2
+            && !type_word(self.text(start))
+            && !qualifier(self.text(start))
+            && (start..end).all(|i| self.tokens[i].kind == TokenKind::Identifier)
+        {
+            // An unresolved name-only brace header has no function
+            // declarator. CDT recovers its body as one problem declaration.
+            return true;
+        }
         let mut cursor = start;
         while cursor < end {
             if let Some(after) = self.skip_attribute(cursor, end) {
@@ -2120,8 +2767,12 @@ impl Parser<'_> {
         while i < end {
             if matches!(self.text(i), "(" | "[" | "{") {
                 i = self.matching(i, end).map_or(i + 1, |n| n + 1);
-            } else if self.text(i) == "<"
+            } else if self.cpp
+                && self.text(i) == "<"
                 && i > start
+                && (!self.variables.contains(self.text(i - 1))
+                    || (self.function_returns.contains_key(self.text(i - 1))
+                        && !self.variable_types.contains_key(self.text(i - 1))))
                 && (self.types.contains(self.text(i - 1))
                     || self.text(i - 1) == "template"
                     || (i >= 2 && self.text(i - 2) == "::"))
@@ -2366,6 +3017,9 @@ impl Parser<'_> {
         if start == end {
             return Vec::new();
         }
+        if self.declaration_shape_problem(start, end) {
+            return Vec::new();
+        }
         let base_end = self.specifier_end(start, end);
         let is_typedef = (start..base_end).any(|i| self.text(i) == "typedef");
         let (_, first_suffix) = self.declarator_name(base_end, end);
@@ -2491,7 +3145,7 @@ impl Parser<'_> {
                 } else {
                     b
                 };
-                self.expression_range(init, init_end)
+                self.initializer_expression_range(init, init_end)
             });
             let type_name = self.declarator_type(start, base_end, Some(name_index), b);
             if !is_typedef {
@@ -2521,8 +3175,347 @@ impl Parser<'_> {
         result
     }
 
+    fn local_problem_enum_statement(&mut self, start: usize) -> Option<Stmt> {
+        if !self.in_function_body {
+            return None;
+        }
+        let mut head = start;
+        loop {
+            if let Some(after) = self.skip_attribute(head, self.limit) {
+                head = after;
+            } else if qualifier(self.text(head)) {
+                head += 1;
+            } else {
+                break;
+            }
+        }
+        if self.text(head) != "enum" {
+            return None;
+        }
+        let mut open = head + 1;
+        while open < self.limit && !matches!(self.text(open), "{" | ";" | "}" | "=") {
+            if let Some(after) = self.skip_attribute(open, self.limit) {
+                open = after;
+            } else {
+                open += 1;
+            }
+        }
+        if self.text(open) != "{" {
+            return None;
+        }
+        let close = self.matching(open, self.limit)?;
+        let invalid = self
+            .split_ranges(open + 1, close, ",")
+            .iter()
+            .any(|&(a, b)| a < b && self.tokens[a].kind != TokenKind::Identifier);
+        if !invalid {
+            return None;
+        }
+        let mut after = close + 1;
+        if self.text(after) == ";" {
+            after += 1;
+        }
+        // In a compound statement CDT's enum failure has already advanced
+        // past its terminator when skipProblemStatement resumes. It therefore
+        // consumes the next statement too; translation-unit recovery differs.
+        self.pos = if after == self.limit || matches!(self.text(after), "}" | "%>") {
+            after
+        } else {
+            self.problem_declaration_end(after)
+        };
+        Some(Stmt {
+            kind: StmtKind::Problem,
+            span: self.span(start, self.pos),
+        })
+    }
+
+    fn nested_function_statement(&mut self, start: usize) -> Option<Stmt> {
+        if !self.in_function_body {
+            return None;
+        }
+        let mut head = start;
+        loop {
+            if let Some(after) = self.skip_attribute(head, self.limit) {
+                head = after;
+            } else if self.text(head) == "__extension__" {
+                head += 1;
+            } else {
+                break;
+            }
+        }
+        if matches!(
+            self.text(head),
+            "if" | "else"
+                | "while"
+                | "do"
+                | "for"
+                | "switch"
+                | "case"
+                | "default"
+                | "return"
+                | "break"
+                | "continue"
+                | "goto"
+                | "try"
+                | "catch"
+                | "throw"
+                | "asm"
+                | "__asm"
+                | "__asm__"
+        ) || self.text(head + 1) == ":"
+        {
+            return None;
+        }
+        let mut body_start = start;
+        while body_start < self.limit {
+            match self.text(body_start) {
+                "(" | "[" => body_start = self.matching(body_start, self.limit)? + 1,
+                ";" | "=" | "}" | "%>" => return None,
+                "{" | "<%" => break,
+                _ => body_start += 1,
+            }
+        }
+        if body_start == self.limit || (start..body_start).any(|i| self.text(i) == "typedef") {
+            return None;
+        }
+        if !self.looks_declaration(head, body_start) {
+            return None;
+        }
+        let header = self.function_header(start, body_start)?;
+        let mut kind = StmtKind::Empty;
+        if self.cpp {
+            // A C++ local function definition is a problem declaration. CDT
+            // skips its body without creating a method or executable node.
+            self.pos = self.problem_declaration_end(body_start);
+        } else {
+            let parent = self.current_method.clone();
+            let inherited_bindings: Vec<_> = self
+                .variable_types
+                .iter()
+                .map(|(name, type_name)| (name.clone(), type_name.clone()))
+                .collect();
+            let inherited_closures: Vec<_> = self
+                .variable_closures
+                .iter()
+                .map(|(name, closure)| (name.clone(), closure.clone()))
+                .collect();
+            let recovery = self.asm_problem_recovery;
+            let mut functions = Vec::new();
+            self.add_function(start, body_start, header, "", true, &mut functions);
+            self.asm_problem_recovery = recovery;
+            for function in &mut functions {
+                function.lambda_parent = Some(parent.clone());
+                function.inherited_bindings = inherited_bindings.clone();
+                function.inherited_closures = inherited_closures.clone();
+            }
+            if let Some(function) = functions.first() {
+                kind = StmtKind::FunctionDefinition {
+                    name: function.name.clone(),
+                    full_name: function.full_name.clone(),
+                };
+            }
+            self.function_declarations.extend(functions);
+        }
+        Some(Stmt {
+            kind,
+            span: self.span(start, self.pos),
+        })
+    }
+
+    fn grouped_declarator_problem(&self, start: usize, end: usize) -> bool {
+        let mut core = start;
+        while core < end {
+            if let Some(after) = self.skip_attribute(core, end) {
+                core = after;
+            } else if matches!(self.text(core), "*" | "&" | "&&") || qualifier(self.text(core)) {
+                core += 1;
+            } else if self.cpp && self.text(core + 1) == "::" {
+                let mut pointer = core;
+                while pointer + 2 < end && self.text(pointer + 1) == "::" {
+                    pointer += 2;
+                }
+                if self.text(pointer) == "*" {
+                    core = pointer + 1;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+        if self.text(core) == "("
+            && let Some(close) = self.matching(core, end)
+            && self.grouped_declarator_problem(core + 1, close)
+        {
+            return true;
+        }
+        let (name, mut suffix) = self.declarator_name(core, end);
+        if name.is_none() {
+            return true;
+        }
+        while suffix < end {
+            if let Some(after) = self.skip_attribute(suffix, end) {
+                suffix = after;
+            } else if matches!(self.text(suffix), "(" | "[") {
+                let Some(close) = self.matching(suffix, end) else {
+                    return true;
+                };
+                suffix = close + 1;
+            } else if self.cpp && self.text(suffix) == "<" {
+                let Some(close) = self.angle_close(suffix, end) else {
+                    return true;
+                };
+                suffix = close + 1;
+            } else if self.cpp && qualifier(self.text(suffix)) {
+                suffix += 1;
+            } else {
+                // A name may have array/function suffixes, but a trailing
+                // pointer or address operand belongs to a cast expression.
+                return true;
+            }
+        }
+        false
+    }
+
+    fn declaration_shape_problem(&self, start: usize, end: usize) -> bool {
+        let base_end = self.specifier_end(start, end);
+        for i in start..base_end {
+            if matches!(self.text(i), "struct" | "union" | "class" | "enum") {
+                let mut tag = i + 1;
+                while let Some(after) = self.skip_attribute(tag, end) {
+                    tag = after;
+                }
+                if self.text(tag) == "<" {
+                    // A record type-id needs a tag before template arguments.
+                    // Decompiled angle-delimited anonymous names are problems.
+                    return true;
+                }
+            }
+        }
+        if self.text(base_end) == "["
+            && !(self.cpp && (start..base_end).any(|i| self.text(i) == "auto"))
+        {
+            return true;
+        }
+        if !self.cpp
+            && self.text(base_end) == "("
+            && self.matching(base_end, end) == Some(base_end + 1)
+        {
+            return true;
+        }
+        for (a, b) in self.split_ranges(base_end, end, ",") {
+            let mut grouped = a;
+            while grouped < b {
+                if let Some(after) = self.skip_attribute(grouped, b) {
+                    grouped = after;
+                } else if matches!(self.text(grouped), "*" | "&" | "&&")
+                    || qualifier(self.text(grouped))
+                {
+                    grouped += 1;
+                } else {
+                    break;
+                }
+            }
+            if self.text(grouped) == "("
+                && let Some(close) = self.matching(grouped, b)
+                && self.grouped_declarator_problem(grouped + 1, close)
+            {
+                return true;
+            }
+        }
+        let mut core = base_end;
+        while core < end {
+            if let Some(after) = self.skip_attribute(core, end) {
+                core = after;
+            } else if matches!(self.text(core), "*" | "&" | "&&" | "(")
+                || qualifier(self.text(core))
+            {
+                core += 1;
+            } else {
+                break;
+            }
+        }
+        // A literal cannot name a declarator, including the fabricated
+        // address form void (*0x1234)(...). Casted pointer calls start with
+        // an outer expression group and never enter this declaration path.
+        self.tokens
+            .get(core)
+            .is_some_and(|token| token.kind == TokenKind::Literal)
+    }
+
     fn looks_declaration(&self, start: usize, end: usize) -> bool {
         let t = self.text(start);
+        if start < end
+            && self.tokens[start].kind == TokenKind::Identifier
+            && !type_word(t)
+            && !qualifier(t)
+            && matches!(self.text(start + 1), "*" | "&" | "&&")
+        {
+            // Named C types cannot introduce reference declarators. CDT
+            // retries those forms as bitwise or logical expressions.
+            if !self.cpp && matches!(self.text(start + 1), "&" | "&&") {
+                return false;
+            }
+            if let (Some(name), after) = self.declarator_name(start + 1, end) {
+                // A pointer qualifier cannot be an expression operand, even
+                // when the leading name also has an ordinary binding.
+                if (start + 1..name).any(|i| qualifier(self.text(i)))
+                    && (after == end || matches!(self.text(after), "=" | "{" | "[" | "("))
+                {
+                    return true;
+                }
+                if (self.variables.contains(t) && !matches!(self.text(after), "=" | "{"))
+                    || (after == end && self.variable_types.contains_key(self.text(name)))
+                    || matches!(
+                        self.text(after),
+                        "==" | "!="
+                            | "<"
+                            | ">"
+                            | "<="
+                            | ">="
+                            | "&&"
+                            | "||"
+                            | "+"
+                            | "-"
+                            | "/"
+                            | "%"
+                            | "^"
+                            | "|"
+                            | "?"
+                            | "."
+                            | "->"
+                    )
+                {
+                    return false;
+                }
+                if self.variables.contains(self.text(name))
+                    && self.text(after) == "("
+                    && let Some(close) = self.matching(after, end)
+                    && close + 1 == end
+                    && self
+                        .split_ranges(after + 1, close, ",")
+                        .iter()
+                        .any(|&(a, b)| b == a + 1 && self.variable_types.contains_key(self.text(a)))
+                {
+                    return false;
+                }
+            }
+        }
+        if self.cpp && start + 1 < end {
+            let operator = alternative_operator(self.text(start + 1));
+            if operator != self.text(start + 1)
+                && (!matches!(operator, "&" | "&&") || self.variables.contains(t))
+            {
+                return false;
+            }
+        }
+        if !type_word(t)
+            && !qualifier(t)
+            && matches!(self.text(start + 1), "*" | "&" | "&&")
+            && self.declarator_name(start + 2, end).0.is_none()
+        {
+            return false;
+        }
         if self.cpp && matches!(t, "new" | "delete" | "noexcept") {
             return false;
         }
@@ -2533,6 +3526,12 @@ impl Parser<'_> {
         }
         if t == "__extension__" {
             return self.looks_declaration(start + 1, end);
+        }
+        if self.cpp {
+            let base_end = self.specifier_end(start, end);
+            if self.text(base_end) == "(" && self.matching(base_end, end) == Some(base_end + 1) {
+                return false;
+            }
         }
         if start < end
             && self.tokens[start].kind == TokenKind::Identifier
@@ -2552,15 +3551,30 @@ impl Parser<'_> {
                     || !self.cpp
                     || !self.variables.contains(self.text(name));
             }
-            if close + 1 == end
-                && self.variables.contains(self.text(name))
-                && !type_word(t)
-                && !qualifier(t)
-            {
-                // Even a real typedef does not turn T(existing_object) into
-                // a new local in the original ambiguous-statement recovery.
-                return false;
+            if close + 1 == end && !type_word(t) && !qualifier(t) {
+                // A syntactically named but unresolved type does not establish
+                // a C typedef binding. C++ also accepts the declaration form
+                // when neither its callee nor grouped name already binds.
+                return !self.variables.contains(self.text(name))
+                    && if self.cpp {
+                        !self.variables.contains(t)
+                    } else {
+                        self.explicit_types.contains(t)
+                    };
             }
+        }
+        if start < end
+            && self.tokens[start].kind == TokenKind::Identifier
+            && !type_word(t)
+            && !qualifier(t)
+            && self.text(start + 1) == "("
+            && self
+                .matching(start + 1, end)
+                .is_some_and(|close| close + 1 == end)
+        {
+            // Empty, literal and multiple argument lists are calls rather
+            // than grouped object declarators, including after named locals.
+            return false;
         }
         if self.cpp {
             let mut after = start + 1;
@@ -2643,10 +3657,7 @@ impl Parser<'_> {
         {
             return true;
         }
-        if start < end
-            && self.tokens[start].kind == TokenKind::Identifier
-            && !self.variables.contains(t)
-        {
+        if start < end && self.tokens[start].kind == TokenKind::Identifier {
             let mut i = start + 1;
             while i + 1 < end && self.text(i) == "::" {
                 i += 2;
@@ -2669,15 +3680,22 @@ impl Parser<'_> {
                     .len()
                     == 1;
             return i < end
-                && (self.tokens[i].kind == TokenKind::Identifier
-                    || matches!(self.text(i), "*" | "&" | "&&")
-                    || grouped_declarator);
+                && ((self.tokens[i].kind == TokenKind::Identifier
+                    && (!self.cpp || alternative_operator(self.text(i)) == self.text(i)))
+                    || (!self.variables.contains(t)
+                        && (matches!(self.text(i), "*" | "&" | "&&") || grouped_declarator)));
         }
         false
     }
 
     fn statement(&mut self) -> Stmt {
         let start = self.pos;
+        if let Some(statement) = self.local_problem_enum_statement(start) {
+            return statement;
+        }
+        if let Some(statement) = self.nested_function_statement(start) {
+            return statement;
+        }
         let kind = match self.peek() {
             "{" | "<%" => {
                 self.pos += 1;
@@ -2693,7 +3711,7 @@ impl Parser<'_> {
                         self.pos += 1;
                     }
                 }
-                if !self.eat("}") {
+                if !self.eat("}") && self.pos < self.limit {
                     self.expect("%>");
                 }
                 self.variables = old_variables;
@@ -2704,6 +3722,15 @@ impl Parser<'_> {
             ";" => {
                 self.pos += 1;
                 StmtKind::Empty
+            }
+            ")" | "]" => {
+                self.pos = self.problem_statement_end(self.pos);
+                StmtKind::Problem
+            }
+            "else" => {
+                self.pos += 1;
+                self.pos = self.problem_statement_end(self.pos);
+                StmtKind::Problem
             }
             "[" if self.cpp && self.text(start + 1) == "[" => {
                 while let Some(after) = self.skip_attribute(self.pos, self.limit) {
@@ -2723,13 +3750,60 @@ impl Parser<'_> {
                         span: self.span(start, self.pos),
                     };
                 }
+                if let Some(boundary) = self.unclosed_condition_boundary(self.pos) {
+                    self.pos = (self.pos..boundary)
+                        .find(|&i| self.text(i) == "{")
+                        .map_or(boundary, |brace| self.problem_declaration_end(brace + 1));
+                    self.asm_problem_recovery = true;
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                }
+                let end = self.matching(self.pos, self.limit).unwrap_or(self.limit);
+                if let Some(brace) = self.operator_brace(self.pos + 1, end) {
+                    // IF consumes the mismatched opening brace before its
+                    // problem statement stops at the closing brace. That
+                    // brace consequently closes the surrounding compound.
+                    self.pos = self.matching(brace, end).unwrap_or(brace);
+                    self.asm_problem_recovery = true;
+                    return self.problem_statement(start, false);
+                }
                 let condition = self.condition();
+                if matches!(self.peek(), ")" | "]") {
+                    let from_macro = self.macro_problem_origin(start, self.pos);
+                    self.pos = self.problem_statement_end(self.pos);
+                    return self.problem_statement(start, from_macro);
+                }
+                if matches!(self.peek(), "}" | "%>") {
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                }
+                let unclosed_consequence =
+                    self.at("{") && self.matching(self.pos, self.limit).is_none();
                 let consequence = Box::new(self.statement());
+                if unclosed_consequence && self.pos == self.limit {
+                    return *consequence;
+                }
+                if recovered_statement_siblings(&consequence) {
+                    if self.eat("else") {
+                        self.pos = self.problem_statement_end(self.pos);
+                    }
+                    return *consequence;
+                }
                 let alternative = if self.eat("else") {
                     Some(Box::new(self.statement()))
                 } else {
                     None
                 };
+                if alternative
+                    .as_ref()
+                    .is_some_and(|s| recovered_statement_siblings(s))
+                {
+                    return *alternative.unwrap();
+                }
                 if matches!(consequence.kind, StmtKind::Problem)
                     || alternative
                         .as_ref()
@@ -2746,8 +3820,38 @@ impl Parser<'_> {
             }
             "while" => {
                 self.pos += 1;
+                if let Some(boundary) = self.unclosed_condition_boundary(self.pos) {
+                    self.pos = (self.pos..boundary)
+                        .find(|i| self.text(*i) == ";")
+                        .map_or(boundary, |i| i + 1);
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                }
+                let end = self.matching(self.pos, self.limit).unwrap_or(self.limit);
+                if self.operator_brace(self.pos + 1, end).is_some() {
+                    // WHILE checks its closing parenthesis without consuming
+                    // the brace, so recovery crosses the complete loop body.
+                    self.pos = self.problem_statement_end(start);
+                    return self.problem_statement(start, false);
+                }
                 let condition = self.condition();
+                if matches!(self.peek(), ")" | "]") {
+                    let from_macro = self.macro_problem_origin(start, self.pos);
+                    self.pos = self.problem_statement_end(self.pos);
+                    return self.problem_statement(start, from_macro);
+                }
+                if matches!(self.peek(), "}" | "%>") {
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                }
                 let body = Box::new(self.statement());
+                if recovered_statement_siblings(&body) {
+                    return *body;
+                }
                 if matches!(body.kind, StmtKind::Problem) {
                     StmtKind::Problem
                 } else {
@@ -2757,28 +3861,36 @@ impl Parser<'_> {
             "do" => {
                 self.pos += 1;
                 let body = Box::new(self.statement());
-                if self.asm_problem_recovery
-                    && matches!(body.kind, StmtKind::Block(_))
-                    && !self.at("while")
-                {
-                    // A brace-assembly problem prematurely closes the do
-                    // body. CDT drops that incomplete do and recovers across
-                    // the following statement, then resumes in its parent.
+                if recovered_statement_siblings(&body) {
+                    return *body;
+                }
+                if !self.eat("while") {
+                    // An incomplete do statement crosses the next complete
+                    // statement during CDT problem recovery. Its body is not
+                    // recovered as executable siblings.
                     self.pos = self.problem_statement_end(self.pos);
                     return Stmt {
                         kind: StmtKind::Problem,
                         span: self.span(start, self.pos),
                     };
                 }
-                if matches!(body.kind, StmtKind::Problem) && !self.at("while") {
+                if self.eat(";") {
+                    // A missing do condition consumes its terminator and the
+                    // following statement before recovery resumes.
+                    self.pos = self.problem_statement_end(self.pos);
                     return Stmt {
                         kind: StmtKind::Problem,
                         span: self.span(start, self.pos),
                     };
                 }
-                self.expect("while");
                 let condition = self.condition();
-                self.expect(";");
+                if !self.eat(";") {
+                    self.pos = self.problem_statement_end(self.pos);
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                }
                 if matches!(body.kind, StmtKind::Problem) {
                     // After a bad scalar body CDT recovers the trailing
                     // while as a new statement, with an empty body.
@@ -2796,8 +3908,31 @@ impl Parser<'_> {
             "for" => return self.for_statement(start),
             "switch" => {
                 self.pos += 1;
+                if let Some(boundary) = self.unclosed_condition_boundary(self.pos) {
+                    let first =
+                        (self.pos..boundary).find(|i| matches!(self.text(*i), "{" | "<%" | ";"));
+                    self.pos = match first {
+                        Some(open) if matches!(self.text(open), "{" | "<%") => self
+                            .matching(open, self.limit)
+                            .map_or(boundary, |close| close + 1),
+                        Some(semicolon) => semicolon + 1,
+                        None => boundary,
+                    };
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                }
                 let condition = self.condition();
-                let body = if matches!(self.peek(), "case" | "default") {
+                if matches!(self.peek(), "}" | "%>") {
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                }
+                let case_body = matches!(self.peek(), "case" | "default");
+                let unclosed_body = self.at("{") && self.matching(self.pos, self.limit).is_none();
+                let body = if case_body {
                     let body_start = self.pos;
                     let mut statements = Vec::new();
                     while matches!(self.peek(), "case" | "default") {
@@ -2811,6 +3946,18 @@ impl Parser<'_> {
                 } else {
                     Box::new(self.statement())
                 };
+                if unclosed_body && self.pos == self.limit {
+                    return *body;
+                }
+                if recovered_statement_siblings(&body) {
+                    return *body;
+                }
+                if case_body
+                    && let StmtKind::Block(statements) = &body.kind
+                    && statements.last().is_some_and(recovered_statement_siblings)
+                {
+                    return statements.last().unwrap().clone();
+                }
                 StmtKind::Switch { condition, body }
             }
             "case" => {
@@ -2856,9 +4003,42 @@ impl Parser<'_> {
                 let throwing = self.at("throw");
                 self.pos += 1;
                 let end = self.statement_end(self.pos);
+                if self.c_literal_call_crosses_brace(self.pos, end) {
+                    // GNU C's argument parser consumes the mismatched brace
+                    // before its return-statement failure propagates. Problem
+                    // recovery therefore starts at the following statement.
+                    self.pos = self.problem_declaration_end(end + 1);
+                    return self.problem_statement(start, false);
+                }
+                if end == self.limit || matches!(self.text(end), "}" | "%>") {
+                    // A return without its terminator is a CDT problem
+                    // statement; unlike recovered expression prefixes it
+                    // does not survive as an executable block sibling.
+                    self.pos = end;
+                    return self.problem_statement(start, false);
+                }
+                if self
+                    .unclosed_literal_expression_end(self.pos, end, false)
+                    .is_some()
+                {
+                    // A newline-terminated unclosed literal in a return
+                    // crosses the next statement's semicolon in CDT.
+                    self.pos = end;
+                    self.finish_statement(start);
+                    return self.problem_statement(start, false);
+                }
+                if self.unmatched_expression_close(self.pos, end).is_some() {
+                    let from_macro = self.macro_problem_origin(start, end);
+                    self.pos = end;
+                    self.finish_statement(start);
+                    return self.problem_statement(start, from_macro);
+                }
                 if self.c_qualification_problem(self.pos, end)
                     || self.c_attribute_problem(self.pos, end)
                     || self.ordinary_call_problem(self.pos, end)
+                    || (self.pos < end && self.call_argument_problem(self.pos, end))
+                    || self.detached_identifier_suffix(self.pos, end).is_some()
+                    || self.unpaired_expression_colon(self.pos, end).is_some()
                 {
                     self.pos = end;
                     self.finish_statement(start);
@@ -2868,6 +4048,11 @@ impl Parser<'_> {
                     };
                 }
                 let expression = if self.at(";") {
+                    None
+                } else if self.cpp && self.at("{") {
+                    // A C++ return initializer-clause has no return-value
+                    // expression for Joern's expression conversion.
+                    self.expression(0);
                     None
                 } else {
                     Some(self.expression(0))
@@ -2973,6 +4158,117 @@ impl Parser<'_> {
             }
             _ => {
                 let end = self.statement_end(self.pos);
+                if self.looks_declaration(self.pos, end)
+                    && (self.pos..end).any(|i| self.text(i) == "=")
+                    && self.c_literal_call_crosses_brace(self.pos, end)
+                {
+                    // A C declaration initializer propagates the same
+                    // consumed-brace argument failure as a return expression.
+                    self.pos = self.problem_declaration_end(end + 1);
+                    return self.problem_statement(start, false);
+                }
+                if let Some(literal_end) = self.unclosed_literal_expression_end(self.pos, end, true)
+                {
+                    if self.unclosed_conditional_literal(self.pos, literal_end) {
+                        // The literal swallowed a required conditional colon
+                        // and the terminator. CDT drops this expression and
+                        // crosses the next complete statement's semicolon.
+                        self.pos = end;
+                        self.eat(";");
+                        return self.problem_statement(start, false);
+                    }
+                    let kind = if self.looks_declaration(self.pos, literal_end) {
+                        self.remember_types(self.pos, literal_end);
+                        StmtKind::Declaration(self.declarations_range(self.pos, literal_end))
+                    } else {
+                        StmtKind::Expression(self.expression_range(self.pos, literal_end))
+                    };
+                    self.pos = literal_end;
+                    self.eat(";");
+                    let span = self.span(start, self.pos);
+                    return Stmt {
+                        kind: StmtKind::Sequence(vec![
+                            Stmt {
+                                kind: StmtKind::Problem,
+                                span: span.clone(),
+                            },
+                            Stmt {
+                                kind,
+                                span: span.clone(),
+                            },
+                        ]),
+                        span,
+                    };
+                }
+                if let Some(statement) = self.terminal_expression_statement(start, end) {
+                    return statement;
+                }
+                if let Some(after) = self.call_statement_separator(self.pos) {
+                    let close = after - 1;
+                    let grouped_name = self.declarator_name(self.pos + 2, close);
+                    let grouped_declaration = grouped_name.0.is_some_and(|name| {
+                        grouped_name.1 == close
+                            && !expression_type_keyword(self.text(name), self.cpp)
+                            && !qualifier(self.text(name))
+                    });
+                    let kind = if grouped_declaration {
+                        StmtKind::Declaration(self.declarations_range(self.pos, after))
+                    } else if self.c_qualification_problem(self.pos, after)
+                        || self.ordinary_call_problem(self.pos, after)
+                    {
+                        // A malformed first expression still recovers through
+                        // the shared semicolon; it cannot invent a separator.
+                        let end = self.statement_end(self.pos);
+                        self.pos = end;
+                        if matches!(self.peek(), "}" | "%>") {
+                            // CDT's problem-statement recovery stops before
+                            // the compound brace even without a terminator.
+                            return self.problem_statement(start, false);
+                        }
+                        self.finish_statement(start);
+                        return self.problem_statement(start, false);
+                    } else {
+                        StmtKind::Expression(self.expression_range(self.pos, after))
+                    };
+                    self.pos = after;
+                    let span = self.span(start, self.pos);
+                    return Stmt {
+                        kind: StmtKind::Sequence(vec![
+                            Stmt {
+                                kind: StmtKind::Problem,
+                                span: span.clone(),
+                            },
+                            Stmt {
+                                kind,
+                                span: span.clone(),
+                            },
+                        ]),
+                        span,
+                    };
+                }
+                let end = self
+                    .direct_call_brace(self.pos, self.limit)
+                    .unwrap_or_else(|| self.statement_end(self.pos));
+                if self.looks_declaration(self.pos, end)
+                    && (self.pos..end).any(|i| {
+                        self.text(i) == "="
+                            && (i + 1 == end || self.text(i + 1) == ",")
+                            && self
+                                .tokens
+                                .get(i + 1)
+                                .is_some_and(|token| token.macro_expansion)
+                    })
+                {
+                    return self.reparse_macro_declaration(start, end);
+                }
+                let colon = self.unpaired_expression_colon(self.pos, end);
+                // CDT can recover a complete expression followed by a
+                // detached identifier as two block siblings. The
+                // same suffix inside a return or call argument is a problem
+                // expression, rather than a second statement.
+                let suffix = self
+                    .detached_identifier_suffix(self.pos, end)
+                    .filter(|_| !self.looks_declaration(self.pos, end));
                 let mut attributes_end = self.pos;
                 if matches!(self.peek(), "__attribute__" | "__attribute") {
                     while let Some(after) = self.skip_attribute(attributes_end, end) {
@@ -2987,10 +4283,22 @@ impl Parser<'_> {
                     } else {
                         StmtKind::Problem
                     }
-                } else if self.c_qualification_problem(self.pos, end)
-                    || self.c_attribute_problem(self.pos, end)
+                } else if self.c_qualification_problem(
+                    self.pos,
+                    colon
+                        .or(suffix)
+                        .or_else(|| self.detached_identifier_suffix(self.pos, end))
+                        .or_else(|| self.stray_postfix_operator(self.pos, end))
+                        .unwrap_or(end),
+                ) || self.c_attribute_problem(self.pos, end)
                 {
                     self.pos = end;
+                    if matches!(self.peek(), "}" | "%>") {
+                        // This grammar problem was established before parsing
+                        // an executable expression. The brace closes its
+                        // compound rather than requiring another semicolon.
+                        return self.problem_statement(start, false);
+                    }
                     self.finish_statement(start);
                     StmtKind::Problem
                 } else if self.looks_declaration(self.pos, end)
@@ -3003,7 +4311,9 @@ impl Parser<'_> {
                                 .is_some_and(|i| !expression_type_keyword(self.text(i), self.cpp))
                     })
                 {
-                    if self.declaration_expression_problem(self.pos, end) {
+                    if self.declaration_shape_problem(self.pos, end)
+                        || self.declaration_expression_problem(self.pos, end)
+                    {
                         self.pos = end;
                         self.finish_statement(start);
                         return Stmt {
@@ -3013,25 +4323,200 @@ impl Parser<'_> {
                     }
                     self.remember_types(self.pos, end);
                     let alias = (self.pos..end).any(|i| self.text(i) == "using");
-                    let declarations = if alias {
+                    let mut declarations = if alias {
                         Vec::new()
                     } else {
                         self.declarations_range(self.pos, end)
                     };
+                    let mut recovered_declarator = false;
+                    let mut suffixes = Vec::new();
+                    for (a, b) in self.split_ranges(self.specifier_end(start, end), end, ",") {
+                        let (_, mut after) = self.declarator_name(a, b);
+                        while let Some(next) = self.skip_attribute(after, b) {
+                            after = next;
+                        }
+                        if self.text(after) == "=" {
+                            let suffix = self.detached_identifier_suffix(after + 1, b);
+                            let problem_end =
+                                suffix.or_else(|| self.stray_postfix_operator(after + 1, b));
+                            if let Some(end) = problem_end {
+                                let start_offset = self.span(a, b).start;
+                                if let Some(declaration) = declarations
+                                    .iter_mut()
+                                    .find(|d| d.span.start == start_offset)
+                                {
+                                    declaration.span = self.span(a, end);
+                                }
+                                recovered_declarator = true;
+                            }
+                            if let Some(suffix) = suffix {
+                                suffixes.push(self.recovered_suffix_statement(suffix, b));
+                            }
+                        } else {
+                            recovered_declarator |=
+                                after < b && !matches!(self.text(after), "{" | "(" | "[");
+                        }
+                    }
                     self.pos = end;
                     self.expect(";");
                     if alias {
                         StmtKind::Empty
+                    } else if recovered_declarator {
+                        // CDT retains the parsed declaration prefix as a
+                        // sibling after dropping an invalid scalar parent.
+                        let span = self.span(start, self.pos);
+                        let mut statements = vec![
+                            Stmt {
+                                kind: StmtKind::Problem,
+                                span: span.clone(),
+                            },
+                            Stmt {
+                                kind: StmtKind::Declaration(declarations),
+                                span,
+                            },
+                        ];
+                        statements.extend(suffixes);
+                        StmtKind::Sequence(statements)
                     } else {
                         StmtKind::Declaration(declarations)
                     }
                 } else if self.ordinary_call_problem(self.pos, end) {
+                    if let Some((_, close)) = self.call_brace(self.pos, end) {
+                        self.pos = close;
+                        self.asm_problem_recovery = true;
+                        return Stmt {
+                            kind: StmtKind::Problem,
+                            span: self.span(start, self.pos),
+                        };
+                    }
                     self.pos = end;
+                    if matches!(self.peek(), "}" | "%>")
+                        && (start..end).any(|i| {
+                            self.tokens[i].kind == TokenKind::Literal
+                                && unclosed_quoted_literal(self.text(i))
+                        })
+                    {
+                        // An unclosed literal can consume the call's closing
+                        // delimiter and terminator. CDT ends this problem
+                        // statement at the compound boundary, leaving the
+                        // brace to close its surrounding statement block.
+                        return self.problem_statement(start, false);
+                    }
                     self.finish_statement(start);
                     StmtKind::Problem
+                } else if let Some(colon) = colon {
+                    let expression = self.expression_range(self.pos, colon);
+                    self.pos = end;
+                    self.finish_statement(start);
+                    StmtKind::Expression(expression)
+                } else if let Some(suffix) = self.stray_postfix_operator(self.pos, end) {
+                    let expression = self.expression_range(self.pos, suffix);
+                    self.pos = end;
+                    self.finish_statement(start);
+                    StmtKind::Sequence(vec![
+                        Stmt {
+                            kind: StmtKind::Problem,
+                            span: expression.span.clone(),
+                        },
+                        Stmt {
+                            span: expression.span.clone(),
+                            kind: StmtKind::Expression(expression),
+                        },
+                    ])
+                } else if let Some(suffix) = suffix {
+                    let first = self.expression_range(self.pos, suffix);
+                    let second = self.recovered_suffix_statement(suffix, end);
+                    self.pos = end;
+                    self.finish_statement(start);
+                    StmtKind::Sequence(vec![
+                        Stmt {
+                            span: first.span.clone(),
+                            kind: StmtKind::Problem,
+                        },
+                        Stmt {
+                            span: first.span.clone(),
+                            kind: StmtKind::Expression(first),
+                        },
+                        second,
+                    ])
                 } else {
                     let expression = self.expression(0);
-                    if !self.at(";") && !matches!(self.peek(), "}" | "") {
+                    if matches!(self.peek(), ")" | "]")
+                        && (self.pos..end).all(|i| matches!(self.text(i), ")" | "]"))
+                    {
+                        self.pos = end;
+                        self.finish_statement(start);
+                        StmtKind::Sequence(vec![
+                            Stmt {
+                                kind: StmtKind::Problem,
+                                span: expression.span.clone(),
+                            },
+                            Stmt {
+                                span: expression.span.clone(),
+                                kind: StmtKind::Expression(expression),
+                            },
+                        ])
+                    } else if self.at("{") && matches!(expression.kind, ExprKind::Call { .. }) {
+                        let call = Stmt {
+                            span: expression.span.clone(),
+                            kind: StmtKind::Expression(expression),
+                        };
+                        let block = self.statement();
+                        StmtKind::Sequence(vec![
+                            Stmt {
+                                kind: StmtKind::Problem,
+                                span: call.span.clone(),
+                            },
+                            call,
+                            block,
+                        ])
+                    } else if self
+                        .tokens
+                        .get(self.pos)
+                        .is_some_and(|t| t.kind == TokenKind::Identifier)
+                        && matches!(expression.kind, ExprKind::Member { .. })
+                    {
+                        // With no separator, CDT recovers the member operand
+                        // and following statement as compound siblings.
+                        StmtKind::Sequence(vec![
+                            Stmt {
+                                kind: StmtKind::Problem,
+                                span: expression.span.clone(),
+                            },
+                            Stmt {
+                                span: expression.span.clone(),
+                                kind: StmtKind::Expression(expression),
+                            },
+                        ])
+                    } else if self
+                        .tokens
+                        .get(self.pos)
+                        .is_some_and(|t| t.kind == TokenKind::Identifier)
+                        && self.text(self.pos + 1) == "("
+                        && matches!(&expression.kind, ExprKind::Binary { op, .. } if op == "=")
+                    {
+                        StmtKind::Expression(expression)
+                    } else if self.pos + 2 == end
+                        && self.tokens[self.pos].kind == TokenKind::Identifier
+                        && self.tokens[self.pos + 1].kind == TokenKind::Identifier
+                        && matches!(&expression.kind, ExprKind::Binary { op, .. } if op == "=")
+                        && self.looks_declaration(self.pos, end)
+                    {
+                        // The completed assignment and a following two-name
+                        // declaration are recovered as compound siblings.
+                        // The declaration is parsed on the next iteration.
+                        StmtKind::Expression(expression)
+                    } else if self
+                        .tokens
+                        .get(self.pos)
+                        .is_some_and(|t| t.kind == TokenKind::Identifier)
+                        && self.text(self.pos + 1) == "("
+                        && self.text(start + 1) == "("
+                        && self.pos == start + 4
+                        && self.tokens[start + 2].kind == TokenKind::Identifier
+                    {
+                        StmtKind::Declaration(self.declarations_range(start, self.pos))
+                    } else if !self.at(";") && !matches!(self.peek(), "}" | "") {
                         let mut expressions = vec![expression];
                         self.diagnose(start, end, "unsupported expression statement syntax");
                         while self.pos < end {
@@ -3071,6 +4556,103 @@ impl Parser<'_> {
         i
     }
 
+    fn unclosed_literal_expression_end(
+        &self,
+        start: usize,
+        end: usize,
+        require_assignment: bool,
+    ) -> Option<usize> {
+        let mut cursor = start;
+        let mut assignment = !require_assignment;
+        while cursor < end {
+            if matches!(self.text(cursor), "(" | "[" | "{") {
+                cursor = self.matching(cursor, end)? + 1;
+                continue;
+            }
+            assignment |= matches!(
+                self.text(cursor),
+                "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
+            );
+            if assignment
+                && self.tokens[cursor].kind == TokenKind::Literal
+                && unclosed_quoted_literal(self.text(cursor))
+                && !(require_assignment && matches!(self.text(cursor + 1), "++" | "--"))
+            {
+                // The scanner's newline boundary terminates the recovered
+                // assignment, without discarding the following statement.
+                // Postfix operators still attach to the literal normally.
+                return Some(cursor + 1);
+            }
+            cursor += 1;
+        }
+        None
+    }
+
+    fn c_literal_call_crosses_brace(&self, start: usize, end: usize) -> bool {
+        if self.cpp || !matches!(self.text(end), "}" | "%>") {
+            return false;
+        }
+        let Some((open, mut literal)) = self.unclosed_literal_call(start, end) else {
+            return false;
+        };
+        while literal > open + 1
+            && string_literal_token(self.text(literal))
+            && self.tokens[literal - 1].kind == TokenKind::Literal
+            && string_literal_token(self.text(literal - 1))
+        {
+            literal -= 1;
+        }
+        // Invalid tokens before the unclosed literal fail the argument parse
+        // before CDT reaches the compound brace. Only a parsed argument can
+        // trigger its consuming-comma mismatch at that brace.
+        matches!(self.text(literal - 1), "(" | ",")
+    }
+
+    fn unclosed_literal_call(&self, start: usize, end: usize) -> Option<(usize, usize)> {
+        (start + 1..end).find_map(|open| {
+            (self.text(open) == "("
+                && self.tokens[open - 1].kind == TokenKind::Identifier
+                && !type_word(self.text(open - 1))
+                && !qualifier(self.text(open - 1))
+                && self.matching(open, end).is_none())
+            .then(|| {
+                (open + 1..end)
+                    .find(|&i| {
+                        self.tokens[i].kind == TokenKind::Literal
+                            && unclosed_quoted_literal(self.text(i))
+                    })
+                    .map(|literal| (open, literal))
+            })
+            .flatten()
+        })
+    }
+
+    fn unclosed_conditional_literal(&self, start: usize, end: usize) -> bool {
+        let mut pending = 0usize;
+        let mut cursor = start;
+        while cursor < end {
+            match self.text(cursor) {
+                "(" | "[" | "{" => {
+                    if let Some(close) = self.matching(cursor, end) {
+                        cursor = close + 1;
+                        continue;
+                    }
+                }
+                "?" => pending += 1,
+                ":" => pending = pending.saturating_sub(1),
+                _ => {}
+            }
+            if pending > 0
+                && self.tokens[cursor].kind == TokenKind::Literal
+                && unclosed_quoted_literal(self.text(cursor))
+            {
+                return true;
+            }
+            cursor += 1;
+        }
+        false
+    }
+
     fn finish_statement(&mut self, start: usize) {
         if !self.eat(";") {
             self.diagnose(start, self.pos, "missing semicolon after statement");
@@ -3081,12 +4663,39 @@ impl Parser<'_> {
         }
     }
 
+    fn unclosed_condition_boundary(&self, open: usize) -> Option<usize> {
+        if self.text(open) == "(" && self.matching(open, self.limit).is_none() {
+            let mut unclosed_literal = false;
+            let mut cursor = open + 1;
+            while cursor < self.limit && !matches!(self.text(cursor), "}" | "%>") {
+                if self.tokens[cursor].kind == TokenKind::Literal {
+                    unclosed_literal |= unclosed_quoted_literal(self.text(cursor));
+                }
+                cursor += 1;
+            }
+            if unclosed_literal && cursor < self.limit {
+                return Some(cursor);
+            }
+        }
+        None
+    }
+
     fn condition(&mut self) -> Expr {
         self.expect("(");
         let start = self.pos;
         let end = self
             .matching(start.saturating_sub(1), self.limit)
             .unwrap_or(self.limit);
+        if !self.cpp
+            && let Some((_, close)) = self.call_brace(start, end)
+        {
+            self.pos = close;
+            self.asm_problem_recovery = true;
+            return Expr {
+                kind: ExprKind::Problem(String::new()),
+                span: self.span(start, close),
+            };
+        }
         let ranges = self.split_ranges(start, end, ";");
         let declaration_end = ranges[0].1;
         let recovered_prototype = self.cpp
@@ -3107,7 +4716,12 @@ impl Parser<'_> {
                     let (_, after_name) = self.declarator_name(base_end, declaration_end);
                     matches!(self.text(after_name), "=" | "{")
                 }));
-        let expression = if condition_declaration {
+        let expression = if start == end {
+            Expr {
+                kind: ExprKind::Problem(String::new()),
+                span: self.span(start, end),
+            }
+        } else if condition_declaration {
             let first = self.declarations_range(start, ranges[0].1);
             let declaration = Stmt {
                 kind: StmtKind::Declaration(first),
@@ -3130,6 +4744,11 @@ impl Parser<'_> {
                     ]),
                     span: self.span(start, end),
                 }
+            }
+        } else if self.call_argument_problem(start, end) {
+            Expr {
+                kind: ExprKind::Problem(self.raw(start, end)),
+                span: self.span(start, end),
             }
         } else {
             self.expression_range(start, end)
@@ -3181,12 +4800,32 @@ impl Parser<'_> {
             }
         }
         if clauses.len() != 3 {
-            self.diagnose(inside, end, "for header must have three clauses");
+            self.pos = self.problem_statement_end(end.saturating_add(1));
+            return Stmt {
+                kind: StmtKind::Problem,
+                span: self.span(start, self.pos),
+            };
         }
-        if let Some(problem) = clauses
-            .iter()
-            .rposition(|&(a, b)| self.c_qualification_problem(a, b))
-        {
+        if let Some(problem) = clauses.iter().enumerate().rposition(|(index, &(a, b))| {
+            if a == b {
+                return false;
+            }
+            let declaration = index == 0 && self.looks_declaration(a, b);
+            self.c_qualification_problem(a, b)
+                || self.ordinary_call_problem(a, b)
+                || self.unpaired_expression_colon(a, b).is_some()
+                || if declaration {
+                    let base = self.specifier_end(a, b);
+                    let (_, after) = self.declarator_name(base, b);
+                    self.declaration_shape_problem(a, b)
+                        || self.declaration_expression_problem(a, b)
+                        || (after < b
+                            && !matches!(self.text(after), "=" | "{" | "(" | "[" | ",")
+                            && self.skip_attribute(after, b).is_none())
+                } else {
+                    self.call_argument_problem(a, b)
+                }
+        }) {
             // CDT's expression-error recovery crosses the invalid for header
             // up to its last problem clause. Later clauses survive as plain
             // expression statements; the for control structure and body do
@@ -3231,6 +4870,9 @@ impl Parser<'_> {
         self.pos = end;
         self.expect(")");
         let body = Box::new(self.statement());
+        if recovered_statement_siblings(&body) {
+            return *body;
+        }
         Stmt {
             kind: StmtKind::For {
                 initializer,
@@ -3243,7 +4885,10 @@ impl Parser<'_> {
     }
 
     fn expression_range(&mut self, start: usize, end: usize) -> Expr {
-        if self.c_qualification_problem(start, end) || self.ordinary_call_problem(start, end) {
+        if self.c_qualification_problem(start, end)
+            || self.ordinary_call_problem(start, end)
+            || self.unpaired_expression_colon(start, end).is_some()
+        {
             return Expr {
                 kind: ExprKind::Problem(self.raw(start, end)),
                 span: self.span(start, end),
@@ -3261,17 +4906,459 @@ impl Parser<'_> {
         expression
     }
 
-    fn c_qualification_problem(&self, start: usize, end: usize) -> bool {
+    fn detached_identifier_suffix(&self, start: usize, end: usize) -> Option<usize> {
+        let mut cursor = start;
+        while cursor < end {
+            if cursor > start
+                && self.tokens[cursor].kind == TokenKind::Identifier
+                && (matches!(self.text(cursor - 1), ")" | "]")
+                    || (cursor > start + 1
+                        && self.tokens[cursor - 1].kind == TokenKind::Identifier
+                        && (start..cursor - 1).all(|i| matches!(self.text(i), "*" | "&"))))
+                && matches!(
+                    self.text(cursor + 1),
+                    "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
+                )
+                && !self.cast_group_ends_at(start, cursor - 1, end)
+                && (!self.cpp || alternative_operator(self.text(cursor)) == self.text(cursor))
+            {
+                // A completed operand followed by a new assignment recovers
+                // as two statements, including fabricated signedness suffixes.
+                return Some(cursor);
+            }
+            cursor = if matches!(self.text(cursor), "(" | "[" | "{") {
+                self.matching(cursor, end).map_or(cursor + 1, |i| i + 1)
+            } else {
+                cursor + 1
+            };
+        }
+        if self.text(end.saturating_sub(1)) == ")" {
+            let mut cursor = start;
+            while cursor < end {
+                if cursor > start
+                    && self.tokens[cursor].kind == TokenKind::Identifier
+                    && matches!(self.text(cursor - 1), ")" | "]")
+                    && self.text(cursor + 1) == "("
+                    && self.matching(cursor + 1, end) == Some(end - 1)
+                    && !self.cast_group_ends_at(start, cursor - 1, end)
+                    && (!self.cpp || alternative_operator(self.text(cursor)) == self.text(cursor))
+                    && !expression_type_keyword(self.text(cursor), self.cpp)
+                {
+                    // A completed top-level operand and a following ordinary
+                    // call recover as two statements, not an infix operator.
+                    return Some(cursor);
+                }
+                cursor = if matches!(self.text(cursor), "(" | "[" | "{") {
+                    self.matching(cursor, end).map_or(cursor + 1, |i| i + 1)
+                } else {
+                    cursor + 1
+                };
+            }
+        }
+        if end >= start + 4
+            && matches!(self.text(end - 2), "++" | "--")
+            && self.text(end - 3) == ")"
+            && (start..end - 3).rev().any(|open| {
+                let preceding_cast = open > start
+                    && self.text(open - 1) == ")"
+                    && (start..open - 1).rev().any(|previous| {
+                        self.text(previous) == "("
+                            && self.matching(previous, end) == Some(open - 1)
+                            && self.is_cast(previous + 1, open - 1)
+                    });
+                self.text(open) == "("
+                    && self.matching(open, end) == Some(end - 3)
+                    && (open == start
+                        || (self.tokens[open - 1].kind != TokenKind::Identifier
+                            && (preceding_cast || !matches!(self.text(open - 1), ")" | "]"))))
+                    && self.is_cast(open + 1, end - 3)
+            })
+        {
+            // '(T)++value' is a cast of a prefix increment, not a
+            // completed postfix expression followed by a stray identifier.
+            return None;
+        }
+        if end >= start + 3
+            && self.tokens[end - 1].kind == TokenKind::Identifier
+            && self.tokens[end - 2].kind == TokenKind::Identifier
+            && (!self.cpp
+                || (alternative_operator(self.text(end - 1)) == self.text(end - 1)
+                    && alternative_operator(self.text(end - 2)) == self.text(end - 2)))
+            && (matches!(
+                self.tokens[end - 3].kind,
+                TokenKind::Identifier | TokenKind::Literal
+            ) || matches!(self.text(end - 3), ")" | "]" | "++" | "--"))
+            && !self.cast_group_ends_at(start, end - 3, end)
+            && self.looks_declaration(end - 2, end)
+        {
+            // A complete operand followed by two names recovers a separate
+            // local declaration, rather than an invented infix operator.
+            return Some(end - 2);
+        }
+        (end >= start + 2
+            && self.tokens[end - 1].kind == TokenKind::Identifier
+            && ((self.tokens[end - 2].kind == TokenKind::Identifier
+                && !matches!(
+                    self.text(end - 2),
+                    "sizeof"
+                        | "alignof"
+                        | "_Alignof"
+                        | "__alignof__"
+                        | "__alignof"
+                        | "typeof"
+                        | "__typeof__"
+                        | "__typeof"
+                        | "__extension__"
+                        | "__real__"
+                        | "__imag__"
+                        | "noexcept"
+                        | "throw"
+                        | "delete"
+                        | "new"
+                )
+                && (!self.cpp || alternative_operator(self.text(end - 2)) == self.text(end - 2)))
+                || (self.tokens[end - 2].kind == TokenKind::Literal
+                    && self.text(end - 2).starts_with(|c: char| c.is_ascii_digit()))
+                || (matches!(self.text(end - 2), "++" | "--")
+                    && end > start + 2
+                    && (matches!(
+                        self.tokens[end - 3].kind,
+                        TokenKind::Identifier | TokenKind::Literal
+                    ) || matches!(self.text(end - 3), ")" | "]"))))
+            && (!self.cpp || alternative_operator(self.text(end - 1)) == self.text(end - 1)))
+        .then_some(end - 1)
+    }
+
+    fn recovered_suffix_statement(&mut self, start: usize, end: usize) -> Stmt {
+        let kind = if self.looks_declaration(start, end) {
+            self.remember_types(start, end);
+            StmtKind::Declaration(self.declarations_range(start, end))
+        } else {
+            StmtKind::Expression(self.expression_range(start, end))
+        };
+        Stmt {
+            kind,
+            span: self.span(start, end),
+        }
+    }
+
+    fn initializer_expression_range(&mut self, start: usize, end: usize) -> Expr {
+        let end = self
+            .detached_identifier_suffix(start, end)
+            .or_else(|| self.stray_postfix_operator(start, end))
+            .or_else(|| self.unmatched_expression_close(start, end))
+            .unwrap_or(end);
+        let end = if self.cpp {
+            end
+        } else {
+            self.unpaired_expression_colon(start, end).unwrap_or(end)
+        };
+        self.expression_range(start, end)
+    }
+
+    fn stray_postfix_operator(&self, start: usize, end: usize) -> Option<usize> {
+        (end > start + 1
+            && matches!(self.text(end - 1), "!" | "~")
+            && (matches!(
+                self.tokens[end - 2].kind,
+                TokenKind::Identifier | TokenKind::Literal
+            ) || matches!(self.text(end - 2), ")" | "]"))
+            && !self.cast_group_ends_at(start, end - 2, end))
+        .then_some(end - 1)
+    }
+
+    fn cast_group_ends_at(&self, start: usize, mut close: usize, end: usize) -> bool {
+        while self.text(close) == ")" {
+            let Some(open) = (start..close)
+                .rev()
+                .find(|&open| self.text(open) == "(" && self.matching(open, end) == Some(close))
+            else {
+                return false;
+            };
+            if !self.is_cast(open + 1, close) {
+                return false;
+            }
+            if open == start {
+                return true;
+            }
+            let previous = self.text(open - 1);
+            if self.tokens[open - 1].kind == TokenKind::Identifier {
+                return self.cpp && alternative_operator(previous) != previous;
+            }
+            if previous != ")" {
+                return previous != "]";
+            }
+            close = open - 1;
+        }
+        false
+    }
+
+    fn unmatched_expression_close(&self, start: usize, end: usize) -> Option<usize> {
+        let mut cursor = start;
+        while cursor < end {
+            match self.text(cursor) {
+                ")" | "]" => return Some(cursor),
+                "(" | "[" | "{" => {
+                    if let Some(close) = self.matching(cursor, end) {
+                        cursor = close + 1;
+                        continue;
+                    }
+                }
+                _ => {}
+            }
+            cursor += 1;
+        }
+        None
+    }
+
+    fn macro_problem_origin(&self, start: usize, end: usize) -> bool {
+        self.tokens[start..(end + 1).min(self.tokens.len())]
+            .iter()
+            .any(|token| token.macro_recovery || token.macro_expansion)
+    }
+
+    fn problem_statement(&self, start: usize, from_macro: bool) -> Stmt {
+        let span = self.span(start, self.pos);
+        Stmt {
+            kind: if from_macro {
+                StmtKind::Expression(Expr {
+                    kind: ExprKind::Problem(self.raw(start, self.pos)),
+                    span: span.clone(),
+                })
+            } else {
+                StmtKind::Problem
+            },
+            span,
+        }
+    }
+
+    fn reparse_macro_declaration(&mut self, start: usize, end: usize) -> Stmt {
+        // Joern reparses macro-origin problem statements as a new translation
+        // unit without the surrounding macro definitions. An erased initializer
+        // can therefore recover its original, now ordinary, function call.
+        let after = end + usize::from(self.text(end) == ";");
+        let original = self.span(start, after);
+        let (mut tokens, _) = lex_preprocessed(&self.raw(start, after), true);
+        for token in &mut tokens {
+            let first_line = token.span.line == 1;
+            token.span.start += original.start;
+            token.span.end += original.start;
+            token.span.line += original.line - 1;
+            token.span.end_line += original.line - 1;
+            if first_line {
+                token.span.column += original.column - 1;
+            }
+        }
+        let old_limit = self.limit;
+        self.limit = tokens.len();
+        let previous_tokens = std::mem::replace(&mut self.tokens, tokens);
+        self.pos = 0;
+        let statement = self.statement();
+        self.tokens = previous_tokens;
+        self.limit = old_limit;
+        self.pos = after;
+        statement
+    }
+
+    fn unpaired_expression_colon(&self, start: usize, end: usize) -> Option<usize> {
+        if !(start..end).any(|i| self.text(i) == ":") {
+            return None;
+        }
+        let mut conditionals = 0usize;
         let mut i = start;
+        while i < end {
+            match self.text(i) {
+                "(" | "[" | "{" => {
+                    if let Some(close) = self.matching(i, end) {
+                        i = close + 1;
+                        continue;
+                    }
+                }
+                "?" => conditionals += 1,
+                ":" if conditionals == 0 => return Some(i),
+                ":" => conditionals -= 1,
+                _ => {}
+            }
+            i += 1;
+        }
+        None
+    }
+
+    fn c_qualification_problem(&self, start: usize, end: usize) -> bool {
+        if start < end && self.text(start) != "using" {
+            let last = if self.cpp {
+                alternative_operator(self.text(end - 1))
+            } else {
+                self.text(end - 1)
+            };
+            if (binary_precedence(last).is_some()
+                && !matches!(last, "," | "...")
+                && !(self.cpp && matches!(last, ">" | ">>") && self.template_id_end(start, end)))
+                || matches!(last, "?" | "!" | "~" | "." | "->" | "::")
+            {
+                return true;
+            }
+        }
+        let mut i = start;
+        // Conditional colons belong to their own expression delimiter. A
+        // colon in a nested group cannot close an outer conditional, and
+        // record bit-fields and initializer designators belong to braces.
+        let mut delimiters = (start..end)
+            .any(|token| self.text(token) == ":")
+            .then(|| vec![("", 0usize)]);
         while i < end {
             if let Some(after) = self.lambda_end(i, end) {
                 i = after;
                 continue;
             }
-            if self.text(i) == "@"
+            if matches!(self.text(i), "@" | "#" | "##")
                 || (!self.cpp
                     && (self.text(i) == "::"
                         || (self.text(i) == "_Generic" && self.text(i + 1) == "(")))
+            {
+                return true;
+            }
+            if self.text(i) == "..."
+                && (i == start || matches!(self.text(i - 1), "=" | "("))
+                && (i + 1 == end || matches!(self.text(i + 1), ")" | ","))
+                && !(start..i).rev().any(|open| {
+                    self.text(open) == "("
+                        && self
+                            .matching(open, end)
+                            .is_some_and(|close| close > i && self.is_cast(open + 1, close))
+                })
+            {
+                return true;
+            }
+            let text = self.text(i);
+            if matches!(text, "." | "->")
+                && !self.tokens.get(i + 1).is_some_and(|token| {
+                    token.kind == TokenKind::Identifier
+                        || (self.cpp
+                            && self.text(i + 1) == "~"
+                            && self
+                                .tokens
+                                .get(i + 2)
+                                .is_some_and(|name| name.kind == TokenKind::Identifier))
+                })
+            {
+                return true;
+            }
+            if text == "(" && self.text(i + 1) == ")" {
+                let previous = i.checked_sub(1).map(|index| self.text(index));
+                let callable = i > start
+                    && (self.tokens[i - 1].kind == TokenKind::Identifier
+                        || matches!(previous, Some(")" | "]")))
+                    && !matches!(
+                        previous,
+                        Some(
+                            "sizeof"
+                                | "alignof"
+                                | "_Alignof"
+                                | "__alignof__"
+                                | "__alignof"
+                                | "typeof"
+                                | "__typeof__"
+                                | "__typeof"
+                        )
+                    );
+                if !callable {
+                    return true;
+                }
+            }
+            let operator = if self.cpp {
+                alternative_operator(text)
+            } else {
+                text
+            };
+            let infix_only = binary_precedence(operator).is_some()
+                && !matches!(operator, "," | "+" | "-" | "*" | "&" | "&&" | "...")
+                && !(self.cpp && matches!(operator, ">" | ">>"));
+            if (operator == "?" || infix_only)
+                && (i == start
+                    || !(matches!(
+                        self.tokens[i - 1].kind,
+                        TokenKind::Identifier | TokenKind::Literal
+                    ) || matches!(self.text(i - 1), ")" | "]" | "}" | "++" | "--")))
+            {
+                return true;
+            }
+            if let Some(delimiters) = &mut delimiters {
+                match text {
+                    "(" | "[" | "{" => delimiters.push((text, 0)),
+                    ")" | "]" | "}" if delimiters.len() > 1 => {
+                        delimiters.pop();
+                    }
+                    "?" => delimiters.last_mut().unwrap().1 += 1,
+                    ":" => {
+                        let (delimiter, conditionals) = delimiters.last_mut().unwrap();
+                        if *conditionals > 0 {
+                            *conditionals -= 1;
+                        } else if matches!(*delimiter, "(" | "[") {
+                            return true;
+                        }
+                    }
+                    _ => {}
+                }
+            }
+            if self.tokens[i].kind == TokenKind::Literal {
+                let string = string_literal_token(text);
+                if !self.cpp
+                    && string
+                    && !unclosed_quoted_literal(text)
+                    && text.rfind('"').is_some_and(|last| last + 1 < text.len())
+                {
+                    return true;
+                }
+                if i > start {
+                    let previous = self.text(i - 1);
+                    let previous_string = string_literal_token(previous);
+                    let previous_suffix = self.cpp
+                        && i > start + 1
+                        && string_literal_token(self.text(i - 2))
+                        && self.tokens[i - 2].span.end == self.tokens[i - 1].span.start;
+                    if (self.tokens[i - 1].kind == TokenKind::Literal
+                        && !(string && previous_string))
+                        || (self.tokens[i - 1].kind == TokenKind::Identifier
+                            && !(previous_suffix && string)
+                            && !matches!(
+                                previous,
+                                "sizeof"
+                                    | "alignof"
+                                    | "_Alignof"
+                                    | "__alignof__"
+                                    | "__alignof"
+                                    | "typeof"
+                                    | "__typeof__"
+                                    | "__typeof"
+                                    | "__extension__"
+                                    | "__real__"
+                                    | "__imag__"
+                                    | "noexcept"
+                                    | "throw"
+                            )
+                            && (!self.cpp || alternative_operator(previous) == previous))
+                    {
+                        return true;
+                    }
+                    if previous == "]"
+                        || (previous == ")"
+                            && !(start..i - 1).rev().any(|open| {
+                                self.text(open) == "("
+                                    && self.matching(open, end) == Some(i - 1)
+                                    && self.is_cast(open + 1, i - 1)
+                            }))
+                    {
+                        return true;
+                    }
+                }
+            } else if self.tokens[i].kind == TokenKind::Identifier
+                && i > start
+                && self.tokens[i - 1].kind == TokenKind::Literal
+                && (!self.cpp || alternative_operator(text) == text)
+                && !(self.cpp
+                    && string_literal_token(self.text(i - 1))
+                    && self.tokens[i - 1].span.end == self.tokens[i].span.start)
             {
                 return true;
             }
@@ -3284,6 +5371,9 @@ impl Parser<'_> {
                 && let Some(close) = self.matching(i, end)
             {
                 i = close + 1;
+                if let Some(delimiters) = &mut delimiters {
+                    delimiters.pop();
+                }
             } else {
                 i += 1;
             }
@@ -3291,12 +5381,258 @@ impl Parser<'_> {
         false
     }
 
+    fn template_id_end(&self, start: usize, end: usize) -> bool {
+        let mut depth = 0usize;
+        for i in (start..end).rev() {
+            match self.text(i) {
+                ">" => depth += 1,
+                ">>" => depth += 2,
+                "<" if depth > 0 => {
+                    depth -= 1;
+                    if depth == 0 {
+                        return i > start && self.tokens[i - 1].kind == TokenKind::Identifier;
+                    }
+                }
+                ";" | "=" => return false,
+                _ => {}
+            }
+        }
+        false
+    }
+
+    fn direct_call_brace(&self, start: usize, end: usize) -> Option<usize> {
+        if self.tokens.get(start)?.kind != TokenKind::Identifier || self.text(start + 1) != "(" {
+            return None;
+        }
+        let close = self.matching(start + 1, end)?;
+        (self.text(close + 1) == "{").then_some(close + 1)
+    }
+
+    fn call_statement_separator(&self, start: usize) -> Option<usize> {
+        if self.tokens.get(start)?.kind != TokenKind::Identifier
+            || self.text(start + 1) != "("
+            || qualifier(self.text(start))
+            || matches!(
+                self.text(start),
+                "sizeof"
+                    | "alignof"
+                    | "_Alignof"
+                    | "__alignof__"
+                    | "__alignof"
+                    | "typeof"
+                    | "__typeof__"
+                    | "__typeof"
+                    | "decltype"
+                    | "noexcept"
+            )
+            || self.skip_attribute(start, self.limit).is_some()
+        {
+            return None;
+        }
+        let next = self.matching(start + 1, self.limit)? + 1;
+        let text = self.text(next);
+        let keyword = matches!(
+            text,
+            "if" | "while"
+                | "for"
+                | "switch"
+                | "do"
+                | "return"
+                | "throw"
+                | "break"
+                | "continue"
+                | "goto"
+                | "try"
+                | "case"
+                | "default"
+        );
+        let ordinary = self
+            .tokens
+            .get(next)
+            .is_some_and(|token| token.kind == TokenKind::Identifier)
+            && matches!(
+                self.text(next + 1),
+                "(" | "."
+                    | "->"
+                    | "["
+                    | "="
+                    | "+="
+                    | "-="
+                    | "*="
+                    | "/="
+                    | "%="
+                    | "&="
+                    | "|="
+                    | "^="
+                    | ">>="
+                    | "<<="
+                    | "++"
+                    | "--"
+            );
+        (keyword
+            || ordinary
+            || (self
+                .tokens
+                .get(next)
+                .is_some_and(|token| token.kind == TokenKind::Identifier)
+                && self.text(next + 1) == ":")
+            || type_word(text)
+            || qualifier(text)
+            || (self
+                .tokens
+                .get(next)
+                .is_some_and(|token| token.kind == TokenKind::Identifier)
+                && self.looks_declaration(next, self.statement_end(next)))
+            || matches!(text, "++" | "--"))
+        .then_some(next)
+    }
+
+    fn terminal_expression_statement(&mut self, start: usize, end: usize) -> Option<Stmt> {
+        let eof = end == self.limit;
+        if !eof && !matches!(self.text(end), "}" | "%>") {
+            return None;
+        }
+        if self.direct_call_brace(start, end).is_some() {
+            // This is a call followed by a compound sibling, whose missing
+            // separator is recovered before the compound's own boundary.
+            return None;
+        }
+        let direct_call = self.tokens.get(start)?.kind == TokenKind::Identifier
+            && !type_word(self.text(start))
+            && !qualifier(self.text(start))
+            && self.text(start + 1) == "("
+            && self.matching(start + 1, end) == end.checked_sub(1);
+        let declaration = !eof && self.looks_declaration(start, end);
+        if !direct_call
+            && !declaration
+            && (eof
+                || !(start..end).any(|i| {
+                    matches!(
+                        self.text(i),
+                        "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
+                    )
+                }) && !matches!(self.text(end.saturating_sub(1)), "++" | "--"))
+        {
+            return None;
+        }
+        self.pos = end;
+        let span = self.span(start, end);
+        if eof
+            || self.c_qualification_problem(start, end)
+            || self.ordinary_call_problem(start, end)
+            || declaration
+                && (self.declaration_shape_problem(start, end)
+                    || self.declaration_expression_problem(start, end))
+        {
+            // A completed call at literal EOF is omitted. Before a closing
+            // brace a malformed expression is still a whole problem node.
+            return Some(Stmt {
+                kind: StmtKind::Problem,
+                span,
+            });
+        }
+        let grouped_name = direct_call.then(|| self.declarator_name(start + 2, end - 1));
+        let kind = if declaration
+            || grouped_name.is_some_and(|(name, after)| {
+                after == end - 1
+                    && name.is_some_and(|i| {
+                        !expression_type_keyword(self.text(i), self.cpp) && !qualifier(self.text(i))
+                    })
+            }) {
+            self.remember_types(start, end);
+            StmtKind::Declaration(self.declarations_range(start, end))
+        } else {
+            StmtKind::Expression(self.expression_range(start, end))
+        };
+        Some(Stmt {
+            kind: StmtKind::Sequence(vec![
+                Stmt {
+                    kind: StmtKind::Problem,
+                    span: span.clone(),
+                },
+                Stmt {
+                    kind,
+                    span: span.clone(),
+                },
+            ]),
+            span,
+        })
+    }
+
+    fn call_brace(&self, start: usize, end: usize) -> Option<(usize, usize)> {
+        let mut open = start;
+        while open < end {
+            if let Some(after) = self.lambda_end(open, end) {
+                open = after;
+                continue;
+            }
+            if self.text(open) == "{"
+                && open > start
+                && self.text(open - 1) == "("
+                && let Some(close) = self.matching(open, end)
+            {
+                open = close + 1;
+                continue;
+            }
+            if self.text(open) == "("
+                && open > start
+                && self.tokens[open - 1].kind == TokenKind::Identifier
+                && !matches!(
+                    self.text(open - 1),
+                    "sizeof" | "alignof" | "typeof" | "__typeof__" | "__typeof" | "__extension__"
+                )
+                && let Some(close) = self.matching(open, end)
+                && self.text(close + 1) == "{"
+                && let Some(brace_close) = self.matching(close + 1, end)
+            {
+                return Some((open, brace_close));
+            }
+            open += 1;
+        }
+        None
+    }
+
     fn ordinary_call_problem(&self, start: usize, end: usize) -> bool {
+        if self.call_brace(start, end).is_some()
+            || (!self.cpp && self.operator_brace(start, end).is_some())
+        {
+            return true;
+        }
         let mut i = start;
         while i < end {
             if let Some(after) = self.lambda_end(i, end) {
                 i = after;
                 continue;
+            }
+            if expression_type_keyword(self.text(i), self.cpp)
+                && i > start
+                && matches!(
+                    self.text(i - 1),
+                    "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
+                )
+                && !(self.cpp && type_word(self.text(i)) && matches!(self.text(i + 1), "(" | "{"))
+            {
+                // A reserved type specifier is not an ordinary RHS operand.
+                // Cast and sizeof type-ids are consumed as complete groups.
+                return true;
+            }
+            if self.text(i) == "(" && self.matching(i, end).is_none() {
+                return true;
+            }
+            if self.text(i) == "["
+                && i > start
+                && (self.tokens[i - 1].kind == TokenKind::Identifier
+                    || matches!(self.text(i - 1), ")" | "]"))
+                && !matches!(self.text(i - 1), "operator" | "delete" | "new")
+                && !self.looks_declaration(start, end)
+                && !(self.cpp && (start..i).any(|j| self.text(j) == "new"))
+                && let Some(close) = self.matching(i, end)
+                && self.call_argument_problem(i + 1, close)
+            {
+                // An array subscript needs a complete operand expression.
+                // A bad index invalidates its containing statement rather
+                // than leaving a partial address or assignment in the CFG.
+                return true;
             }
             if self.text(i) == "("
                 && let Some(close) = self.matching(i, end)
@@ -3309,6 +5645,8 @@ impl Parser<'_> {
                         | "-"
                         | "/"
                         | "%"
+                        | "!"
+                        | "~"
                         | "|"
                         | "||"
                         | "^"
@@ -3352,6 +5690,16 @@ impl Parser<'_> {
                             && self.matching(open, end) == Some(i - 1)
                             && self.is_cast(open + 1, i - 1)
                     });
+                if previous_cast
+                    && self.text(i + 1) == "{"
+                    && self.matching(i + 1, close) == Some(close - 1)
+                {
+                    // A cast can take a GNU statement-expression operand.
+                    // Its compound has independent statement recovery, rather
+                    // than being a bare brace argument to an ordinary call.
+                    i = close + 1;
+                    continue;
+                }
                 if close + 1 < end
                     && self.is_cast(i + 1, close)
                     && (self.tokens[i - 1].kind != TokenKind::Identifier
@@ -3370,6 +5718,7 @@ impl Parser<'_> {
                         | "__attribute__"
                         | "__attribute"
                         | "__declspec"
+                        | "__extension__"
                 ) || (matches!(
                     callee,
                     "sizeof"
@@ -3400,6 +5749,26 @@ impl Parser<'_> {
                     }
                 }
             }
+            if self.text(i) == "("
+                && let Some(close) = self.matching(i, end)
+                && (i == start
+                    || (self.tokens[i - 1].kind != TokenKind::Identifier
+                        && !matches!(self.text(i - 1), ")" | "]")))
+            {
+                let type_id = self.is_type_range(i + 1, close);
+                if (!type_id && self.call_argument_problem(i, close + 1))
+                    || (type_id
+                        && !self.can_start_expression(close + 1)
+                        && (type_word(self.text(i + 1))
+                            || qualifier(self.text(i + 1))
+                            || (i + 1..close).any(|j| self.text(j) == "*")))
+                {
+                    // A malformed grouped expression or a cast with no
+                    // operand invalidates its whole expression container.
+                    // GNU statement blocks keep their own problem boundary.
+                    return true;
+                }
+            }
             if i == start
                 && self.text(i) == "("
                 && let Some(close) = self.matching(i, end)
@@ -3412,6 +5781,35 @@ impl Parser<'_> {
             }
         }
         false
+    }
+
+    fn operator_brace(&self, start: usize, end: usize) -> Option<usize> {
+        let mut i = start;
+        while i < end {
+            if self.text(i) == "("
+                && self.text(i + 1) == "{"
+                && let Some(close) = self.matching(i, end)
+            {
+                // GNU compounds have their own statement recovery boundary.
+                i = close + 1;
+                continue;
+            }
+            if self.text(i) == "{" {
+                if i > start
+                    && binary_precedence(self.text(i - 1)).is_some_and(|(precedence, _)| {
+                        precedence > 0 && (!self.cpp || precedence != 1)
+                    })
+                {
+                    return Some(i);
+                }
+                // Declaration initializers and typed compound literals keep
+                // their complete initializer, including nested brace lists.
+                i = self.matching(i, end)? + 1;
+                continue;
+            }
+            i += 1;
+        }
+        None
     }
 
     fn lambda_end(&self, start: usize, end: usize) -> Option<usize> {
@@ -3451,14 +5849,36 @@ impl Parser<'_> {
     }
 
     fn call_argument_problem(&self, mut start: usize, mut end: usize) -> bool {
+        let mut statement_expression = false;
         while self.text(start) == "(" && self.matching(start, end) == Some(end.saturating_sub(1)) {
             start += 1;
             end = end.saturating_sub(1);
+            statement_expression |= self.text(start) == "{";
         }
         if start >= end {
             return true;
         }
+        if statement_expression
+            && self.text(start) == "{"
+            && self.matching(start, end) == Some(end - 1)
+        {
+            // Each statement in a GNU expression block has its own CDT
+            // problem boundary; a bad inner statement does not invalidate
+            // the enclosing argument, condition or return expression.
+            return false;
+        }
+        if self.c_qualification_problem(start, end) {
+            return true;
+        }
         let first = self.text(start);
+        if first == "," {
+            return true;
+        }
+        if first == "{" && !self.cpp && !statement_expression {
+            // A bare braced list is an argument in C++, while C requires a
+            // compound literal's explicit type or a GNU statement-expression.
+            return true;
+        }
         if expression_type_keyword(first, self.cpp) {
             // C++ has functional casts to a simple type; a bare type-id is
             // never an ordinary call argument. Typedef spellings themselves
@@ -3466,6 +5886,168 @@ impl Parser<'_> {
             if !(self.cpp && type_word(first) && matches!(self.text(start + 1), "(" | "{")) {
                 return true;
             }
+        }
+        let mut i = start;
+        while i < end {
+            if self.text(i) == "," && matches!(self.text(i.saturating_sub(1)), "(" | "[") {
+                // A comma needs a left operand. CDT replaces its complete
+                // containing condition rather than retaining partial calls.
+                return true;
+            }
+            if let Some(after) = self.lambda_end(i, end) {
+                i = after;
+                continue;
+            }
+            if matches!(
+                self.text(i),
+                "=" | "+="
+                    | "-="
+                    | "*="
+                    | "/="
+                    | "%="
+                    | "&="
+                    | "|="
+                    | "^="
+                    | "<<="
+                    | ">>="
+                    | "+"
+                    | "-"
+                    | "*"
+                    | "/"
+                    | "%"
+                    | "&"
+                    | "&&"
+                    | "|"
+                    | "||"
+                    | "^"
+            ) && (i + 1 == end || matches!(self.text(i + 1), "," | ")" | "]"))
+            {
+                return true;
+            }
+            if self.text(i) == "("
+                && self.text(i + 1) == "{"
+                && (i == start
+                    || (self.tokens[i - 1].kind != TokenKind::Identifier
+                        && !matches!(self.text(i - 1), ")" | "]")))
+                && let Some(close) = self.matching(i, end)
+                && let Some(brace_close) = self.matching(i + 1, close)
+                && brace_close + 1 != close
+            {
+                // A GNU statement expression ends immediately after its
+                // compound. A brace literal followed by an infix operator
+                // inside that group is a problem expression in both modes.
+                return true;
+            }
+            if self.text(i) == "("
+                && i > start
+                && matches!(
+                    self.text(i - 1),
+                    "__builtin_va_arg"
+                        | "__builtin_offsetof"
+                        | "__builtin_types_compatible_p"
+                        | "__offsetof__"
+                )
+                && let Some(close) = self.matching(i, end)
+            {
+                i = close + 1;
+                continue;
+            }
+            if self.text(i) == "("
+                && let Some(close) = self.matching(i, end)
+                && (self.cast_group_ends_at(start, close, end)
+                    || (i > start
+                        && matches!(
+                            self.text(i - 1),
+                            "sizeof"
+                                | "alignof"
+                                | "_Alignof"
+                                | "__alignof__"
+                                | "__alignof"
+                                | "typeof"
+                                | "__typeof__"
+                                | "__typeof"
+                                | "decltype"
+                        )
+                        && self.is_type_range(i + 1, close)))
+            {
+                i = close + 1;
+                continue;
+            }
+            if i > start
+                && matches!(self.text(i), "!" | "~")
+                && (matches!(
+                    self.tokens[i - 1].kind,
+                    TokenKind::Identifier | TokenKind::Literal
+                ) || matches!(self.text(i - 1), ")" | "]"))
+                && !self.cast_group_ends_at(start, i - 1, end)
+                && !matches!(
+                    self.text(i - 1),
+                    "sizeof"
+                        | "alignof"
+                        | "_Alignof"
+                        | "__alignof__"
+                        | "__alignof"
+                        | "typeof"
+                        | "__typeof__"
+                        | "__typeof"
+                        | "__extension__"
+                        | "__real__"
+                        | "__imag__"
+                        | "noexcept"
+                        | "throw"
+                        | "operator"
+                )
+                && !(self.cpp && alternative_operator(self.text(i - 1)) != self.text(i - 1))
+            {
+                return true;
+            }
+            if i > start
+                && self.tokens[i].kind == TokenKind::Identifier
+                && matches!(self.text(i - 1), ")" | "]")
+                && !self.cast_group_ends_at(start, i - 1, end)
+                && (!self.cpp || alternative_operator(self.text(i)) == self.text(i))
+            {
+                // An absent operator inside an argument or grouped operand
+                // cannot recover a second top-level statement.
+                return true;
+            }
+            if self.text(i) == "{"
+                && (i == start || self.text(i - 1) == "(")
+                && let Some(close) = self.matching(i, end)
+            {
+                i = close + 1;
+                continue;
+            }
+            if i > start
+                && self.tokens[i].kind == TokenKind::Identifier
+                && self.tokens[i - 1].kind == TokenKind::Identifier
+            {
+                let previous = self.text(i - 1);
+                if !matches!(
+                    previous,
+                    "sizeof"
+                        | "alignof"
+                        | "_Alignof"
+                        | "__alignof__"
+                        | "__alignof"
+                        | "typeof"
+                        | "__typeof__"
+                        | "__typeof"
+                        | "__extension__"
+                        | "__real__"
+                        | "__imag__"
+                        | "noexcept"
+                        | "throw"
+                ) && !(self.cpp
+                    && (alternative_operator(previous) != previous
+                        || alternative_operator(self.text(i)) != self.text(i)
+                        || matches!(previous, "new" | "delete" | "typename")
+                        || expression_type_keyword(previous, true)))
+                {
+                    return true;
+                }
+            }
+            i += 1;
         }
         matches!(
             self.text(end - 1),
@@ -3490,6 +6072,9 @@ impl Parser<'_> {
     }
 
     fn declaration_expression_problem(&self, start: usize, end: usize) -> bool {
+        if self.cpp && self.unpaired_expression_colon(start, end).is_some() {
+            return true;
+        }
         let base_end = self.specifier_end(start, end);
         for (a, b) in self.split_ranges(base_end, end, ",") {
             let (_, mut i) = self.declarator_name(a, b);
@@ -3589,6 +6174,11 @@ impl Parser<'_> {
                 self.problem_statement_end(start + 2)
             }
             _ => {
+                if let Some(open) = self.direct_call_brace(start, self.limit) {
+                    return self
+                        .matching(open, self.limit)
+                        .map_or(self.limit, |close| close + 1);
+                }
                 let end = self.statement_end(start);
                 end + usize::from(self.text(end) == ";")
             }
@@ -3609,6 +6199,21 @@ impl Parser<'_> {
             }
             .to_string();
             // All postfix forms bind more tightly than unary/binary operators.
+            if self.cpp
+                && minimum <= 15
+                && op == "{"
+                && matches!(&left.kind, ExprKind::Identifier(name) if self.explicit_types.contains(name))
+            {
+                let initializer = self.prefix();
+                left = Expr {
+                    kind: ExprKind::Call {
+                        callee: Box::new(left),
+                        arguments: vec![initializer],
+                    },
+                    span: self.span(start, self.pos),
+                };
+                continue;
+            }
             if minimum <= 15 && op == "(" {
                 if !self.macro_expansion
                     && let ExprKind::Identifier(name) = &left.kind
@@ -3726,11 +6331,17 @@ impl Parser<'_> {
                 break;
             }
             self.pos += 1;
-            let right = self.expression(if right_associative {
+            let initializer_clause = self.cpp && precedence == 1 && self.at("{");
+            let mut right = self.expression(if right_associative {
                 precedence
             } else {
                 precedence + 1
             });
+            if initializer_clause {
+                // CPP initializer-clauses are not operand expressions in
+                // Joern's binary-expression AST conversion.
+                right.kind = ExprKind::Unknown(String::new());
+            }
             if op == "," {
                 let mut values = match left.kind {
                     ExprKind::List(v) => v,
@@ -4327,12 +6938,29 @@ impl Parser<'_> {
                 match self.tokens[start].kind {
                     TokenKind::Literal => {
                         // Adjacent string literals are one CDT literal expression.
+                        if self.cpp
+                            && string_literal_token(&token)
+                            && self.pos < self.limit
+                            && self.tokens[self.pos].kind == TokenKind::Identifier
+                            && self.tokens[self.pos - 1].span.end
+                                == self.tokens[self.pos].span.start
+                        {
+                            self.pos += 1;
+                        }
                         while self.pos < self.limit
                             && self.tokens[self.pos].kind == TokenKind::Literal
                             && self.text(self.pos).contains('"')
                             && token.contains('"')
                         {
                             self.pos += 1;
+                            if self.cpp
+                                && self.pos < self.limit
+                                && self.tokens[self.pos].kind == TokenKind::Identifier
+                                && self.tokens[self.pos - 1].span.end
+                                    == self.tokens[self.pos].span.start
+                            {
+                                self.pos += 1;
+                            }
                         }
                         ExprKind::Literal(self.raw(start, self.pos))
                     }
@@ -4383,9 +7011,45 @@ impl Parser<'_> {
     }
 
     fn is_cast(&self, start: usize, end: usize) -> bool {
-        if !self.cpp && self.variables.contains(self.text(start)) {
-            // An ordinary C object binding shadows a typedef in this scope.
-            return false;
+        let next = self.text(end + 1);
+        if end == start + 1
+            && self.tokens[start].kind == TokenKind::Identifier
+            && !type_word(self.text(start))
+            && !qualifier(self.text(start))
+        {
+            // CDT chooses the syntactically complete cast/prefix form even
+            // when this spelling also has an ordinary object binding. With
+            // no prefix operand it instead chooses a grouped postfix form.
+            if matches!(next, "++" | "--") {
+                return self.can_start_expression(end + 2);
+            }
+            if (matches!(next, "!" | "~") && self.can_start_expression(end + 2))
+                || (self
+                    .tokens
+                    .get(end + 1)
+                    .is_some_and(|token| token.kind == TokenKind::Identifier)
+                    && !expression_type_keyword(next, self.cpp)
+                    && (!self.cpp || alternative_operator(next) == next))
+                || self
+                    .tokens
+                    .get(end + 1)
+                    .is_some_and(|token| token.kind == TokenKind::Literal)
+            {
+                return true;
+            }
+            if self.variables.contains(self.text(start)) {
+                if next == "("
+                    && let Some(close) = self.matching(end + 1, self.limit)
+                    && self.is_cast(end + 2, close)
+                {
+                    // A following complete cast is not an ordinary call
+                    // argument, even when the outer name binds to an object.
+                    return true;
+                }
+                // A real object keeps the binary or call interpretation in
+                // ambiguous forms such as '(T)+x' and '(T)(x) in both modes.
+                return false;
+            }
         }
         if !self.is_type_range(start, end) || !self.can_start_expression(end + 1) {
             return false;
@@ -4402,7 +7066,6 @@ impl Parser<'_> {
         // An absent typedef is common after DecBench removes system headers.
         // '+'/'-'/'*'/'&' after an unknown bracketed identifier are ambiguous
         // binary expressions; retain that interpretation unless it is a type.
-        let next = self.text(end + 1);
         if next == "("
             && let Some(close) = self.matching(end + 1, self.limit)
             && self.is_cast(end + 2, close)
@@ -4412,7 +7075,8 @@ impl Parser<'_> {
             return true;
         }
         self.tokens[end + 1].kind != TokenKind::Punctuation
-            || matches!(next, "{" | "!" | "~" | "++" | "--")
+            || matches!(next, "{" | "!" | "~")
+            || (matches!(next, "++" | "--") && self.can_start_expression(end + 2))
     }
 
     fn is_type_range(&self, start: usize, end: usize) -> bool {
@@ -4438,47 +7102,101 @@ impl Parser<'_> {
                 first,
                 "struct" | "union" | "enum" | "class" | "typeof" | "__typeof__" | "decltype"
             );
-        if !known && self.variables.contains(first) {
+        let base_end = self.specifier_end(start, end);
+        let Some(pointer) = self.abstract_type_declarator(base_end, end) else {
+            return false;
+        };
+        if !known && !pointer && self.variables.contains(first) {
             return false;
         }
-        let pointer = (start..end)
-            .any(|i| self.text(i) == "*" || (self.cpp && matches!(self.text(i), "&" | "&&")));
         if !known && !pointer {
             return end == start + 1
                 && self.tokens[start].kind == TokenKind::Identifier
                 && !self.variables.contains(first);
         }
-        // An abstract declarator follows the type specifiers. Logical && is
-        // not a pointer; treating it as one would erase sizeof's expression
-        // operands (CDT/Joern includes those operands in its CFG).
-        let base_end = self.specifier_end(start, end);
-        let mut i = base_end;
-        while i < end {
-            if let Some(after) = self.skip_attribute(i, end) {
-                i = after;
-                continue;
-            }
-            match self.text(i) {
-                "*" => i += 1,
-                "&" | "&&" if self.cpp => i += 1,
-                "(" | "[" => {
-                    let Some(close) = self.matching(i, end) else {
-                        return false;
-                    };
-                    if self.text(i) == "("
-                        && i == base_end
-                        && !known
-                        && !(i + 1..close).any(|n| self.text(n) == "*")
-                    {
-                        return false;
+        true
+    }
+
+    fn abstract_type_declarator(&self, start: usize, end: usize) -> Option<bool> {
+        let mut groups = vec![(start, end)];
+        let mut pointer = false;
+        while let Some((start, end)) = groups.pop() {
+            let mut i = start;
+            // Pointer operators precede the direct declarator. Stars inside
+            // array bounds or function parameters are not pointer evidence.
+            while i < end {
+                if let Some(after) = self.skip_attribute(i, end) {
+                    i = after;
+                } else if self.cpp && self.text(i + 1) == "::" {
+                    while i + 2 < end && self.text(i + 1) == "::" {
+                        i += 2;
                     }
-                    i = close + 1;
+                    if self.text(i) != "*" {
+                        return None;
+                    }
+                    pointer = true;
+                    i += 1;
+                } else if self.text(i) == "*" || (self.cpp && matches!(self.text(i), "&" | "&&")) {
+                    pointer = true;
+                    i += 1;
+                } else if qualifier(self.text(i)) {
+                    i += 1;
+                } else {
+                    break;
                 }
-                t if qualifier(t) => i += 1,
-                _ => return false,
+            }
+            if self.text(i) == "(" {
+                let close = self.matching(i, end)?;
+                let first = self.text(i + 1);
+                if matches!(first, "*" | "(" | "[")
+                    || (self.cpp && (matches!(first, "&" | "&&") || self.text(i + 2) == "::"))
+                {
+                    groups.push((i + 1, close));
+                } else if !self.abstract_type_parameters(i + 1, close) {
+                    return None;
+                }
+                i = close + 1;
+            }
+            // A completed direct declarator has only function/array suffixes;
+            // a subsequent multiplication belongs to an expression.
+            while i < end {
+                if let Some(after) = self.skip_attribute(i, end) {
+                    i = after;
+                    continue;
+                }
+                match self.text(i) {
+                    "(" | "[" => {
+                        let close = self.matching(i, end)?;
+                        if self.text(i) == "(" && !self.abstract_type_parameters(i + 1, close) {
+                            return None;
+                        }
+                        i = close + 1;
+                    }
+                    "&" | "&&" if self.cpp => {
+                        pointer = true;
+                        i += 1;
+                    }
+                    t if self.cpp && qualifier(t) => i += 1,
+                    _ => return None,
+                }
             }
         }
-        true
+        Some(pointer)
+    }
+
+    fn abstract_type_parameters(&self, start: usize, end: usize) -> bool {
+        self.split_ranges(start, end, ",")
+            .into_iter()
+            .all(|(a, b)| {
+                if a == b || self.text(a) == "..." || self.is_type_range(a, b) {
+                    return true;
+                }
+                let base_end = self.specifier_end(a, b);
+                self.tokens[a].kind == TokenKind::Identifier
+                    && !self.variables.contains(self.text(a))
+                    && base_end < b
+                    && !self.grouped_declarator_problem(base_end, b)
+            })
     }
 
     fn remember_inferred_type(&mut self, start: usize, end: usize) {
@@ -5103,9 +7821,38 @@ fn qualifier(t: &str) -> bool {
             | "__fastcall"
             | "__stdcall"
             | "__thiscall"
-            | "__noreturn"
             | "_Noreturn"
     )
+}
+
+fn string_literal_token(text: &str) -> bool {
+    text.find('"')
+        .is_some_and(|quote| !text[..quote].contains('\''))
+}
+
+fn recovered_statement_siblings(statement: &Stmt) -> bool {
+    matches!(&statement.kind, StmtKind::Sequence(statements) if statements.first().is_some_and(|s| matches!(s.kind, StmtKind::Problem)))
+}
+
+fn unclosed_quoted_literal(text: &str) -> bool {
+    let Some(quote) = text.find(['\"', '\'']) else {
+        return false;
+    };
+    if !matches!(&text[..quote], "" | "L" | "u" | "U" | "u8") {
+        return false;
+    }
+    let bytes = text.as_bytes();
+    let mut at = quote + 1;
+    while at < bytes.len() {
+        if bytes[at] == b'\\' {
+            at += 2;
+        } else if bytes[at] == bytes[quote] {
+            return false;
+        } else {
+            at += 1;
+        }
+    }
+    true
 }
 
 fn expression_type_keyword(t: &str, cpp: bool) -> bool {
@@ -5189,6 +7936,30 @@ fn binary_precedence(op: &str) -> Option<(u8, bool)> {
 // CDT's ASTStringUtil renders simple return specifiers from their flags, so
 // base qualifiers and signedness precede the type regardless of source order.
 // Qualifiers on pointer operators keep their position after the pointer.
+fn canonical_primitive_specifiers(code: &str) -> String {
+    let split = code.find(['*', '&', '[']).unwrap_or(code.len());
+    let words: Vec<_> = code[..split].split_whitespace().collect();
+    if words.is_empty() || !words.iter().all(|word| type_word(word)) {
+        return code.into();
+    }
+    let mut result = Vec::new();
+    for modifier in ["signed", "unsigned", "short"] {
+        if words.contains(&modifier) {
+            result.push(modifier);
+        }
+    }
+    result.extend(std::iter::repeat_n(
+        "long",
+        words.iter().filter(|&&word| word == "long").count().min(2),
+    ));
+    for word in words {
+        if !matches!(word, "signed" | "unsigned" | "short" | "long") && !result.contains(&word) {
+            result.push(word);
+        }
+    }
+    format!("{}{}", result.join(" "), &code[split..])
+}
+
 fn primitive_return_display(code: &str) -> String {
     let split = code.find(['*', '&', '[']).unwrap_or(code.len());
     let words: Vec<_> = code[..split].split_whitespace().collect();
@@ -5236,6 +8007,438 @@ fn alternative_operator(op: &str) -> &str {
 #[cfg(test)]
 mod declaration_tests {
     use super::*;
+
+    #[test]
+    fn cpp_implicit_return_problems_preserve_explicit_functions_and_constructors() {
+        let source = include_str!(
+            "../tests/fixtures/declaration-recovery/implicit_return_function_declarations.cpp"
+        );
+        let unit = parse(source, true);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert_eq!(unit.functions.len(), 7);
+        assert_eq!(
+            unit.functions.iter().filter(|f| f.name == "Object").count(),
+            2
+        );
+        assert!(
+            unit.functions
+                .iter()
+                .all(|f| !matches!(f.body.kind, StmtKind::Empty))
+        );
+        assert!(
+            !unit
+                .functions
+                .iter()
+                .any(|f| f.name.ends_with("_only") || f.name.ends_with("_definition"))
+        );
+    }
+
+    #[test]
+    fn orphan_global_closing_braces_preserve_following_function_definitions() {
+        let source = "int known(char*); int work(int); int condition(int x){if(known(\"broken)){\nwork(x);\n}work(x);return x;}\nint after(int x){return x;}";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert!(
+                unit.functions
+                    .iter()
+                    .any(|f| f.name == "after" && !matches!(f.body.kind, StmtKind::Empty))
+            );
+        }
+    }
+
+    #[test]
+    fn address_expressions_cannot_be_grouped_formal_parameters() {
+        let source = include_str!(
+            "../tests/fixtures/declaration-recovery/grouped_address_parameter_recovery.c"
+        );
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let names: std::collections::HashSet<_> =
+                unit.functions.iter().map(|f| f.name.as_str()).collect();
+            assert_eq!(
+                names,
+                [
+                    "after_address",
+                    "after_builtin",
+                    "ordinary",
+                    "callback",
+                    "grouped",
+                    "grouped_parameter"
+                ]
+                .into_iter()
+                .collect()
+            );
+            assert!(
+                unit.functions
+                    .iter()
+                    .all(|f| !f.parameters.iter().any(|p| p.name == "Small"))
+            );
+        }
+    }
+
+    #[test]
+    fn grouped_function_names_keep_cdt_full_name_fallback_and_distinct_stubs() {
+        let source = "int ordinary(int); int (ordinary)(int x) {return x;} int (grouped)(int); int (grouped)(int x) {return x;} int (inner(int x)) {return x;}";
+        let c = parse(source, false);
+        assert!(c.diagnostics.is_empty(), "{:?}", c.diagnostics);
+        let ordinary: Vec<_> = c
+            .functions
+            .iter()
+            .filter(|f| f.name == "ordinary")
+            .collect();
+        assert_eq!(ordinary.len(), 2);
+        assert_eq!(ordinary[0].full_name, "<unresolvedNamespace>.ordinary");
+        assert_eq!(ordinary[1].full_name, "ordinary");
+        let grouped: Vec<_> = c.functions.iter().filter(|f| f.name == "grouped").collect();
+        assert_eq!(grouped.len(), 1);
+        assert_eq!(grouped[0].full_name, "<unresolvedNamespace>.grouped");
+        assert_eq!(
+            c.functions
+                .iter()
+                .find(|f| f.name == "inner")
+                .unwrap()
+                .full_name,
+            "inner"
+        );
+        let cpp = parse(source, true);
+        assert!(cpp.diagnostics.is_empty(), "{:?}", cpp.diagnostics);
+        assert_eq!(cpp.functions.len(), 3);
+        assert!(
+            cpp.functions
+                .iter()
+                .all(|f| f.full_name == format!("{}:int(int)", f.name))
+        );
+    }
+
+    #[test]
+    fn cast_operands_cannot_name_grouped_declarations_or_shadow_type_bindings() {
+        let source =
+            include_str!("../tests/fixtures/declaration-recovery/address_declarator_recovery.c");
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let address = unit
+                .functions
+                .iter()
+                .find(|f| f.name == "address_name")
+                .unwrap();
+            let StmtKind::Block(body) = &address.body.kind else {
+                panic!("expected function body");
+            };
+            assert!(matches!(body[0].kind, StmtKind::Problem));
+            assert!(matches!(
+                &body[1].kind,
+                StmtKind::Expression(Expr {
+                    kind: ExprKind::Call { .. },
+                    ..
+                })
+            ));
+            let shadow = unit
+                .functions
+                .iter()
+                .find(|f| f.name == "shadowed_type")
+                .unwrap();
+            let StmtKind::Block(body) = &shadow.body.kind else {
+                panic!("expected function body");
+            };
+            assert!(
+                matches!(&body[0].kind, StmtKind::Declaration(declarations) if declarations[0].name == "Alias")
+            );
+            assert!(
+                matches!(&body[1].kind, StmtKind::Return(Some(Expr { kind: ExprKind::Binary { op, .. }, .. })) if op == "+")
+            );
+        }
+    }
+
+    #[test]
+    fn problem_enums_use_compound_recovery_without_changing_global_recovery() {
+        let source = "int host(int n) { enum { 2=2 }; int absent(int); enum { VALID=1 }; int kept(int); return n; } enum { 2=2 }; int global_after(int n) { return n; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let names: std::collections::HashSet<_> =
+                unit.functions.iter().map(|f| f.name.as_str()).collect();
+            assert_eq!(
+                names,
+                ["host", "kept", "global_after"].into_iter().collect()
+            );
+            let host = unit.functions.iter().find(|f| f.name == "host").unwrap();
+            let StmtKind::Block(body) = &host.body.kind else {
+                panic!("expected compound function body");
+            };
+            assert!(matches!(body[0].kind, StmtKind::Problem));
+            assert!(matches!(body.last().unwrap().kind, StmtKind::Return(_)));
+        }
+    }
+
+    #[test]
+    fn local_noreturn_recovery_does_not_apply_global_storage_restrictions() {
+        let source =
+            include_str!("../tests/fixtures/declaration-recovery/nested_noreturn_headers.c");
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert_eq!(unit.functions.len(), if cpp { 9 } else { 13 });
+            assert!(unit.functions.iter().any(|f| f.name == "leading_proto"));
+            for name in ["leading_child", "storage_child", "local_proto"] {
+                assert_eq!(unit.functions.iter().any(|f| f.name == name), !cpp);
+            }
+        }
+    }
+
+    #[test]
+    fn record_fields_distinguish_problem_macros_and_function_declarations() {
+        let source =
+            include_str!("../tests/fixtures/declaration-recovery/record_function_shaped_fields.c");
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert_eq!(unit.functions.len(), 4);
+            assert!(!unit.functions.iter().any(|f| f.name == "WRAP"));
+            let callback = unit
+                .functions
+                .iter()
+                .find(|f| f.name == "callback")
+                .unwrap();
+            assert_eq!(
+                callback.full_name,
+                if cpp {
+                    "Global.callback:int(int)"
+                } else {
+                    "callback"
+                }
+            );
+        }
+    }
+
+    #[test]
+    fn problem_record_parentheses_preserve_valid_attributes_and_grouped_returns() {
+        for cpp in [false, true] {
+            let problem = parse(
+                include_str!("../tests/fixtures/declaration-recovery/problem_record_parentheses.c"),
+                cpp,
+            );
+            let valid = parse(
+                include_str!("../tests/fixtures/declaration-recovery/record_return_declarators.c"),
+                cpp,
+            );
+            assert!(problem.diagnostics.is_empty() && valid.diagnostics.is_empty());
+            assert_eq!(problem.functions.len(), 5);
+            assert_eq!(valid.functions.len(), 3);
+            assert!(valid.functions.iter().any(|f| f.name == "grouped"));
+            assert!(valid.functions.iter().any(|f| f.name == "factory"));
+        }
+    }
+
+    #[test]
+    fn c_and_cpp_loop_separators_use_object_bindings_instead_of_inferred_types() {
+        let source = "typedef int i; int work(int); int f(int n){int i=0;for(;i<((n<<2)+3);i=(n>>i)&7)work(i);return i;}";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let f = unit.functions.iter().find(|f| f.name == "f").unwrap();
+            let StmtKind::Block(body) = &f.body.kind else {
+                panic!()
+            };
+            assert!(matches!(
+                &body[1].kind,
+                StmtKind::For {
+                    condition: Some(_),
+                    update: Some(_),
+                    ..
+                }
+            ));
+        }
+    }
+
+    #[test]
+    fn gnu_nested_functions_keep_lexical_methods_and_parent_ast_markers() {
+        let source =
+            include_str!("../tests/fixtures/declaration-recovery/nested_function_declarations.c");
+        let c = parse(source, false);
+        let cpp = parse(source, true);
+        assert!(c.diagnostics.is_empty() && cpp.diagnostics.is_empty());
+        assert_eq!(c.functions.len(), 7);
+        assert_eq!(cpp.functions.len(), 6);
+        let nested = c.functions.iter().find(|f| f.name == "nested").unwrap();
+        assert_eq!(nested.full_name, "nested");
+        assert_eq!(nested.lambda_parent.as_deref(), Some("valid_outer"));
+        assert!(!nested.lambda);
+        assert!(
+            nested
+                .inherited_bindings
+                .contains(&("n".into(), "int".into()))
+        );
+        let parent = c
+            .functions
+            .iter()
+            .find(|f| f.name == "valid_outer")
+            .unwrap();
+        let StmtKind::Block(body) = &parent.body.kind else {
+            panic!()
+        };
+        assert!(
+            matches!(&body[0].kind, StmtKind::FunctionDefinition { name, full_name } if name == "nested" && full_name == "nested")
+        );
+        assert!(matches!(&body[1].kind, StmtKind::Return(_)));
+        assert!(!cpp.functions.iter().any(|f| f.name == "nested"));
+    }
+
+    #[test]
+    fn missing_outer_braces_keep_c_nested_definitions_without_control_headers() {
+        let source =
+            include_str!("../tests/fixtures/declaration-recovery/missing_outer_functions.c");
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert_eq!(unit.functions.len(), if cpp { 3 } else { 5 });
+            assert!(
+                !unit
+                    .functions
+                    .iter()
+                    .any(|f| matches!(f.name.as_str(), "if" | "while" | "for" | "switch"))
+            );
+            let outer = unit
+                .functions
+                .iter()
+                .find(|f| f.name == "unclosed_outer")
+                .unwrap();
+            let StmtKind::Block(body) = &outer.body.kind else {
+                panic!()
+            };
+            assert!(matches!(&body[0].kind, StmtKind::Expression(_)));
+            assert!(matches!(&body[1].kind, StmtKind::Block(_)));
+        }
+    }
+
+    #[test]
+    fn unfinished_translation_unit_declarations_keep_completed_methods() {
+        for tail in [
+            "int incomplete(int n)",
+            "Unexpected words! Failed to recover int32_t absent(int argc) due to error during bad-pass.",
+        ] {
+            for cpp in [false, true] {
+                let unit = parse(&format!("int before(int n) {{ return n; }} {tail}"), cpp);
+                assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+                assert_eq!(
+                    unit.functions
+                        .iter()
+                        .map(|f| f.name.as_str())
+                        .collect::<Vec<_>>(),
+                    ["before"]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn malformed_numeric_and_nameless_declarators_keep_later_statements() {
+        let source = "int work(int); int f(int n) { void (*0x1160)() (); int 0x1160; long() ** value; work(n); return n; } int after(int n) { ((void (*)(int))0x1160)(n); return n; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let method = unit.functions.iter().find(|f| f.name == "f").unwrap();
+            let StmtKind::Block(body) = &method.body.kind else {
+                panic!()
+            };
+            assert!(
+                body[..2]
+                    .iter()
+                    .all(|s| matches!(s.kind, StmtKind::Problem))
+            );
+            if cpp {
+                assert!(
+                    matches!(&body[2].kind, StmtKind::Expression(Expr { kind: ExprKind::Binary { op, .. }, .. }) if op == "*")
+                );
+            } else {
+                assert!(matches!(body[2].kind, StmtKind::Problem));
+            }
+            assert!(matches!(body[3].kind, StmtKind::Expression(_)));
+            let method = unit.functions.iter().find(|f| f.name == "after").unwrap();
+            let StmtKind::Block(body) = &method.body.kind else {
+                panic!()
+            };
+            assert!(matches!(
+                &body[0].kind,
+                StmtKind::Expression(Expr {
+                    kind: ExprKind::Call { .. },
+                    ..
+                })
+            ));
+        }
+    }
+
+    #[test]
+    fn problem_headers_distinguish_duplicate_parameters_from_pointer_returns() {
+        let source = "int bad(int n)(int n) { return n; } define pseudo { work(1); } other bare { work(2); } int (*valid(int n))(int) { return 0; } int after(int n) { return n; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert_eq!(
+                unit.functions
+                    .iter()
+                    .map(|f| f.name.as_str())
+                    .collect::<Vec<_>>(),
+                ["valid", "after", "bad"]
+            );
+            assert!(matches!(unit.functions[2].body.kind, StmtKind::Empty));
+        }
+    }
+
+    #[test]
+    fn ordinary_function_names_do_not_become_operator_overloads() {
+        for cpp in [false, true] {
+            let unit = parse(
+                "int operators(int n) { return n; } int operator_names(int n) { return n; }",
+                cpp,
+            );
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            assert_eq!(
+                unit.functions
+                    .iter()
+                    .map(|f| f.name.as_str())
+                    .collect::<Vec<_>>(),
+                ["operators", "operator_names"]
+            );
+        }
+        let unit = parse("int operator(int n) { return n; }", false);
+        assert_eq!(unit.functions[0].name, "operator");
+    }
+
+    #[test]
+    fn named_type_declaration_does_not_replace_a_function_binding() {
+        let source = "struct sigaction { int handler; }; int sigaction(int, void *, void *); int f(int n) { sigaction local; sigaction(n, &local, 0); return n; } int multiply(int a, int b) { a*b; return a; }";
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let method = unit.functions.iter().find(|f| f.name == "f").unwrap();
+            let StmtKind::Block(body) = &method.body.kind else {
+                panic!()
+            };
+            assert!(matches!(&body[0].kind, StmtKind::Declaration(values)
+                if values[0].name == "local" && values[0].type_name == "sigaction"));
+            assert!(matches!(
+                &body[1].kind,
+                StmtKind::Expression(Expr {
+                    kind: ExprKind::Call { .. },
+                    ..
+                })
+            ));
+            let method = unit
+                .functions
+                .iter()
+                .find(|f| f.name == "multiply")
+                .unwrap();
+            let StmtKind::Block(body) = &method.body.kind else {
+                panic!()
+            };
+            assert!(matches!(&body[0].kind, StmtKind::Expression(Expr {
+                kind: ExprKind::Binary { op, .. }, ..
+            }) if op == "*"));
+        }
+    }
 
     #[test]
     fn recovered_assembly_tail_parameter_names_do_not_become_types() {
@@ -6357,6 +9560,171 @@ mod declaration_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn named_pointer_and_reference_ambiguities_follow_cdt_bindings() {
+        let source =
+            include_str!("../tests/fixtures/declaration-recovery/logical_declaration_boundaries.c");
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            for name in [
+                "logical_unknown",
+                "logical_unknown_bare",
+                "logical_unknown_both",
+                "logical_parameter",
+                "logical_global",
+                "logical_calls",
+                "logical_shadowed_alias",
+            ] {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!("{name}")
+                };
+                assert!(
+                    matches!(&body[0].kind,
+                    StmtKind::Expression(Expr {kind: ExprKind::Binary {op, ..}, ..})
+                    if op == "&&"),
+                    "{name}: {:?}",
+                    body[0]
+                );
+            }
+            for name in [
+                "pointer_known",
+                "pointer_unknown",
+                "pointer_unknown_uninitialized",
+            ] {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!("{name}")
+                };
+                assert!(matches!(&body[0].kind, StmtKind::Declaration(values)
+                    if values.len() == 1 && values[0].name == "pointer"));
+            }
+            for name in [
+                "lvalue_reference_known",
+                "lvalue_reference_unknown",
+                "rvalue_reference_known",
+                "rvalue_reference_unknown",
+            ] {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!("{name}")
+                };
+                assert_eq!(
+                    matches!(&body[0].kind, StmtKind::Declaration(_)),
+                    cpp,
+                    "{name}: {:?}",
+                    body[0]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn reference_declarations_preserve_fresh_names_and_typed_prototypes() {
+        let source =
+            include_str!("../tests/fixtures/declaration-recovery/reference_binding_boundaries.c");
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            for name in [
+                "typed_logical_fresh",
+                "unknown_logical_fresh",
+                "typed_bitwise_fresh",
+                "unknown_bitwise_fresh",
+            ] {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!("{name}")
+                };
+                assert_eq!(
+                    matches!(&body[0].kind, StmtKind::Declaration(_)),
+                    cpp,
+                    "{name}: {:?}",
+                    body[0]
+                );
+            }
+            for name in [
+                "typed_logical_bound",
+                "unknown_logical_bound",
+                "typed_bitwise_bound",
+                "unknown_bitwise_bound",
+                "typed_pointer_bound",
+                "unknown_pointer_bound",
+                "typed_pointer_comparison",
+                "unknown_pointer_comparison",
+                "value_call_rhs",
+            ] {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!("{name}")
+                };
+                assert!(
+                    matches!(&body[0].kind, StmtKind::Expression(_)),
+                    "{name}: {:?}",
+                    body[0]
+                );
+            }
+            assert!(unit.functions.iter().any(|f| f.name == "make_pointer"));
+            assert_eq!(
+                unit.functions.iter().any(|f| f.name == "make_reference"),
+                cpp
+            );
+            assert_eq!(unit.functions.iter().any(|f| f.name == "make_lvalue"), cpp);
+        }
+    }
+
+    #[test]
+    fn qualified_pointer_declarators_override_ordinary_name_bindings() {
+        let source = include_str!(
+            "../tests/fixtures/declaration-recovery/qualified_pointer_binding_boundaries.c"
+        );
+        for cpp in [false, true] {
+            let unit = parse(source, cpp);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            for name in [
+                "record_const",
+                "record_volatile",
+                "unknown_const",
+                "unknown_volatile",
+                "scalar_shadow_const",
+                "record_shadow_const",
+                "unknown_shadow_const",
+                "global_shadow_const",
+                "bound_target_const",
+                "nested_const",
+                "nested_volatile",
+                "plain_object_assignment",
+                "fresh_pointer",
+                "exact_timer_shape",
+                "exact_ready_list_shape",
+            ] {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!("{name}")
+                };
+                assert!(
+                    matches!(&body[0].kind, StmtKind::Declaration(values)
+                    if values.len() == 1 && !values[0].problem),
+                    "{name}: {:?}",
+                    body[0]
+                );
+            }
+            for name in ["plain_object_product", "plain_global_product"] {
+                let function = unit.functions.iter().find(|f| f.name == name).unwrap();
+                let StmtKind::Block(body) = &function.body.kind else {
+                    panic!("{name}")
+                };
+                assert!(
+                    matches!(&body[0].kind,
+                    StmtKind::Expression(Expr{kind:ExprKind::Binary{op,..},..}) if op == "*"),
+                    "{name}: {:?}",
+                    body[0]
+                );
+            }
+        }
+    }
 
     #[test]
     fn preprocessed_types_pointers_and_control_flow() {

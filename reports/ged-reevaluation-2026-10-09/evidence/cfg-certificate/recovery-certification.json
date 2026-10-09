@@ -1,0 +1,1042 @@
+{
+  "schema_version": 1,
+  "kind": "supplemental_original_exporter_recovery_certification",
+  "recovery_manifest": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/raw-recovery-manifest.json",
+    "sha256": "c7e310d19477f0945d0c0cdb0139d7858f09e5912c52493695ea2fe376601a57"
+  },
+  "raw_corpus_summary": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/old-cfg-final-2026-10-09/direct/summary.json",
+    "sha256": "b93e99831f98294b1d074f35877c15c9ee42cfd134260c2bd13b86652bb4ff84"
+  },
+  "run_fingerprint": "32748fb80dfa04f0cc96bc9c2e175d26e56d68a5fd8939f4ff53f8e96de32eda",
+  "native_library": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/final-build-2026-10-09/lib/librust_joern.so",
+    "sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055"
+  },
+  "source_build_fingerprint": "c262cf0b657cd0fc0ed60312095c92f24a095f05d66345ce47d8c7909ecd1f73",
+  "complete_corpus": true,
+  "corpus_cases": 8808,
+  "affected_case_ids": [
+    "O0/nuttx/source/lib_wcwidth.i",
+    "O0/cleanflight/source/arm_common_tables.i",
+    "O2/cleanflight/source/arm_common_tables.i",
+    "O0/crazyflie/source/arm_common_tables.i",
+    "O2/crazyflie/source/arm_common_tables.i"
+  ],
+  "qualified_failures": 0,
+  "unique_input_function_statuses": {
+    "match": 1725
+  },
+  "case_weighted_function_statuses": {
+    "match": 2609
+  },
+  "files": [
+    {
+      "case_ids": [
+        "O0/nuttx/source/lib_wcwidth.i"
+      ],
+      "prepared_sha256": "94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa",
+      "supplemental_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/nuttx.iterative.pyjoern.json",
+        "sha256": "3bea778599761eab393d989871ed55df63129393c4db57c869361b7cd995aa6c"
+      },
+      "candidate": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/old-cfg-final-2026-10-09/direct/inputs/c-94bcb6707b30b8f36ba472a51f0dabdf3d7139363021abdfb009ae58adf21caa.json.gz",
+        "sha256": "399acc9b1668029c82c267eed9d756434be445c8855393285f67feafdf063cf0"
+      },
+      "native_library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+      "reference_functions": 841,
+      "candidate_functions": 841,
+      "requested_options": {
+        "strict": true,
+        "data_flow": false,
+        "reaching_definitions": false,
+        "preprocessed": true,
+        "language": "c"
+      },
+      "strict_available": true,
+      "diagnostics": [],
+      "qualified_status": "match",
+      "function_statuses": {
+        "match": 841
+      },
+      "divergences": [],
+      "candidate_timings": {
+        "native_seconds": 0.07902571698650718,
+        "python_normalization_seconds": 0.00696114799939096,
+        "analysis_and_fallback_seconds": 0.08613166003488004,
+        "comparison_seconds": 0.014978484949097037
+      },
+      "raw_cached_status": "divergent",
+      "raw_cached_functions": 0,
+      "raw_cached_extra_functions": 841
+    },
+    {
+      "case_ids": [
+        "O0/cleanflight/source/arm_common_tables.i",
+        "O2/cleanflight/source/arm_common_tables.i"
+      ],
+      "prepared_sha256": "060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b",
+      "supplemental_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/cleanflight.iterative.pyjoern.json",
+        "sha256": "acede192dd25a124f1a76ba3315c4a2bc30d9e072d4ef715416ff1709c3e8e7c"
+      },
+      "candidate": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/old-cfg-final-2026-10-09/direct/inputs/c-060a6f32b4ef8dd24af75de5a710ec761a881e28c1c831b2780f1c04b78e428b.json.gz",
+        "sha256": "aeaa267c91a6c0291e5bb5422f06702960f393fb826bacb21e74785de5374855"
+      },
+      "native_library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+      "reference_functions": 402,
+      "candidate_functions": 402,
+      "requested_options": {
+        "strict": true,
+        "data_flow": false,
+        "reaching_definitions": false,
+        "preprocessed": true,
+        "language": "c"
+      },
+      "strict_available": true,
+      "diagnostics": [],
+      "qualified_status": "match",
+      "function_statuses": {
+        "match": 402
+      },
+      "divergences": [],
+      "candidate_timings": {
+        "native_seconds": 0.08012724900618196,
+        "python_normalization_seconds": 0.0038667150074616075,
+        "analysis_and_fallback_seconds": 0.08516418701037765,
+        "comparison_seconds": 0.00572312599979341
+      },
+      "raw_cached_status": "divergent",
+      "raw_cached_functions": 0,
+      "raw_cached_extra_functions": 402
+    },
+    {
+      "case_ids": [
+        "O0/crazyflie/source/arm_common_tables.i",
+        "O2/crazyflie/source/arm_common_tables.i"
+      ],
+      "prepared_sha256": "4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b",
+      "supplemental_reference": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/crazyflie.iterative.pyjoern.json",
+        "sha256": "52dea3ac26c3ce021eddc0211fd26b92af61bb10d8c0baf2386b03c00190dfe0"
+      },
+      "candidate": {
+        "path": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/old-cfg-final-2026-10-09/direct/inputs/c-4a399fd5d8249bab0c5c7fbfe768598c26fc87a536c02d48db18bae072da720b.json.gz",
+        "sha256": "5e91e054d64f59eaa179b576bd0f87b25fd28a2cc3b15fdf71bc36eb6c0e59b5"
+      },
+      "native_library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+      "reference_functions": 482,
+      "candidate_functions": 482,
+      "requested_options": {
+        "strict": true,
+        "data_flow": false,
+        "reaching_definitions": false,
+        "preprocessed": true,
+        "language": "c"
+      },
+      "strict_available": true,
+      "diagnostics": [],
+      "qualified_status": "match",
+      "function_statuses": {
+        "match": 482
+      },
+      "divergences": [],
+      "candidate_timings": {
+        "native_seconds": 0.24526590399909765,
+        "python_normalization_seconds": 0.006459713098593056,
+        "analysis_and_fallback_seconds": 0.2578924719709903,
+        "comparison_seconds": 0.009782296023331583
+      },
+      "raw_cached_status": "divergent",
+      "raw_cached_functions": 0,
+      "raw_cached_extra_functions": 482
+    }
+  ],
+  "raw_statuses": {
+    "file_statuses": {
+      "match": 8803,
+      "divergent": 5
+    },
+    "function_statuses": {
+      "match": 4079344,
+      "extra": 2609
+    },
+    "usage_statuses": {
+      "ok": 8808
+    },
+    "groups": {
+      "O0/ida": {
+        "files": 256,
+        "file_statuses": {
+          "match": 256
+        },
+        "function_statuses": {
+          "match": 34357
+        }
+      },
+      "project/base-passwd": {
+        "files": 8,
+        "file_statuses": {
+          "match": 8
+        },
+        "function_statuses": {
+          "match": 240
+        }
+      },
+      "O0/kuna": {
+        "files": 256,
+        "file_statuses": {
+          "match": 256
+        },
+        "function_statuses": {
+          "match": 34191
+        }
+      },
+      "O0/source": {
+        "files": 3763,
+        "file_statuses": {
+          "match": 3760,
+          "divergent": 3
+        },
+        "function_statuses": {
+          "match": 1882064,
+          "extra": 1725
+        }
+      },
+      "project/bash": {
+        "files": 396,
+        "file_statuses": {
+          "match": 396
+        },
+        "function_statuses": {
+          "match": 194009
+        }
+      },
+      "project/betaflight": {
+        "files": 762,
+        "file_statuses": {
+          "match": 762
+        },
+        "function_statuses": {
+          "match": 727238
+        }
+      },
+      "project/bzip2": {
+        "files": 26,
+        "file_statuses": {
+          "match": 26
+        },
+        "function_statuses": {
+          "match": 1034
+        }
+      },
+      "project/chibios": {
+        "files": 152,
+        "file_statuses": {
+          "match": 152
+        },
+        "function_statuses": {
+          "match": 97241
+        }
+      },
+      "project/cleanflight": {
+        "files": 488,
+        "file_statuses": {
+          "match": 486,
+          "divergent": 2
+        },
+        "function_statuses": {
+          "match": 405276,
+          "extra": 804
+        }
+      },
+      "project/coreutils": {
+        "files": 662,
+        "file_statuses": {
+          "match": 662
+        },
+        "function_statuses": {
+          "match": 51557
+        }
+      },
+      "project/crazyflie": {
+        "files": 1070,
+        "file_statuses": {
+          "match": 1068,
+          "divergent": 2
+        },
+        "function_statuses": {
+          "match": 584020,
+          "extra": 964
+        }
+      },
+      "project/cronie": {
+        "files": 38,
+        "file_statuses": {
+          "match": 38
+        },
+        "function_statuses": {
+          "match": 2256
+        }
+      },
+      "project/dash": {
+        "files": 68,
+        "file_statuses": {
+          "match": 68
+        },
+        "function_statuses": {
+          "match": 5981
+        }
+      },
+      "project/dexter": {
+        "files": 20,
+        "file_statuses": {
+          "match": 20
+        },
+        "function_statuses": {
+          "match": 842
+        }
+      },
+      "project/diffutils": {
+        "files": 44,
+        "file_statuses": {
+          "match": 44
+        },
+        "function_statuses": {
+          "match": 2906
+        }
+      },
+      "project/dpkg": {
+        "files": 70,
+        "file_statuses": {
+          "match": 70
+        },
+        "function_statuses": {
+          "match": 16124
+        }
+      },
+      "project/e2fsprogs": {
+        "files": 60,
+        "file_statuses": {
+          "match": 60
+        },
+        "function_statuses": {
+          "match": 51104
+        }
+      },
+      "project/findutils": {
+        "files": 24,
+        "file_statuses": {
+          "match": 24
+        },
+        "function_statuses": {
+          "match": 4897
+        }
+      },
+      "project/freertos": {
+        "files": 86,
+        "file_statuses": {
+          "match": 86
+        },
+        "function_statuses": {
+          "match": 9831
+        }
+      },
+      "project/gnutls": {
+        "files": 172,
+        "file_statuses": {
+          "match": 172
+        },
+        "function_statuses": {
+          "match": 42164
+        }
+      },
+      "project/grep": {
+        "files": 16,
+        "file_statuses": {
+          "match": 16
+        },
+        "function_statuses": {
+          "match": 1774
+        }
+      },
+      "project/gzip": {
+        "files": 137,
+        "file_statuses": {
+          "match": 137
+        },
+        "function_statuses": {
+          "match": 3267
+        }
+      },
+      "project/iproute2": {
+        "files": 156,
+        "file_statuses": {
+          "match": 156
+        },
+        "function_statuses": {
+          "match": 59710
+        }
+      },
+      "project/kmod": {
+        "files": 22,
+        "file_statuses": {
+          "match": 22
+        },
+        "function_statuses": {
+          "match": 2060
+        }
+      },
+      "project/libacl": {
+        "files": 138,
+        "file_statuses": {
+          "match": 138
+        },
+        "function_statuses": {
+          "match": 6640
+        }
+      },
+      "project/libbsd": {
+        "files": 102,
+        "file_statuses": {
+          "match": 102
+        },
+        "function_statuses": {
+          "match": 2748
+        }
+      },
+      "project/libedit": {
+        "files": 66,
+        "file_statuses": {
+          "match": 66
+        },
+        "function_statuses": {
+          "match": 11275
+        }
+      },
+      "project/libexpat": {
+        "files": 12,
+        "file_statuses": {
+          "match": 12
+        },
+        "function_statuses": {
+          "match": 701
+        }
+      },
+      "project/libopencm3": {
+        "files": 284,
+        "file_statuses": {
+          "match": 284
+        },
+        "function_statuses": {
+          "match": 17066
+        }
+      },
+      "project/libselinux": {
+        "files": 122,
+        "file_statuses": {
+          "match": 122
+        },
+        "function_statuses": {
+          "match": 21507
+        }
+      },
+      "project/minipig": {
+        "files": 6,
+        "file_statuses": {
+          "match": 6
+        },
+        "function_statuses": {
+          "match": 20
+        }
+      },
+      "project/mirai": {
+        "files": 30,
+        "file_statuses": {
+          "match": 30
+        },
+        "function_statuses": {
+          "match": 1138
+        }
+      },
+      "project/mydoom": {
+        "files": 24,
+        "file_statuses": {
+          "match": 24
+        },
+        "function_statuses": {
+          "match": 769
+        }
+      },
+      "project/nuttx": {
+        "files": 2180,
+        "file_statuses": {
+          "match": 2179,
+          "divergent": 1
+        },
+        "function_statuses": {
+          "match": 1345340,
+          "extra": 841
+        }
+      },
+      "project/openssh-portable": {
+        "files": 532,
+        "file_statuses": {
+          "match": 532
+        },
+        "function_statuses": {
+          "match": 134719
+        }
+      },
+      "project/riot-os": {
+        "files": 80,
+        "file_statuses": {
+          "match": 80
+        },
+        "function_statuses": {
+          "match": 18394
+        }
+      },
+      "project/rsyslog": {
+        "files": 34,
+        "file_statuses": {
+          "match": 34
+        },
+        "function_statuses": {
+          "match": 14370
+        }
+      },
+      "project/shadow": {
+        "files": 244,
+        "file_statuses": {
+          "match": 244
+        },
+        "function_statuses": {
+          "match": 14206
+        }
+      },
+      "project/sysvinit": {
+        "files": 98,
+        "file_statuses": {
+          "match": 98
+        },
+        "function_statuses": {
+          "match": 1072
+        }
+      },
+      "project/tar": {
+        "files": 52,
+        "file_statuses": {
+          "match": 52
+        },
+        "function_statuses": {
+          "match": 21850
+        }
+      },
+      "project/x0r-usb": {
+        "files": 6,
+        "file_statuses": {
+          "match": 6
+        },
+        "function_statuses": {
+          "match": 153
+        }
+      },
+      "project/zlib": {
+        "files": 66,
+        "file_statuses": {
+          "match": 66
+        },
+        "function_statuses": {
+          "match": 6184
+        }
+      },
+      "O2/ida": {
+        "files": 257,
+        "file_statuses": {
+          "match": 257
+        },
+        "function_statuses": {
+          "match": 24825
+        }
+      },
+      "O2/kuna": {
+        "files": 257,
+        "file_statuses": {
+          "match": 257
+        },
+        "function_statuses": {
+          "match": 25050
+        }
+      },
+      "O2/source": {
+        "files": 4019,
+        "file_statuses": {
+          "match": 4017,
+          "divergent": 2
+        },
+        "function_statuses": {
+          "match": 2078857,
+          "extra": 884
+        }
+      },
+      "project/u-boot": {
+        "files": 255,
+        "file_statuses": {
+          "match": 255
+        },
+        "function_statuses": {
+          "match": 197661
+        }
+      }
+    }
+  },
+  "supplemental_corrected_statuses": {
+    "file_statuses": {
+      "match": 8808,
+      "divergent": 0
+    },
+    "function_statuses": {
+      "match": 4081953,
+      "extra": 0
+    },
+    "usage_statuses": {
+      "ok": 8808
+    },
+    "groups": {
+      "O0/ida": {
+        "files": 256,
+        "file_statuses": {
+          "match": 256
+        },
+        "function_statuses": {
+          "match": 34357
+        }
+      },
+      "project/base-passwd": {
+        "files": 8,
+        "file_statuses": {
+          "match": 8
+        },
+        "function_statuses": {
+          "match": 240
+        }
+      },
+      "O0/kuna": {
+        "files": 256,
+        "file_statuses": {
+          "match": 256
+        },
+        "function_statuses": {
+          "match": 34191
+        }
+      },
+      "O0/source": {
+        "files": 3763,
+        "file_statuses": {
+          "match": 3763,
+          "divergent": 0
+        },
+        "function_statuses": {
+          "match": 1883789,
+          "extra": 0
+        }
+      },
+      "project/bash": {
+        "files": 396,
+        "file_statuses": {
+          "match": 396
+        },
+        "function_statuses": {
+          "match": 194009
+        }
+      },
+      "project/betaflight": {
+        "files": 762,
+        "file_statuses": {
+          "match": 762
+        },
+        "function_statuses": {
+          "match": 727238
+        }
+      },
+      "project/bzip2": {
+        "files": 26,
+        "file_statuses": {
+          "match": 26
+        },
+        "function_statuses": {
+          "match": 1034
+        }
+      },
+      "project/chibios": {
+        "files": 152,
+        "file_statuses": {
+          "match": 152
+        },
+        "function_statuses": {
+          "match": 97241
+        }
+      },
+      "project/cleanflight": {
+        "files": 488,
+        "file_statuses": {
+          "match": 488,
+          "divergent": 0
+        },
+        "function_statuses": {
+          "match": 406080,
+          "extra": 0
+        }
+      },
+      "project/coreutils": {
+        "files": 662,
+        "file_statuses": {
+          "match": 662
+        },
+        "function_statuses": {
+          "match": 51557
+        }
+      },
+      "project/crazyflie": {
+        "files": 1070,
+        "file_statuses": {
+          "match": 1070,
+          "divergent": 0
+        },
+        "function_statuses": {
+          "match": 584984,
+          "extra": 0
+        }
+      },
+      "project/cronie": {
+        "files": 38,
+        "file_statuses": {
+          "match": 38
+        },
+        "function_statuses": {
+          "match": 2256
+        }
+      },
+      "project/dash": {
+        "files": 68,
+        "file_statuses": {
+          "match": 68
+        },
+        "function_statuses": {
+          "match": 5981
+        }
+      },
+      "project/dexter": {
+        "files": 20,
+        "file_statuses": {
+          "match": 20
+        },
+        "function_statuses": {
+          "match": 842
+        }
+      },
+      "project/diffutils": {
+        "files": 44,
+        "file_statuses": {
+          "match": 44
+        },
+        "function_statuses": {
+          "match": 2906
+        }
+      },
+      "project/dpkg": {
+        "files": 70,
+        "file_statuses": {
+          "match": 70
+        },
+        "function_statuses": {
+          "match": 16124
+        }
+      },
+      "project/e2fsprogs": {
+        "files": 60,
+        "file_statuses": {
+          "match": 60
+        },
+        "function_statuses": {
+          "match": 51104
+        }
+      },
+      "project/findutils": {
+        "files": 24,
+        "file_statuses": {
+          "match": 24
+        },
+        "function_statuses": {
+          "match": 4897
+        }
+      },
+      "project/freertos": {
+        "files": 86,
+        "file_statuses": {
+          "match": 86
+        },
+        "function_statuses": {
+          "match": 9831
+        }
+      },
+      "project/gnutls": {
+        "files": 172,
+        "file_statuses": {
+          "match": 172
+        },
+        "function_statuses": {
+          "match": 42164
+        }
+      },
+      "project/grep": {
+        "files": 16,
+        "file_statuses": {
+          "match": 16
+        },
+        "function_statuses": {
+          "match": 1774
+        }
+      },
+      "project/gzip": {
+        "files": 137,
+        "file_statuses": {
+          "match": 137
+        },
+        "function_statuses": {
+          "match": 3267
+        }
+      },
+      "project/iproute2": {
+        "files": 156,
+        "file_statuses": {
+          "match": 156
+        },
+        "function_statuses": {
+          "match": 59710
+        }
+      },
+      "project/kmod": {
+        "files": 22,
+        "file_statuses": {
+          "match": 22
+        },
+        "function_statuses": {
+          "match": 2060
+        }
+      },
+      "project/libacl": {
+        "files": 138,
+        "file_statuses": {
+          "match": 138
+        },
+        "function_statuses": {
+          "match": 6640
+        }
+      },
+      "project/libbsd": {
+        "files": 102,
+        "file_statuses": {
+          "match": 102
+        },
+        "function_statuses": {
+          "match": 2748
+        }
+      },
+      "project/libedit": {
+        "files": 66,
+        "file_statuses": {
+          "match": 66
+        },
+        "function_statuses": {
+          "match": 11275
+        }
+      },
+      "project/libexpat": {
+        "files": 12,
+        "file_statuses": {
+          "match": 12
+        },
+        "function_statuses": {
+          "match": 701
+        }
+      },
+      "project/libopencm3": {
+        "files": 284,
+        "file_statuses": {
+          "match": 284
+        },
+        "function_statuses": {
+          "match": 17066
+        }
+      },
+      "project/libselinux": {
+        "files": 122,
+        "file_statuses": {
+          "match": 122
+        },
+        "function_statuses": {
+          "match": 21507
+        }
+      },
+      "project/minipig": {
+        "files": 6,
+        "file_statuses": {
+          "match": 6
+        },
+        "function_statuses": {
+          "match": 20
+        }
+      },
+      "project/mirai": {
+        "files": 30,
+        "file_statuses": {
+          "match": 30
+        },
+        "function_statuses": {
+          "match": 1138
+        }
+      },
+      "project/mydoom": {
+        "files": 24,
+        "file_statuses": {
+          "match": 24
+        },
+        "function_statuses": {
+          "match": 769
+        }
+      },
+      "project/nuttx": {
+        "files": 2180,
+        "file_statuses": {
+          "match": 2180,
+          "divergent": 0
+        },
+        "function_statuses": {
+          "match": 1346181,
+          "extra": 0
+        }
+      },
+      "project/openssh-portable": {
+        "files": 532,
+        "file_statuses": {
+          "match": 532
+        },
+        "function_statuses": {
+          "match": 134719
+        }
+      },
+      "project/riot-os": {
+        "files": 80,
+        "file_statuses": {
+          "match": 80
+        },
+        "function_statuses": {
+          "match": 18394
+        }
+      },
+      "project/rsyslog": {
+        "files": 34,
+        "file_statuses": {
+          "match": 34
+        },
+        "function_statuses": {
+          "match": 14370
+        }
+      },
+      "project/shadow": {
+        "files": 244,
+        "file_statuses": {
+          "match": 244
+        },
+        "function_statuses": {
+          "match": 14206
+        }
+      },
+      "project/sysvinit": {
+        "files": 98,
+        "file_statuses": {
+          "match": 98
+        },
+        "function_statuses": {
+          "match": 1072
+        }
+      },
+      "project/tar": {
+        "files": 52,
+        "file_statuses": {
+          "match": 52
+        },
+        "function_statuses": {
+          "match": 21850
+        }
+      },
+      "project/x0r-usb": {
+        "files": 6,
+        "file_statuses": {
+          "match": 6
+        },
+        "function_statuses": {
+          "match": 153
+        }
+      },
+      "project/zlib": {
+        "files": 66,
+        "file_statuses": {
+          "match": 66
+        },
+        "function_statuses": {
+          "match": 6184
+        }
+      },
+      "O2/ida": {
+        "files": 257,
+        "file_statuses": {
+          "match": 257
+        },
+        "function_statuses": {
+          "match": 24825
+        }
+      },
+      "O2/kuna": {
+        "files": 257,
+        "file_statuses": {
+          "match": 257
+        },
+        "function_statuses": {
+          "match": 25050
+        }
+      },
+      "O2/source": {
+        "files": 4019,
+        "file_statuses": {
+          "match": 4019,
+          "divergent": 0
+        },
+        "function_statuses": {
+          "match": 2079741,
+          "extra": 0
+        }
+      },
+      "project/u-boot": {
+        "files": 255,
+        "file_statuses": {
+          "match": 255
+        },
+        "function_statuses": {
+          "match": 197661
+        }
+      }
+    }
+  },
+  "notes": [
+    "This separately corrects exactly five proven original-exporter failures using unchanged original CPG CFG edges.",
+    "Raw frozen cache comparisons and ordinary matching rules remain unchanged.",
+    "All function names, directed topology, entry/exit roles and degeneracy must match; any diagnostic blocks qualification.",
+    "No other case receives a reference substitution or divergence tolerance."
+  ]
+}

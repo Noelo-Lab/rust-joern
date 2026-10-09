@@ -1,0 +1,16 @@
+[
+  {
+    "language": "c",
+    "source": "nested_function_bindings.c",
+    "source_sha256": "a3c8096661bf355f9add4607db4ffd65b9542f3eb6135a94eb3ace1b4629d123",
+    "reference": "nested_function_bindings.c.properties.json.gz",
+    "reference_sha256": "c288d347b2fd77792e24ab7f72c0916c7b1c8e3672a4048aec974559413c22a4"
+  },
+  {
+    "language": "cpp",
+    "source": "nested_function_bindings.cpp",
+    "source_sha256": "a3c8096661bf355f9add4607db4ffd65b9542f3eb6135a94eb3ace1b4629d123",
+    "reference": "nested_function_bindings.cpp.properties.json.gz",
+    "reference_sha256": "d047f87dacef51baaa3cd9e52a438f5b7c524bbaa05b4f4508ae5b96a078ea63"
+  }
+]

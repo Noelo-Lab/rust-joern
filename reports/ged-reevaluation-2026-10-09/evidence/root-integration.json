@@ -1,0 +1,49 @@
+{
+  "integrated_at": "2026-10-09T00:33:51.486578+00:00",
+  "root_head": "1384c786d41b899c971560f843669fd1ff4e4a3f",
+  "source_guards_before": {
+    "/home/mahaloz/github/rust-joern/Cargo.toml": "716cca371a47cc629f0b1c1f8eeb7abde19b3c1aa5f351811fe26d1e56bbbf21",
+    "/home/mahaloz/github/rust-joern/Cargo.lock": "90d77a95af72c909726899bf17d646f09929ef74433446cdee1c6b680a4727ca",
+    "/home/mahaloz/github/rust-joern/src/builder.rs": "ff92475737d897ce6e5690ec0a68d5d15983b47cd02b9c6cfc6ed4e27c9ba5ea",
+    "/home/mahaloz/github/rust-joern/src/dataflow.rs": "95efca82e9bdf9dcb1d33df73e5e01fcd09d3d282d1f942d70fe875a39f1d7d8",
+    "/home/mahaloz/github/rust-joern/src/ddg.rs": "db5ab95754509ac415ff53b56bb533b61e59fc96ff219a45ca3803b69d9a0581",
+    "/home/mahaloz/github/rust-joern/src/graph.rs": "700760512aebc7c26e92da1e0c432f81b165d2359cbb4d612ebf83cac701974f",
+    "/home/mahaloz/github/rust-joern/src/lexer.rs": "2f9dc3b12d1ca799884642dfadd321b3fba8a9f02a491403c8768eb1a54a21f9",
+    "/home/mahaloz/github/rust-joern/src/lib.rs": "8ba4c6499973a7599c7c05d5003af8a524c7d249454be0df0eefcd3546c4c8d0",
+    "/home/mahaloz/github/rust-joern/src/main.rs": "35d0d4c0e88110adbb0b53a5b5ab6b2482bda13cc53dc7d4dab0124ffcfeb4db",
+    "/home/mahaloz/github/rust-joern/src/normalize.rs": "3c5d690f3fd78d19623ec2a33c08622ab4e28d022f851a7c5073596e9d3e23e4",
+    "/home/mahaloz/github/rust-joern/src/parser.rs": "fffaec614055f29589e914f276feeb4ea44ee05fed5a1a3cf262a395659a97ed",
+    "/home/mahaloz/github/rust-joern/src/syntax.rs": "a4663d6bff49e3c3c9666dedb37a9dc795f51085b1b684aab853d360c1958796"
+  },
+  "source_guards_after": {
+    "/home/mahaloz/github/rust-joern/Cargo.toml": "716cca371a47cc629f0b1c1f8eeb7abde19b3c1aa5f351811fe26d1e56bbbf21",
+    "/home/mahaloz/github/rust-joern/Cargo.lock": "90d77a95af72c909726899bf17d646f09929ef74433446cdee1c6b680a4727ca",
+    "/home/mahaloz/github/rust-joern/src/builder.rs": "ff92475737d897ce6e5690ec0a68d5d15983b47cd02b9c6cfc6ed4e27c9ba5ea",
+    "/home/mahaloz/github/rust-joern/src/dataflow.rs": "95efca82e9bdf9dcb1d33df73e5e01fcd09d3d282d1f942d70fe875a39f1d7d8",
+    "/home/mahaloz/github/rust-joern/src/ddg.rs": "db5ab95754509ac415ff53b56bb533b61e59fc96ff219a45ca3803b69d9a0581",
+    "/home/mahaloz/github/rust-joern/src/graph.rs": "700760512aebc7c26e92da1e0c432f81b165d2359cbb4d612ebf83cac701974f",
+    "/home/mahaloz/github/rust-joern/src/lexer.rs": "2f9dc3b12d1ca799884642dfadd321b3fba8a9f02a491403c8768eb1a54a21f9",
+    "/home/mahaloz/github/rust-joern/src/lib.rs": "8ba4c6499973a7599c7c05d5003af8a524c7d249454be0df0eefcd3546c4c8d0",
+    "/home/mahaloz/github/rust-joern/src/main.rs": "35d0d4c0e88110adbb0b53a5b5ab6b2482bda13cc53dc7d4dab0124ffcfeb4db",
+    "/home/mahaloz/github/rust-joern/src/normalize.rs": "3c5d690f3fd78d19623ec2a33c08622ab4e28d022f851a7c5073596e9d3e23e4",
+    "/home/mahaloz/github/rust-joern/src/parser.rs": "caeb4a6ecb6ac43fac48f90edc369122c4bbe137bfc318874b6fa95142505158",
+    "/home/mahaloz/github/rust-joern/src/syntax.rs": "a4663d6bff49e3c3c9666dedb37a9dc795f51085b1b684aab853d360c1958796"
+  },
+  "changed_files": [
+    "/home/mahaloz/github/rust-joern/src/parser.rs"
+  ],
+  "private_source_unchanged": true,
+  "owner_seal": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/expression_recovery.stage15_completion.json",
+    "sha256": "dc565607e5005620149d6a2456bebee66a04974d318dd684e8b750e4552beb6b"
+  },
+  "private_release": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/libraries/librust_joern.stage15-eebcaf935433.so",
+    "sha256": "eebcaf935433307d9b4720c1bf6504d4c8d48cb53969eb0e0c5539148697c262"
+  },
+  "zero_method_proof": {
+    "path": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/zero-method-final-controls/replay-stage15/summary.json",
+    "sha256": "ed8e9385c5d9842e8b050c3788f1e129bd71bd5f8f4e25e2f14fcd2316e816e7"
+  },
+  "lexical_difference_from_private": "Canonical formatting only, previously verified root-format-audit.json; lexer remains2f9dc3b1."
+}

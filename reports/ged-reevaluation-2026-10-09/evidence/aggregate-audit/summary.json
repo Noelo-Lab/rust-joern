@@ -1,0 +1,131 @@
+{
+  "scope": "Primitive JSON reconstruction of finalized report states, scoreboards, GED/Union aggregate arithmetic, frozen sample extras, and main/standalone synchronization.",
+  "run": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/native-final-2026-10-09",
+  "core_audit": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/final-results-audit/completed-2026-10-09",
+  "manifest_sha256": "aec60a55520b8e1e610da51a56e3515ab46176e78b03dadfda252e7460ce7397",
+  "library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+  "report_summary_sha256": "f7b423fb4ab3b242362783310c4784f70a38a47b23f2616eb52b09b33bb72376",
+  "completed_utc": "2026-10-09T01:07:20.170674+00:00",
+  "checks": 1544702,
+  "failures": 0,
+  "passed": true,
+  "trees": {
+    "main": {
+      "function_rows": 96103,
+      "binary_groups": 770,
+      "identities": [
+        "angr",
+        "binja",
+        "claude-code",
+        "codex",
+        "codex@gpt-6-astra",
+        "dewolf",
+        "fission",
+        "ghidra",
+        "glaurung",
+        "ida",
+        "kuna",
+        "manifold",
+        "r2dec",
+        "reko",
+        "retdec",
+        "ventris"
+      ],
+      "site_identities": [
+        "angr",
+        "binja",
+        "claude-code",
+        "codex",
+        "codex@gpt-6-astra",
+        "dewolf",
+        "fission",
+        "ghidra",
+        "glaurung",
+        "ida",
+        "kuna",
+        "manifold",
+        "r2dec",
+        "reko",
+        "ventris"
+      ],
+      "sample_membership": 250,
+      "diff_rows_verified": 1537648,
+      "raw_changes": {
+        "unchanged": 541829,
+        "baseline_measured": 543007,
+        "new_measured": 543118,
+        "state_changed": 1672,
+        "unmeasured_both": 994147,
+        "changed": 795,
+        "dropped": 383,
+        "added": 494
+      },
+      "sample_extras": 300,
+      "sample_extras_deltas": {
+        "unchanged": 4783,
+        "changed": 17
+      },
+      "normalized_selector_changes": {
+        "all": 0,
+        "site": 0
+      },
+      "all_identity_combo_rows": 160,
+      "site_combo_rows": 150
+    },
+    "sample": {
+      "function_rows": 250,
+      "binary_groups": 223,
+      "identities": [
+        "codex@gpt-6-astra"
+      ],
+      "site_identities": [
+        "codex@gpt-6-astra"
+      ],
+      "sample_membership": 250,
+      "diff_rows_verified": 250,
+      "raw_changes": {
+        "unchanged": 243,
+        "baseline_measured": 245,
+        "new_measured": 245,
+        "state_changed": 2,
+        "unmeasured_both": 5,
+        "changed": 2
+      },
+      "sample_extras": 100,
+      "sample_extras_deltas": {
+        "unchanged": 100
+      },
+      "normalized_selector_changes": {
+        "all": 0,
+        "site": 0
+      },
+      "all_identity_combo_rows": 10,
+      "site_combo_rows": 10
+    }
+  },
+  "astra_synchronization": {
+    "baseline": {
+      "equal": 250,
+      "main_measured": 245,
+      "standalone_measured": 245,
+      "main_perfect": 133,
+      "standalone_perfect": 133
+    },
+    "new": {
+      "equal": 250,
+      "main_measured": 245,
+      "standalone_measured": 245,
+      "main_perfect": 132,
+      "standalone_perfect": 132
+    }
+  },
+  "report_artifacts_guarded": 25,
+  "audit_input_files_guarded": 33,
+  "no_native_metric_or_jvm_calls": true,
+  "wall_seconds": 61.39904085197486,
+  "arithmetic_float_tolerance": {
+    "relative": 1e-12,
+    "absolute": 1e-12
+  },
+  "audit_timing_separate_from_measured_scoring": true
+}

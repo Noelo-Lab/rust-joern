@@ -1,0 +1,52 @@
+{
+  "source": "/home/mahaloz/github/rust-joern/tools/cfg-compare/samples.json.gz",
+  "source_sha256": "c60a79d50d9282ae21cc6ca9f4e43295484f2cd3c2daa220051728a5780bba20",
+  "inputs": 8,
+  "pyjoern_summed_parse_seconds": 110.8160953540355,
+  "rust_summed_parse_seconds": 0.7318181956652552,
+  "summed_interval_ratio": 151.42571749435493,
+  "original_includes_jvm_startup": true,
+  "full_corpus_speedup_measured": false,
+  "cases": [
+    {
+      "id": "O0/sysvinit/ida/ida_killall5.c",
+      "pyjoern_seconds": 12.432065994944423,
+      "rust_seconds": 0.06550896295811981
+    },
+    {
+      "id": "O0/libopencm3/kuna/kuna_lcd-dma.c",
+      "pyjoern_seconds": 12.482083305949345,
+      "rust_seconds": 0.05400300200562924
+    },
+    {
+      "id": "O0/betaflight/source/board_info.i",
+      "pyjoern_seconds": 15.255802377010696,
+      "rust_seconds": 0.1385416219709441
+    },
+    {
+      "id": "O2/libopencm3/ida/ida_usart-stdio.c",
+      "pyjoern_seconds": 13.11307602794841,
+      "rust_seconds": 0.03193667693994939
+    },
+    {
+      "id": "O2/shadow/kuna/kuna_useradd.c",
+      "pyjoern_seconds": 17.876776889082976,
+      "rust_seconds": 0.12652526795864105
+    },
+    {
+      "id": "O2/nuttx/source/env_unsetenv.i",
+      "pyjoern_seconds": 14.369597172015347,
+      "rust_seconds": 0.15912961994763464
+    },
+    {
+      "id": "O0/nuttx/source/libxx_dynamic_cast.ii",
+      "pyjoern_seconds": 12.169186891056597,
+      "rust_seconds": 0.022662017960101366
+    },
+    {
+      "id": "O2/nuttx/source/libxx_deletea.ii",
+      "pyjoern_seconds": 13.117506696027704,
+      "rust_seconds": 0.13351102592423558
+    }
+  ]
+}

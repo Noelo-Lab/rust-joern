@@ -18,7 +18,7 @@ pub struct Function {
     pub signature: String,
     pub extern_c: bool,
     pub implicit_this: Option<String>,
-    /// Lambda bodies are converted in their enclosing method's lexical scope.
+    /// Generated lambda and GNU nested bodies retain their lexical parent.
     pub lambda_parent: Option<String>,
     pub implicit_fields: Vec<(String, String)>,
     pub member_cv_qualified: bool,
@@ -162,6 +162,11 @@ pub enum StmtKind {
     Sequence(Vec<Stmt>),
     Expression(Expr),
     Declaration(Vec<Declaration>),
+    /// A GNU C nested method is an AST child, excluded from the parent's CFG.
+    FunctionDefinition {
+        name: String,
+        full_name: String,
+    },
     If {
         condition: Expr,
         consequence: Box<Stmt>,

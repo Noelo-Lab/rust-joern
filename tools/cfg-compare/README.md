@@ -62,6 +62,12 @@ interpreter is isolated from the replacement package and checked against frozen
 oracle code hashes. Capture JSON records original and native generation times
 for each complete translation unit; original timings include JVM startup.
 
+For the eight bundled inputs, those calls totaled **110.816 seconds with
+PyJoern and 0.732 seconds with Rust**, a **151.4×** ratio. These are summed
+call intervals for the complete files, including Python CFG materialization.
+The sample's readability limits make this a paired sample comparison; no
+full-corpus PyJoern generation timing was recorded.
+
 Viewer checks:
 
 ```sh

@@ -1,0 +1,95 @@
+{
+  "environment": {
+    "PYTHONPATH": "/home/mahaloz/github/rust-joern/workspace/decbench-parity/tools",
+    "PYTHONHASHSEED": "0"
+  },
+  "commands": [
+    {
+      "phase": "fresh_all_input_analysis_and_raw_reference_comparison",
+      "argv": [
+        "/home/mahaloz/.virtualenvs/decbench/bin/python",
+        "-B",
+        "/home/mahaloz/github/rust-joern/scripts/compare_native_corpus.py",
+        "--manifest",
+        "/home/mahaloz/github/rust-joern/workspace/decbench-parity/manifest.json",
+        "--build-provenance",
+        "/home/mahaloz/github/rust-joern/workspace/ged-reeval/old-cfg-final-2026-10-09/build-provenance.json",
+        "--library",
+        "/home/mahaloz/github/rust-joern/workspace/ged-reeval/final-build-2026-10-09/lib/librust_joern.so",
+        "--output",
+        "/home/mahaloz/github/rust-joern/workspace/ged-reeval/old-cfg-final-2026-10-09/direct",
+        "--workers",
+        "8",
+        "--rayon-threads",
+        "2"
+      ],
+      "expected_exit_if_full_parity_with_proven_original_export_bugs": 1,
+      "explanation": "Raw cache references retain exactly five empty original exporter failures; they must stay raw divergences rather than silently become matches."
+    },
+    {
+      "phase": "separate_exact_three_input_five_case_supplemental_recovery_comparison",
+      "argv": [
+        "/home/mahaloz/.virtualenvs/decbench/bin/python",
+        "-B",
+        "/home/mahaloz/github/rust-joern/scripts/compare_recovered_references.py",
+        "--recovery-manifest",
+        "/home/mahaloz/github/rust-joern/workspace/reference-recaptures/raw-recovery-manifest.json",
+        "--direct",
+        "/home/mahaloz/github/rust-joern/workspace/ged-reeval/old-cfg-final-2026-10-09/direct",
+        "--output",
+        "/home/mahaloz/github/rust-joern/workspace/ged-reeval/old-cfg-final-2026-10-09/recovery-certification.json"
+      ],
+      "expected_exit": 0,
+      "explanation": "Compares already-generated fresh native records against unchanged recovered original CFGs. No second native analysis or original recapture."
+    }
+  ],
+  "acceptance": {
+    "raw_complete_corpus": true,
+    "raw_recorded_cases": 8808,
+    "raw_recorded_unique_inputs": 6377,
+    "raw_native_invocations": 6377,
+    "raw_resumed_unique_inputs": 0,
+    "raw_statuses": {
+      "match": 8803,
+      "divergent": 5
+    },
+    "raw_usage_statuses": {
+      "ok": 8808
+    },
+    "raw_function_statuses": {
+      "match": 4079344,
+      "extra": 2609
+    },
+    "raw_affected_case_ids": [
+      "O0/nuttx/source/lib_wcwidth.i",
+      "O0/cleanflight/source/arm_common_tables.i",
+      "O2/cleanflight/source/arm_common_tables.i",
+      "O0/crazyflie/source/arm_common_tables.i",
+      "O2/crazyflie/source/arm_common_tables.i"
+    ],
+    "supplemental_qualified_failures": 0,
+    "supplemental_unique_function_statuses": {
+      "match": 1725
+    },
+    "supplemental_case_weighted_function_statuses": {
+      "match": 2609
+    },
+    "supplemental_corrected_file_statuses": {
+      "match": 8808,
+      "divergent": 0
+    },
+    "supplemental_corrected_function_statuses": {
+      "match": 4081953,
+      "extra": 0
+    },
+    "diagnostic_cases": 0,
+    "missing_function_differences": 0,
+    "topology_or_role_differences": 0,
+    "degeneracy_differences": 0,
+    "all_new_case_ids_exact_manifest_scope": true
+  },
+  "no_filters": true,
+  "no_resume": true,
+  "fresh_generation_required": true,
+  "supplemental_uses_same_fresh_native_graphs": true
+}

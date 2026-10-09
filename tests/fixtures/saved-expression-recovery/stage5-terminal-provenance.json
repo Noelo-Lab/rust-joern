@@ -1,0 +1,110 @@
+{
+  "original_engine": "Unchanged PyJoern 4.0.150.4 / Joern v4.0.150",
+  "files": [
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-prefix-boundaries/terminal_prefix_boundaries.c",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/terminal_prefix_boundaries.c",
+      "sha256": "3d18054ea56960a755ec7b4681c48e4544c4715eb11002bff51d7e141f9bf12e"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-prefix-boundaries/terminal_prefix_boundaries.c.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/terminal_prefix_boundaries.c.pyjoern.json",
+      "sha256": "7dcf7ef9337c1f529c0e3b51b03eaf4a0c5b7fe0603d8296c5ca96ee9e71a1ae"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-prefix-boundaries/terminal_prefix_boundaries.cpp",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/terminal_prefix_boundaries.cpp",
+      "sha256": "3d18054ea56960a755ec7b4681c48e4544c4715eb11002bff51d7e141f9bf12e"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-prefix-boundaries/terminal_prefix_boundaries.cpp.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/terminal_prefix_boundaries.cpp.pyjoern.json",
+      "sha256": "c9c9f58fe97f8d3fc0c8ae5acb28bcf3abf88445eab3a8b7b3c03d5162612bf8"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_empty.c",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_empty.c",
+      "sha256": "cffa3075138588bf2f392e9de215ad495cf49d3011b20f1989057a7fb9797477"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_empty.c.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_empty.c.pyjoern.json",
+      "sha256": "9474d73d9bd026f0e49a6b362ac829088ee482ece313c74533e1c8fc9584aaee"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_empty.cpp",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_empty.cpp",
+      "sha256": "cffa3075138588bf2f392e9de215ad495cf49d3011b20f1989057a7fb9797477"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_empty.cpp.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_empty.cpp.pyjoern.json",
+      "sha256": "a9f175e703258b8507bba17e250dad6d24bf6553a8f38308c94d56867e9eb1bc"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_unknown_empty.c",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_unknown_empty.c",
+      "sha256": "3601b92dff342a3d27310c0e31dd1025a608f5ee1de47ad5ceb1a22652c21074"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_unknown_empty.c.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_unknown_empty.c.pyjoern.json",
+      "sha256": "7ec4ae062730bfb3c70766462520129322ce8c1d2f25bcaa52f6d4a5c925ffe4"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_unknown_empty.cpp",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_unknown_empty.cpp",
+      "sha256": "3601b92dff342a3d27310c0e31dd1025a608f5ee1de47ad5ceb1a22652c21074"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_unknown_empty.cpp.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_unknown_empty.cpp.pyjoern.json",
+      "sha256": "4e6941c894d433dbc10a40ecdde2e8976d154e6610074495e97f47196bc8fedf"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_plain.c",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_plain.c",
+      "sha256": "cdad61a02aa860140299bce9c6046ef1c25ea8d316785151408b23df01e23a0c"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_plain.c.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_plain.c.pyjoern.json",
+      "sha256": "ebc7c82d5ee25e2f707459c270c85e887caf3dfc10ecd6265722085c0adcde18"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_plain.cpp",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_plain.cpp",
+      "sha256": "cdad61a02aa860140299bce9c6046ef1c25ea8d316785151408b23df01e23a0c"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_plain.cpp.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_plain.cpp.pyjoern.json",
+      "sha256": "1dd899813fcbd0e9f8060067d56ed3d878633da5409e6f971ea5fdca828e13ba"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_compound.c",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_compound.c",
+      "sha256": "e506a046643b09dba65388f71ee6e27150ef74bacfb240e59c3bca51593c172f"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_compound.c.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_compound.c.pyjoern.json",
+      "sha256": "a8371eb23b533a01eb8596e6e530c6fe2a6a33acdaeed1669042b6eb562211b2"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_compound.cpp",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_compound.cpp",
+      "sha256": "e506a046643b09dba65388f71ee6e27150ef74bacfb240e59c3bca51593c172f"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/eof_bound_compound.cpp.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/eof_bound_compound.cpp.pyjoern.json",
+      "sha256": "8b37cfb058c08d6bf2607edcf9a5511ed595f5e4e9af8827c5e008e15754266f"
+    }
+  ],
+  "fresh_prefix_source_sha256": "3d18054ea56960a755ec7b4681c48e4544c4715eb11002bff51d7e141f9bf12e",
+  "reused_eof_audit": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-separator-boundaries/audit.json",
+  "reused_eof_audit_sha256": "423203da6e1b779f27117cb04c441b8888c56078c5b286ef59192fb009c70074",
+  "fresh_prefix_audit": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/terminal-prefix-boundaries/audit.json",
+  "fresh_prefix_audit_sha256": "5b5c107c1d46cc8ad12c4f9f143615b3116588ec22b7e35774cd07f7891e8b68"
+}

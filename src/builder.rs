@@ -672,35 +672,7 @@ impl Builder<'_> {
                 self.expression(operand, id, Some(1))
                     .append(Fragment::single(id))
             }
-            ExprKind::Binary { op, left, right } => {
-                if op == "," {
-                    let list = Expr {
-                        kind: ExprKind::List(vec![(**left).clone(), (**right).clone()]),
-                        span: span.clone(),
-                    };
-                    return self.expression(&list, parent, argument);
-                }
-                let id = self.node("CALL", span, Some(binary_operator(op)), None);
-                self.ast(parent, id, argument);
-                let left = self.expression(left, id, Some(1));
-                let right = self.expression(right, id, Some(2));
-                if op == "&&" || op == "||" {
-                    let entry = left.entry;
-                    let mut fringe = left.fringe.clone();
-                    fringe.extend(&right.fringe);
-                    let mut edges = Vec::new();
-                    if let Some(target) = right.entry {
-                        edges.extend(left.fringe.iter().map(|&source| [source, target]));
-                    }
-                    let mut result = Fragment::combine([left, right]);
-                    result.entry = entry;
-                    result.fringe = fringe;
-                    result.edges.extend(edges);
-                    result.append(Fragment::single(id))
-                } else {
-                    left.append(right).append(Fragment::single(id))
-                }
-            }
+            ExprKind::Binary { .. } => self.binary_expression(expression, parent, argument),
             ExprKind::Conditional {
                 condition,
                 consequence,
@@ -914,6 +886,65 @@ impl Builder<'_> {
                 Fragment::single(id)
             }
         }
+    }
+    fn binary_expression(
+        &mut self,
+        expression: &Expr,
+        parent: NodeId,
+        argument: Option<usize>,
+    ) -> Fragment {
+        enum Task<'a> {
+            Lower(&'a Expr, NodeId, Option<usize>),
+            Join(NodeId, bool),
+        }
+
+        // Left-associated expressions can be thousands of nodes deep in
+        // decompiler output. Keep the recursive conversion's preorder node
+        // creation and postorder CFG joins without consuming the worker stack.
+        let mut tasks = vec![Task::Lower(expression, parent, argument)];
+        let mut fragments = Vec::new();
+        while let Some(task) = tasks.pop() {
+            match task {
+                Task::Lower(expression, parent, argument) => {
+                    if let ExprKind::Binary { op, left, right } = &expression.kind {
+                        let name = if op == "," {
+                            "<operator>.expressionList"
+                        } else {
+                            binary_operator(op)
+                        };
+                        let id = self.node("CALL", &expression.span, Some(name), None);
+                        self.ast(parent, id, argument);
+                        tasks.push(Task::Join(id, op == "&&" || op == "||"));
+                        tasks.push(Task::Lower(right, id, Some(2)));
+                        tasks.push(Task::Lower(left, id, Some(1)));
+                    } else {
+                        fragments.push(self.expression(expression, parent, argument));
+                    }
+                }
+                Task::Join(id, short_circuit) => {
+                    let right = fragments.pop().unwrap();
+                    let left = fragments.pop().unwrap();
+                    let flow = if short_circuit {
+                        let entry = left.entry;
+                        let mut fringe = left.fringe.clone();
+                        fringe.extend(&right.fringe);
+                        let mut edges = Vec::new();
+                        if let Some(target) = right.entry {
+                            edges.extend(left.fringe.iter().map(|&source| [source, target]));
+                        }
+                        let mut result = Fragment::combine([left, right]);
+                        result.entry = entry;
+                        result.fringe = fringe;
+                        result.edges.extend(edges);
+                        result.append(Fragment::single(id))
+                    } else {
+                        left.append(right).append(Fragment::single(id))
+                    };
+                    fragments.push(flow);
+                }
+            }
+        }
+        fragments.pop().unwrap()
     }
     fn block_is_container(&self, parent: NodeId) -> bool {
         let node = &self.graph.nodes[parent as usize];
@@ -1375,6 +1406,19 @@ impl Builder<'_> {
             StmtKind::Expression(expression) => self.expression(expression, parent, None),
             StmtKind::Declaration(declarations) => {
                 self.declarations(declarations, &statement.span, parent)
+            }
+            StmtKind::FunctionDefinition { name, full_name } => {
+                let id = self.node("METHOD", &statement.span, Some(name), None);
+                let method = &mut self.graph.nodes[id as usize];
+                method.method_full_name = Some(full_name.clone());
+                method.external_ref = Some(ExternalReference {
+                    method_full_name: full_name.clone(),
+                    node: 0,
+                });
+                self.ast(parent, id, None);
+                // Joern retains the nested method in the enclosing AST, but
+                // converts its body only in the separate method CFG.
+                Fragment::default()
             }
             StmtKind::Empty | StmtKind::Problem => Fragment::default(),
             StmtKind::Return(expression) => {
@@ -1874,6 +1918,196 @@ mod tests {
     use crate::{analyze, graph::Options};
     use serde_json::Value;
     use std::collections::HashMap;
+
+    #[test]
+    fn nested_function_method_is_an_ast_child_without_parent_cfg_execution() {
+        // This definition shape is captured from unchanged Joern in
+        // nested_function_declarations.c: the work call belongs to nested.
+        let nested_code = "int nested(int x) { return work(x); }";
+        let source =
+            format!("int work(int);\nint valid_outer(int n) {{ {nested_code} return nested(n); }}");
+        let analysis = analyze(
+            &source,
+            "input.c",
+            &Options {
+                strict: true,
+                preprocessed: true,
+                ..Options::default()
+            },
+        )
+        .unwrap();
+        assert!(analysis.diagnostics.is_empty());
+        let outer = analysis
+            .functions
+            .iter()
+            .find(|function| function.name == "valid_outer")
+            .unwrap();
+        let nested = analysis
+            .functions
+            .iter()
+            .find(|function| function.name == "nested")
+            .unwrap();
+        let marker = outer
+            .cpg
+            .nodes
+            .iter()
+            .find(|node| node.kind == "METHOD" && node.name.as_deref() == Some("nested"))
+            .unwrap();
+        assert_eq!(marker.code, nested_code);
+        assert_eq!(marker.line, 2);
+        assert_eq!(
+            marker.method_full_name.as_deref(),
+            Some(nested.fullname.as_str())
+        );
+        let target = marker.external_ref.as_ref().unwrap();
+        assert_eq!(target.method_full_name, nested.fullname);
+        assert_eq!(target.node, nested.cpg.nodes[0].id);
+        assert!(outer.cpg.edges.iter().any(|edge| {
+            edge.kind == "AST"
+                && edge.target == marker.id
+                && outer.cpg.nodes[edge.source as usize].kind == "BLOCK"
+        }));
+        assert!(!outer.cpg.edges.iter().any(|edge| {
+            edge.kind == "CFG" && (edge.source == marker.id || edge.target == marker.id)
+        }));
+        assert!(
+            !outer
+                .cpg
+                .nodes
+                .iter()
+                .any(|node| node.kind == "CALL" && node.name.as_deref() == Some("work"))
+        );
+        assert!(
+            nested
+                .cpg
+                .nodes
+                .iter()
+                .any(|node| node.kind == "CALL" && node.name.as_deref() == Some("work"))
+        );
+        assert_eq!(outer.cfg.nodes.len(), 1);
+        assert!(outer.cfg.edges.is_empty());
+        assert!(!outer.cfg.nodes[0].statements.contains(&marker.id));
+    }
+
+    #[test]
+    fn deep_binary_expressions_fit_the_default_worker_stack() {
+        // Construct and drop the recursive input on a larger caller stack;
+        // only lowering runs on the ordinary two-megabyte worker stack.
+        std::thread::Builder::new()
+            .stack_size(16 * 1024 * 1024)
+            .spawn(|| {
+                use crate::syntax::{Expr, ExprKind, Span, Stmt, StmtKind};
+                const DEPTH: usize = 4096;
+                let source = "int deep(int x) { return x; }";
+                for right_associated in [false, true] {
+                    let mut unit = crate::parser::parse_preprocessed(source, false, true);
+                    let identifier = || Expr {
+                        kind: ExprKind::Identifier("x".into()),
+                        span: Span::default(),
+                    };
+                    let mut expression = identifier();
+                    for index in 0..DEPTH {
+                        let (left, right) = if right_associated {
+                            (identifier(), expression)
+                        } else {
+                            (expression, identifier())
+                        };
+                        expression = Expr {
+                            kind: ExprKind::Binary {
+                                op: ["+", ",", "&&", "||"][index % 4].into(),
+                                left: Box::new(left),
+                                right: Box::new(right),
+                            },
+                            span: Span::default(),
+                        };
+                    }
+                    let StmtKind::Block(body) = &mut unit.functions[0].body.kind else {
+                        panic!("missing function body");
+                    };
+                    body[0] = Stmt {
+                        kind: StmtKind::Return(Some(expression)),
+                        span: Span::default(),
+                    };
+                    let function = &unit.functions[0];
+                    let known_functions = [function.name.clone()].into_iter().collect();
+                    let methods = [(function.full_name.clone(), vec![function])]
+                        .into_iter()
+                        .collect();
+                    let (graph, diagnostics) = std::thread::scope(|scope| {
+                        std::thread::Builder::new()
+                            .stack_size(2 * 1024 * 1024)
+                            .spawn_scoped(scope, || {
+                                super::build(
+                                    function,
+                                    source,
+                                    "input.c",
+                                    &known_functions,
+                                    false,
+                                    &methods,
+                                )
+                            })
+                            .unwrap()
+                            .join()
+                            .unwrap()
+                    });
+                    assert!(diagnostics.is_empty());
+                    assert_eq!(
+                        graph
+                            .cpg
+                            .nodes
+                            .iter()
+                            .filter(|node| node.kind == "CALL")
+                            .count(),
+                        DEPTH
+                    );
+                    assert_eq!(
+                        graph
+                            .cpg
+                            .edges
+                            .iter()
+                            .filter(|edge| edge.kind == "ARGUMENT")
+                            .count(),
+                        2 * DEPTH + 1
+                    );
+                    assert_eq!(
+                        graph
+                            .cfg
+                            .nodes
+                            .iter()
+                            .map(|node| node.statements.len())
+                            .sum::<usize>(),
+                        DEPTH + 3
+                    );
+                    assert_eq!(
+                        graph
+                            .cfg
+                            .nodes
+                            .iter()
+                            .filter(|node| node.is_entrypoint)
+                            .count(),
+                        1
+                    );
+                    assert_eq!(
+                        graph
+                            .cfg
+                            .nodes
+                            .iter()
+                            .filter(|node| node.is_exitpoint)
+                            .count(),
+                        1
+                    );
+                    // A left-associated chain's identifier-only right
+                    // operands project away, leaving a single CFG block.
+                    if !right_associated {
+                        assert_eq!(graph.cfg.nodes.len(), 1);
+                        assert!(graph.cfg.edges.is_empty());
+                    }
+                }
+            })
+            .unwrap()
+            .join()
+            .unwrap();
+    }
 
     fn oracle_node_keys(graph: &crate::graph::FunctionGraph) -> HashMap<u32, String> {
         graph

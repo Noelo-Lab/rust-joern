@@ -1,0 +1,17 @@
+{
+  "oracle": "Unchanged installed PyJoern 4.0.150.4 / Joern v4.0.150",
+  "original_directory": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/final-bare-brace-boundaries",
+  "audit_sha256": "c95d2424eb8394b11e5ea21ea1b34c53afe7f54ee4f37de58d0e54849ecc1294",
+  "files": {
+    "final_bare_brace_boundaries.c": "50336ad0234d73164af29393ed9a3c2fb535382284ed77c04f7cbbbf6c0e14ed",
+    "final_bare_brace_boundaries.c.pyjoern.json": "05727becf039f9a1723dafe180057d1f84337e354da870c1b173df11c040e5c4",
+    "final_bare_brace_boundaries.cpp": "50336ad0234d73164af29393ed9a3c2fb535382284ed77c04f7cbbbf6c0e14ed",
+    "final_bare_brace_boundaries.cpp.pyjoern.json": "80aad4e4522ee406e5a1c1ec043463b467a592e6072796dab73568d4f25b82fa"
+  },
+  "rules": [
+    "C bare assignment and return clauses omitted; CPP assignment/RETURN retained without initializer-clause value AST",
+    "Invalid comparison-brace IF condition closes compound at operand brace; WHILE drops its complete statement",
+    "Malformed JSON quote condition consumes opening brace then crosses first declaration, preserving complete inner IF",
+    "Valid C array declaration, compound literal, GNU compound and ordinary assignment/return remain"
+  ]
+}

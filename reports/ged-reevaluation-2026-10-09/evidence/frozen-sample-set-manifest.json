@@ -1,0 +1,1507 @@
+{
+  "method": "sample-set",
+  "k": 0.0,
+  "threshold": 0.0,
+  "functions": [
+    {
+      "project": "base-passwd",
+      "opt": "O0",
+      "binary": "update-passwd",
+      "function": "read_shadow"
+    },
+    {
+      "project": "base-passwd",
+      "opt": "O2",
+      "binary": "update-passwd",
+      "function": "commit_files"
+    },
+    {
+      "project": "base-passwd",
+      "opt": "O2-noinline",
+      "binary": "update-passwd",
+      "function": "main"
+    },
+    {
+      "project": "bash",
+      "opt": "O0",
+      "binary": "bash",
+      "function": "array_patsub"
+    },
+    {
+      "project": "bash",
+      "opt": "O0",
+      "binary": "mksyntax",
+      "function": "wcomment"
+    },
+    {
+      "project": "bash",
+      "opt": "O2",
+      "binary": "bash",
+      "function": "run_sigchld_trap"
+    },
+    {
+      "project": "bash",
+      "opt": "O2",
+      "binary": "man2html",
+      "function": "change_to_size"
+    },
+    {
+      "project": "bash",
+      "opt": "O2-noinline",
+      "binary": "bash",
+      "function": "allocerr"
+    },
+    {
+      "project": "bash",
+      "opt": "O2-noinline",
+      "binary": "man2html",
+      "function": "scan_format"
+    },
+    {
+      "project": "bash",
+      "opt": "O2-noinline",
+      "binary": "mkbuiltins",
+      "function": "save_builtin"
+    },
+    {
+      "project": "betaflight",
+      "opt": "O0",
+      "binary": "betaflight_STM32F405",
+      "function": "USB_OTG_FlushRxFifo"
+    },
+    {
+      "project": "betaflight",
+      "opt": "O0",
+      "binary": "betaflight_STM32F405",
+      "function": "crsfDisplayPortScreen"
+    },
+    {
+      "project": "betaflight",
+      "opt": "O0",
+      "binary": "betaflight_STM32F405",
+      "function": "dynThrottle"
+    },
+    {
+      "project": "betaflight",
+      "opt": "O0",
+      "binary": "betaflight_STM32F405",
+      "function": "gyroInitFilterNotch1"
+    },
+    {
+      "project": "betaflight",
+      "opt": "O0",
+      "binary": "betaflight_STM32F405",
+      "function": "i2cWait"
+    },
+    {
+      "project": "betaflight",
+      "opt": "O2",
+      "binary": "betaflight_STM32F405",
+      "function": "mspProcessInCommand"
+    },
+    {
+      "project": "betaflight",
+      "opt": "O2-noinline",
+      "binary": "betaflight_STM32F405",
+      "function": "baroDPS310Detect"
+    },
+    {
+      "project": "bzip2",
+      "opt": "O0",
+      "binary": "bzip2",
+      "function": "copyFileName"
+    },
+    {
+      "project": "bzip2",
+      "opt": "O0",
+      "binary": "bzip2recover",
+      "function": "tooManyBlocks"
+    },
+    {
+      "project": "bzip2",
+      "opt": "O2",
+      "binary": "bzip2",
+      "function": "fallbackSort"
+    },
+    {
+      "project": "bzip2",
+      "opt": "O2",
+      "binary": "bzip2recover",
+      "function": "bsOpenReadStream"
+    },
+    {
+      "project": "bzip2",
+      "opt": "O2-noinline",
+      "binary": "bzip2",
+      "function": "BZ2_bzDecompress"
+    },
+    {
+      "project": "bzip2",
+      "opt": "O2-noinline",
+      "binary": "bzip2recover",
+      "function": "bsPutBit"
+    },
+    {
+      "project": "chibios",
+      "opt": "O0",
+      "binary": "ch",
+      "function": "chFactoryFindSemaphore"
+    },
+    {
+      "project": "chibios",
+      "opt": "O0",
+      "binary": "ch",
+      "function": "chSemResetWithMessageI"
+    },
+    {
+      "project": "chibios",
+      "opt": "O0",
+      "binary": "ch",
+      "function": "chThdSetPriority"
+    },
+    {
+      "project": "chibios",
+      "opt": "O0",
+      "binary": "ch",
+      "function": "oslib_test_009_004_execute"
+    },
+    {
+      "project": "chibios",
+      "opt": "O2",
+      "binary": "ch",
+      "function": "test_wait_threads"
+    },
+    {
+      "project": "chibios",
+      "opt": "O2-noinline",
+      "binary": "ch",
+      "function": "nvicEnableVector"
+    },
+    {
+      "project": "cleanflight",
+      "opt": "O0",
+      "binary": "cleanflight_DALRCF405",
+      "function": "icm20689SpiAccDetect"
+    },
+    {
+      "project": "cleanflight",
+      "opt": "O0",
+      "binary": "cleanflight_DALRCF405",
+      "function": "osdFormatAltitudeString"
+    },
+    {
+      "project": "cleanflight",
+      "opt": "O0",
+      "binary": "cleanflight_DALRCF405",
+      "function": "sendAccel"
+    },
+    {
+      "project": "cleanflight",
+      "opt": "O0",
+      "binary": "cleanflight_DALRCF405",
+      "function": "serialWrite"
+    },
+    {
+      "project": "cleanflight",
+      "opt": "O2",
+      "binary": "cleanflight_DALRCF405",
+      "function": "spekShouldBind"
+    },
+    {
+      "project": "cleanflight",
+      "opt": "O2-noinline",
+      "binary": "cleanflight_DALRCF405",
+      "function": "m25p16_enable"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O0",
+      "binary": "ls",
+      "function": "rev_strcmp_df_mtime"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O0",
+      "binary": "pr",
+      "function": "balance"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2",
+      "binary": "uname",
+      "function": "print_element"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2-noinline",
+      "binary": "chgrp",
+      "function": "describe_change"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2-noinline",
+      "binary": "chown",
+      "function": "usage"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2-noinline",
+      "binary": "comm",
+      "function": "compare_files"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2-noinline",
+      "binary": "cp",
+      "function": "copy_reg"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2-noinline",
+      "binary": "df",
+      "function": "filter_mount_list"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2-noinline",
+      "binary": "shred",
+      "function": "dopass"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2-noinline",
+      "binary": "sort",
+      "function": "mergelines_node"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2-noinline",
+      "binary": "touch",
+      "function": "main"
+    },
+    {
+      "project": "coreutils",
+      "opt": "O2-noinline",
+      "binary": "vdir",
+      "function": "signal_restore"
+    },
+    {
+      "project": "crazyflie",
+      "opt": "O0",
+      "binary": "cf2",
+      "function": "SD_disk_timerproc"
+    },
+    {
+      "project": "crazyflie",
+      "opt": "O0",
+      "binary": "cf2",
+      "function": "USBD_USR_SerialStrDescriptor"
+    },
+    {
+      "project": "crazyflie",
+      "opt": "O0",
+      "binary": "cf2",
+      "function": "pidUpdate"
+    },
+    {
+      "project": "crazyflie",
+      "opt": "O0",
+      "binary": "cf2",
+      "function": "write_power_mode"
+    },
+    {
+      "project": "crazyflie",
+      "opt": "O0",
+      "binary": "firmware",
+      "function": "lighthouseCalibrationMeasurementModelLh2"
+    },
+    {
+      "project": "crazyflie",
+      "opt": "O2",
+      "binary": "cf2",
+      "function": "USBD_Init"
+    },
+    {
+      "project": "crazyflie",
+      "opt": "O2",
+      "binary": "firmware",
+      "function": "sensorsInit"
+    },
+    {
+      "project": "crazyflie",
+      "opt": "O2-noinline",
+      "binary": "cf2",
+      "function": "DCD_EP_ClrStall"
+    },
+    {
+      "project": "crazyflie",
+      "opt": "O2-noinline",
+      "binary": "firmware",
+      "function": "ld_word"
+    },
+    {
+      "project": "cronie",
+      "opt": "O0",
+      "binary": "crond",
+      "function": "get_string"
+    },
+    {
+      "project": "cronie",
+      "opt": "O0",
+      "binary": "crontab",
+      "function": "env_free"
+    },
+    {
+      "project": "cronie",
+      "opt": "O2",
+      "binary": "cronnext",
+      "function": "matchday"
+    },
+    {
+      "project": "cronie",
+      "opt": "O2",
+      "binary": "crontab",
+      "function": "strcmp_until"
+    },
+    {
+      "project": "cronie",
+      "opt": "O2-noinline",
+      "binary": "crond",
+      "function": "cron_pclose"
+    },
+    {
+      "project": "cronie",
+      "opt": "O2-noinline",
+      "binary": "cronnext",
+      "function": "get_range"
+    },
+    {
+      "project": "cronie",
+      "opt": "O2-noinline",
+      "binary": "crontab",
+      "function": "get_range"
+    },
+    {
+      "project": "dexter",
+      "opt": "O0",
+      "binary": "dexter",
+      "function": "PartialCRC"
+    },
+    {
+      "project": "dexter",
+      "opt": "O2",
+      "binary": "dexter",
+      "function": "RandStrA"
+    },
+    {
+      "project": "dexter",
+      "opt": "O2-noinline",
+      "binary": "dexter",
+      "function": "RandStrW"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O0",
+      "binary": "diff",
+      "function": "read_files"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O0",
+      "binary": "diff3",
+      "function": "try_help"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O0",
+      "binary": "sdiff",
+      "function": "flush_line"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O2",
+      "binary": "diff",
+      "function": "process_signals"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O2",
+      "binary": "diff3",
+      "function": "try_help"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O2",
+      "binary": "sdiff",
+      "function": "perror_fatal"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O2-noinline",
+      "binary": "cmp",
+      "function": "cmp"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O2-noinline",
+      "binary": "diff",
+      "function": "stophandler"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O2-noinline",
+      "binary": "diff3",
+      "function": "output_diff3_edscript"
+    },
+    {
+      "project": "diffutils",
+      "opt": "O2-noinline",
+      "binary": "sdiff",
+      "function": "lf_skip"
+    },
+    {
+      "project": "dpkg",
+      "opt": "O0",
+      "binary": "dpkg",
+      "function": "process_queue"
+    },
+    {
+      "project": "dpkg",
+      "opt": "O0",
+      "binary": "dpkg-query",
+      "function": "searchfiles"
+    },
+    {
+      "project": "dpkg",
+      "opt": "O2",
+      "binary": "dpkg",
+      "function": "validate_trigname"
+    },
+    {
+      "project": "dpkg",
+      "opt": "O2",
+      "binary": "dpkg-statoverride",
+      "function": "statdb_write"
+    },
+    {
+      "project": "dpkg",
+      "opt": "O2-noinline",
+      "binary": "dpkg",
+      "function": "push_leftover"
+    },
+    {
+      "project": "dpkg",
+      "opt": "O2-noinline",
+      "binary": "dpkg-divert",
+      "function": "diversion_add"
+    },
+    {
+      "project": "dpkg",
+      "opt": "O2-noinline",
+      "binary": "dpkg-query",
+      "function": "pkg_array_match_patterns"
+    },
+    {
+      "project": "e2fsprogs",
+      "opt": "O0",
+      "binary": "e2fsck",
+      "function": "print_problem"
+    },
+    {
+      "project": "e2fsprogs",
+      "opt": "O2",
+      "binary": "e2fsck",
+      "function": "e2fsck_setup_icount"
+    },
+    {
+      "project": "e2fsprogs",
+      "opt": "O2-noinline",
+      "binary": "e2fsck",
+      "function": "check_ea_in_inode"
+    },
+    {
+      "project": "findutils",
+      "opt": "O0",
+      "binary": "find",
+      "function": "prec_name"
+    },
+    {
+      "project": "findutils",
+      "opt": "O2",
+      "binary": "find",
+      "function": "process_all_startpoints"
+    },
+    {
+      "project": "findutils",
+      "opt": "O2-noinline",
+      "binary": "find",
+      "function": "main"
+    },
+    {
+      "project": "freertos",
+      "opt": "O0",
+      "binary": "RTOSDemo",
+      "function": "Default_Handler"
+    },
+    {
+      "project": "freertos",
+      "opt": "O0",
+      "binary": "RTOSDemo",
+      "function": "prvCheckTasksWaitingTermination"
+    },
+    {
+      "project": "freertos",
+      "opt": "O0",
+      "binary": "RTOSDemo",
+      "function": "prvResetNextTaskUnblockTime"
+    },
+    {
+      "project": "freertos",
+      "opt": "O0",
+      "binary": "RTOSDemo",
+      "function": "vApplicationGetIdleTaskMemory"
+    },
+    {
+      "project": "freertos",
+      "opt": "O0",
+      "binary": "RTOSDemo",
+      "function": "vListInitialise"
+    },
+    {
+      "project": "freertos",
+      "opt": "O2",
+      "binary": "RTOSDemo",
+      "function": "vListInitialiseItem"
+    },
+    {
+      "project": "freertos",
+      "opt": "O2-noinline",
+      "binary": "RTOSDemo",
+      "function": "xFirstTimerHandler"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O0",
+      "binary": "certtool",
+      "function": "nstrftime"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O0",
+      "binary": "systemkey",
+      "function": "buffer_append"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O2",
+      "binary": "ocsptool",
+      "function": "_response_info"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O2",
+      "binary": "systemkey",
+      "function": "get_organization_crt_set"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O2-noinline",
+      "binary": "certtool",
+      "function": "yyparse"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O2-noinline",
+      "binary": "gnutls-cli",
+      "function": "send_ocsp_request"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O2-noinline",
+      "binary": "gnutls-cli-debug",
+      "function": "test_chacha20"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O2-noinline",
+      "binary": "gnutls-serv",
+      "function": "main"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O2-noinline",
+      "binary": "ocsptool",
+      "function": "socket_open2"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O2-noinline",
+      "binary": "psktool",
+      "function": "process_options"
+    },
+    {
+      "project": "gnutls",
+      "opt": "O2-noinline",
+      "binary": "systemkey",
+      "function": "print_list"
+    },
+    {
+      "project": "grep",
+      "opt": "O0",
+      "binary": "grep",
+      "function": "print_line_tail"
+    },
+    {
+      "project": "grep",
+      "opt": "O2",
+      "binary": "grep",
+      "function": "main"
+    },
+    {
+      "project": "grep",
+      "opt": "O2-noinline",
+      "binary": "grep",
+      "function": "finalize_input"
+    },
+    {
+      "project": "gzip",
+      "opt": "O0",
+      "binary": "gzip",
+      "function": "get_method"
+    },
+    {
+      "project": "gzip",
+      "opt": "O2",
+      "binary": "gzip",
+      "function": "flush_outbuf"
+    },
+    {
+      "project": "gzip",
+      "opt": "O2-noinline",
+      "binary": "gzip",
+      "function": "fill_inbuf"
+    },
+    {
+      "project": "iproute2",
+      "opt": "O0",
+      "binary": "ip",
+      "function": "print_rta_ifidx"
+    },
+    {
+      "project": "iproute2",
+      "opt": "O0",
+      "binary": "rtmon",
+      "function": "main"
+    },
+    {
+      "project": "iproute2",
+      "opt": "O2",
+      "binary": "ip",
+      "function": "main"
+    },
+    {
+      "project": "iproute2",
+      "opt": "O2",
+      "binary": "rtmon",
+      "function": "write_stamp"
+    },
+    {
+      "project": "iproute2",
+      "opt": "O2-noinline",
+      "binary": "ip",
+      "function": "print_neigh_brief"
+    },
+    {
+      "project": "iproute2",
+      "opt": "O2-noinline",
+      "binary": "rtmon",
+      "function": "dump_msg"
+    },
+    {
+      "project": "kmod",
+      "opt": "O0",
+      "binary": "kmod",
+      "function": "index__checkstring"
+    },
+    {
+      "project": "kmod",
+      "opt": "O2",
+      "binary": "kmod",
+      "function": "mod_free"
+    },
+    {
+      "project": "kmod",
+      "opt": "O2-noinline",
+      "binary": "kmod",
+      "function": "modinfo_name_do"
+    },
+    {
+      "project": "libacl",
+      "opt": "O0",
+      "binary": "getfacl",
+      "function": "user_name"
+    },
+    {
+      "project": "libacl",
+      "opt": "O0",
+      "binary": "libacl.so.1.1",
+      "function": "acl_entries"
+    },
+    {
+      "project": "libacl",
+      "opt": "O2",
+      "binary": "getfacl",
+      "function": "main"
+    },
+    {
+      "project": "libacl",
+      "opt": "O2-noinline",
+      "binary": "chacl",
+      "function": "main"
+    },
+    {
+      "project": "libacl",
+      "opt": "O2-noinline",
+      "binary": "getfacl",
+      "function": "xquote"
+    },
+    {
+      "project": "libacl",
+      "opt": "O2-noinline",
+      "binary": "libacl.so.1.1",
+      "function": "acl_equiv_mode"
+    },
+    {
+      "project": "libacl",
+      "opt": "O2-noinline",
+      "binary": "setfacl",
+      "function": "restore"
+    },
+    {
+      "project": "libbsd",
+      "opt": "O0",
+      "binary": "libbsd.so.0.11",
+      "function": "spt_clearenv"
+    },
+    {
+      "project": "libbsd",
+      "opt": "O2",
+      "binary": "libbsd.so.0.11",
+      "function": "r_sort_a"
+    },
+    {
+      "project": "libbsd",
+      "opt": "O2-noinline",
+      "binary": "libbsd.so.0.11",
+      "function": "setproctitle_impl"
+    },
+    {
+      "project": "libedit",
+      "opt": "O0",
+      "binary": "libedit.so.0.0",
+      "function": "rl_message"
+    },
+    {
+      "project": "libedit",
+      "opt": "O2",
+      "binary": "libedit.so.0.0",
+      "function": "em_inc_search_prev"
+    },
+    {
+      "project": "libedit",
+      "opt": "O2-noinline",
+      "binary": "libedit.so.0.0",
+      "function": "history_search_pos"
+    },
+    {
+      "project": "libexpat",
+      "opt": "O0",
+      "binary": "xmlwf",
+      "function": "codepageConvert"
+    },
+    {
+      "project": "libexpat",
+      "opt": "O2",
+      "binary": "xmlwf",
+      "function": "metaProcessingInstruction"
+    },
+    {
+      "project": "libexpat",
+      "opt": "O2-noinline",
+      "binary": "xmlwf",
+      "function": "xcscmp"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "adc-dac-printf",
+      "function": "usart_set_stopbits"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "blink",
+      "function": "rcc_periph_clock_enable"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "button",
+      "function": "rcc_set_ppre1"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "cdcacm",
+      "function": "_usbd_standard_request_interface"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "cryptobasic",
+      "function": "rcc_periph_clock_enable"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "dac-dma",
+      "function": "rcc_set_sysclk_source"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "fancyblink",
+      "function": "rcc_wait_for_osc_ready"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "lcd-dma",
+      "function": "console_read"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "lcd-dma",
+      "function": "reset_handler"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "lcd-serial",
+      "function": "lcd_command"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "mandel",
+      "function": "usart_set_databits"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "miniblink",
+      "function": "reset_handler"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "msc",
+      "function": "usb_control_request_dispatch"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "random",
+      "function": "reset_handler"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "sdram",
+      "function": "systick_counter_enable"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "spi-mems",
+      "function": "rcc_is_osc_ready"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "spi-mems",
+      "function": "systick_interrupt_enable"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "tick_blink",
+      "function": "pwr_set_vos_scale"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "timer",
+      "function": "clock_setup"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "usart",
+      "function": "usart_set_baudrate"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "usart-stdio",
+      "function": "usart_set_stopbits"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "usart_console",
+      "function": "main"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "usart_irq",
+      "function": "gpio_toggle"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "usart_irq_console",
+      "function": "console_getc"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "usbmidi",
+      "function": "_usbd_standard_request_device"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "usbmidi",
+      "function": "rcc_wait_for_sysclk_status"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O0",
+      "binary": "usbmidi",
+      "function": "usbd_ep_nak_set"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O2",
+      "binary": "adc-dac-printf",
+      "function": "__swrite"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O2",
+      "binary": "cryptobasic",
+      "function": "usart_set_databits"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O2-noinline",
+      "binary": "cdcacm",
+      "function": "dwc_poll"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O2-noinline",
+      "binary": "msc",
+      "function": "_usbd_standard_request_device"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O2-noinline",
+      "binary": "sdram",
+      "function": "main"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O2-noinline",
+      "binary": "tick_blink",
+      "function": "gpio_toggle"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O2-noinline",
+      "binary": "timer",
+      "function": "timer_disable_preload"
+    },
+    {
+      "project": "libopencm3",
+      "opt": "O2-noinline",
+      "binary": "usbmidi",
+      "function": "dwc_poll"
+    },
+    {
+      "project": "libselinux",
+      "opt": "O0",
+      "binary": "libselinux.so",
+      "function": "get_class_cache_entry_name"
+    },
+    {
+      "project": "libselinux",
+      "opt": "O2",
+      "binary": "libselinux.so",
+      "function": "discover_class"
+    },
+    {
+      "project": "libselinux",
+      "opt": "O2-noinline",
+      "binary": "libselinux.so",
+      "function": "selinux_check_securetty_context"
+    },
+    {
+      "project": "mirai",
+      "opt": "O0",
+      "binary": "mirai",
+      "function": "ensure_single_instance"
+    },
+    {
+      "project": "mirai",
+      "opt": "O2",
+      "binary": "mirai",
+      "function": "ensure_single_instance"
+    },
+    {
+      "project": "mirai",
+      "opt": "O2-noinline",
+      "binary": "mirai",
+      "function": "attack_init"
+    },
+    {
+      "project": "mydoom",
+      "opt": "O0",
+      "binary": "mydoom",
+      "function": "xmemcmpi"
+    },
+    {
+      "project": "mydoom",
+      "opt": "O2-noinline",
+      "binary": "mydoom",
+      "function": "payload_sco"
+    },
+    {
+      "project": "nuttx",
+      "opt": "O0",
+      "binary": "nuttx",
+      "function": "foreach_mountpoint"
+    },
+    {
+      "project": "nuttx",
+      "opt": "O0",
+      "binary": "nuttx",
+      "function": "nxsched_process_scheduler"
+    },
+    {
+      "project": "nuttx",
+      "opt": "O0",
+      "binary": "nuttx",
+      "function": "nxsig_find_pendingsignal"
+    },
+    {
+      "project": "nuttx",
+      "opt": "O0",
+      "binary": "nuttx",
+      "function": "uart_wakeup"
+    },
+    {
+      "project": "nuttx",
+      "opt": "O2",
+      "binary": "nuttx",
+      "function": "mount_sprintf"
+    },
+    {
+      "project": "nuttx",
+      "opt": "O2-noinline",
+      "binary": "nuttx",
+      "function": "read_pseudodir"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O0",
+      "binary": "ssh-add",
+      "function": "clear_pass"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O0",
+      "binary": "ssh-agent",
+      "function": "idtab_init"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2",
+      "binary": "ssh-keyscan",
+      "function": "sshbuf_fromb"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2",
+      "binary": "ssh-keysign",
+      "function": "log_verbose_add"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2-noinline",
+      "binary": "scp",
+      "function": "sshbuf_peek_string_direct"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2-noinline",
+      "binary": "ssh",
+      "function": "revoked_serial_tree_RB_REMOVE_COLOR"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2-noinline",
+      "binary": "ssh-add",
+      "function": "revoked_certs_generate"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2-noinline",
+      "binary": "ssh-keygen",
+      "function": "ssh_rsa_verify"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2-noinline",
+      "binary": "ssh-keyscan",
+      "function": "argv_split"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2-noinline",
+      "binary": "ssh-pkcs11-helper",
+      "function": "pkcs11_fetch_rsa_pubkey"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2-noinline",
+      "binary": "ssh-sk-helper",
+      "function": "cert_parse"
+    },
+    {
+      "project": "openssh-portable",
+      "opt": "O2-noinline",
+      "binary": "sshd",
+      "function": "ssh_agent_sign"
+    },
+    {
+      "project": "riot-os",
+      "opt": "O0",
+      "binary": "hello-world",
+      "function": "hard_fault_handler"
+    },
+    {
+      "project": "riot-os",
+      "opt": "O0",
+      "binary": "hello-world",
+      "function": "led_init"
+    },
+    {
+      "project": "riot-os",
+      "opt": "O0",
+      "binary": "hello-world",
+      "function": "sched_set_status"
+    },
+    {
+      "project": "riot-os",
+      "opt": "O0",
+      "binary": "hello-world",
+      "function": "thread_sleep"
+    },
+    {
+      "project": "riot-os",
+      "opt": "O2",
+      "binary": "hello-world",
+      "function": "stmclk_disable_hsi"
+    },
+    {
+      "project": "riot-os",
+      "opt": "O2-noinline",
+      "binary": "hello-world",
+      "function": "__swrite"
+    },
+    {
+      "project": "rsyslog",
+      "opt": "O0",
+      "binary": "rsyslogd",
+      "function": "parseRFCStructuredData"
+    },
+    {
+      "project": "rsyslog",
+      "opt": "O2",
+      "binary": "rsyslogd",
+      "function": "beginTransaction"
+    },
+    {
+      "project": "rsyslog",
+      "opt": "O2-noinline",
+      "binary": "rsyslogd",
+      "function": "janitorCB"
+    },
+    {
+      "project": "shadow",
+      "opt": "O0",
+      "binary": "chage",
+      "function": "close_files"
+    },
+    {
+      "project": "shadow",
+      "opt": "O0",
+      "binary": "usermod",
+      "function": "grp_update"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2",
+      "binary": "gpasswd",
+      "function": "log_gpasswd_success_group"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "chfn",
+      "function": "main"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "groupmod",
+      "function": "grp_update"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "grpunconv",
+      "function": "main"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "login",
+      "function": "main"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "newusers",
+      "function": "close_files"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "pwunconv",
+      "function": "fail_exit"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "useradd",
+      "function": "grp_update"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "userdel",
+      "function": "is_owner"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "usermod",
+      "function": "update_gshadow"
+    },
+    {
+      "project": "shadow",
+      "opt": "O2-noinline",
+      "binary": "vipw",
+      "function": "main"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O0",
+      "binary": "init",
+      "function": "check_init_fifo"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2",
+      "binary": "killall5",
+      "function": "mount_proc"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2",
+      "binary": "utmpdump",
+      "function": "newtoold"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2-noinline",
+      "binary": "bootlogd",
+      "function": "main"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2-noinline",
+      "binary": "init",
+      "function": "check_init_fifo"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2-noinline",
+      "binary": "killall5",
+      "function": "readproc"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2-noinline",
+      "binary": "last",
+      "function": "list"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2-noinline",
+      "binary": "shutdown",
+      "function": "wall"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2-noinline",
+      "binary": "sulogin",
+      "function": "getpasswd"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2-noinline",
+      "binary": "utmpdump",
+      "function": "dump"
+    },
+    {
+      "project": "sysvinit",
+      "opt": "O2-noinline",
+      "binary": "wall",
+      "function": "wall"
+    },
+    {
+      "project": "tar",
+      "opt": "O0",
+      "binary": "tar",
+      "function": "sparse_offset_decoder"
+    },
+    {
+      "project": "tar",
+      "opt": "O2",
+      "binary": "tar",
+      "function": "print_stats"
+    },
+    {
+      "project": "tar",
+      "opt": "O2-noinline",
+      "binary": "tar",
+      "function": "xheader_list_append"
+    },
+    {
+      "project": "u-boot",
+      "opt": "O2",
+      "binary": "u-boot",
+      "function": "fs_ls_generic"
+    },
+    {
+      "project": "u-boot",
+      "opt": "O2-noinline",
+      "binary": "u-boot",
+      "function": "mmc_send_ext_csd"
+    },
+    {
+      "project": "x0r-usb",
+      "opt": "O0",
+      "binary": "x0r-usb",
+      "function": "IRC_Connect"
+    },
+    {
+      "project": "x0r-usb",
+      "opt": "O2",
+      "binary": "x0r-usb",
+      "function": "RemoteDDOSThread"
+    },
+    {
+      "project": "x0r-usb",
+      "opt": "O2-noinline",
+      "binary": "x0r-usb",
+      "function": "RemoteUSBThread"
+    },
+    {
+      "project": "zlib",
+      "opt": "O0",
+      "binary": "example64",
+      "function": "zlibCompileFlags"
+    },
+    {
+      "project": "zlib",
+      "opt": "O0",
+      "binary": "minigzip64",
+      "function": "deflate_rle"
+    },
+    {
+      "project": "zlib",
+      "opt": "O2",
+      "binary": "example64",
+      "function": "test_compress"
+    },
+    {
+      "project": "zlib",
+      "opt": "O2",
+      "binary": "libz.so.1.2",
+      "function": "adler32_combine64"
+    },
+    {
+      "project": "zlib",
+      "opt": "O2-noinline",
+      "binary": "example",
+      "function": "inflatePrime"
+    },
+    {
+      "project": "zlib",
+      "opt": "O2-noinline",
+      "binary": "example64",
+      "function": "inflateValidate"
+    },
+    {
+      "project": "zlib",
+      "opt": "O2-noinline",
+      "binary": "libz.so.1.2",
+      "function": "deflate_slow"
+    },
+    {
+      "project": "zlib",
+      "opt": "O2-noinline",
+      "binary": "minigzip",
+      "function": "inflate_table"
+    },
+    {
+      "project": "zlib",
+      "opt": "O2-noinline",
+      "binary": "minigzip64",
+      "function": "inflate_fast"
+    },
+    {
+      "project": "zlib",
+      "opt": "O2-noinline",
+      "binary": "minigzipsh",
+      "function": "main"
+    }
+  ]
+}

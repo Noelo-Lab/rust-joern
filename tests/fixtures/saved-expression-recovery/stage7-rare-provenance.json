@@ -1,0 +1,47 @@
+{
+  "original_engine": "Unchanged PyJoern4.0.150.4 / Joernv4.0.150",
+  "files": [
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/remaining-rare-expressions/remaining_rare_expressions.c",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/remaining_rare_expressions.c",
+      "sha256": "8606911129ed0cfcb93de4a7818cd3d9203c39966bc065351eeb1a936bfe1b7e"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/remaining-rare-expressions/remaining_rare_expressions.c.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/remaining_rare_expressions.c.pyjoern.json",
+      "sha256": "4fe1d15fe2ca9050a2c65f018c6910a22bc86f5f4d53fb348a50d37e674c2bb1"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/remaining-rare-expressions/remaining_rare_expressions.cpp",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/remaining_rare_expressions.cpp",
+      "sha256": "8606911129ed0cfcb93de4a7818cd3d9203c39966bc065351eeb1a936bfe1b7e"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/remaining-rare-expressions/remaining_rare_expressions.cpp.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/remaining_rare_expressions.cpp.pyjoern.json",
+      "sha256": "2e694af460391e539ca6f0d9799fe68d5c23ff24a58bb78a9423b03a537468d4"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/round5-lexical-format-boundaries/naked_backslash_formats.c",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/naked_backslash_formats.c",
+      "sha256": "02b594d2b7f1dce9b0d2cd461a668f943824afdbd73348a8de7cff9a9f1fa013"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/round5-lexical-format-boundaries/naked_backslash_formats.c.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/naked_backslash_formats.c.pyjoern.json",
+      "sha256": "e406f78c036baab66d8a0f29b991e2e27baf14a9dd3f6637e7503fb5005d096f"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/round5-lexical-format-boundaries/naked_backslash_formats.cpp",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/naked_backslash_formats.cpp",
+      "sha256": "02b594d2b7f1dce9b0d2cd461a668f943824afdbd73348a8de7cff9a9f1fa013"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/round5-lexical-format-boundaries/naked_backslash_formats.cpp.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/naked_backslash_formats.cpp.pyjoern.json",
+      "sha256": "e44245b3a848da8c93622f7c1e16e23424576225607ea7d2e44c2cfcf934dad8"
+    }
+  ],
+  "rare_audit": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/remaining-rare-expressions/audit.json",
+  "rare_audit_sha256": "061c01926003486826d56eb4da53b0a9358bb65a42bbefc76fc0963de973d6ea"
+}

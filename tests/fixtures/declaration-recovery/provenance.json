@@ -1,0 +1,385 @@
+{
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "captures": [
+    {
+      "source": "inferred_named_type_callees.c",
+      "source_sha256": "1f59ce21600d5c216bad20c5785def7edbf943e029adf4ed673a9123b25eb9fa",
+      "reference_sha256": "14cd5d7f627b67840c994f8eb2394bf76b2186d10a3fca2c4ca7705486de52dc"
+    },
+    {
+      "source": "inferred_named_type_callees.cpp",
+      "source_sha256": "1f59ce21600d5c216bad20c5785def7edbf943e029adf4ed673a9123b25eb9fa",
+      "reference_sha256": "a15f14f44792d695c3ff67d92f845d775fb4aa96e3e5fd0000996aac3d6a5be9"
+    },
+    {
+      "source": "unknown_grouped_call_binding.c",
+      "source_sha256": "770c23e88da9c66667f4ee20abb16e393ef3e89b0979542296d8cc28bcde6226",
+      "reference_sha256": "ad619f83fba0e7fca3b149a4c1c424264dd9cbe34013c14867cacf7df2a10187"
+    },
+    {
+      "source": "unknown_grouped_call_binding.cpp",
+      "source_sha256": "770c23e88da9c66667f4ee20abb16e393ef3e89b0979542296d8cc28bcde6226",
+      "reference_sha256": "7b6a00c2b8af3d76596ae237131fb0ad2c2a687d92b61cde40af0af05128fa2d"
+    },
+    {
+      "source": "unknown_trailing_function_marker.c",
+      "source_sha256": "dba5cceaaba761f586dac06d6d27bd7403bbc8fdec0664db4283ca8d48c39181",
+      "reference_sha256": "55b87567586aee5c16100ddda1d0856abf0677f7e1749e1ce5b633f3c0960adb"
+    },
+    {
+      "source": "unknown_trailing_function_marker.cpp",
+      "source_sha256": "dba5cceaaba761f586dac06d6d27bd7403bbc8fdec0664db4283ca8d48c39181",
+      "reference_sha256": "140b009401f2a8133f110ec1693a67f81b575982c05ddeb4fabe71d39f61484f"
+    },
+    {
+      "source": "saved_problem_declarators.c",
+      "source_sha256": "4dcfea133549eb0a271141fd9b3cfb0b90b0c4151b5ab34a129d7486a636a6cc",
+      "reference_sha256": "6033d667c2987b4435c0c16721ba51b1df6021c1ed2feb54407cc4583f10dbee"
+    },
+    {
+      "source": "saved_problem_declarators.cpp",
+      "source_sha256": "4dcfea133549eb0a271141fd9b3cfb0b90b0c4151b5ab34a129d7486a636a6cc",
+      "reference_sha256": "8110b7cb82ca39a7ef480b3c0d61a3660c07181d94d491f69059d3a9a5f7cccd"
+    },
+    {
+      "source": "saved_numeric_declarators.c",
+      "source_sha256": "1a6d7822ee45b11b82c65cd96fe508062cef30443f4d6ef10f786de6bf8098c0",
+      "reference_sha256": "ee40c14bce5fe721442e5b5f6fc5f1a41b9cd88d82c65afa151f7ef256943007"
+    },
+    {
+      "source": "saved_numeric_declarators.cpp",
+      "source_sha256": "1a6d7822ee45b11b82c65cd96fe508062cef30443f4d6ef10f786de6bf8098c0",
+      "reference_sha256": "7feb840d4fc8d09956644a5b63e6c2f4a73df471fbd70c9f22d89f1072811efb"
+    },
+    {
+      "source": "duplicate_parameter_headers.c",
+      "source_sha256": "984f1f6c13f889043cb3d6889b71dd00b50a5bc5fd0393dc958724a1601d5e4e",
+      "reference_sha256": "135c634d1f696ec1f2dab16ce7197579982d08f61549fa348343642a94a3ae55"
+    },
+    {
+      "source": "duplicate_parameter_headers.cpp",
+      "source_sha256": "984f1f6c13f889043cb3d6889b71dd00b50a5bc5fd0393dc958724a1601d5e4e",
+      "reference_sha256": "3b29d48ee5cf41d4f76770b98e7d11660a217b6f80cbd0f40f1b870b74ac286f"
+    },
+    {
+      "source": "unfinished_problem_text.c",
+      "source_sha256": "a6191e72c483f09c0385cea257cfa55267af0a5281ffa980d36e4a0d0eeeb224",
+      "reference_sha256": "f5e1b8c5da2d47a5183a9054b57b1b1b7c837ca95934bcb23a5342fadc8d3880"
+    },
+    {
+      "source": "unfinished_problem_text.cpp",
+      "source_sha256": "a6191e72c483f09c0385cea257cfa55267af0a5281ffa980d36e4a0d0eeeb224",
+      "reference_sha256": "91ba01ffe1d85d04763e2251358d3f9b21427f8061185a9284cae65b4c6aa551"
+    },
+    {
+      "source": "unfinished_function_declaration.c",
+      "source_sha256": "e812dda9f7f1cbc768001c1ad0dcdfbb460fe33f3503f81e469f158a5fbc4627",
+      "reference_sha256": "34d049f02fbe8796d8400a828a8f63de26143e527ae11e5fab629e7160a42d80"
+    },
+    {
+      "source": "unfinished_function_declaration.cpp",
+      "source_sha256": "e812dda9f7f1cbc768001c1ad0dcdfbb460fe33f3503f81e469f158a5fbc4627",
+      "reference_sha256": "1dac67c2babac53e6efd18c2e0804ee1f2a34607183705c70714bdd0f477240b"
+    },
+    {
+      "source": "problem_return_prefixes.c",
+      "source_sha256": "61cd7efa6d461a4191aed1e9e75cd6d08aa9e23c664374ba07bb0e0926053cf4",
+      "reference_sha256": "ee336412c36871a7802f6894dec7e3ed31b33e8518f42d683bfe57d9024bac44"
+    },
+    {
+      "source": "problem_return_prefixes.cpp",
+      "source_sha256": "61cd7efa6d461a4191aed1e9e75cd6d08aa9e23c664374ba07bb0e0926053cf4",
+      "reference_sha256": "2a14a65a3a9af0d7c7f2fcbf04b7d45ab604cc961c2570337d25310158603a98"
+    },
+    {
+      "source": "escaped_global_initializers.c",
+      "source_sha256": "4d699cbdced6f65641c9ff834b95ec32ad91f8e495f0708eb7ecc5c074a6ae7c",
+      "reference_sha256": "a53f5641e2d4ea4170680455d173f3c4860cce30c7a1e49a775724a53cebc8df"
+    },
+    {
+      "source": "escaped_global_initializers.cpp",
+      "source_sha256": "4d699cbdced6f65641c9ff834b95ec32ad91f8e495f0708eb7ecc5c074a6ae7c",
+      "reference_sha256": "4115403b66136627606e5ee42d40b7ef937e64517dec99dab3342779d58b4bc4"
+    },
+    {
+      "source": "escaped_global_recovery_boundaries.c",
+      "source_sha256": "8827307f703f35b8bbff0a68058aff8c39e6d8b2c1735d2e756d1c22dc3a7482",
+      "reference_sha256": "eb744a1e98c6d410b768fecf63196257b2e3ed11397325c55e323b7bf3aa6624"
+    },
+    {
+      "source": "escaped_global_recovery_boundaries.cpp",
+      "source_sha256": "8827307f703f35b8bbff0a68058aff8c39e6d8b2c1735d2e756d1c22dc3a7482",
+      "reference_sha256": "0cc1b02e5a0241ea3b810de422c38f159ca2ef15caac87ca6fcadc89f4419640"
+    },
+    {
+      "source": "annotation_function_recovery.c",
+      "source_sha256": "ae1491c33c309c8538128bb76c929b564a0c9479b7a071975431a9b4adc11828",
+      "reference_sha256": "775a7a96b2046c8ead159095275715a8869903a125f9d95707e12715b6d292c8"
+    },
+    {
+      "source": "annotation_function_recovery.cpp",
+      "source_sha256": "ae1491c33c309c8538128bb76c929b564a0c9479b7a071975431a9b4adc11828",
+      "reference_sha256": "5fcaa6c327bacf1707c96e80d734a507566e3e18caa9e8e0bcf0c3b01aee3d16"
+    },
+    {
+      "source": "unclosed_function_headers.c",
+      "source_sha256": "322af3c1f3ff3723086d2cb2b5a7c43eee769d83a207d08df3765c72eee56d36",
+      "reference_sha256": "6f4d616f532ac54f6b8767ee08305d8ac02847b4b6855a15f628ab5b2414f0db"
+    },
+    {
+      "source": "unclosed_function_headers.cpp",
+      "source_sha256": "322af3c1f3ff3723086d2cb2b5a7c43eee769d83a207d08df3765c72eee56d36",
+      "reference_sha256": "46c95429b986b8f637e4ca763c1686f0ff24cd4414e3f18d75fa984cf279f215"
+    },
+    {
+      "source": "saved_declaration_boundaries.c",
+      "source_sha256": "d4b1ad131eeffd957e070dbe3101acfbaa5fc99fef5e02abd3ba13b09f8a2b83",
+      "reference_sha256": "0d75d0b4573b4e931298a1985fae50c5ff8d0d606789842cb1aba63b882284bb"
+    },
+    {
+      "source": "saved_declaration_boundaries.cpp",
+      "source_sha256": "d4b1ad131eeffd957e070dbe3101acfbaa5fc99fef5e02abd3ba13b09f8a2b83",
+      "reference_sha256": "959dae79acc0fe1f242f18dfe54fac71b3d3f8028e4f831ae549979a71372506"
+    },
+    {
+      "source": "invalid_grouped_function_parameters.c",
+      "source_sha256": "969ce37cd80537bbd0e9ecc0d48eaf6213fab37085ae71099a8a51f6a1d7527a",
+      "reference_sha256": "df4844f34ddca0bce5a29d00c484c0f115814846c6da64fd9fbe1da504f7973d"
+    },
+    {
+      "source": "invalid_grouped_function_parameters.cpp",
+      "source_sha256": "969ce37cd80537bbd0e9ecc0d48eaf6213fab37085ae71099a8a51f6a1d7527a",
+      "reference_sha256": "d51084a8e7658d89c977eac1b1b28bdc70069bdcdd21d04735c995d7b3a10db5"
+    },
+    {
+      "source": "problem_wrapper_headers.c",
+      "source_sha256": "d30330339fe75aa5f7742d667f2ff2cb26f8fa95ccaf37d326b69823f0bdb086",
+      "reference_sha256": "c3f9b4017f2dc381474b7c7397e00f1c50dc55968b5899e4008b9bf470567bc2"
+    },
+    {
+      "source": "problem_wrapper_headers.cpp",
+      "source_sha256": "d30330339fe75aa5f7742d667f2ff2cb26f8fa95ccaf37d326b69823f0bdb086",
+      "reference_sha256": "9016fd96310dce73f84ed30af96747146f1c47db71ec75c428818d9fa4dbc94d"
+    },
+    {
+      "source": "nested_function_declarations.c",
+      "source_sha256": "223a2334b2157cda8649c09d88a75050f673ba90310524cea99d45a5fa4ad276",
+      "reference_sha256": "2bce012cc54a1d67ed21db9249ef6b5aae43ef72770a0a47feb49eeda1059516"
+    },
+    {
+      "source": "nested_function_declarations.cpp",
+      "source_sha256": "223a2334b2157cda8649c09d88a75050f673ba90310524cea99d45a5fa4ad276",
+      "reference_sha256": "3fdf9c89f6d2f43d58a50a5da6dde8e50dbd852a5f151a2a8d7e8099f50b900f"
+    },
+    {
+      "source": "missing_outer_functions.c",
+      "source_sha256": "4d2c114c151fee4d4e6ec50e087f947efab5127e4af1957a07961e821e715c37",
+      "reference_sha256": "d9c919774af17b660d7304a1a742d6764bac4ae1ccd33fe8d07c2e8c34bfd731"
+    },
+    {
+      "source": "missing_outer_functions.cpp",
+      "source_sha256": "4d2c114c151fee4d4e6ec50e087f947efab5127e4af1957a07961e821e715c37",
+      "reference_sha256": "9e2989ac21595c20d79bcab7f661d153712c5590e7a579e6a56831a747836cbc"
+    },
+    {
+      "source": "nested_noreturn_headers.c",
+      "source_sha256": "98aa70056fc0c51644dc008add5d0b10f701ec0c4ed5b14340692032f0e26803",
+      "reference_sha256": "5f28e70f402621d66365e3a5613e79ee1566cf5d8de4759db8f0c76342fa4cdf"
+    },
+    {
+      "source": "nested_noreturn_headers.cpp",
+      "source_sha256": "98aa70056fc0c51644dc008add5d0b10f701ec0c4ed5b14340692032f0e26803",
+      "reference_sha256": "9f1a0bcb4024ddd3b70fd867c0c52cbf2f27b18023e705b44457854bead86e57"
+    },
+    {
+      "source": "record_function_shaped_fields.c",
+      "source_sha256": "73838a7838a608880e13e22791462ffe03bd7c3acf7a145213b8db012a54d441",
+      "reference_sha256": "32930d00ab16a92a5923fae212a1fb09ccbd365602a59c498ca01c6c58678e45"
+    },
+    {
+      "source": "record_function_shaped_fields.cpp",
+      "source_sha256": "73838a7838a608880e13e22791462ffe03bd7c3acf7a145213b8db012a54d441",
+      "reference_sha256": "4a78e20ed8a03be0e73e322691bf397e50adbb77248176de934df1eae0a22034"
+    },
+    {
+      "source": "problem_enum_recovery.c",
+      "source_sha256": "45dd82c44d9bcb0a488251f8d2013910915b7309c44920bf5cdd4fd9d007abed",
+      "reference_sha256": "8029a6754de8a206542efcfa2229410ca13c69ac4053e6546f33b904dcb343ff"
+    },
+    {
+      "source": "problem_enum_recovery.cpp",
+      "source_sha256": "45dd82c44d9bcb0a488251f8d2013910915b7309c44920bf5cdd4fd9d007abed",
+      "reference_sha256": "f843e75547e177f94fabba01860bb31fbc06524aac95957bfdfbaf95b85e3df1"
+    },
+    {
+      "source": "problem_record_parentheses.c",
+      "source_sha256": "bc23b184761a365a090cef944af9c32de41a1a1651c57f1a51c3fd1b1d199a98",
+      "reference_sha256": "7f18b1fef6257bcf6b10df4cd853041c68c3ceb4c88e0b8fecfbc31ff8b71cb7"
+    },
+    {
+      "source": "problem_record_parentheses.cpp",
+      "source_sha256": "bc23b184761a365a090cef944af9c32de41a1a1651c57f1a51c3fd1b1d199a98",
+      "reference_sha256": "c002c4889a743cf2198629280455501bdc0451acefd8b22741ed1ed008193537"
+    },
+    {
+      "source": "record_return_declarators.c",
+      "source_sha256": "d0b45bf79aeede26677d927382cf876bd7f6baab5c44be344ed928b9a4006a3b",
+      "reference_sha256": "827c6a5d9e6618527dc03b8746b04a1ab8348f726ca63814473be18fcb16c936"
+    },
+    {
+      "source": "record_return_declarators.cpp",
+      "source_sha256": "d0b45bf79aeede26677d927382cf876bd7f6baab5c44be344ed928b9a4006a3b",
+      "reference_sha256": "97322fa3c0d4b2a6ddded878b4ee3e6bdc3f5dff562c0ccf05e5245c10f8692a"
+    },
+    {
+      "source": "local_problem_enum_recovery.c",
+      "source_sha256": "791ea018fbfa7680c8216c85442007a85fe77201dc197e5da4a67ce523cbeb21",
+      "reference_sha256": "e749cb21c892b20fe703da0cf4427ceca7cfd9d136e66afa17d9814a2bf61b4c"
+    },
+    {
+      "source": "local_problem_enum_recovery.cpp",
+      "source_sha256": "791ea018fbfa7680c8216c85442007a85fe77201dc197e5da4a67ce523cbeb21",
+      "reference_sha256": "2eb721b6d38f13b3a90fac51ada304496d34b6a2b4102c537cf16377091dd3d3"
+    },
+    {
+      "source": "local_problem_enum_boundaries.c",
+      "source_sha256": "ccf982ed26982d61a3f95511d6fd612152903dd2a7b4940bf6254e1345b36a95",
+      "reference_sha256": "2be7e264c2a39620bfdf2fb175837bc41c91641306601cd9cb33a28054348f77"
+    },
+    {
+      "source": "local_problem_enum_boundaries.cpp",
+      "source_sha256": "ccf982ed26982d61a3f95511d6fd612152903dd2a7b4940bf6254e1345b36a95",
+      "reference_sha256": "284b00b545a016807bf962b8d5ab08f3457f305bc2430afd2054ccd26930894b"
+    },
+    {
+      "source": "unfinished_switch_recovery.c",
+      "source_sha256": "df4ccb394e4b4718d36dd247e2c2591e6acf1e242af7d981f2e2bc476606aa2f",
+      "reference_sha256": "5bf59ff2b1e7c38bbc91f2217e1e66d23fd040e8be8bc091575ddccbfced5b16"
+    },
+    {
+      "source": "unfinished_switch_recovery.cpp",
+      "source_sha256": "df4ccb394e4b4718d36dd247e2c2591e6acf1e242af7d981f2e2bc476606aa2f",
+      "reference_sha256": "962a79e584e338b67932e98bd20f7c178835e1b8740f685a4838981a0bb00486"
+    },
+    {
+      "source": "address_declarator_recovery.c",
+      "source_sha256": "cbda267ba88eebca305cb4a5666905ef6397fba0127d813b4bec9ca2a84bbd7e",
+      "reference_sha256": "0afde22cb4110213271dcf587a78b88e8121e6068cab89f4105fab85bcc46bde"
+    },
+    {
+      "source": "address_declarator_recovery.cpp",
+      "source_sha256": "cbda267ba88eebca305cb4a5666905ef6397fba0127d813b4bec9ca2a84bbd7e",
+      "reference_sha256": "b79e7bfe5cc7483cf832eed0be48172ab362e111f902eaf4a03afc370b35c0d3"
+    },
+    {
+      "source": "global_address_declarator_recovery.c",
+      "source_sha256": "01951999635d45ba319e25ddcb5cd523545a34e12f6c9c44cdad84bf2a6c28da",
+      "reference_sha256": "66c8b79d94893d8fc7b38c903e0572b46f2366b003e03f4f6b8b5fb7bd3dc862"
+    },
+    {
+      "source": "global_address_declarator_recovery.cpp",
+      "source_sha256": "01951999635d45ba319e25ddcb5cd523545a34e12f6c9c44cdad84bf2a6c28da",
+      "reference_sha256": "5dc0ebfa641561f50621ad8f356915e4f37566901cb29feec0fd219b9279746a"
+    },
+    {
+      "source": "mixed_type_prefix_recovery.c",
+      "source_sha256": "3bdaa148f1e6865eef3f43116fcf98b807f4a00a989598bfbc580657004f23cc",
+      "reference_sha256": "c9c984b1c5d5115aa9b3036f02efc9f7e52535502f0343094ddd89dfcb64d2b9"
+    },
+    {
+      "source": "mixed_type_prefix_recovery.cpp",
+      "source_sha256": "3bdaa148f1e6865eef3f43116fcf98b807f4a00a989598bfbc580657004f23cc",
+      "reference_sha256": "e610d69ee6b574f82661e5cd60f2ba135adb57f57daf871f1c77fe768593701f"
+    },
+    {
+      "source": "grouped_function_full_names.c",
+      "source_sha256": "40d0a4deef5409ef552cb2d9f0b1422a8ffed0de6a4a0e6b47f6dc980af61eb6",
+      "reference_sha256": "25d465bc7739252a0cccd7ea524e8b3c5e02871ecf8493c199dcea99f7321160"
+    },
+    {
+      "source": "grouped_function_full_names.cpp",
+      "source_sha256": "40d0a4deef5409ef552cb2d9f0b1422a8ffed0de6a4a0e6b47f6dc980af61eb6",
+      "reference_sha256": "a9a73be68869a9c419440a1a9c807681062cfa185e0850570fb444631e31a076"
+    },
+    {
+      "source": "grouped_address_parameter_recovery.c",
+      "source_sha256": "54c7e71bf8f28007e22df0917dbe066573105c5d410ce6dd457362e9bc323d64",
+      "reference_sha256": "676dda2c323fde5a068f951d44e51c57b1e2b6ee2bc81a33cfe29faf4c51e529"
+    },
+    {
+      "source": "grouped_address_parameter_recovery.cpp",
+      "source_sha256": "5dd472b3843e6c8d76d20bb9ec86f637891db87b7ff4b1bcc39ac41487d0e286",
+      "reference_sha256": "80417ab11430df0dbe9d6f22544bba1747231d3c5b617d5040ba0762fa542095"
+    },
+    {
+      "source": "implicit_return_function_declarations.c",
+      "source_sha256": "81ea63bbc759fced403d872bb9354a3f149abea8875293554369d429fde3d491",
+      "reference_sha256": "4ca11a758af946bb873d459c8640f08fb662c21c313347d76d7418a421257fa6"
+    },
+    {
+      "source": "implicit_return_function_declarations.cpp",
+      "source_sha256": "16314560ba1bb2a3af615137a9ef354176f86a0f2c629f14d5942625b70904d1",
+      "reference_sha256": "7795733fcfbb91651b0edc6506cdc7f672aba06283943e4ea7d0156f910a8965"
+    },
+    {
+      "source": "logical_declaration_boundaries.c",
+      "source_sha256": "428dbf733b6645fd68d5c8851e2f12181fcf60442412d185229f749def30746d",
+      "reference_sha256": "d82286ba3645540d98256e695138c60f567b4743dc98665aa31177fc8703673c",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/logical_declaration_boundaries.c",
+      "original_raw": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/logical_declaration_boundaries.c.raw.json",
+      "original_raw_sha256": "7e3c90283f81d477b78cd59951e96959239f946991fa7f10d98572d16021da15",
+      "methods": 21,
+      "actual_provenance": "O0::openssh-portable::ssh::binja log_is_on_stderr prepared64108; genuine generic logical/pointer/reference binding controls"
+    },
+    {
+      "source": "logical_declaration_boundaries.cpp",
+      "source_sha256": "428dbf733b6645fd68d5c8851e2f12181fcf60442412d185229f749def30746d",
+      "reference_sha256": "4317ad34a182bd6848c2af3b3356de22825d1cdd2bc102351a526ca4ea5afad1",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/logical_declaration_boundaries.cpp",
+      "original_raw": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/logical_declaration_boundaries.cpp.raw.json",
+      "original_raw_sha256": "e1924bbd8d40a8a8b655faa936718aaecdbd891f5ac3f38de8d99aee2bedc7a4",
+      "methods": 21,
+      "actual_provenance": "O0::openssh-portable::ssh::binja log_is_on_stderr prepared64108; genuine generic logical/pointer/reference binding controls"
+    },
+    {
+      "source": "reference_binding_boundaries.c",
+      "source_sha256": "2baf123950a5515c3db5c314d46f6d6ed835e9cc61bd9df51aa14ef55286fad6",
+      "reference_sha256": "fa5c5c7d876afdb0ca8b20f0a91f15d372d940955ee5e74628b49612eb59428e",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/reference_binding_boundaries.c",
+      "original_raw": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/reference_binding_boundaries.c.raw.json",
+      "original_raw_sha256": "d9912377c15978e1061816488508d7592fec37272422a8037dc7913ff2c5e533",
+      "methods": 22,
+      "actual_provenance": "O0::openssh-portable::ssh::binja log_is_on_stderr prepared64108; genuine generic logical/pointer/reference binding controls"
+    },
+    {
+      "source": "reference_binding_boundaries.cpp",
+      "source_sha256": "2baf123950a5515c3db5c314d46f6d6ed835e9cc61bd9df51aa14ef55286fad6",
+      "reference_sha256": "bba7369eec0e0ccc36a389eeb943ba2fde830aee801e4df066fee81a87705cf7",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/reference_binding_boundaries.cpp",
+      "original_raw": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/reference_binding_boundaries.cpp.raw.json",
+      "original_raw_sha256": "4262d17c6c2c69e6e509bf3662208a598e209354d6274dabfe787847945f1228",
+      "methods": 24,
+      "actual_provenance": "O0::openssh-portable::ssh::binja log_is_on_stderr prepared64108; genuine generic logical/pointer/reference binding controls"
+    },
+    {
+      "source": "qualified_pointer_binding_boundaries.c",
+      "source_sha256": "50eccbc7034d2b0c6e18b7c8ba81353b46f55d789a3366dbc2dc24b7c78d13ec",
+      "reference_sha256": "648de940f21160a604bff4de5249b0cee4c2242ee5b60b9995dacd42c2e20742",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/qualified_pointer_binding_boundaries.c",
+      "original_raw": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/qualified_pointer_binding_boundaries.c.raw.json",
+      "original_raw_sha256": "29c624c65b7ef3d6a7278e797c362f45e404a823d298a3fc6ec8493ae2fe349f",
+      "methods": 19,
+      "actual_provenance": "Crazyflie cf2 prepared77313 and firmware prepared76310; exact List_t *const declaration shapes, record/scalar aliases and bound-object/global shadows"
+    },
+    {
+      "source": "qualified_pointer_binding_boundaries.cpp",
+      "source_sha256": "50eccbc7034d2b0c6e18b7c8ba81353b46f55d789a3366dbc2dc24b7c78d13ec",
+      "reference_sha256": "8cfcff61c30746e04262ac115df216fd7a512f81bdd46c2286dae1c3110a1ccc",
+      "original_source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/qualified_pointer_binding_boundaries.cpp",
+      "original_raw": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/logical-declaration-boundaries/qualified_pointer_binding_boundaries.cpp.raw.json",
+      "original_raw_sha256": "4a91bea7bfb8cf8d06f39d16f4d839e485c125b2b428936f3c94be41b8e5964c",
+      "methods": 19,
+      "actual_provenance": "Crazyflie cf2 prepared77313 and firmware prepared76310; exact List_t *const declaration shapes, record/scalar aliases and bound-object/global shadows"
+    }
+  ]
+}

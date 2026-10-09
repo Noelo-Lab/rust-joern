@@ -1,0 +1,2 @@
+identity,baseline_measured,new_measured,changed,added,dropped,state_changed,perfect_or_distance_metadata_changed,unchanged,unmeasured_both
+codex@gpt-6-astra,245,245,2,0,0,2,0,243,5

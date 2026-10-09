@@ -1,0 +1,26 @@
+{
+  "original_audit": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/scalar-declaration-boundaries/audit.json",
+  "original_audit_sha256": "5d948d5151ea6886adf28f6a4af4dc77099537dc9268e9462e6f7a3316aa9a6b",
+  "copies": [
+    {
+      "origin": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/scalar-declaration-boundaries/scalar_declaration_boundaries.c",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/scalar_declaration_boundaries.c",
+      "sha256": "06696bedcd95771f3951616bfd9c741ce39132ee7ce07e99e650a384fbd83bfa"
+    },
+    {
+      "origin": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/scalar-declaration-boundaries/scalar_declaration_boundaries.c.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/scalar_declaration_boundaries.c.pyjoern.json",
+      "sha256": "cb07ddc83c6bcd4b0cfb2d23ad2d9cf8a68f5f6f63413ed364ee84030bfbebce"
+    },
+    {
+      "origin": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/scalar-declaration-boundaries/scalar_declaration_boundaries.cpp",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/scalar_declaration_boundaries.cpp",
+      "sha256": "06696bedcd95771f3951616bfd9c741ce39132ee7ce07e99e650a384fbd83bfa"
+    },
+    {
+      "origin": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/scalar-declaration-boundaries/scalar_declaration_boundaries.cpp.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/scalar_declaration_boundaries.cpp.pyjoern.json",
+      "sha256": "f6f03dd7ab9479aed97328431c82c37799b360a783a8f334fab50de8e5f57f36"
+    }
+  ]
+}

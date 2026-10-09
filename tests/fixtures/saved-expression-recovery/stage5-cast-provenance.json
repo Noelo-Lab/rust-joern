@@ -1,0 +1,27 @@
+{
+  "original_engine": "Unchanged PyJoern 4.0.150.4 / Joern v4.0.150",
+  "files": [
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/round4-shadow-cast-boundaries/round4_shadow_cast_boundaries.c",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/round4_shadow_cast_boundaries.c",
+      "sha256": "ca301ff3d3b711e7f94397ce91b53d9baa989787045a3fd56c69a0a9f586df19"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/round4-shadow-cast-boundaries/round4_shadow_cast_boundaries.c.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/round4_shadow_cast_boundaries.c.pyjoern.json",
+      "sha256": "f56718183f8d7dc99ad64170bfb438fd1d70f00508f6149030dcaab1d2d254ab"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/round4-shadow-cast-boundaries/round4_shadow_cast_boundaries.cpp",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/round4_shadow_cast_boundaries.cpp",
+      "sha256": "ca301ff3d3b711e7f94397ce91b53d9baa989787045a3fd56c69a0a9f586df19"
+    },
+    {
+      "source": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/round4-shadow-cast-boundaries/round4_shadow_cast_boundaries.cpp.pyjoern.json",
+      "fixture": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/recovery-build/tests/fixtures/saved-expression-recovery/round4_shadow_cast_boundaries.cpp.pyjoern.json",
+      "sha256": "e538b179aeebcb320efc57b3beee04b931ec38c9cc6df201ca2187f0021cf096"
+    }
+  ],
+  "audit": "/home/mahaloz/github/rust-joern/workspace/ged-reeval/probes/round4-shadow-cast-boundaries/audit.json",
+  "audit_sha256": "cff7dfc148cdfaaee076c93aadb5cc875fafc4772f6e1f472e222945c67c1738"
+}
