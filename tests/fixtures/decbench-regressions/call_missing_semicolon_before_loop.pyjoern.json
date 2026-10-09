@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 11.082968596951105,
+  "functions": {
+    "micros_isr": {
+      "name": "micros_isr",
+      "start_line": 1,
+      "end_line": 14,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "edges": [
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            5,
+            0
+          ]
+        ],
+        "entry": [
+          5
+        ],
+        "exit": [
+          3
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "8.0:\n<UnsupportedStmt: IDENTIFIER,i,for(;i;i=0)>\n",
+          "1": "8.1:\ni = 0\n",
+          "2": "11.0:\ng_2000be48 = 1\n",
+          "3": "13.0:\n__unsupported_jumpkind_Ijk_NoDecode()\nFUNCTION_END\n",
+          "4": "10.1:\n<UnsupportedStmt: ['and', 'g_e000e010&amp;0xffffff']>\n<UnsupportedStmt: ['and', 'g_e000e010&amp;0xffffff&amp;0x10000']>\n",
+          "5": "1.0:\nFUNCTION_START\nv0 = v1\n__unsupported_jumpkind_Ijk_NoDecode()\n"
+        }
+      }
+    },
+    "consecutive_calls_before_loop": {
+      "name": "consecutive_calls_before_loop",
+      "start_line": 16,
+      "end_line": 30,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "28.0:\nreturn v0;,returnv0;\n",
+          "1": "25.1:\nsub_8001519()\nv0 = sub_8001519()\n__unsupported_jumpkind_Ijk_NoDecode()\n<UnsupportedStmt: IDENTIFIER,v0,if(v0)>\n",
+          "2": "16.0:\nFUNCTION_START\ng_20000b98 = 1\n__unsupported_jumpkind_Ijk_NoDecode()\n__unsupported_jumpkind_Ijk_NoDecode()\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "f3cab3b6facc44e42ff5693f59ad17bf59fbe8996e20147cb88d5694e7b17e1b",
+  "prepared_sha256": "f3cab3b6facc44e42ff5693f59ad17bf59fbe8996e20147cb88d5694e7b17e1b"
+}

@@ -58,7 +58,7 @@ class DecBenchReducedRegressionTests(unittest.TestCase):
                 self.assertEqual(set(reference["functions"]), set(case["expected_functions"]))
                 self.assertTrue(case["origins"])
                 for origin in case["origins"]:
-                    self.assertIn(origin["input_kind"], ("source", "ida", "kuna"))
+                    self.assertIn(origin["input_kind"], ("source", "ida", "kuna", "binja", "r2dec", "angr"))
                     self.assertGreater(origin["prepared_line"], 0)
                     self.assertEqual(len(origin["prepared_sha256"]), 64)
                     self.assertEqual(len(origin["reference_sha256"]), 64)
@@ -110,6 +110,30 @@ class DecBenchReducedRegressionTests(unittest.TestCase):
         """NuttX O0/O2: operator definitions use their operator symbol as name."""
         self.check_fixture("cpp_operator_definitions")
 
+
+    def test_noreturn_suffix_with_unclosed_literal_keeps_later_functions(self):
+        """Coreutils Binary Ninja: an unclosed group in a suffix body drops later functions."""
+        self.check_fixture("noreturn_suffix_unclosed_literal")
+
+    def test_unresolved_grouped_pointer_calls_are_expressions(self):
+        """Betaflight r2dec: uint32_t (*r3)() (); without a typedef is a call."""
+        self.check_fixture("grouped_pointer_call")
+
+    def test_typedef_grouped_pointer_calls_follow_declarator_validity(self):
+        """A typedef keeps the declaration unless it declares a function returning one."""
+        self.check_fixture("grouped_pointer_call_typedef")
+
+    def test_calls_without_terminators_keep_following_statements(self):
+        """Betaflight and ChibiOS angr: unterminated calls before a loop at a block end."""
+        self.check_fixture("call_missing_semicolon_before_loop")
+
+    def test_numeric_literal_callees_are_calls(self):
+        """U-Boot angr: a labelled 1619153864(); call is not a problem statement."""
+        self.check_fixture("literal_callee")
+
+    def test_brace_operand_problem_resumes_after_its_brace_group(self):
+        """Zlib Binary Ninja: a != {0} condition closes its block; later statements remain."""
+        self.check_fixture("brace_operand_condition")
 
 if __name__ == "__main__":
     unittest.main()

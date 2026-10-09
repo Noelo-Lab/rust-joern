@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 11.740425553056411,
+  "functions": {
+    "brace_operand_in_nested_condition": {
+      "name": "brace_operand_in_nested_condition",
+      "start_line": 1,
+      "end_line": 14,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "12.0:\n<UnsupportedStmt: IDENTIFIER,r,if(r)>\n",
+          "1": "6.1:\n<UnsupportedStmt: ['multiplication', 'a*b']>\nr = a*b\n",
+          "2": "13.1:\n<UnsupportedStmt: ['division', 'r/b']>\nreturn r/b;,returnr/b;\n",
+          "3": "1.0:\nFUNCTION_START\nr = 0\n<UnsupportedStmt: IDENTIFIER,b,if(b)>\n"
+        }
+      }
+    },
+    "brace_operand_in_condition": {
+      "name": "brace_operand_in_condition",
+      "start_line": 18,
+      "end_line": 20,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "18.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "4c070c94288341bd10a7aed60133fc07b46711fa0cb67136a2f5f3fca5309c0c",
+  "prepared_sha256": "4c070c94288341bd10a7aed60133fc07b46711fa0cb67136a2f5f3fca5309c0c"
+}

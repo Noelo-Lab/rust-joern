@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 10.12527328694705,
+  "functions": {
+    "serial_begin_write": {
+      "name": "serial_begin_write",
+      "start_line": 1,
+      "end_line": 8,
+      "cfg": {
+        "nodes": [
+          0,
+          1
+        ],
+        "edges": [
+          [
+            1,
+            0
+          ]
+        ],
+        "entry": [
+          1
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "6.3:\n<UnsupportedStmt: ['indirection', '*r3']>\nuint32_t(*r3)\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)()']>\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)()()']>\n",
+          "1": "1.0:\nFUNCTION_START\nr0 = arg1\n<UnsupportedStmt: ['indirection', '*(r0)']>\nr3 = *(r0)\nr3 != 0\n"
+        }
+      }
+    },
+    "forward_call": {
+      "name": "forward_call",
+      "start_line": 10,
+      "end_line": 15,
+      "cfg": {
+        "nodes": [
+          0,
+          1
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ]
+        ],
+        "entry": [
+          0
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "10.0:\nFUNCTION_START\nr0 != 0\n",
+          "1": "13.3:\n<UnsupportedStmt: ['indirection', '*r3']>\nuint32_t(*r3)\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t', 'uint32_t)']>\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t', 'uint32_t)(r0', 'r3)']>\n"
+        }
+      }
+    },
+    "single_suffix_call": {
+      "name": "single_suffix_call",
+      "start_line": 17,
+      "end_line": 22,
+      "cfg": {
+        "nodes": [
+          0,
+          1
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ]
+        ],
+        "entry": [
+          0
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "17.0:\nFUNCTION_START\nr0 != 0\n",
+          "1": "20.2:\n<UnsupportedStmt: ['indirection', '*r3']>\nuint32_t(*r3)\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t)']>\n"
+        }
+      }
+    },
+    "keyword_pointer_declaration": {
+      "name": "keyword_pointer_declaration",
+      "start_line": 24,
+      "end_line": 29,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "24.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,c,if(c)>\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "94f90a072436df4a334c87e0a0bd5e3b8eaac75b9d4dd1f3773cd4157f1ee8d5",
+  "prepared_sha256": "94f90a072436df4a334c87e0a0bd5e3b8eaac75b9d4dd1f3773cd4157f1ee8d5"
+}

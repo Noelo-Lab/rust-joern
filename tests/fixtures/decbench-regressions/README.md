@@ -1,6 +1,7 @@
 These small C/C++ reconstructions preserve distinct failures confirmed in the
-full DecBench O0/O2 source, IDA, and Kuna audit. They contain only the syntax
-needed to reproduce each issue, rather than copies of the original programs.
+full DecBench O0/O2 source, IDA, and Kuna audit, and in a 2026-10-09 census of
+the other decompilers' saved output. They contain only the syntax needed to
+reproduce each issue, rather than copies of the original programs.
 
 Every `.pyjoern.json` was captured independently from the unchanged installed
 PyJoern 4.0.150.4 with Joern v4.0.150, in a temporary working directory with
@@ -21,6 +22,12 @@ was used to produce the expected graphs.
 | `nested_designator.c` | Betaflight `lsm6dsv16xAccReadSPI`, source | Chained member designators cause strict diagnostics. |
 | `cpp_operator_declarations.cpp` | NuttX `libxx_dynamic_cast`, source O0/O2 | The original prototype names include `operator ==`; native names omit the space. |
 | `cpp_operator_definitions.cpp` | NuttX `libxx_typeinfo`, source O0/O2 | The original definition names are operator symbols such as `==`; native names include `operator`. |
+| `noreturn_suffix_unclosed_literal.c` | Coreutils `usage` in Binary Ninja `sort`, O0 | A `) __noreturn` suffix body with a newline-broken literal leaves a group unclosed; the native skip lost every later function. |
+| `grouped_pointer_call.c` | Betaflight `serialBeginWrite`, r2dec O0 | `uint32_t (*r3)() ();` without a typedef is a call in the original; native parsing made it a declaration and emptied the branch. |
+| `grouped_pointer_call_typedef.c` | Companion to `grouped_pointer_call.c` | With a typedef, only a function returning a function becomes a call. |
+| `call_missing_semicolon_before_loop.c` | Betaflight `microsISR` and ChibiOS `rt_test_004_001_execute`, angr O0/O2 | Unterminated calls before a loop at a block end collapsed the whole method. |
+| `literal_callee.c` | U-Boot `dm_gpio_clrset_flags`, angr O2-noinline | `1619153864();` was a problem statement, dropping its label and branch. |
+| `brace_operand_condition.c` | Zlib `gzfread` in Binary Ninja `minigzip64`, O2 | After `!= {0}` closes the block, the stray `)` problem consumed the next statement. |
 
 [provenance.json](provenance.json) records actual case IDs, functions and prepared
 line numbers, original/prepared source hashes, full reference hashes, reduced
@@ -29,7 +36,7 @@ optimizations have independently recorded reference and candidate evidence.
 
 [test_decbench_regressions.py](../../test_decbench_regressions.py) checks function
 coverage, directed topology, entry/exit roles, degeneracy, and diagnostics. All
-eleven reduced cases now pass in strict mode against the unchanged snapshots.
+reduced cases now pass in strict mode against the unchanged snapshots.
 Their original failure evidence remains in the provenance file. Full corpus
 parity is measured separately; these cases do not waive any corpus divergence.
 

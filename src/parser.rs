@@ -1610,7 +1610,7 @@ impl Parser<'_> {
         if definition && self.text(direct_parameters) == "(" {
             // CDT ends the first function declarator before a second direct
             // parameter list, leaving a method declaration and no body.
-            let body_end = self.matching(body_start, self.limit);
+            let body_end = self.brace_end(body_start, self.limit);
             self.add_function(
                 start,
                 header.parameters_end,
@@ -1628,9 +1628,10 @@ impl Parser<'_> {
         {
             // CDT finishes the initial declarator before an unknown suffix.
             // Its following brace body belongs to a recovered declaration,
-            // not to that method's declaration stub.
+            // not to that method's declaration stub. Problem-declaration
+            // recovery balances braces only, so unclosed groups stay inside.
             let declaration_end = header.parameters_end;
-            let body_end = self.matching(body_start, self.limit);
+            let body_end = self.brace_end(body_start, self.limit);
             self.add_function(start, declaration_end, header, prefix, false, functions);
             if !self.cpp
                 && let Some(mut recovered) = self.function_header(marker, body_start)
@@ -1659,7 +1660,7 @@ impl Parser<'_> {
             // template-like named specifier; C also has no template type-ids.
             if definition {
                 self.pos = self
-                    .matching(body_start, self.limit)
+                    .brace_end(body_start, self.limit)
                     .map_or(self.limit, |close| close + 1);
             }
             return;
@@ -3640,6 +3641,9 @@ impl Parser<'_> {
         if start + 1 == end && self.variables.contains(t) {
             return false;
         }
+        if let Some(declaration) = self.grouped_pointer_call_declaration(start, end) {
+            return declaration;
+        }
         if qualifier(t)
             || type_word(t)
             || matches!(
@@ -3688,6 +3692,59 @@ impl Parser<'_> {
         false
     }
 
+    /// C statements shaped `T (*x)(args)...;` with an identifier `T` are
+    /// ambiguous. CDT resolves them by `T`'s binding: without a typedef they
+    /// are call expressions, and with one they stay declarations unless
+    /// consecutive parameter lists declare a function returning a function.
+    /// Groups that cannot be call arguments, such as type keywords or
+    /// adjacent names, keep the declaration.
+    fn grouped_pointer_call_declaration(&self, start: usize, end: usize) -> Option<bool> {
+        let t = self.text(start);
+        if self.cpp
+            || self.tokens[start].kind != TokenKind::Identifier
+            || type_word(t)
+            || qualifier(t)
+            || self.text(start + 1) != "("
+            || self.text(start + 2) != "*"
+        {
+            return None;
+        }
+        let close = self.matching(start + 1, end)?;
+        let (name, after) = self.declarator_name(start + 2, close);
+        if name.is_none() || after != close || !matches!(self.text(close + 1), "(" | "[") {
+            return None;
+        }
+        let mut i = close + 1;
+        let mut previous_call = false;
+        let mut consecutive_calls = false;
+        while i < end {
+            let open = i;
+            let group_end = self.matching(open, end)?;
+            if self.text(open) == "(" {
+                let adjacent_names = (open + 1..group_end - 1).any(|k| {
+                    self.tokens[k].kind == TokenKind::Identifier
+                        && self.tokens[k + 1].kind == TokenKind::Identifier
+                });
+                if adjacent_names
+                    || (open + 1..group_end).any(|k| {
+                        let text = self.text(k);
+                        text == "..." || type_word(text) || qualifier(text)
+                    })
+                {
+                    return None;
+                }
+                consecutive_calls |= previous_call;
+                previous_call = true;
+            } else if self.text(open) == "[" {
+                previous_call = false;
+            } else {
+                return None;
+            }
+            i = group_end + 1;
+        }
+        Some(self.explicit_types.contains(t) && !consecutive_calls)
+    }
+
     fn statement(&mut self) -> Stmt {
         let start = self.pos;
         if let Some(statement) = self.local_problem_enum_statement(start) {
@@ -3724,7 +3781,7 @@ impl Parser<'_> {
                 StmtKind::Empty
             }
             ")" | "]" => {
-                self.pos = self.problem_statement_end(self.pos);
+                self.pos = self.stray_closer_problem_end(self.pos);
                 StmtKind::Problem
             }
             "else" => {
@@ -5248,6 +5305,7 @@ impl Parser<'_> {
                 let previous = i.checked_sub(1).map(|index| self.text(index));
                 let callable = i > start
                     && (self.tokens[i - 1].kind == TokenKind::Identifier
+                        || self.numeric_callee(i - 1)
                         || matches!(previous, Some(")" | "]")))
                     && !matches!(
                         previous,
@@ -5497,6 +5555,14 @@ impl Parser<'_> {
             // separator is recovered before the compound's own boundary.
             return None;
         }
+        if self
+            .call_statement_separator(start)
+            .is_some_and(|next| next < end)
+        {
+            // A call followed directly by another statement is recovered as
+            // two siblings even when no later terminator precedes the brace.
+            return None;
+        }
         let direct_call = self.tokens.get(start)?.kind == TokenKind::Identifier
             && !type_word(self.text(start))
             && !qualifier(self.text(start))
@@ -5590,6 +5656,13 @@ impl Parser<'_> {
             open += 1;
         }
         None
+    }
+
+    /// CDT's postfix grammar calls any primary expression, including the
+    /// numeric literals decompilers emit for unresolved absolute call targets.
+    fn numeric_callee(&self, i: usize) -> bool {
+        self.tokens[i].kind == TokenKind::Literal
+            && self.text(i).starts_with(|c: char| c.is_ascii_digit())
     }
 
     fn ordinary_call_problem(&self, start: usize, end: usize) -> bool {
@@ -5735,7 +5808,10 @@ impl Parser<'_> {
                     i = close + 1;
                     continue;
                 }
-                if self.tokens[i - 1].kind == TokenKind::Identifier || matches!(callee, ")" | "]") {
+                if self.tokens[i - 1].kind == TokenKind::Identifier
+                    || self.numeric_callee(i - 1)
+                    || matches!(callee, ")" | "]")
+                {
                     if !self.cpp && expression_type_keyword(callee, false) {
                         return true;
                     }
@@ -5753,6 +5829,7 @@ impl Parser<'_> {
                 && let Some(close) = self.matching(i, end)
                 && (i == start
                     || (self.tokens[i - 1].kind != TokenKind::Identifier
+                        && !self.numeric_callee(i - 1)
                         && !matches!(self.text(i - 1), ")" | "]")))
             {
                 let type_id = self.is_type_range(i + 1, close);
@@ -6137,6 +6214,31 @@ impl Parser<'_> {
             }
         }
         false
+    }
+
+    /// CDT skips a statement that starts with a stray closer like any problem
+    /// statement: it ends after a terminator or after a brace group that
+    /// returns to the starting depth, leaving later statements intact.
+    fn stray_closer_problem_end(&self, start: usize) -> usize {
+        let mut i = start + 1;
+        while i < self.limit {
+            match self.text(i) {
+                ";" => return i + 1,
+                "}" | "%>" => return i,
+                "{" | "<%" => {
+                    return self
+                        .brace_end(i, self.limit)
+                        .map_or(self.limit, |close| close + 1);
+                }
+                "(" | "[" => {
+                    i = self
+                        .matching(i, self.limit)
+                        .map_or(i + 1, |close| close + 1)
+                }
+                _ => i += 1,
+            }
+        }
+        i
     }
 
     fn problem_statement_end(&self, start: usize) -> usize {
