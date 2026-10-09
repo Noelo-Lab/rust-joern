@@ -1,18 +1,17 @@
-# rust-joern
+# Rust Joern
 
-Generate C/C++ control-flow graphs (CFG), code property graphs (CPG), data
-dependency graphs (DDG), and reaching-definition sets. Export JSON or DOT from
-the CLI, or access graphs in memory through Python.
+An AI fork of [Joern](https://joern.io) in Rust, minimizing supported features
+and maximizing speed. Rust Joern contains a small subset of features motivated
+by use in [DecBench](https://decbench.com). It is largely used to generate CFGs
+from C/C++ decompilation that may not compile. Other features include DDG, CPG,
+and reaching definitions generation.
 
-The parser follows Joern's C/C++ frontend behavior and PyJoern's basic-block
-normalization. Parsing and graph construction run in Rust; the Python API calls
-the shared library in process. DecBench compatibility is the main target.
+In a paired eight-file benchmark, Rust Joern was around **151×** faster for CFG
+generation. See the [evaluation and timing details](docs/eval/cfg_parity.md).
 
 ## Install
 
 Requires Rust 1.90+. The Python API requires Python 3.10+.
-
-From the checkout:
 
 ```sh
 cargo build --release
@@ -21,10 +20,12 @@ python -m pip install -e .
 
 ## CLI
 
+The binary is built at `./target/release/rust-joern`. Invoke that path or add
+`target/release` to your `PATH` to use the commands below.
+
 ```sh
-./target/release/rust-joern analyze input.c --output graphs.json
-./target/release/rust-joern analyze input.cpp --format dot --graph cfg --output cfg.dot
-./target/release/rust-joern analyze input.c --data-flow --reaching-definitions --output all.json
+rust-joern analyze input.c --output graphs.json
+rust-joern analyze input.cpp --format dot --graph cfg --output cfg.dot
 ```
 
 Accepts files, directories, or `-` for stdin. Language detection uses the file
@@ -46,12 +47,7 @@ analysis = parse_code(
     reaching_definitions=True,
 )
 function = analysis.functions[0]
-
 cfg = function.cfg                  # NetworkX DiGraph of basic blocks
-cpg = function.cpg                  # NetworkX MultiDiGraph
-ddg = function.ddg                  # PyJoern-compatible block graph
-definitions = function.reaching_definitions
-diagnostics = analysis.diagnostics
 
 # Parse a file without running data-flow analysis.
 functions = parse_source("input.c", no_ddg=True, no_ast=True)
@@ -84,57 +80,19 @@ sets for methods above that limit.
 
 ## DecBench
 
-Run DecBench in its own Python environment with the compatibility shim:
-
-```sh
-PYTHONPATH="$PWD/compat:$PWD/python" decbench --help
-```
-
-The shim forwards `pyjoern.parse_source` to Rust and defaults to
-`no_ddg=True`, `strict=True`, and `preprocessed=True`. DecBench handles source
-preparation, function selection, and GED scoring. Use a separate metric cache
-when comparing backends.
-
-For saved artifacts, [rescore_decbench_ged.py](scripts/rescore_decbench_ged.py)
-generates fresh CFGs and GED results;
-[summarize_decbench_ged.py](scripts/summarize_decbench_ged.py) produces score
-comparisons for the main dataset and standalone Astra samples. See each
-script's `--help` for arguments.
-
-The [latest reevaluation](reports/ged-reevaluation-2026-10-09/README.md) completed
-in **9m 1s** with 16 workers, including CFG extraction and GED scoring. It
-contains per-function changes, all-decompiler score tables, timings, and audit
-evidence. The original DecBench results remain unchanged.
+See [DecBench integration](docs/decbench.md) for setup, saved-artifact GED
+rescoring, and the recorded reevaluation results.
 
 ## Verification
 
-- **CFG:** all 8,808 saved cases match, covering 6,377 unique prepared inputs.
-  Five original DOT-exporter failures were checked against recovered original
-  graphs. See the [CFG certificate](reports/ged-reevaluation-2026-10-09/evidence/cfg-certificate/certification-status-root.json).
-- **DDG:** the [recorded DDG audit](reports/ddg-parity/README.md) passes 841
+- **CFG:** all 8,808 saved cases pass directed topology and entry/exit checks,
+  covering 6,377 unique prepared inputs. Five original DOT-exporter failures
+  were checked against recovered original graphs. See [CFG parity](docs/eval/cfg_parity.md).
+- **DDG:** the [recorded DDG audit](docs/eval/ddg_parity.md) passes 841
   comparisons against original public and labeled DOT graphs. Its build
   predates the latest CFG recovery changes.
-- **Speed:** an earlier paired eight-file benchmark measured **110.82s for
-  PyJoern and 0.73s for Rust** (151×). These are complete API call intervals,
-  including PyJoern's JVM startup and Python graph construction. See the
-  [timing details](tools/cfg-compare/README.md).
-
-Compare local fixtures with frozen PyJoern references:
-
-```sh
-python scripts/compare_pyjoern.py tests/fixtures/control.c \
-    --reference-dir tests/fixtures --output workspace/cfg-comparison.json
-```
-
-For a visual comparison, run `python scripts/cfg_compare.py serve` and open
-`http://127.0.0.1:8765`. The [viewer instructions](tools/cfg-compare/README.md)
-cover capturing and exporting pairs.
 
 ## Development
 
-```sh
-cargo fmt --all -- --check
-cargo test --all-targets
-cargo clippy --all-targets -- -D warnings
-python -m unittest discover -s tests -p 'test_*.py'
-```
+Repository layout, development checks, and instructions for working on parity
+are in the [agent guide](docs/agents.md).
