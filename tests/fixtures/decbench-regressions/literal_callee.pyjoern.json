@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 10.410997783066705,
+  "functions": {
+    "literal_call_after_label": {
+      "name": "literal_call_after_label",
+      "start_line": 1,
+      "end_line": 11,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "8.0:\nreturn v0;,returnv0;\n",
+          "1": "10.0:\n<UnsupportedStmt: ['pointerCall', '1619153864()']>\n",
+          "2": "1.0:\nFUNCTION_START\nsub_608255e8()\nv0 = sub_608255e8(a0,3238528420)\n<UnsupportedStmt: ['logicalNot', '!v0']>\n"
+        }
+      }
+    },
+    "literal_call_in_branch": {
+      "name": "literal_call_in_branch",
+      "start_line": 13,
+      "end_line": 18,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "16.0:\n<UnsupportedStmt: ['pointerCall', '1619153864()']>\n",
+          "1": "17.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+          "2": "13.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,x,if(x)>\n"
+        }
+      }
+    },
+    "literal_call_assignment": {
+      "name": "literal_call_assignment",
+      "start_line": 20,
+      "end_line": 25,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "24.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+          "1": "23.1:\n<UnsupportedStmt: ['pointerCall', '5()']>\nx = 5()\n",
+          "2": "20.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,x,if(x)>\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "edbfd23c790cf105c36499c94de005c299652cdce88a51059767f6bf15eabf2c",
+  "prepared_sha256": "edbfd23c790cf105c36499c94de005c299652cdce88a51059767f6bf15eabf2c"
+}

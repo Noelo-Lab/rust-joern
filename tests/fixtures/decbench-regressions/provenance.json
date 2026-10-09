@@ -1188,6 +1188,1056 @@
           }
         }
       ]
+    },
+    "noreturn_suffix_unclosed_literal": {
+      "source": "noreturn_suffix_unclosed_literal.c",
+      "reference": "noreturn_suffix_unclosed_literal.pyjoern.json",
+      "source_sha256": "79b5e91cb896eba4a4f18144b48db5ee3ca057fe426253ea72ad733eacfb7cc4",
+      "reference_sha256": "626273c412f56dcda9444d91cbc41f5da3032820d90e931c07bb63bacc603c4e",
+      "expected_functions": [
+        "after_usage",
+        "usage"
+      ],
+      "expected_failure_reason": "A definition with an unknown declarator suffix is skipped as a CDT problem declaration; a newline-broken literal leaves a parenthesis unclosed, so the native bracket matcher failed and skipped to the end of the file without a diagnostic.",
+      "initial_native_library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+      "initial_observed_differences": [
+        "missing"
+      ],
+      "initial_diagnostics": [],
+      "initial_comparison": [
+        {
+          "function": "after_usage",
+          "status": "missing",
+          "reference": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1,
+              2
+            ],
+            "edges": [
+              [
+                2,
+                0
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "entry": [
+              2
+            ],
+            "exit": [],
+            "degenerate": false,
+            "labels": {
+              "0": "16.0:\nreturn 0;,return0;\n",
+              "1": "15.0:\nreturn 1;,return1;\n",
+              "2": "12.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,value,if(value)>\n"
+            }
+          }
+        },
+        {
+          "function": "usage",
+          "status": "match",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/coreutils/binja/binja_sort.c",
+          "optimization": "O0",
+          "input_kind": "binja",
+          "source": "O0/coreutils/decompiled/binja_sort.c",
+          "source_sha256": "bf57ac4f78cee81cf15c2467f00b3d201b2b5e8ace00ff9c2bd8f4e398e1f216",
+          "prepared_sha256": "4b7c397c6041cc2191b7405cabc343c14391a490189a6db40126c7ec97b7d86e",
+          "reference_sha256": "f27dea58f198f5eaa0f36169de2c9edabce076270f0d313eee70847a8e3c6b4b",
+          "reference_origin": "fresh_capture",
+          "function": "usage",
+          "prepared_line": 37,
+          "full_reference_function_count": 133,
+          "full_candidate_function_count": 133,
+          "full_candidate_status": "match",
+          "reference_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          },
+          "candidate_function_counts": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        }
+      ]
+    },
+    "grouped_pointer_call": {
+      "source": "grouped_pointer_call.c",
+      "reference": "grouped_pointer_call.pyjoern.json",
+      "source_sha256": "94f90a072436df4a334c87e0a0bd5e3b8eaac75b9d4dd1f3773cd4157f1ee8d5",
+      "reference_sha256": "fa21ca3ec6b1d93cff4fc9a895ef931ec2b96c8421635cecf69014b9bd596a11",
+      "expected_functions": [
+        "forward_call",
+        "keyword_pointer_declaration",
+        "serial_begin_write",
+        "single_suffix_call"
+      ],
+      "expected_failure_reason": "A C statement shaped T (*x)(args)... with an unresolved T is a call expression in CDT; the native parser chose a declaration and emptied the enclosing branch.",
+      "initial_native_library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+      "initial_observed_differences": [
+        "divergent"
+      ],
+      "initial_diagnostics": [],
+      "initial_comparison": [
+        {
+          "function": "forward_call",
+          "status": "divergent",
+          "reference": {
+            "nodes": 2,
+            "edges": 1,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1
+            ],
+            "edges": [
+              [
+                0,
+                1
+              ]
+            ],
+            "entry": [
+              0
+            ],
+            "exit": [],
+            "degenerate": false,
+            "labels": {
+              "0": "10.0:\nFUNCTION_START\nr0 != 0\n",
+              "1": "13.3:\n<UnsupportedStmt: ['indirection', '*r3']>\nuint32_t(*r3)\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t', 'uint32_t)']>\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t', 'uint32_t)(r0', 'r3)']>\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        },
+        {
+          "function": "keyword_pointer_declaration",
+          "status": "match",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "function": "serial_begin_write",
+          "status": "divergent",
+          "reference": {
+            "nodes": 2,
+            "edges": 1,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1
+            ],
+            "edges": [
+              [
+                1,
+                0
+              ]
+            ],
+            "entry": [
+              1
+            ],
+            "exit": [],
+            "degenerate": false,
+            "labels": {
+              "0": "6.3:\n<UnsupportedStmt: ['indirection', '*r3']>\nuint32_t(*r3)\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)()']>\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)()()']>\n",
+              "1": "1.0:\nFUNCTION_START\nr0 = arg1\n<UnsupportedStmt: ['indirection', '*(r0)']>\nr3 = *(r0)\nr3 != 0\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        },
+        {
+          "function": "single_suffix_call",
+          "status": "divergent",
+          "reference": {
+            "nodes": 2,
+            "edges": 1,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1
+            ],
+            "edges": [
+              [
+                0,
+                1
+              ]
+            ],
+            "entry": [
+              0
+            ],
+            "exit": [],
+            "degenerate": false,
+            "labels": {
+              "0": "17.0:\nFUNCTION_START\nr0 != 0\n",
+              "1": "20.2:\n<UnsupportedStmt: ['indirection', '*r3']>\nuint32_t(*r3)\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t)']>\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/betaflight/r2dec/r2dec_betaflight_STM32F405.c",
+          "optimization": "O0",
+          "input_kind": "r2dec",
+          "source": "O0/betaflight/decompiled/r2dec_betaflight_STM32F405.c",
+          "source_sha256": "40d4750e267efd37e84c613f1d660aec665e75da84490dc91a460dce061245fd",
+          "prepared_sha256": "d82bc5b5e363480bbbd1fbf108fb3a8088067be32ebfe5e91d63d37514b94d88",
+          "reference_sha256": "f690fcdadb664d40ceed2312777eb45a9779b8414434a7e9285436e282a4230d",
+          "reference_origin": "fresh_capture",
+          "function": "serialBeginWrite",
+          "prepared_line": 34785,
+          "full_reference_function_count": 2801,
+          "full_candidate_function_count": 2801,
+          "full_candidate_status": "match",
+          "reference_function_counts": {
+            "nodes": 2,
+            "edges": 1,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 2,
+            "edges": 1,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "grouped_pointer_call_typedef": {
+      "source": "grouped_pointer_call_typedef.c",
+      "reference": "grouped_pointer_call_typedef.pyjoern.json",
+      "source_sha256": "8b1e4e3716e7b9f02c8e9a53ce30caea9dca5282f6a76fa3531cff2b60a2fb19",
+      "reference_sha256": "7e22b949c441dee789e55bd46961a8f5e1e84ed7c0e662b5187c17ca8a417ad7",
+      "expected_functions": [
+        "function_returning_function_call",
+        "typed_pointer_declaration"
+      ],
+      "expected_failure_reason": "With a typedef binding, CDT keeps T (*x)(args); as a declaration but resolves consecutive parameter lists (a function returning a function) as a call.",
+      "initial_native_library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+      "initial_observed_differences": [
+        "divergent"
+      ],
+      "initial_diagnostics": [],
+      "initial_comparison": [
+        {
+          "function": "function_returning_function_call",
+          "status": "divergent",
+          "reference": {
+            "nodes": 2,
+            "edges": 1,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1
+            ],
+            "edges": [
+              [
+                0,
+                1
+              ]
+            ],
+            "entry": [
+              0
+            ],
+            "exit": [],
+            "degenerate": false,
+            "labels": {
+              "0": "10.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,c,if(c)>\n",
+              "1": "13.3:\n<UnsupportedStmt: ['indirection', '*r3']>\nuint32_t(*r3)\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t)']>\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t)(r3)']>\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        },
+        {
+          "function": "typed_pointer_declaration",
+          "status": "match",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/betaflight/r2dec/r2dec_betaflight_STM32F405.c",
+          "optimization": "O0",
+          "input_kind": "r2dec",
+          "source": "O0/betaflight/decompiled/r2dec_betaflight_STM32F405.c",
+          "source_sha256": "40d4750e267efd37e84c613f1d660aec665e75da84490dc91a460dce061245fd",
+          "prepared_sha256": "d82bc5b5e363480bbbd1fbf108fb3a8088067be32ebfe5e91d63d37514b94d88",
+          "reference_sha256": "f690fcdadb664d40ceed2312777eb45a9779b8414434a7e9285436e282a4230d",
+          "reference_origin": "fresh_capture",
+          "function": "serialBeginWrite",
+          "prepared_line": 34785,
+          "full_reference_function_count": 2801,
+          "full_candidate_function_count": 2801,
+          "full_candidate_status": "match",
+          "reference_function_counts": {
+            "nodes": 2,
+            "edges": 1,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 2,
+            "edges": 1,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "call_missing_semicolon_before_loop": {
+      "source": "call_missing_semicolon_before_loop.c",
+      "reference": "call_missing_semicolon_before_loop.pyjoern.json",
+      "source_sha256": "f3cab3b6facc44e42ff5693f59ad17bf59fbe8996e20147cb88d5694e7b17e1b",
+      "reference_sha256": "58f85ba0f22af1c55315d0f095a201396ef46b2155dd00383715fd29e3559ad1",
+      "expected_functions": [
+        "consecutive_calls_before_loop",
+        "micros_isr"
+      ],
+      "expected_failure_reason": "An unterminated call followed by another statement, with no later terminator before the closing brace, was claimed whole by terminal-expression recovery, collapsing the method.",
+      "initial_native_library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+      "initial_observed_differences": [
+        "divergent"
+      ],
+      "initial_diagnostics": [],
+      "initial_comparison": [
+        {
+          "function": "consecutive_calls_before_loop",
+          "status": "divergent",
+          "reference": {
+            "nodes": 3,
+            "edges": 3,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1,
+              2
+            ],
+            "edges": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "entry": [
+              2
+            ],
+            "exit": [],
+            "degenerate": false,
+            "labels": {
+              "0": "28.0:\nreturn v0;,returnv0;\n",
+              "1": "25.1:\nsub_8001519()\nv0 = sub_8001519()\n__unsupported_jumpkind_Ijk_NoDecode()\n<UnsupportedStmt: IDENTIFIER,v0,if(v0)>\n",
+              "2": "16.0:\nFUNCTION_START\ng_20000b98 = 1\n__unsupported_jumpkind_Ijk_NoDecode()\n__unsupported_jumpkind_Ijk_NoDecode()\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        },
+        {
+          "function": "micros_isr",
+          "status": "divergent",
+          "reference": {
+            "nodes": 6,
+            "edges": 7,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "edges": [
+              [
+                0,
+                3
+              ],
+              [
+                0,
+                4
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                4,
+                2
+              ],
+              [
+                5,
+                0
+              ]
+            ],
+            "entry": [
+              5
+            ],
+            "exit": [
+              3
+            ],
+            "degenerate": false,
+            "labels": {
+              "0": "8.0:\n<UnsupportedStmt: IDENTIFIER,i,for(;i;i=0)>\n",
+              "1": "8.1:\ni = 0\n",
+              "2": "11.0:\ng_2000be48 = 1\n",
+              "3": "13.0:\n__unsupported_jumpkind_Ijk_NoDecode()\nFUNCTION_END\n",
+              "4": "10.1:\n<UnsupportedStmt: ['and', 'g_e000e010&amp;0xffffff']>\n<UnsupportedStmt: ['and', 'g_e000e010&amp;0xffffff&amp;0x10000']>\n",
+              "5": "1.0:\nFUNCTION_START\nv0 = v1\n__unsupported_jumpkind_Ijk_NoDecode()\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O0/betaflight/angr/angr_betaflight_STM32F405.c",
+          "optimization": "O0",
+          "input_kind": "angr",
+          "source": "O0/betaflight/decompiled/angr_betaflight_STM32F405.c",
+          "source_sha256": "fb5ae6562a27782fcc5760a4235ea90d2b549587d9f07c2757de13912d7ef6ff",
+          "prepared_sha256": "428ff8216f68dcc0e183149ab23c3cddf535c748e0dc90e6e1ca2ede0dbab083",
+          "reference_sha256": "7feb3162a6974a4a344dfc4fc5c6866d5c9123956af45b9de197ab1c4b05b1ee",
+          "reference_origin": "fresh_capture",
+          "function": "microsISR",
+          "prepared_line": 36095,
+          "full_reference_function_count": 3945,
+          "full_candidate_function_count": 3945,
+          "full_candidate_status": "match",
+          "reference_function_counts": {
+            "nodes": 6,
+            "edges": 7,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 6,
+            "edges": 7,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          }
+        },
+        {
+          "case_id": "O2/chibios/angr/angr_ch.c",
+          "optimization": "O2",
+          "input_kind": "angr",
+          "source": "O2/chibios/decompiled/angr_ch.c",
+          "source_sha256": "b77e90ab2f0f8a5a19042669a7cbd612837ff6bd5d8d27285b03b1a10495b109",
+          "prepared_sha256": "1450b1989c16a88751b9a2841524aac26296c1a7af7460aef0564e1cb78ffce7",
+          "reference_sha256": "4e03622c4b4a9a9ea3aaa203a7861b45c6ccca108e7ea024a932d3115babdd38",
+          "reference_origin": "fresh_capture",
+          "function": "rt_test_004_001_execute",
+          "prepared_line": 8183,
+          "full_reference_function_count": 288,
+          "full_candidate_function_count": 288,
+          "full_candidate_status": "divergent",
+          "reference_function_counts": {
+            "nodes": 5,
+            "edges": 5,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 5,
+            "edges": 5,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "literal_callee": {
+      "source": "literal_callee.c",
+      "reference": "literal_callee.pyjoern.json",
+      "source_sha256": "edbfd23c790cf105c36499c94de005c299652cdce88a51059767f6bf15eabf2c",
+      "reference_sha256": "ebfacc44807053732a036d3734140d7f9f84b8342cb8b010e4c345d59d8d0d86",
+      "expected_functions": [
+        "literal_call_after_label",
+        "literal_call_assignment",
+        "literal_call_in_branch"
+      ],
+      "expected_failure_reason": "A numeric literal called with an empty argument list was a problem statement, removing its label and enclosing branch; CDT parses it as a call.",
+      "initial_native_library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+      "initial_observed_differences": [
+        "divergent"
+      ],
+      "initial_diagnostics": [],
+      "initial_comparison": [
+        {
+          "function": "literal_call_after_label",
+          "status": "divergent",
+          "reference": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1,
+              2
+            ],
+            "edges": [
+              [
+                2,
+                0
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "entry": [
+              2
+            ],
+            "exit": [],
+            "degenerate": false,
+            "labels": {
+              "0": "8.0:\nreturn v0;,returnv0;\n",
+              "1": "10.0:\n<UnsupportedStmt: ['pointerCall', '1619153864()']>\n",
+              "2": "1.0:\nFUNCTION_START\nsub_608255e8()\nv0 = sub_608255e8(a0,3238528420)\n<UnsupportedStmt: ['logicalNot', '!v0']>\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        },
+        {
+          "function": "literal_call_assignment",
+          "status": "divergent",
+          "reference": {
+            "nodes": 3,
+            "edges": 3,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1,
+              2
+            ],
+            "edges": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "entry": [
+              2
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false,
+            "labels": {
+              "0": "24.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+              "1": "23.1:\n<UnsupportedStmt: ['pointerCall', '5()']>\nx = 5()\n",
+              "2": "20.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,x,if(x)>\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        },
+        {
+          "function": "literal_call_in_branch",
+          "status": "divergent",
+          "reference": {
+            "nodes": 3,
+            "edges": 3,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1,
+              2
+            ],
+            "edges": [
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "entry": [
+              2
+            ],
+            "exit": [
+              1
+            ],
+            "degenerate": false,
+            "labels": {
+              "0": "16.0:\n<UnsupportedStmt: ['pointerCall', '1619153864()']>\n",
+              "1": "17.0:\nreturn x;,returnx;\nFUNCTION_END\n",
+              "2": "13.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,x,if(x)>\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              0
+            ],
+            "edges": [],
+            "entry": [
+              0
+            ],
+            "exit": [
+              0
+            ],
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O2-noinline/u-boot/angr/angr_u-boot.c",
+          "optimization": "O2-noinline",
+          "input_kind": "angr",
+          "source": "O2-noinline/u-boot/decompiled/angr_u-boot.c",
+          "source_sha256": "0f0be2d23958cf0a9b64adb1a8928162ff469f6cb1ca7adf19ceb0724ca66297",
+          "prepared_sha256": "d99c5d5b27b8afc590f27c0cb9cdeb3089bb03f4a054fa84322dda3ab6a8d55a",
+          "reference_sha256": "05f2b1cfaa50dff9c6001982cf8342f2c75ecd26e43a63c9a91f5b0aed1d1e26",
+          "reference_origin": "fresh_capture",
+          "function": "dm_gpio_clrset_flags",
+          "prepared_line": 36987,
+          "full_reference_function_count": 2350,
+          "full_candidate_function_count": 2350,
+          "full_candidate_status": "divergent",
+          "reference_function_counts": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 3,
+            "edges": 2,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ]
+    },
+    "brace_operand_condition": {
+      "source": "brace_operand_condition.c",
+      "reference": "brace_operand_condition.pyjoern.json",
+      "source_sha256": "4c070c94288341bd10a7aed60133fc07b46711fa0cb67136a2f5f3fca5309c0c",
+      "reference_sha256": "3c41087eee3e48ab27b26df21167340cf86ed81cd420ad1b7159288ce4e424da",
+      "expected_functions": [
+        "brace_operand_in_condition",
+        "brace_operand_in_nested_condition"
+      ],
+      "expected_failure_reason": "After a != {0} condition closes its enclosing block, the stray ) problem statement consumed the next statement; CDT ends it after its brace group.",
+      "initial_native_library_sha256": "e96d285dfec074ad5549f8b5a12b6ec0d8ce600b4de74ae2a1e607742fe27055",
+      "initial_observed_differences": [
+        "divergent"
+      ],
+      "initial_diagnostics": [],
+      "initial_comparison": [
+        {
+          "function": "brace_operand_in_condition",
+          "status": "match",
+          "reference": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          },
+          "candidate": {
+            "nodes": 1,
+            "edges": 0,
+            "entries": 1,
+            "exits": 1,
+            "degenerate": true
+          }
+        },
+        {
+          "function": "brace_operand_in_nested_condition",
+          "status": "divergent",
+          "reference": {
+            "nodes": 4,
+            "edges": 4,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate": {
+            "nodes": 2,
+            "edges": 1,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "reference_graph": {
+            "nodes": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "edges": [
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                3,
+                0
+              ],
+              [
+                3,
+                1
+              ]
+            ],
+            "entry": [
+              3
+            ],
+            "exit": [],
+            "degenerate": false,
+            "labels": {
+              "0": "12.0:\n<UnsupportedStmt: IDENTIFIER,r,if(r)>\n",
+              "1": "6.1:\n<UnsupportedStmt: ['multiplication', 'a*b']>\nr = a*b\n",
+              "2": "13.1:\n<UnsupportedStmt: ['division', 'r/b']>\nreturn r/b;,returnr/b;\n",
+              "3": "1.0:\nFUNCTION_START\nr = 0\n<UnsupportedStmt: IDENTIFIER,b,if(b)>\n"
+            }
+          },
+          "candidate_graph": {
+            "nodes": [
+              14,
+              0
+            ],
+            "edges": [
+              [
+                0,
+                14
+              ]
+            ],
+            "entry": [
+              0
+            ],
+            "exit": [],
+            "degenerate": false
+          }
+        }
+      ],
+      "origins": [
+        {
+          "case_id": "O2/zlib/binja/binja_minigzip64.c",
+          "optimization": "O2",
+          "input_kind": "binja",
+          "source": "O2/zlib/decompiled/binja_minigzip64.c",
+          "source_sha256": "739e85ce7e372ed51814f4cc0579a80110ee8b1653381218cadb8b5802607509",
+          "prepared_sha256": "64869543738828e7740ad2f27345dc351c17e7b022bcaac0c58ccb1accab0571",
+          "reference_sha256": "49f5b95033ef9e9fa4def4d236d54d88047d3d7d57581d833393456eecc60fc1",
+          "reference_origin": "fresh_capture",
+          "function": "gzfread",
+          "prepared_line": 1367,
+          "full_reference_function_count": 102,
+          "full_candidate_function_count": 102,
+          "full_candidate_status": "match",
+          "reference_function_counts": {
+            "nodes": 11,
+            "edges": 12,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          },
+          "candidate_function_counts": {
+            "nodes": 11,
+            "edges": 12,
+            "entries": 1,
+            "exits": 0,
+            "degenerate": false
+          }
+        }
+      ]
     }
   },
   "initial_native_library_sha256": "8931941162360639cb07fd8713670295d21dbfe525005965623503b86fc72a11"

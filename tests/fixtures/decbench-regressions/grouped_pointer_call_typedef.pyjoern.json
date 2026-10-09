@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "seconds": 10.75027797895018,
+  "functions": {
+    "typed_pointer_declaration": {
+      "name": "typed_pointer_declaration",
+      "start_line": 3,
+      "end_line": 8,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "3.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,c,if(c)>\nFUNCTION_END\n"
+        }
+      }
+    },
+    "function_returning_function_call": {
+      "name": "function_returning_function_call",
+      "start_line": 10,
+      "end_line": 15,
+      "cfg": {
+        "nodes": [
+          0,
+          1
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ]
+        ],
+        "entry": [
+          0
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "10.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,c,if(c)>\n",
+          "1": "13.3:\n<UnsupportedStmt: ['indirection', '*r3']>\nuint32_t(*r3)\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t)']>\n<UnsupportedStmt: ['pointerCall', 'uint32_t(*r3)(uint32_t)(r3)']>\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "8b1e4e3716e7b9f02c8e9a53ce30caea9dca5282f6a76fa3531cff2b60a2fb19",
+  "prepared_sha256": "8b1e4e3716e7b9f02c8e9a53ce30caea9dca5282f6a76fa3531cff2b60a2fb19"
+}

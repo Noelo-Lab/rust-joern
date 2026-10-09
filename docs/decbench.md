@@ -6,6 +6,11 @@ ownership and computes graph edit distance (GED). CFG and DDG reference
 evaluations are documented in [CFG parity](eval/cfg_parity.md) and
 [DDG parity](eval/ddg_parity.md).
 
+DecBench itself now imports `rust_joern` directly: `decbench/utils/cfg.py`
+calls `parse_source(path, no_ddg=True, strict=True, preprocessed=True)`, the
+same defaults as the shim below. The shim remains for running an older DecBench
+checkout, which still imports `pyjoern`, against Rust Joern.
+
 ## Use the compatibility shim
 
 Build Rust Joern and install its Python package in DecBench's own environment.
@@ -149,6 +154,45 @@ The normalized main `codex` sample-set score stayed at 37/90 (41.111%). Main
 versioned Astra's sample-set score stayed at 31/246 (12.602%). The recorded
 independent audits passed execution/input checks, score reconstruction and
 sample synchronization, with non-GED facts and memberships unchanged.
+
+## Decompiler-output recovery update
+
+The recorded evaluation above moved scores almost entirely for decompilers
+outside the audited source/IDA/Kuna scope. A census re-parsed all 1,672 changed
+function/identity pairs (362 saved artifacts) with unchanged PyJoern and found
+five native recovery divergences, now fixed and frozen as
+[reduced regression fixtures](../tests/fixtures/decbench-regressions/README.md):
+
+| Fixture | Decompiler | Native defect |
+| --- | --- | --- |
+| `noreturn_suffix_unclosed_literal.c` | Binary Ninja | An unknown declarator suffix body with an unclosed group skipped to the end of the file, dropping every later function. |
+| `grouped_pointer_call.c`, `grouped_pointer_call_typedef.c` | r2dec | `T (*x)(args)...;` with an unresolved `T` became a declaration instead of CDT's call. |
+| `call_missing_semicolon_before_loop.c` | angr | Unterminated calls before another statement at a block end collapsed the method. |
+| `literal_callee.c` | angr | `1619153864();` was a problem statement, dropping its label and branch. |
+| `brace_operand_condition.c` | Binary Ninja | After `!= {0}` closes its block, the stray `)` problem consumed the next statement. |
+
+The direct corpus audit is unchanged by these fixes: 8,803 of 8,808 cases match
+and the same five empty original exports remain the only raw divergences. Full
+saved artifacts now match PyJoern for every function of Binary Ninja coreutils
+`sort` (133), r2dec Betaflight (2,801) and angr Betaflight (3,945).
+
+DecBench's own `scripts/reeval_ged.py`, run from scratch over every published
+slice with library SHA-256
+`d33c7b3431ac3619cef7ff2d54a5a0d8c2484931616a3aa767aa8ef2a1c79f4a`, produced
+543,501 GED values over 7,293 slices in 23m33s with 24 workers. Against the
+published PyJoern overlay, 626 values changed (445 lower GED, 181 higher), 494
+were added, and none were cleared; 191 functions became perfect and 18 lost
+perfection. No published leaderboard rank changed, apart from Ventris tying
+Codex on the large preset.
+
+Remaining differences are recorded rather than waived. Rust Joern recovers
+CFGs where the original collapses or drops a method: integer-literal
+dereferences such as `*0x40004000 = x;`, angr's `{ Goto None }` placeholders and
+r2dec definitions with `signed int64_t` parameters. It still differs from the
+original on statements missing an operand (angr's
+`/* unsupported instruction */ = 0;`), on `void (*p)(T) (x);` as the only loop
+statement, on an assignment missing its terminator before a loop, and on
+`T (*x)(int) (y);` with an unresolved `T`.
 
 ## Interpret scores and timings
 
