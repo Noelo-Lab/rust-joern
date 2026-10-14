@@ -264,7 +264,8 @@ def main() -> int:
                         args.save_reference_dir.mkdir(parents=True, exist_ok=True)
                         (args.save_reference_dir / source.with_suffix(".pyjoern.json").name).write_text(json.dumps(baseline, indent=2) + "\n")
                 started = time.perf_counter()
-                result = subprocess.run([str(args.candidate.resolve()), "analyze", str(parse_path)], text=True, capture_output=True, check=True)
+                result = subprocess.run([str(args.candidate.resolve()), "analyze", str(parse_path), "--joern-loop-conditions"],
+                                        text=True, capture_output=True, check=True)
                 elapsed = time.perf_counter() - started
                 analysis = json.loads(result.stdout)
                 rows = compare(baseline["functions"], candidate_functions(analysis))

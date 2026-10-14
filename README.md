@@ -74,6 +74,14 @@ Parsing returns diagnostics. `--strict` or Python `strict=True` rejects error
 diagnostics. The frontend implements the Joern/CDT behavior needed by DecBench,
 with partial coverage of the full CDT type system and Joern CPG schema.
 
+Infinite loops get one CFG shape however they are spelled. A `while` or `for`
+condition that is `true` or a nonzero integer literal, such as `while (1)`,
+`while (true)` or IDA's `while ( 2 )`, keeps its AST node but is lowered like
+the omitted condition of `for (;;)`, without a CFG node or exit edge. Joern
+4.0.150 lowers those conditions with an exit edge; `--joern-loop-conditions` or
+Python `joern_loop_conditions=True` restores that for original-reference
+comparisons.
+
 Data flow is intraprocedural. Joern's 4,000-generated-definition limit applies
 to DDG generation; requesting reaching-definition sets still returns the solver
 sets for methods above that limit.

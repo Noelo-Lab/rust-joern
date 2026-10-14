@@ -30,7 +30,7 @@ class DecBenchReducedRegressionTests(unittest.TestCase):
         case = self.provenance["cases"][name]
         source = FIXTURES / case["source"]
         reference = json.loads((FIXTURES / case["reference"]).read_text())
-        analysis = rust_joern.parse_code(source.read_bytes(), filename=source, strict=True)
+        analysis = rust_joern.parse_code(source.read_bytes(), filename=source, strict=True, joern_loop_conditions=True)
         actual = COMPARISON.candidate_functions(analysis.raw)
         expected = reference["functions"]
         if function is not None:

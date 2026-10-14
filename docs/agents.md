@@ -82,6 +82,10 @@ the relevant checks and stating the scope actually measured.
 - CFG parity requires directed topology, entry/exit roles, function coverage,
   and degeneracy checks. Node/edge attribute equality needs a separate check;
   matching counts alone do not establish parity.
+- Constant-true `while`/`for` conditions lower like `for (;;)` by default, an
+  intentional difference from Joern 4.0.150. Direct comparisons with original
+  references request `joern_loop_conditions`; DecBench and its shim use the
+  default.
 - Keep raw reaching-definition edges, labeled DDG projection, and public
   lifted DDG views distinct. Joern's 4,000-generated-definition cutoff applies
   to DDG generation; explicit reaching-definition requests still return solver

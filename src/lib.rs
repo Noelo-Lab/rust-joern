@@ -153,7 +153,17 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
     let mut built: Vec<_> = unit
         .functions
         .par_iter()
-        .map(|f| builder::build(f, source, filename, &known_functions, cpp, &methods))
+        .map(|f| {
+            builder::build(
+                f,
+                source,
+                filename,
+                &known_functions,
+                cpp,
+                &methods,
+                options.joern_loop_conditions,
+            )
+        })
         .collect();
     for (_, messages) in &mut built {
         diagnostics.append(messages);
@@ -201,9 +211,17 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             },
             span: syntax::Span::default(),
         };
-        builder::build(&function, source, filename, &known_functions, cpp, &methods)
-            .0
-            .cpg
+        builder::build(
+            &function,
+            source,
+            filename,
+            &known_functions,
+            cpp,
+            &methods,
+            options.joern_loop_conditions,
+        )
+        .0
+        .cpg
     });
     append_macro_methods(
         &mut functions,

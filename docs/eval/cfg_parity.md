@@ -187,6 +187,12 @@ python scripts/check_source_ownership.py --manifest workspace/cfg-eval/manifest.
   --output workspace/cfg-ownership.json
 ```
 
+The recorded runs predate the default lowering of constant-true `while`/`for`
+conditions like `for (;;)`. `compare_pyjoern.py`, `compare_native_corpus.py` and
+`compare_ddg_pyjoern.py` now request `joern_loop_conditions` for the candidate.
+`check_decbench_usage.py` records DecBench's default graphs, so
+`compare_decbench.py` reports functions containing such loops as differences.
+
 `compare_native_corpus.py` provides the distinct direct-ABI audit; its required
 `--build-provenance` binds a frozen source snapshot and library digests. Full
 replay of the five supplemental certificates also needs the original recovered

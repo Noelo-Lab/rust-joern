@@ -504,19 +504,22 @@ def parse_code(
     data_flow: bool = False,
     reaching_definitions: bool = False,
     strict: bool = False,
+    joern_loop_conditions: bool = False,
 ) -> Analysis:
     """Analyze source bytes in memory; data-flow analysis is optional.
 
     Reaching definitions imply the data-flow pass. CPG, CFG, DDG, diagnostics,
     and optional reaching definitions are retained in ``Analysis.raw`` and can
-    be exported with ``Analysis.to_json()``.
+    be exported with ``Analysis.to_json()``. Constant-true ``while``/``for``
+    conditions lower like ``for (;;)`` unless ``joern_loop_conditions`` keeps
+    Joern 4.0.150's condition node and exit edge.
     """
     return Analysis(_analyze(source, filename, language, data_flow, reaching_definitions, strict,
-                             preprocessed=preprocessed))
+                             preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions))
 
 
 def _analyze(source, filename, language=None, data_flow=False, reaching_definitions=False, strict=False,
-             preprocessed=False) -> dict:
+             preprocessed=False, joern_loop_conditions=False) -> dict:
     source_bytes = source.encode("utf-8") if isinstance(source, str) else source
     filename_bytes = os.fspath(filename).encode("utf-8")
     if b"\0" in filename_bytes:
@@ -524,6 +527,7 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
     options = json.dumps({
         "language": language, "preprocessed": preprocessed, "data_flow": data_flow or reaching_definitions,
         "reaching_definitions": reaching_definitions, "strict": strict,
+        "joern_loop_conditions": joern_loop_conditions,
     }).encode("utf-8")
     native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
     buffer = ctypes.create_string_buffer(source_bytes)
@@ -532,7 +536,7 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
 
 
 def _analyze_many(sources, language=None, data_flow=False, reaching_definitions=False, strict=False,
-                  preprocessed=False) -> dict:
+                  preprocessed=False, joern_loop_conditions=False) -> dict:
     """Analyze `(source, filename)` pairs with shared internal callee context."""
     prepared = []
     for source, filename in sources:
@@ -546,6 +550,7 @@ def _analyze_many(sources, language=None, data_flow=False, reaching_definitions=
     options = json.dumps({
         "language": language, "preprocessed": preprocessed, "data_flow": data_flow or reaching_definitions,
         "reaching_definitions": reaching_definitions, "strict": strict,
+        "joern_loop_conditions": joern_loop_conditions,
     }).encode("utf-8")
     native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
     analyze_many = getattr(native, "rust_joern_analyze_many", None)
@@ -601,6 +606,7 @@ def parse_source(
     reaching_definitions: bool = False,
     preprocessed: bool = False,
     strict: bool = False,
+    joern_loop_conditions: bool = False,
 ) -> dict[str, Function] | dict[tuple[str, str], Function]:
     """PyJoern-compatible file entry point used by DecBench.
 
@@ -625,11 +631,12 @@ def parse_source(
         return {}
     if path.is_dir():
         analysis = _analyze_many(sources, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
-                                 strict=strict, preprocessed=preprocessed)
+                                 strict=strict, preprocessed=preprocessed,
+                                 joern_loop_conditions=joern_loop_conditions)
     else:
         source, filename = sources[0]
         analysis = _analyze(source, filename, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
-                            strict=strict, preprocessed=preprocessed)
+                            strict=strict, preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions)
     result = {}
     # FastParser's per-(FULL_NAME, FILE) toMap exports the last method,
     # once for each original occurrence. Keep all native methods in Analysis.

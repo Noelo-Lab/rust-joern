@@ -567,6 +567,22 @@ fn conditional_directive(
     }
 }
 
+/// Whether a decimal, octal or hexadecimal integer literal is nonzero, or
+/// `None` when the text is not such a literal.
+pub(crate) fn integer_truth(literal: &str) -> Option<bool> {
+    let number = literal.trim_end_matches(['u', 'U', 'l', 'L']);
+    let (number, radix) = if number.starts_with("0x") || number.starts_with("0X") {
+        (&number[2..], 16)
+    } else if number.len() > 1 && number.starts_with('0') {
+        (&number[1..], 8)
+    } else {
+        (number, 10)
+    };
+    u128::from_str_radix(number, radix)
+        .ok()
+        .map(|value| value != 0)
+}
+
 fn macro_defined(name: &str, definitions: &MacroDefinitions<'_>, cpp: bool) -> bool {
     if let Some(value) = definitions.get(name) {
         return value.is_some();
@@ -690,17 +706,7 @@ impl ConditionalExpression<'_, '_> {
             return (!grouped || self.take(")")).then_some(value);
         }
         if name.as_bytes().first().is_some_and(u8::is_ascii_digit) {
-            let number = name.trim_end_matches(['u', 'U', 'l', 'L']);
-            let (number, radix) = if number.starts_with("0x") || number.starts_with("0X") {
-                (&number[2..], 16)
-            } else if number.len() > 1 && number.starts_with('0') {
-                (&number[1..], 8)
-            } else {
-                (number, 10)
-            };
-            return u128::from_str_radix(number, radix)
-                .ok()
-                .map(|value| value != 0);
+            return integer_truth(name);
         }
         if let Some(definition) = self.definitions.get(name) {
             return definition
