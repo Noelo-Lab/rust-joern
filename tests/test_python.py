@@ -122,6 +122,22 @@ class PythonApiTests(unittest.TestCase):
             self.assertIsNone(shim.parse_source(path)["f"].ddg)
             self.assertIsNotNone(shim.parse_source(path, no_ddg=False)["f"].ddg)
 
+    def test_decbench_shim_lowers_constant_true_loop_heads_like_omitted_for_conditions(self):
+        import networkx as nx
+        shim = self._shim()
+        graphs = {}
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "loop.c"
+            for head in ("for (;;)", "while (1)", "while (true)"):
+                path.write_text(f"int f(int n) {{ {head} {{ if (n) break; n++; }} return n; }}", encoding="utf-8")
+                graphs[head] = shim.parse_source(path)["f"].cfg
+                graphs[head, "joern"] = shim.parse_source(path, joern_loop_conditions=True)["f"].cfg
+        for head in ("while (1)", "while (true)"):
+            with self.subTest(head=head):
+                self.assertTrue(nx.is_isomorphic(graphs[head], graphs["for (;;)"]))
+                self.assertFalse(nx.is_isomorphic(graphs[head, "joern"], graphs["for (;;)"]))
+        self.assertTrue(nx.is_isomorphic(graphs["for (;;)", "joern"], graphs["for (;;)"]))
+
     def test_decbench_shim_rejects_unverified_executable_syntax(self):
         source = 'int f(void) { co_await work(); return 0; }'
         analysis = rust_joern.parse_code(source, filename="example.cpp")

@@ -1,5 +1,6 @@
 use crate::{
     graph::{Diagnostic, Edge, ExternalReference, FunctionGraph, Node, NodeId, PropertyGraph},
+    lexer::integer_truth,
     normalize,
     syntax::*,
 };
@@ -85,6 +86,7 @@ struct Builder<'a> {
     method_scope: String,
     diagnostics: Vec<Diagnostic>,
     try_depth: usize,
+    joern_loop_conditions: bool,
 }
 
 pub fn build(
@@ -94,6 +96,7 @@ pub fn build(
     known_functions: &HashSet<String>,
     cpp: bool,
     methods: &HashMap<String, Vec<&Function>>,
+    joern_loop_conditions: bool,
 ) -> (FunctionGraph, Vec<Diagnostic>) {
     let mut builder = Builder {
         source,
@@ -125,6 +128,7 @@ pub fn build(
         },
         diagnostics: Vec::new(),
         try_depth: 0,
+        joern_loop_conditions,
     };
     let entry = builder.node("METHOD", &function.span, Some(&function.name), None);
     let exit = builder.node("METHOD_RETURN", &function.span, None, Some("RET"));
@@ -1215,6 +1219,79 @@ impl Builder<'_> {
             self.expression(expression, parent, None)
         }
     }
+    /// Decompilers spell an infinite loop `while (1)`, `while (true)` or, in
+    /// IDA, `while ( 2 )`, whereas source mostly uses `for (;;)`. Joern 4.0.150
+    /// omits the CFG condition node and exit edge only for `for (;;)`. Unless
+    /// `joern_loop_conditions` is set, a constant-true condition keeps its AST
+    /// but lowers like that omitted condition.
+    fn unconditional(&self, condition: &Expr) -> bool {
+        if self.joern_loop_conditions {
+            return false;
+        }
+        match &condition.kind {
+            ExprKind::Identifier(value) => value == "true",
+            ExprKind::Literal(value) => value == "true" || integer_truth(value) == Some(true),
+            _ => false,
+        }
+    }
+    /// Joern 4.0.150 selects FOR children by `order`, rather than CONDITION
+    /// edges. `slots` holds the initializer and each nonempty condition or
+    /// update; empty expression ASTs consume no order. A compound body keeps
+    /// explicit order 4, while other bodies shift into the vacant slots.
+    fn for_loop(&mut self, id: NodeId, mut slots: Vec<Fragment>, body: &Stmt) -> Fragment {
+        let first_body_edge = self.graph.edges.len();
+        let parts = self.statement_parts(body, id);
+        let locals = self.graph.edges[first_body_edge..]
+            .iter()
+            .filter(|edge| {
+                edge.source == id
+                    && edge.kind == "AST"
+                    && self.graph.nodes[edge.target as usize].kind == "LOCAL"
+            })
+            .count();
+        if matches!(body.kind, StmtKind::Block(_)) {
+            while slots.len() < 3 {
+                slots.push(Fragment::default());
+            }
+        }
+        slots.extend(parts);
+        let mut slots = slots.into_iter().skip(locals);
+        let initial = slots.next().unwrap_or_default();
+        let condition = slots.next().unwrap_or_default();
+        let update = slots.next().unwrap_or_default();
+        let body = slots.next().unwrap_or_default();
+        let breaks = body.breaks.clone();
+        let continues = body.continues.clone();
+        let update_entry = update.entry;
+        let inner = body.append(update);
+        let loop_entry = condition.entry.or(inner.entry);
+        let entry = initial.entry.or(loop_entry);
+        let mut fringe = condition.fringe.clone();
+        fringe.extend(breaks);
+        let mut links = Vec::new();
+        if let Some(target) = loop_entry {
+            links.extend(
+                initial
+                    .fringe
+                    .iter()
+                    .chain(&inner.fringe)
+                    .map(|&source| [source, target]),
+            );
+        }
+        if let Some(target) = inner.entry.or(condition.entry) {
+            links.extend(condition.fringe.iter().map(|&source| [source, target]));
+        }
+        if let Some(target) = update_entry.or(loop_entry) {
+            links.extend(continues.iter().map(|&source| [source, target]));
+        }
+        let mut flow = Fragment::combine([initial, condition, inner]);
+        flow.entry = entry;
+        flow.fringe = fringe;
+        flow.edges.extend(links);
+        flow.breaks.clear();
+        flow.continues.clear();
+        flow
+    }
     fn branch(&mut self, statement: &Stmt, parent: NodeId) -> Fragment {
         if matches!(statement.kind, StmtKind::Block(_)) {
             return self.statement(statement, parent, false);
@@ -1517,7 +1594,14 @@ impl Builder<'_> {
             StmtKind::While { condition, body } => {
                 let id = self.control(statement, parent, "WHILE");
                 self.scopes.push(HashMap::new());
+                let unconditional = self.unconditional(condition);
                 let condition = self.condition(condition, id, true);
+                if unconditional {
+                    // Lower the body through the same order slots as `for (;;)`.
+                    let flow = self.for_loop(id, vec![Fragment::default()], body);
+                    self.scopes.pop();
+                    return flow;
+                }
                 let mut parts = self.statement_parts(body, id).into_iter();
                 let body = parts.next().unwrap_or_default();
                 let alternative = parts.next().unwrap_or_default();
@@ -1602,7 +1686,7 @@ impl Builder<'_> {
                 if let Some(condition) = condition {
                     let before = self.graph.nodes.len();
                     let flow = self.condition(condition, id, true);
-                    if self.graph.nodes.len() != before {
+                    if self.graph.nodes.len() != before && !self.unconditional(condition) {
                         slots.push(flow);
                     }
                 }
@@ -1613,60 +1697,7 @@ impl Builder<'_> {
                         slots.push(flow);
                     }
                 }
-                let first_body_edge = self.graph.edges.len();
-                let parts = self.statement_parts(body, id);
-                let locals = self.graph.edges[first_body_edge..]
-                    .iter()
-                    .filter(|edge| {
-                        edge.source == id
-                            && edge.kind == "AST"
-                            && self.graph.nodes[edge.target as usize].kind == "LOCAL"
-                    })
-                    .count();
-                // Joern 4.0.150 selects FOR children by `order`, rather than
-                // CONDITION edges. Empty expression ASTs consume no order.
-                // A compound body keeps explicit order 4; other bodies shift.
-                if matches!(body.kind, StmtKind::Block(_)) {
-                    while slots.len() < 3 {
-                        slots.push(Fragment::default());
-                    }
-                }
-                slots.extend(parts);
-                let mut slots = slots.into_iter().skip(locals);
-                let initial = slots.next().unwrap_or_default();
-                let condition = slots.next().unwrap_or_default();
-                let update = slots.next().unwrap_or_default();
-                let body = slots.next().unwrap_or_default();
-                let breaks = body.breaks.clone();
-                let continues = body.continues.clone();
-                let update_entry = update.entry;
-                let inner = body.append(update);
-                let loop_entry = condition.entry.or(inner.entry);
-                let entry = initial.entry.or(loop_entry);
-                let mut fringe = condition.fringe.clone();
-                fringe.extend(breaks);
-                let mut links = Vec::new();
-                if let Some(target) = loop_entry {
-                    links.extend(
-                        initial
-                            .fringe
-                            .iter()
-                            .chain(&inner.fringe)
-                            .map(|&source| [source, target]),
-                    );
-                }
-                if let Some(target) = inner.entry.or(condition.entry) {
-                    links.extend(condition.fringe.iter().map(|&source| [source, target]));
-                }
-                if let Some(target) = update_entry.or(loop_entry) {
-                    links.extend(continues.iter().map(|&source| [source, target]));
-                }
-                let mut flow = Fragment::combine([initial, condition, inner]);
-                flow.entry = entry;
-                flow.fringe = fringe;
-                flow.edges.extend(links);
-                flow.breaks.clear();
-                flow.continues.clear();
+                let flow = self.for_loop(id, slots, body);
                 self.scopes.pop();
                 flow
             }
@@ -2044,6 +2075,7 @@ mod tests {
                                     &known_functions,
                                     false,
                                     &methods,
+                                    false,
                                 )
                             })
                             .unwrap()
@@ -2368,6 +2400,7 @@ mod tests {
             filename,
             &Options {
                 strict: true,
+                joern_loop_conditions: true,
                 ..Options::default()
             },
         )
@@ -2541,6 +2574,105 @@ mod tests {
         assert_oracle(
             include_str!("../tests/fixtures/decbench-regressions/for_slots.c"),
             include_str!("../tests/fixtures/decbench-regressions/for_slots.pyjoern.json"),
+        );
+    }
+
+    #[test]
+    fn constant_true_loop_heads_lower_like_omitted_for_conditions() {
+        fn shapes(source: &str, filename: &str, joern_loop_conditions: bool) -> Vec<Vec<String>> {
+            let options = Options {
+                strict: true,
+                joern_loop_conditions,
+                ..Options::default()
+            };
+            let analysis = analyze(source, filename, &options).unwrap();
+            assert!(analysis.diagnostics.is_empty(), "{source}");
+            let function = &analysis.functions[0];
+            let code = |id: u32| {
+                let node = &function.cpg.nodes[id as usize];
+                if node.kind == "METHOD" {
+                    "METHOD".to_string()
+                } else {
+                    node.code.clone()
+                }
+            };
+            let mut raw: Vec<_> = function
+                .cpg
+                .edges
+                .iter()
+                .filter(|edge| edge.kind == "CFG")
+                .map(|edge| format!("{} -> {}", code(edge.source), code(edge.target)))
+                .collect();
+            let blocks: HashMap<_, _> = function
+                .cfg
+                .nodes
+                .iter()
+                .map(|block| {
+                    let statements: Vec<_> = block.statements.iter().map(|&id| code(id)).collect();
+                    let roles = (block.is_entrypoint, block.is_exitpoint);
+                    (block.id, format!("{statements:?}{roles:?}"))
+                })
+                .collect();
+            let mut projected: Vec<_> = function
+                .cfg
+                .edges
+                .iter()
+                .map(|[source, target]| format!("{} -> {}", blocks[source], blocks[target]))
+                .collect();
+            raw.sort();
+            projected.sort();
+            vec![raw, projected]
+        }
+        let bodies = [
+            "{ if (n) break; n++; }",
+            "{ if (n) continue; n--; }",
+            "n++;",
+            "again: n--;",
+            ";",
+        ];
+        for (filename, heads) in [
+            (
+                "input.c",
+                &["while (1)", "while (true)", "while ( 2 )", "for (;0x1u;)"][..],
+            ),
+            (
+                "input.cpp",
+                &["while (1)", "while (true)", "for (;true;)"][..],
+            ),
+        ] {
+            for body in bodies {
+                let function = |head: &str| format!("int f(int n) {{ {head} {body} return n; }}");
+                let expected = shapes(&function("for (;;)"), filename, false);
+                for head in heads {
+                    let actual = shapes(&function(head), filename, false);
+                    assert_eq!(actual, expected, "{filename}: {head} {body}");
+                }
+                assert_ne!(shapes(&function("while (0)"), filename, false), expected);
+            }
+        }
+        // Joern 4.0.150 keeps the condition literal in the CFG with an exit
+        // edge; the default keeps only its AST and CONDITION edge.
+        let source = "int f(int n) { while (1) { if (n) break; n++; } return n; }";
+        let omitted = "int f(int n) { for (;;) { if (n) break; n++; } return n; }";
+        assert_ne!(
+            shapes(source, "input.c", true),
+            shapes(omitted, "input.c", true)
+        );
+        let analysis = analyze(source, "input.c", &Options::default()).unwrap();
+        let cpg = &analysis.functions[0].cpg;
+        let literal = cpg
+            .nodes
+            .iter()
+            .find(|node| node.kind == "LITERAL" && node.code == "1")
+            .unwrap();
+        assert!(cpg.edges.iter().any(|edge| {
+            edge.kind == "CONDITION"
+                && edge.target == literal.id
+                && cpg.nodes[edge.source as usize].code == "while (1)"
+        }));
+        assert!(
+            !cpg.edges.iter().any(|edge| edge.kind == "CFG"
+                && (edge.source == literal.id || edge.target == literal.id))
         );
     }
 

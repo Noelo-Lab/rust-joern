@@ -35,6 +35,12 @@ API retains its DDG-enabled default and permissive parsing with diagnostics.
 `target/debug`. Use a separate `DECBENCH_CACHE_DIR` for each backend, or disable
 metric caching with `DECBENCH_NO_CACHE=1` when measuring fresh work.
 
+Rust Joern lowers constant-true loop heads, such as angr/IDA `while (1)`, Kuna
+`while (true)` and IDA `while ( 2 )`, like source `for (;;)`, so DecBench needs
+no loop-head rewrite. DecBench's GED cache key omits the Rust Joern build;
+bump its GED `cache_version` or disable caching after upgrading from a build
+without this lowering. The recorded evaluation below predates it.
+
 ## Rescore saved artifacts
 
 [rescore_decbench_ged.py](../scripts/rescore_decbench_ged.py) computes fresh CFGs

@@ -111,4 +111,8 @@ pub struct Options {
     pub data_flow: bool,
     pub reaching_definitions: bool,
     pub strict: bool,
+    /// Lower constant-true `while`/`for` conditions as Joern 4.0.150 does,
+    /// with a condition node and exit edge, for original-reference parity.
+    /// By default they lower like the omitted condition of `for (;;)`.
+    pub joern_loop_conditions: bool,
 }

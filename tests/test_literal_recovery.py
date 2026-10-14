@@ -20,7 +20,8 @@ class LiteralRecoveryTests(unittest.TestCase):
         expected = json.loads(source.with_name(source.name + ".pyjoern.json").read_text())
         self.assertEqual(expected["generator"], "Original public PyJoern 4.0.150.4 / Joern v4.0.150")
         self.assertEqual(hashlib.sha256(source.read_bytes()).hexdigest(), expected["source_sha256"])
-        analysis = rust_joern.parse_code(source.read_bytes(), filename=source, strict=True, preprocessed=True)
+        analysis = rust_joern.parse_code(source.read_bytes(), filename=source, strict=True, preprocessed=True,
+                                         joern_loop_conditions=True)
         self.assertFalse(analysis.diagnostics)
         functions = COMPARISON.candidate_functions(analysis.raw)
         self.assertEqual(set(functions), set(expected["functions"]))
