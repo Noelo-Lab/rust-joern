@@ -22,13 +22,14 @@ preprocessed source and sanitized decompiler output that may not compile.
 | `compat/pyjoern/__init__.py` | Opt-in DecBench shim, excluded from the installed package |
 | `tests/`, `tests/fixtures/` | Rust/Python regressions and frozen original graph references |
 | `scripts/` | Reference capture, parity comparison, DecBench validation, and GED rescoring |
-| `docs/` | Integration documentation, historical evaluation methods/results, and this guide |
+| `docs/` | Integration documentation, divergence log, historical evaluation methods/results, and this guide |
 | `workspace/` | Ignored generated captures, evaluation outputs, and scratch work |
 
 The [README](../README.md) covers installation and public usage.
 [DecBench integration](decbench.md), [CFG parity](eval/cfg_parity.md), and
 [DDG parity](eval/ddg_parity.md) describe the evaluation contracts and recorded
-results. Full historical reports remain in git history; current runs write
+results. [Divergences](divergences.md) logs intentional differences from Joern.
+Full historical reports remain in git history; current runs write
 their outputs under `workspace/`.
 
 ## Build and verification
@@ -82,10 +83,11 @@ the relevant checks and stating the scope actually measured.
 - CFG parity requires directed topology, entry/exit roles, function coverage,
   and degeneracy checks. Node/edge attribute equality needs a separate check;
   matching counts alone do not establish parity.
-- Constant-true `while`/`for` conditions lower like `for (;;)` by default, an
-  intentional difference from Joern 4.0.150. Direct comparisons with original
-  references request `joern_loop_conditions`; DecBench and its shim use the
-  default.
+- Record every intentional difference from Joern in
+  [divergences.md](divergences.md) in the change that makes it, with its date,
+  PR, rationale, affected graphs and any option restoring Joern's behavior.
+  Direct comparisons with original references request those options, such as
+  `joern_loop_conditions`; DecBench and its shim use the defaults.
 - Keep raw reaching-definition edges, labeled DDG projection, and public
   lifted DDG views distinct. Joern's 4,000-generated-definition cutoff applies
   to DDG generation; explicit reaching-definition requests still return solver

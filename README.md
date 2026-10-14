@@ -80,7 +80,8 @@ condition that is `true` or a nonzero integer literal, such as `while (1)`,
 the omitted condition of `for (;;)`, without a CFG node or exit edge. Joern
 4.0.150 lowers those conditions with an exit edge; `--joern-loop-conditions` or
 Python `joern_loop_conditions=True` restores that for original-reference
-comparisons.
+comparisons. [Divergences](docs/divergences.md) lists every intentional
+difference from Joern.
 
 Data flow is intraprocedural. Joern's 4,000-generated-definition limit applies
 to DDG generation; requesting reaching-definition sets still returns the solver
