@@ -16,24 +16,33 @@ pub fn parse(source: &str, cpp: bool) -> TranslationUnit {
 
 #[cfg(test)]
 pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> TranslationUnit {
-    parse_with(source, cpp, preprocessed, false)
+    parse_with(source, cpp, preprocessed, false, &[])
 }
 
 /// `cdt_failures` reproduces CDT's failure on a parameter list or expression
-/// it cannot parse; otherwise that code is still analyzed.
+/// it cannot parse; otherwise that code is still analyzed. `type_names` are
+/// caller-proved visible C++ type names for an isolated source slice.
 pub fn parse_with(
     source: &str,
     cpp: bool,
     preprocessed: bool,
     cdt_failures: bool,
+    type_names: &[String],
 ) -> TranslationUnit {
-    let (unit, later) = parse_unit(source, cpp, preprocessed, cdt_failures, HashSet::new());
+    let (unit, later) = parse_unit(
+        source,
+        cpp,
+        preprocessed,
+        cdt_failures,
+        type_names,
+        HashSet::new(),
+    );
     if later.is_empty() {
         return unit;
     }
     // C binds a function before its declaration as well (`CScope`). A
     // `T *x;` that names a later one is parsed again with those bindings.
-    parse_unit(source, cpp, preprocessed, cdt_failures, later).0
+    parse_unit(source, cpp, preprocessed, cdt_failures, type_names, later).0
 }
 
 fn parse_unit(
@@ -41,6 +50,7 @@ fn parse_unit(
     cpp: bool,
     preprocessed: bool,
     cdt_failures: bool,
+    type_names: &[String],
     later_functions: HashSet<String>,
 ) -> (TranslationUnit, HashSet<String>) {
     let (tokens, diagnostics, retained_macro_invocations) =
@@ -54,8 +64,9 @@ fn parse_unit(
         cpp,
         cdt_failures,
         diagnostics,
-        types: HashSet::new(),
-        explicit_types: HashSet::new(),
+        types: type_names.iter().cloned().collect(),
+        explicit_types: type_names.iter().cloned().collect(),
+        supplied_type_names: type_names.iter().cloned().collect(),
         type_aliases: HashMap::new(),
         class_alias_undo: Vec::new(),
         extern_c: false,
@@ -765,6 +776,7 @@ struct Parser<'a> {
     diagnostics: Vec<ParseDiagnostic>,
     types: HashSet<String>,
     explicit_types: HashSet<String>,
+    supplied_type_names: HashSet<String>,
     type_aliases: HashMap<String, String>,
     class_alias_undo: Vec<HashMap<String, AliasUndo>>,
     extern_c: bool,
@@ -7981,7 +7993,8 @@ impl Parser<'_> {
             if self.cpp
                 && minimum <= 15
                 && op == "{"
-                && matches!(&left.kind, ExprKind::Identifier(name) if self.explicit_types.contains(name))
+                && matches!(&left.kind, ExprKind::Identifier(name) if self.explicit_types.contains(name)
+                        && (!self.supplied_type_names.contains(name) || !self.variables.contains(name)))
             {
                 let initializer = self.prefix();
                 left = Expr {
@@ -8228,6 +8241,7 @@ impl Parser<'_> {
             diagnostics,
             types: self.types.clone(),
             explicit_types: self.explicit_types.clone(),
+            supplied_type_names: self.supplied_type_names.clone(),
             type_aliases: self.type_aliases.clone(),
             class_alias_undo: Vec::new(),
             variables: self.variables.clone(),

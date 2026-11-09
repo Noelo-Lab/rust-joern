@@ -99,6 +99,8 @@ pub struct Diagnostic {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Analysis {
     pub schema_version: u32,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub cpp_type_names: Vec<String>,
     pub functions: Vec<FunctionGraph>,
     pub diagnostics: Vec<Diagnostic>,
 }
@@ -111,6 +113,8 @@ pub struct Options {
     pub data_flow: bool,
     pub reaching_definitions: bool,
     pub strict: bool,
+    /// Caller-proved, visible C++ type names for an isolated source slice.
+    pub cpp_type_names: Vec<String>,
     /// Lower constant-true `while`/`for` conditions as Joern 4.0.150 does,
     /// with a condition node and exit edge, for original-reference parity.
     /// By default they lower like the omitted condition of `for (;;)`.

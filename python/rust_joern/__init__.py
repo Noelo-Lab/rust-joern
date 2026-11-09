@@ -527,6 +527,7 @@ def parse_code(
     joern_knr_parameters: bool = False,
     joern_cdt_failures: bool = False,
     joern_cpp_control_flow: bool = False,
+    cpp_type_names: tuple[str, ...] | list[str] = (),
 ) -> Analysis:
     """Analyze source bytes in memory; data-flow analysis is optional.
 
@@ -541,16 +542,24 @@ def parse_code(
     drops the definition or the expression's nodes as Joern does. C++
     ``noexcept`` operands, block-scope ``static_assert`` and range-based ``for``
     follow C++ evaluation unless ``joern_cpp_control_flow`` keeps Joern's CFG.
+    ``cpp_type_names`` carries caller-proved visible names for isolated C++
+    source only; it supplies no layout or constructor effects. See
+    docs/cpp-source-context.md.
     """
-    return Analysis(_analyze(source, filename, language, data_flow, reaching_definitions, strict,
-                             preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions,
-                             joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
-                             joern_cpp_control_flow=joern_cpp_control_flow))
+    analysis = Analysis(_analyze(source, filename, language, data_flow, reaching_definitions, strict,
+                                 preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions,
+                                 joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
+                                 joern_cpp_control_flow=joern_cpp_control_flow, cpp_type_names=cpp_type_names))
+    if cpp_type_names and analysis.raw.get("cpp_type_names") != list(cpp_type_names):
+        raise RuntimeError("Native Rust Joern did not acknowledge cpp_type_names; rebuild the library")
+    return analysis
 
 
 def _analyze(source, filename, language=None, data_flow=False, reaching_definitions=False, strict=False,
              preprocessed=False, joern_loop_conditions=False, joern_knr_parameters=False,
-             joern_cdt_failures=False, joern_cpp_control_flow=False) -> dict:
+             joern_cdt_failures=False, joern_cpp_control_flow=False, cpp_type_names=()) -> dict:
+    if not isinstance(cpp_type_names, (tuple, list)) or not all(isinstance(name, str) for name in cpp_type_names):
+        raise TypeError("cpp_type_names must be a tuple or list of strings")
     source_bytes = source.encode("utf-8") if isinstance(source, str) else source
     filename_bytes = os.fspath(filename).encode("utf-8")
     if b"\0" in filename_bytes:
@@ -560,6 +569,7 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
         "reaching_definitions": reaching_definitions, "strict": strict,
         "joern_loop_conditions": joern_loop_conditions, "joern_knr_parameters": joern_knr_parameters,
         "joern_cdt_failures": joern_cdt_failures, "joern_cpp_control_flow": joern_cpp_control_flow,
+        "cpp_type_names": cpp_type_names,
     }).encode("utf-8")
     native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
     buffer = ctypes.create_string_buffer(source_bytes)
