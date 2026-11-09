@@ -8,8 +8,8 @@ belong in regression fixtures, not here.
 
 ## Code that CDT fails to parse is still analyzed
 
-**Recorded:** 2026-11-09 [DDG parity evaluation](eval/ddg_parity.md), which
-added the option that restores Joern's behavior.
+**Recorded:** 2026-11-09, [PR #19](https://github.com/Noelo-Lab/rust-joern/pull/19), which added the option that restores Joern's
+behavior. See the [DDG parity evaluation](eval/ddg_parity.md).
 
 **Joern:** CDT's C parser backtracks out of a parameter list it cannot parse,
 such as `f(int64_t a, signed int64_t b)` or `f(<anonymous> *** r0)`. The
@@ -53,7 +53,8 @@ DecBench and its shim use the default.
 
 ## Run-dependent DDG export order is fixed
 
-**Recorded:** 2026-11-09 [DDG parity evaluation](eval/ddg_parity.md).
+**Introduced:** 2026-11-09, [PR #19](https://github.com/Noelo-Lab/rust-joern/pull/19). See the
+[DDG parity evaluation](eval/ddg_parity.md).
 
 **Joern:** `dotDdg` follows hidden definitions through a cache with a
 visited-path cut, so the edges it exports depend on the stored order of each
@@ -82,8 +83,8 @@ original's own graph and stored order.
 
 ## K&R definitions keep every parameter
 
-**Recorded:** 2026-11-09 [DDG parity evaluation](eval/ddg_parity.md), which
-added the option that restores Joern's behavior.
+**Recorded:** 2026-11-09, [PR #19](https://github.com/Noelo-Lab/rust-joern/pull/19), which added the option that restores Joern's
+behavior. See the [DDG parity evaluation](eval/ddg_parity.md).
 
 **Joern:** a K&R definition gets one parameter for each parameter
 *declaration*, in declaration order, named by its first declarator. In
