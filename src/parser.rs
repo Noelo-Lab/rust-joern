@@ -1876,10 +1876,19 @@ impl Parser<'_> {
                         .contains(prefix)
                         .then(|| prefix.to_string())
                 });
-            let constructor = owner.as_ref().is_some_and(|owner| {
-                method.strip_prefix('~').unwrap_or(method)
-                    == owner.rsplit("::").next().unwrap_or(owner)
-            });
+            let qualified_special_member = definition
+                && header
+                    .name
+                    .rsplit_once("::")
+                    .is_some_and(|(spelled_owner, _)| {
+                        let leaf = spelled_owner.rsplit("::").next().unwrap_or(spelled_owner);
+                        !leaf.contains('<') && method.strip_prefix('~').unwrap_or(method) == leaf
+                    });
+            let constructor = qualified_special_member
+                || owner.as_ref().is_some_and(|owner| {
+                    method.strip_prefix('~').unwrap_or(method)
+                        == owner.rsplit("::").next().unwrap_or(owner)
+                });
             let conversion = owner.is_some()
                 && (header.name_start..header.parameters_start - 1).any(|i| {
                     self.text(i) == "operator"
