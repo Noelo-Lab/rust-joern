@@ -4824,9 +4824,12 @@ impl Parser<'_> {
             .unwrap_or(self.limit);
         let clauses = self.split_ranges(inside, end, ";");
         if clauses.len() == 1 && self.cpp {
-            let range = self.split_ranges(inside, end, ":");
-            if range.len() == 2 {
-                let mut declarations = self.declarations_range(range[0].0, range[0].1);
+            // The delimiter is a colon outside any conditional expression.
+            // A colon in the range initializer belongs to its `?:` expression.
+            if let Some(separator) = self.unpaired_expression_colon(inside, end)
+                && self.unpaired_expression_colon(separator + 1, end).is_none()
+            {
+                let mut declarations = self.declarations_range(inside, separator);
                 let declaration = if declarations.is_empty() {
                     self.diagnose(inside, end, "cannot recover range-for declaration");
                     Declaration {
@@ -4837,12 +4840,12 @@ impl Parser<'_> {
                         problem: false,
                         is_typedef: false,
                         nested_declarator: false,
-                        span: self.span(range[0].0, range[0].1),
+                        span: self.span(inside, separator),
                     }
                 } else {
                     declarations.remove(0)
                 };
-                let iterable = self.expression_range(range[1].0, range[1].1);
+                let iterable = self.expression_range(separator + 1, end);
                 self.pos = end;
                 self.expect(")");
                 let body = Box::new(self.statement());
