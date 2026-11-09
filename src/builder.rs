@@ -336,8 +336,22 @@ impl Builder<'_> {
         parent: NodeId,
         argument: Option<usize>,
     ) -> NodeId {
+        self.identifier_node(name, span, parent, argument, true)
+    }
+
+    /// A scope qualifier names a class or namespace, so it is never a function
+    /// reference, even when it spells the constructor of the enclosing class.
+    fn identifier_node(
+        &mut self,
+        name: &str,
+        span: &Span,
+        parent: NodeId,
+        argument: Option<usize>,
+        may_reference_function: bool,
+    ) -> NodeId {
         let binding = self.binding(name).cloned();
-        let known_function = binding.is_none()
+        let known_function = may_reference_function
+            && binding.is_none()
             && !self.inherited_bindings.contains_key(name)
             && self.functions.contains(name);
         let expected_signature = (known_function && self.cpp)
@@ -1323,7 +1337,7 @@ impl Builder<'_> {
             return Fragment::default();
         };
         if tail.is_empty() {
-            return Fragment::single(self.identifier(head, span, parent, argument));
+            return Fragment::single(self.identifier_node(head, span, parent, argument, false));
         }
         let id = self.node(
             "CALL",
@@ -1332,7 +1346,7 @@ impl Builder<'_> {
             Some(&names.join("::")),
         );
         self.ast(parent, id, argument);
-        Fragment::single(self.identifier(head, span, id, Some(1)))
+        Fragment::single(self.identifier_node(head, span, id, Some(1), false))
             .append(self.qualified_owner(tail, span, id, Some(2)))
             .append(Fragment::single(id))
     }
