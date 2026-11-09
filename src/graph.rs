@@ -101,6 +101,8 @@ pub struct Analysis {
     pub schema_version: u32,
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub cpp_constructor_initializers: bool,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub cpp_type_names: Vec<String>,
     pub functions: Vec<FunctionGraph>,
     pub diagnostics: Vec<Diagnostic>,
 }
@@ -115,8 +117,23 @@ pub struct Options {
     pub strict: bool,
     /// Experimental CFG-only scalar initialization, requiring a complete source class.
     pub cpp_constructor_initializers: bool,
+    /// Caller-proved, visible C++ type names for an isolated source slice.
+    pub cpp_type_names: Vec<String>,
     /// Lower constant-true `while`/`for` conditions as Joern 4.0.150 does,
     /// with a condition node and exit edge, for original-reference parity.
     /// By default they lower like the omitted condition of `for (;;)`.
     pub joern_loop_conditions: bool,
+    /// Create the parameters of a K&R definition as Joern 4.0.150 does: one
+    /// for each parameter declaration, in declaration order, named by its
+    /// first declarator. By default every name of the identifier list is a
+    /// parameter.
+    pub joern_knr_parameters: bool,
+    /// Reproduce CDT's failure on a parameter list or expression it cannot
+    /// parse, after which Joern 4.0.150 has no method for the definition or
+    /// no nodes for the expression. By default that code is still analyzed.
+    pub joern_cdt_failures: bool,
+    /// Lower C++ `noexcept` operands, block-scope `static_assert` and
+    /// range-based `for` as Joern 4.0.150 does, for original-reference parity.
+    /// By default they follow C++ evaluation.
+    pub joern_cpp_control_flow: bool,
 }

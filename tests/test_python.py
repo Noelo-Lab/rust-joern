@@ -138,6 +138,99 @@ class PythonApiTests(unittest.TestCase):
                 self.assertFalse(nx.is_isomorphic(graphs[head, "joern"], graphs["for (;;)"]))
         self.assertTrue(nx.is_isomorphic(graphs["for (;;)", "joern"], graphs["for (;;)"]))
 
+    def test_knr_definitions_keep_every_parameter_unless_joern_parameters_are_requested(self):
+        source = "int f(a, b, c) char *c; int a, b; { return a + b + *c; }\nint g(a, b) int a; { return a + b; }\n"
+
+        def parameters(**options):
+            analysis = rust_joern.parse_code(source, filename="knr.c", data_flow=True, **options)
+            return {function.name: [(node["name"], node["code"]) for node in function.raw["cpg"]["nodes"]
+                                    if node["kind"] == "METHOD_PARAMETER_IN"] for function in analysis.functions}
+
+        # Every name of the identifier list, in list order; `b` of `g` is an implicit int.
+        self.assertEqual(parameters(), {
+            "f": [("a", "int a, b;"), ("b", "int a, b;"), ("c", "char *c;")],
+            "g": [("a", "int a;"), ("b", "b")],
+        })
+        # Joern 4.0.150: one parameter per declaration, in declaration order.
+        self.assertEqual(parameters(joern_knr_parameters=True), {
+            "f": [("c", "char *c;"), ("a", "int a, b;")],
+            "g": [("a", "int a;")],
+        })
+
+    def test_cdt_failures_keep_their_code_unless_joern_failures_are_requested(self):
+        source = Path(__file__).resolve().parent / "fixtures/ddg-decbench/cdt-failures.c"
+
+        def functions(**options):
+            analysis = rust_joern.parse_code(source.read_bytes(), filename=source, strict=True, **options)
+            return {function.name: [(node["kind"], node["code"]) for node in function.raw["cpg"]["nodes"]
+                                    if node["kind"] in ("CALL", "UNKNOWN", "CONTROL_STRUCTURE")]
+                    for function in analysis.functions}
+
+        # A parameter list CDT backtracks on still has its definition, `*` on
+        # a literal still has its statement, condition and loop, and a type
+        # name stays a type after a declaration CDT reads as its function.
+        default = functions()
+        self.assertEqual(set(default), {"typed_twice", "named", "literal_dereference", "ordinary", "pointer_local"})
+        self.assertEqual(default["pointer_local"], [("CALL", "later = &a"), ("CALL", "&a")])
+        self.assertIn(("CALL", "rdi = arg1"), default["typed_twice"])
+        self.assertIn(("CALL", "message = 0"), default["named"])
+        for node in (("CALL", "*0x40004000 = a"), ("CALL", "*0x40004004 == a"),
+                     ("CONTROL_STRUCTURE", "for (a = *0x40004008;a < 4;a++)"), ("CALL", "a = a + 2")):
+            self.assertIn(node, default["literal_dereference"])
+        # Joern 4.0.150: no method for either definition; the statement has
+        # no nodes, the condition is a problem node, and the loop is dropped.
+        # `word_t` is a declared function, so `word_t* later;` multiplies.
+        joern = functions(joern_cdt_failures=True)
+        self.assertEqual(set(joern), {"literal_dereference", "ordinary", "pointer_local", "word_t"})
+        self.assertEqual(joern["pointer_local"][0], ("CALL", "word_t* later"))
+        self.assertEqual(joern["literal_dereference"], [
+            ("CONTROL_STRUCTURE", "if (*0x40004004 == a)"), ("UNKNOWN", "*0x40004004 == a"), ("CALL", "a = 1"),
+            ("CALL", "a < 4"), ("CALL", "a++"),
+        ])
+        self.assertEqual(joern["ordinary"], default["ordinary"])
+
+    def test_bindings_from_cdt_failures_need_joern_failures(self):
+        fixtures = Path(__file__).resolve().parent / "fixtures/ddg-decbench"
+
+        def codes(name, **options):
+            source = fixtures / name
+            analysis = rust_joern.parse_code(source.read_bytes(), filename=source, strict=True, **options)
+            return {function.name: [node["code"] for node in function.raw["cpg"]["nodes"]
+                                    if node["kind"] in ("CALL", "CONTROL_STRUCTURE")]
+                    for function in analysis.functions}
+
+        # `T* x;` is a product once `x` resolves: a file-scope object declared
+        # before, or a function declared anywhere in the file.
+        default = codes("leaked-bindings.c")
+        for product in ("int32_t* file_object", "int32_t* declared", "int32_t* later_function"):
+            self.assertIn(product, default["file_scope"])
+        self.assertNotIn("int32_t* later_object", default["file_scope"])
+        # Bindings that only a CDT failure makes are left out: the locals of a
+        # body it closes early, and a type name it reads as a function.
+        self.assertNotIn("int32_t* rax_2", default["after_leak"])
+        self.assertNotIn("int64_t* rbx_1", default["after_external"])
+        self.assertNotIn("callback_t* early", default["before_function"])
+        joern = codes("leaked-bindings.c", joern_cdt_failures=True)
+        for product in ("int32_t* rax_2", "int32_t** result", "int32_t* counts"):
+            self.assertIn(product, joern["after_leak"])
+        self.assertNotIn("int32_t* nested", joern["after_leak"])
+        self.assertIn("int64_t* rbx_1", joern["after_external"])
+        self.assertIn("callback_t* early", joern["before_function"])
+        self.assertEqual(joern["file_scope"], default["file_scope"])
+
+        # A literal after a complete operand ends the statement in both modes.
+        # CDT's missing semicolon also fails the enclosing loop, and its skip
+        # over an unclosed literal ends with the next brace group.
+        default = codes("adjacent-literals.c")
+        joern = codes("adjacent-literals.c", joern_cdt_failures=True)
+        self.assertEqual(joern["messages"], default["messages"])
+        self.assertIn('format = "list entry "%.100s', default["messages"])
+        self.assertIn("while (arg1)", default["enclosed"])
+        self.assertNotIn("while (arg1)", joern["enclosed"])
+        self.assertIn('format = "retry "%d', joern["enclosed"])
+        self.assertNotIn("arg1 = arg1 + 3", default["unclosed"])
+        self.assertIn("arg1 = arg1 + 3", joern["unclosed"])
+
     def test_decbench_shim_rejects_unverified_executable_syntax(self):
         source = 'int f(void) { co_await work(); return 0; }'
         analysis = rust_joern.parse_code(source, filename="example.cpp")

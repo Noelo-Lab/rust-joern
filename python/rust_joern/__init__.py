@@ -259,6 +259,25 @@ def _ddg_cfg_codes(cpg: dict) -> dict[int, str]:
     return codes
 
 
+_LINE = re.compile(r"[^\r\n]*(?:\r\n|\r|\n)?")
+
+
+def _strip_margin(label: str) -> str:
+    """Scala's ``stripMargin``, which Joern's DotSerializer applies to node lines.
+
+    Each line after the first loses its leading blanks through a first ``|``,
+    so code continued as ``\n    || b`` is exported as ``\n| b``.
+    """
+    if "|" not in label or ("\n" not in label and "\r" not in label):
+        return label
+    lines = _LINE.findall(label)
+    for index, line in enumerate(lines[1:], 1):
+        margin = len(line) - len(line.lstrip("".join(map(chr, range(33)))))
+        if line[margin:margin + 1] == "|":
+            lines[index] = line[margin + 1:]
+    return "".join(lines)
+
+
 def _ddg_label(node: dict, cpg: dict | None = None, *, cfg_code: str | None = None) -> str:
     """Joern 4.0.150 DOT label, before PyJoern's statement lifting."""
     kind, code = node["kind"], _ddg_code(node)
@@ -282,7 +301,7 @@ def _ddg_label(node: dict, cpg: dict | None = None, *, cfg_code: str | None = No
         fields = (kind, _ddg_limit(code), _ddg_limit(code if cfg_code is None else cfg_code))
     else:
         fields = ()
-    label = ("(" + ",".join(fields) + ")").translate(_HTML4_ESCAPE) if fields else ""
+    label = _strip_margin(("(" + ",".join(fields) + ")").translate(_HTML4_ESCAPE)) if fields else ""
     line = node.get("line")
     # The native graph uses zero for an absent Joern LINE_NUMBER property.
     return label + (f"<SUB>{line}</SUB>" if line is not None and line != 0 else "")
@@ -505,6 +524,10 @@ def parse_code(
     reaching_definitions: bool = False,
     strict: bool = False,
     joern_loop_conditions: bool = False,
+    joern_knr_parameters: bool = False,
+    joern_cdt_failures: bool = False,
+    joern_cpp_control_flow: bool = False,
+    cpp_type_names: tuple[str, ...] | list[str] = (),
     cpp_constructor_initializers: bool = False,
 ) -> Analysis:
     """Analyze source bytes in memory; data-flow analysis is optional.
@@ -513,22 +536,37 @@ def parse_code(
     and optional reaching definitions are retained in ``Analysis.raw`` and can
     be exported with ``Analysis.to_json()``. Constant-true ``while``/``for``
     conditions lower like ``for (;;)`` unless ``joern_loop_conditions`` keeps
-    Joern 4.0.150's condition node and exit edge.
-    ``cpp_constructor_initializers`` is an opt-in CFG-only scalar profile;
-    it requires complete source class context, not just type names.
-    See docs/cpp-constructor-initializers.md.
+    Joern 4.0.150's condition node and exit edge. Every name in a K&R
+    definition's identifier list is a parameter unless ``joern_knr_parameters``
+    keeps Joern's one parameter per declaration. A parameter list or expression
+    that CDT fails to parse is still analyzed unless ``joern_cdt_failures``
+    drops the definition or the expression's nodes as Joern does. C++
+    ``noexcept`` operands, block-scope ``static_assert`` and range-based ``for``
+    follow C++ evaluation unless ``joern_cpp_control_flow`` keeps Joern's CFG.
+    ``cpp_type_names`` carries caller-proved visible names for isolated C++
+    source only; it supplies no layout or constructor effects. See
+    docs/cpp-source-context.md. ``cpp_constructor_initializers`` is an opt-in
+    CFG-only scalar profile; it requires complete source class context, not
+    just type names. See docs/cpp-constructor-initializers.md.
     """
     analysis = Analysis(_analyze(source, filename, language, data_flow, reaching_definitions, strict,
                                  preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions,
+                                 joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
+                                 joern_cpp_control_flow=joern_cpp_control_flow, cpp_type_names=cpp_type_names,
                                  cpp_constructor_initializers=cpp_constructor_initializers))
+    if cpp_type_names and analysis.raw.get("cpp_type_names") != list(cpp_type_names):
+        raise RuntimeError("Native Rust Joern did not acknowledge cpp_type_names; rebuild the library")
     if cpp_constructor_initializers and analysis.raw.get("cpp_constructor_initializers") is not True:
         raise RuntimeError("Native Rust Joern did not acknowledge cpp_constructor_initializers")
     return analysis
 
 
 def _analyze(source, filename, language=None, data_flow=False, reaching_definitions=False, strict=False,
-             preprocessed=False, joern_loop_conditions=False,
+             preprocessed=False, joern_loop_conditions=False, joern_knr_parameters=False,
+             joern_cdt_failures=False, joern_cpp_control_flow=False, cpp_type_names=(),
              cpp_constructor_initializers=False) -> dict:
+    if not isinstance(cpp_type_names, (tuple, list)) or not all(isinstance(name, str) for name in cpp_type_names):
+        raise TypeError("cpp_type_names must be a tuple or list of strings")
     source_bytes = source.encode("utf-8") if isinstance(source, str) else source
     filename_bytes = os.fspath(filename).encode("utf-8")
     if b"\0" in filename_bytes:
@@ -536,7 +574,9 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
     options = json.dumps({
         "language": language, "preprocessed": preprocessed, "data_flow": data_flow or reaching_definitions,
         "reaching_definitions": reaching_definitions, "strict": strict,
-        "joern_loop_conditions": joern_loop_conditions,
+        "joern_loop_conditions": joern_loop_conditions, "joern_knr_parameters": joern_knr_parameters,
+        "joern_cdt_failures": joern_cdt_failures, "joern_cpp_control_flow": joern_cpp_control_flow,
+        "cpp_type_names": cpp_type_names,
         "cpp_constructor_initializers": cpp_constructor_initializers,
     }).encode("utf-8")
     native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
@@ -546,7 +586,8 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
 
 
 def _analyze_many(sources, language=None, data_flow=False, reaching_definitions=False, strict=False,
-                  preprocessed=False, joern_loop_conditions=False) -> dict:
+                  preprocessed=False, joern_loop_conditions=False, joern_knr_parameters=False,
+                  joern_cdt_failures=False, joern_cpp_control_flow=False) -> dict:
     """Analyze `(source, filename)` pairs with shared internal callee context."""
     prepared = []
     for source, filename in sources:
@@ -560,7 +601,8 @@ def _analyze_many(sources, language=None, data_flow=False, reaching_definitions=
     options = json.dumps({
         "language": language, "preprocessed": preprocessed, "data_flow": data_flow or reaching_definitions,
         "reaching_definitions": reaching_definitions, "strict": strict,
-        "joern_loop_conditions": joern_loop_conditions,
+        "joern_loop_conditions": joern_loop_conditions, "joern_knr_parameters": joern_knr_parameters,
+        "joern_cdt_failures": joern_cdt_failures, "joern_cpp_control_flow": joern_cpp_control_flow,
     }).encode("utf-8")
     native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
     analyze_many = getattr(native, "rust_joern_analyze_many", None)
@@ -617,6 +659,9 @@ def parse_source(
     preprocessed: bool = False,
     strict: bool = False,
     joern_loop_conditions: bool = False,
+    joern_knr_parameters: bool = False,
+    joern_cdt_failures: bool = False,
+    joern_cpp_control_flow: bool = False,
 ) -> dict[str, Function] | dict[tuple[str, str], Function]:
     """PyJoern-compatible file entry point used by DecBench.
 
@@ -642,11 +687,15 @@ def parse_source(
     if path.is_dir():
         analysis = _analyze_many(sources, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
                                  strict=strict, preprocessed=preprocessed,
-                                 joern_loop_conditions=joern_loop_conditions)
+                                 joern_loop_conditions=joern_loop_conditions,
+                                 joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
+                                 joern_cpp_control_flow=joern_cpp_control_flow)
     else:
         source, filename = sources[0]
         analysis = _analyze(source, filename, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
-                            strict=strict, preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions)
+                            strict=strict, preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions,
+                            joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
+                            joern_cpp_control_flow=joern_cpp_control_flow)
     result = {}
     # FastParser's per-(FULL_NAME, FILE) toMap exports the last method,
     # once for each original occurrence. Keep all native methods in Analysis.
