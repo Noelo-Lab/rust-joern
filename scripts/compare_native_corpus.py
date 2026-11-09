@@ -370,7 +370,7 @@ def main() -> int:
               "build_provenance": {key: provenance_guard[key] for key in ("path", "sha256")},
               "preprocessed_option_supported": provenance.get("preprocessed_option_supported"),
               "requested_options": {"strict": True, "data_flow": False, "reaching_definitions": False, "preprocessed": True,
-                                    "joern_loop_conditions": True},
+                                    "joern_loop_conditions": True, "joern_cdt_failures": True},
               "worker_config": {"workers": args.workers, "start_method": "spawn", "rayon_threads": args.rayon_threads},
               "frozen_artifacts": [{key: artifact[key] for key in ("path", "sha256")} for artifact in [*guards, *artifacts.values()]]}
     config["run_fingerprint"] = signature(config)

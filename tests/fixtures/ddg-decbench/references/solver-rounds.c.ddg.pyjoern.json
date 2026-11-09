@@ -1,0 +1,1643 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 15.519043255131692,
+    "supplemental_raw_parse_seconds": 16.154150764923543
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "stale_exit": {
+      "name": "stale_exit",
+      "fullname": "stale_exit",
+      "filename": "solver-rounds.c",
+      "start_line": 1,
+      "end_line": 12,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 1,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,stale_exit",
+                    "source_line_number": 1,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *len",
+                  "fields": {
+                    "raw_text": "PARAM,int *len",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "*len"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *freq",
+                  "fields": {
+                    "raw_text": "PARAM,int *freq",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "*freq"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int count",
+                  "fields": {
+                    "raw_text": "PARAM,int count",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "count"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int limit",
+                  "fields": {
+                    "raw_text": "PARAM,int limit",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "limit"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(Bool)1']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(Bool)1"
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['shiftLeft', '(freq[i]==0?1:freq[i])&lt;&lt;8']>",
+                  "fields": {
+                    "raw_text": [
+                      "shiftLeft",
+                      "(freq[i]==0?1:freq[i])&lt;&lt;8"
+                    ],
+                    "source_line_number": 2
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'i+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "i+1"
+                    ],
+                    "source_line_number": 2
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "freq[i]==0 ? f : r",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,freq[i]==0?1:freq[i]",
+                    "source_line_number": 2,
+                    "cond": "freq[i]==0",
+                    "true": "f",
+                    "false": "r"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "i <= count",
+                  "fields": {
+                    "raw_text": [
+                      "lessEqualsThan",
+                      "i&lt;=count"
+                    ],
+                    "source_line_number": 4,
+                    "type": 3,
+                    "arg1": "i",
+                    "arg2": "count"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'i++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "i++"
+                    ],
+                    "source_line_number": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!too_long']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!too_long"
+                    ],
+                    "source_line_number": 10
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "freq[i] == 0",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "freq[i]==0"
+                    ],
+                    "source_line_number": 2,
+                    "type": 0,
+                    "arg1": "freq[i]",
+                    "arg2": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "i = 1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "i=1"
+                    ],
+                    "source_line_number": 4,
+                    "src": "i",
+                    "dst": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "parent[k] >= 0",
+                  "fields": {
+                    "raw_text": [
+                      "greaterEqualsThan",
+                      "parent[k]&gt;=0"
+                    ],
+                    "source_line_number": 5,
+                    "type": 1,
+                    "arg1": "parent[k]",
+                    "arg2": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'j++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "j++"
+                    ],
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void",
+                    "source_line_number": 1,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "weight[i+1] = (freq[i]==0?1:freq[i])&lt;&lt;8",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "weight[i+1]=(freq[i]==0?1:freq[i])&lt;&lt;8"
+                    ],
+                    "source_line_number": 2,
+                    "src": "weight[i+1]",
+                    "dst": "(freq[i]==0?1:freq[i])&lt;&lt;8"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "k = parent[k]",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "k=parent[k]"
+                    ],
+                    "source_line_number": 6,
+                    "src": "k",
+                    "dst": "parent[k]"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 16,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 1,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,stale_exit",
+                    "source_line_number": 1,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *len",
+                  "fields": {
+                    "raw_text": "PARAM,int *len",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "*len"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *freq",
+                  "fields": {
+                    "raw_text": "PARAM,int *freq",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "*freq"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int count",
+                  "fields": {
+                    "raw_text": "PARAM,int count",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "count"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int limit",
+                  "fields": {
+                    "raw_text": "PARAM,int limit",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "limit"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(Bool)1']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(Bool)1"
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['shiftLeft', '(freq[i]==0?1:freq[i])&lt;&lt;8']>",
+                  "fields": {
+                    "raw_text": [
+                      "shiftLeft",
+                      "(freq[i]==0?1:freq[i])&lt;&lt;8"
+                    ],
+                    "source_line_number": 2
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'i+1']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "i+1"
+                    ],
+                    "source_line_number": 2
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "freq[i]==0 ? f : r",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,freq[i]==0?1:freq[i]",
+                    "source_line_number": 2,
+                    "cond": "freq[i]==0",
+                    "true": "f",
+                    "false": "r"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "i <= count",
+                  "fields": {
+                    "raw_text": [
+                      "lessEqualsThan",
+                      "i&lt;=count"
+                    ],
+                    "source_line_number": 4,
+                    "type": 3,
+                    "arg1": "i",
+                    "arg2": "count"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'i++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "i++"
+                    ],
+                    "source_line_number": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!too_long']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!too_long"
+                    ],
+                    "source_line_number": 10
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "freq[i] == 0",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "freq[i]==0"
+                    ],
+                    "source_line_number": 2,
+                    "type": 0,
+                    "arg1": "freq[i]",
+                    "arg2": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "i = 1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "i=1"
+                    ],
+                    "source_line_number": 4,
+                    "src": "i",
+                    "dst": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "parent[k] >= 0",
+                  "fields": {
+                    "raw_text": [
+                      "greaterEqualsThan",
+                      "parent[k]&gt;=0"
+                    ],
+                    "source_line_number": 5,
+                    "type": 1,
+                    "arg1": "parent[k]",
+                    "arg2": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'j++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "j++"
+                    ],
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,void",
+                    "source_line_number": 1,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "weight[i+1] = (freq[i]==0?1:freq[i])&lt;&lt;8",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "weight[i+1]=(freq[i]==0?1:freq[i])&lt;&lt;8"
+                    ],
+                    "source_line_number": 2,
+                    "src": "weight[i+1]",
+                    "dst": "(freq[i]==0?1:freq[i])&lt;&lt;8"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "k = parent[k]",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "k=parent[k]"
+                    ],
+                    "source_line_number": 6,
+                    "src": "k",
+                    "dst": "parent[k]"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 16,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,stale_exit)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,void)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int *len)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,int *freq)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(PARAM,int count)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(PARAM,int limit)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.assignment,weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) << 8)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.cast,(Bool)1)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.shiftLeft,(freq[i] == 0 ? 1 : freq[i]) << 8)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.addition,i + 1)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.conditional,freq[i] == 0 ? 1 : freq[i])<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.lessEqualsThan,i <= count)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,i++)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "dot_label": "(<operator>.logicalNot,!too_long)<SUB>10</SUB>"
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "dot_label": "(<operator>.equals,freq[i] == 0)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "dot_label": "(<operator>.assignment,i = 1)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "dot_label": "(<operator>.greaterEqualsThan,parent[k] >= 0)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "dot_label": "(<operator>.assignment,k = parent[k])<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,j++)<SUB>7</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "len"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "freq"
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": "freq"
+          },
+          {
+            "source": 3,
+            "target": 10,
+            "label": "freq"
+          },
+          {
+            "source": 3,
+            "target": 14,
+            "label": "freq"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "count"
+          },
+          {
+            "source": 4,
+            "target": 11,
+            "label": "count"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "limit"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "weight[i + 1]"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "(freq[i] == 0 ? 1 : freq[i]) << 8"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) << 8"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "(Bool)1"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "freq[i] == 0 ? 1 : freq[i]"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "label": "freq[i] == 0 ? 1 : freq[i]"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "label": "8"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "i"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "freq[i] == 0"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "freq[i]"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "i"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "count"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "i <= count"
+          },
+          {
+            "source": 11,
+            "target": 12,
+            "label": "i"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "i++"
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": "i"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "!too_long"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "too_long"
+          },
+          {
+            "source": 14,
+            "target": 8,
+            "label": "freq[i]"
+          },
+          {
+            "source": 14,
+            "target": 10,
+            "label": "freq[i]"
+          },
+          {
+            "source": 15,
+            "target": 1,
+            "label": "i = 1"
+          },
+          {
+            "source": 15,
+            "target": 11,
+            "label": "i"
+          },
+          {
+            "source": 16,
+            "target": 17,
+            "label": "parent[k]"
+          },
+          {
+            "source": 18,
+            "target": 1,
+            "label": "j"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"stale_exit\" {  \n\"111669149697\" [label = <(METHOD,stale_exit)<SUB>1</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,void)<SUB>1</SUB>> ]\n\"115964116992\" [label = <(PARAM,int *len)<SUB>1</SUB>> ]\n\"115964116993\" [label = <(PARAM,int *freq)<SUB>1</SUB>> ]\n\"115964116994\" [label = <(PARAM,int count)<SUB>1</SUB>> ]\n\"115964116995\" [label = <(PARAM,int limit)<SUB>1</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.assignment,weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8)<SUB>2</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.assignment,weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8)<SUB>2</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.assignment,weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8)<SUB>2</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.cast,(Bool)1)<SUB>3</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.shiftLeft,(freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8)<SUB>2</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.shiftLeft,(freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8)<SUB>2</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.cast,(Bool)1)<SUB>3</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.addition,i + 1)<SUB>2</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.addition,i + 1)<SUB>2</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.conditional,freq[i] == 0 ? 1 : freq[i])<SUB>2</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.conditional,freq[i] == 0 ? 1 : freq[i])<SUB>2</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.conditional,freq[i] == 0 ? 1 : freq[i])<SUB>2</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.lessEqualsThan,i &lt;= count)<SUB>4</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.postIncrement,i++)<SUB>4</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.logicalNot,!too_long)<SUB>10</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.equals,freq[i] == 0)<SUB>2</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.equals,freq[i] == 0)<SUB>2</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.assignment,i = 1)<SUB>4</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.lessEqualsThan,i &lt;= count)<SUB>4</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.lessEqualsThan,i &lt;= count)<SUB>4</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.postIncrement,i++)<SUB>4</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.logicalNot,!too_long)<SUB>10</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.assignment,i = 1)<SUB>4</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.assignment,i = 1)<SUB>4</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.greaterEqualsThan,parent[k] &gt;= 0)<SUB>5</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.greaterEqualsThan,parent[k] &gt;= 0)<SUB>5</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.greaterEqualsThan,parent[k] &gt;= 0)<SUB>5</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.assignment,k = parent[k])<SUB>6</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.postIncrement,j++)<SUB>7</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.assignment,k = parent[k])<SUB>6</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.assignment,k = parent[k])<SUB>6</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.postIncrement,j++)<SUB>7</SUB>> ]\n  \"115964116992\" -> \"128849018880\"  [ label = \"len\"] \n  \"115964116993\" -> \"128849018880\"  [ label = \"freq\"] \n  \"115964116994\" -> \"128849018880\"  [ label = \"count\"] \n  \"115964116995\" -> \"128849018880\"  [ label = \"limit\"] \n  \"30064771074\" -> \"128849018880\"  [ label = \"i\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"weight[i + 1]\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"freq[i] == 0\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"freq[i]\"] \n  \"30064771075\" -> \"128849018880\"  [ label = \"freq[i] == 0 ? 1 : freq[i]\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"(freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8\"] \n  \"30064771080\" -> \"128849018880\"  [ label = \"(Bool)1\"] \n  \"30064771081\" -> \"128849018880\"  [ label = \"i = 1\"] \n  \"30064771082\" -> \"128849018880\"  [ label = \"i\"] \n  \"30064771082\" -> \"128849018880\"  [ label = \"count\"] \n  \"30064771082\" -> \"128849018880\"  [ label = \"i &lt;= count\"] \n  \"30064771089\" -> \"128849018880\"  [ label = \"!too_long\"] \n  \"30064771083\" -> \"128849018880\"  [ label = \"i++\"] \n  \"30064771089\" -> \"128849018880\"  [ label = \"too_long\"] \n  \"30064771088\" -> \"128849018880\"  [ label = \"j\"] \n  \"111669149697\" -> \"115964116992\" \n  \"111669149697\" -> \"115964116993\" \n  \"111669149697\" -> \"115964116994\" \n  \"111669149697\" -> \"115964116995\" \n  \"30064771075\" -> \"30064771072\"  [ label = \"freq[i] == 0 ? 1 : freq[i]\"] \n  \"30064771075\" -> \"30064771072\"  [ label = \"8\"] \n  \"111669149697\" -> \"30064771080\" \n  \"111669149697\" -> \"30064771075\" \n  \"115964116993\" -> \"30064771075\"  [ label = \"freq\"] \n  \"30064771077\" -> \"30064771075\"  [ label = \"freq[i]\"] \n  \"111669149697\" -> \"30064771074\" \n  \"111669149697\" -> \"30064771076\" \n  \"115964116993\" -> \"30064771076\"  [ label = \"freq\"] \n  \"30064771077\" -> \"30064771076\"  [ label = \"freq[i]\"] \n  \"115964116993\" -> \"30064771077\"  [ label = \"freq\"] \n  \"111669149697\" -> \"30064771077\" \n  \"111669149697\" -> \"30064771081\" \n  \"30064771081\" -> \"30064771082\"  [ label = \"i\"] \n  \"30064771083\" -> \"30064771082\"  [ label = \"i\"] \n  \"111669149697\" -> \"30064771082\" \n  \"115964116994\" -> \"30064771082\"  [ label = \"count\"] \n  \"30064771082\" -> \"30064771083\"  [ label = \"i\"] \n  \"111669149697\" -> \"30064771083\" \n  \"111669149697\" -> \"30064771089\" \n  \"111669149697\" -> \"30064771084\" \n  \"30064771084\" -> \"30064771086\"  [ label = \"parent[k]\"] \n  \"111669149697\" -> \"30064771088\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"stale_exit\" {  \n\"30064771072\" [label = <(&lt;operator&gt;.assignment,weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8)<SUB>2</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.indirectIndexAccess,weight[i + 1])<SUB>2</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.shiftLeft,(freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8)<SUB>2</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.cast,(Bool)1)<SUB>3</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.addition,i + 1)<SUB>2</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.conditional,freq[i] == 0 ? 1 : freq[i])<SUB>2</SUB>> ]\n\"184683593728\" [label = <(UNKNOWN,Bool,Bool)<SUB>3</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.equals,freq[i] == 0)<SUB>2</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.indirectIndexAccess,freq[i])<SUB>2</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.lessEqualsThan,i &lt;= count)<SUB>4</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.postIncrement,i++)<SUB>4</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.logicalNot,!too_long)<SUB>10</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.indirectIndexAccess,freq[i])<SUB>2</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.assignment,i = 1)<SUB>4</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.greaterEqualsThan,parent[k] &gt;= 0)<SUB>5</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.indirectIndexAccess,parent[k])<SUB>5</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.assignment,k = parent[k])<SUB>6</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.postIncrement,j++)<SUB>7</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.indirectIndexAccess,parent[k])<SUB>6</SUB>> ]\n\"111669149697\" [label = <(METHOD,stale_exit)<SUB>1</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,void)<SUB>1</SUB>> ]\n  \"30064771072\" -> \"184683593728\" \n  \"30064771073\" -> \"30064771078\" \n  \"30064771075\" -> \"30064771072\" \n  \"30064771080\" -> \"128849018880\" \n  \"30064771080\" -> \"30064771081\" \n  \"30064771074\" -> \"30064771073\" \n  \"30064771076\" -> \"30064771075\" \n  \"184683593728\" -> \"30064771080\" \n  \"30064771077\" -> \"30064771076\" \n  \"30064771077\" -> \"30064771079\" \n  \"30064771079\" -> \"30064771076\" \n  \"30064771082\" -> \"30064771085\" \n  \"30064771082\" -> \"30064771089\" \n  \"30064771083\" -> \"30064771082\" \n  \"30064771089\" -> \"184683593728\" \n  \"30064771089\" -> \"128849018880\" \n  \"30064771078\" -> \"30064771077\" \n  \"30064771081\" -> \"30064771082\" \n  \"30064771084\" -> \"30064771087\" \n  \"30064771084\" -> \"30064771083\" \n  \"30064771085\" -> \"30064771084\" \n  \"30064771086\" -> \"30064771088\" \n  \"30064771088\" -> \"30064771085\" \n  \"30064771087\" -> \"30064771086\" \n  \"111669149697\" -> \"30064771074\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "fdbd9042622ad4b1c49f06eda5b18df8a45883f58f4ec6db9df51cf9f2dca595",
+  "prepared_sha256": "fdbd9042622ad4b1c49f06eda5b18df8a45883f58f4ec6db9df51cf9f2dca595",
+  "language": "c",
+  "input_kind": "file",
+  "source": "/home/mahaloz/github/rust-joern/tests/fixtures/ddg-decbench/solver-rounds.c",
+  "capture_worker_sha256": "544aaf7609ab89e1f1d11d339b6fd6f8c0d64c47f097113b32ca66b2470745bd",
+  "captured_at": "2026-11-09T03:11:05.373586+00:00",
+  "preparation": {
+    "strip_system_headers": false,
+    "sanitize_decompiled": false,
+    "decbench": null
+  }
+}
