@@ -8,7 +8,7 @@ belong in regression fixtures, not here.
 
 ## C++ range-for retains the range evaluation and loop exits
 
-**Introduced:** 2026-11-09.
+**Introduced:** 2026-11-09, [PR #15](https://github.com/Noelo-Lab/rust-joern/pull/15).
 
 Joern 4.0.150 skips the range initializer in the CFG and uses the body as
 the loop condition. Rust Joern evaluates the range once before the loop, then
