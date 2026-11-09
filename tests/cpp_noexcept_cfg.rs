@@ -65,3 +65,28 @@ fn only_noexcept_operands_are_excluded_from_control_flow() {
     assert!(!in_cfg(calls[1].id));
     assert!(in_cfg(calls[2].id));
 }
+
+#[test]
+fn joern_cpp_control_flow_keeps_the_operand_in_the_cfg() {
+    let source = "int effect() noexcept; bool f() { return noexcept(effect()); }";
+    let options = Options {
+        language: Some("cpp".into()),
+        strict: true,
+        joern_cpp_control_flow: true,
+        ..Options::default()
+    };
+    let result = analyze(source, "noexcept.cpp", &options).unwrap();
+    let f = result.functions.iter().find(|f| f.name == "f").unwrap();
+    let call = f
+        .cpg
+        .nodes
+        .iter()
+        .find(|n| n.kind == "CALL" && n.name.as_deref() == Some("effect"))
+        .unwrap();
+    assert!(
+        f.cpg
+            .edges
+            .iter()
+            .any(|e| e.kind == "CFG" && (e.source == call.id || e.target == call.id))
+    );
+}

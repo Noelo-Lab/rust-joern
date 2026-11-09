@@ -21,7 +21,7 @@ fn run() -> Result<(), String> {
         || matches!(arguments.peek().map(String::as_str), Some("--help" | "-h"))
     {
         println!(
-            "Usage: rust-joern analyze INPUT [--language c|cpp] [--preprocessed] [--data-flow] [--reaching-definitions] [--strict] [--joern-loop-conditions] [--output PATH] [--format json|dot] [--graph cfg|ddg|cpg]"
+            "Usage: rust-joern analyze INPUT [--language c|cpp] [--preprocessed] [--data-flow] [--reaching-definitions] [--strict] [--joern-loop-conditions] [--joern-knr-parameters] [--joern-cdt-failures] [--joern-cpp-control-flow] [--output PATH] [--format json|dot] [--graph cfg|ddg|cpg]"
         );
         return Ok(());
     }
@@ -45,6 +45,9 @@ fn run() -> Result<(), String> {
             "--reaching-definitions" => options.reaching_definitions = true,
             "--strict" => options.strict = true,
             "--joern-loop-conditions" => options.joern_loop_conditions = true,
+            "--joern-knr-parameters" => options.joern_knr_parameters = true,
+            "--joern-cdt-failures" => options.joern_cdt_failures = true,
+            "--joern-cpp-control-flow" => options.joern_cpp_control_flow = true,
             "--output" | "-o" => output = Some(arguments.next().ok_or("missing output path")?),
             "--format" => format = arguments.next().ok_or("missing output format")?,
             "--graph" => graph = arguments.next().ok_or("missing graph kind")?,
