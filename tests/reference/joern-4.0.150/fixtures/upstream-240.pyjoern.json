@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/Users/sjkim1127/.pyenv/versions/3.12.1/lib/python3.12/site-packages/pyjoern/__init__.py",
+  "seconds": 4.636742833070457,
+  "functions": {
+    "GetObj": {
+      "name": "GetObj",
+      "start_line": 14,
+      "end_line": 16,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "14.0:\nFUNCTION_START\nreturn nullptr;,returnnullptr;\nFUNCTION_END\n"
+        }
+      }
+    },
+    "GetObject": {
+      "name": "GetObject",
+      "start_line": 23,
+      "end_line": 26,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "23.0:\nFUNCTION_START\n<UnsupportedStmt: GetObj,b-&gt;GetObj()>\nreturn b-&gt;GetObj();,returnb-&gt;GetObj();\nFUNCTION_END\n"
+        }
+      }
+    },
+    "Run": {
+      "name": "Run",
+      "start_line": 28,
+      "end_line": 32,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "28.0:\nFUNCTION_START\n<UnsupportedStmt: GetObject,c-&gt;GetObject()>\n*a = c-&gt;GetObject()\n<UnsupportedStmt: FIELD_IDENTIFIER,a,a>\n<UnsupportedStmt: ['indirectFieldAccess', 'a-&gt;a']>\nreturn true;,returntrue;\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "3c41b221b745e12f5b8eb3c0875f10380d587e0e335cea34a1ff571310378830",
+  "prepared_sha256": "3c41b221b745e12f5b8eb3c0875f10380d587e0e335cea34a1ff571310378830"
+}

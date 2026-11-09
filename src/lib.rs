@@ -2,6 +2,7 @@ mod builder;
 mod dataflow;
 mod ddg;
 pub mod graph;
+mod joern_operators;
 mod lexer;
 mod normalize;
 mod parser;

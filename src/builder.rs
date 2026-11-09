@@ -2,6 +2,7 @@ use crate::{
     graph::{
         Diagnostic, Edge, ExternalReference, FunctionGraph, Node, NodeId, Options, PropertyGraph,
     },
+    joern_operators::binary_operator,
     lexer::integer_truth,
     normalize,
     syntax::*,
@@ -1935,23 +1936,15 @@ fn function_pointer_parameter(fullname: &str, argument: usize) -> Option<String>
     None
 }
 
-fn unary_operator(operator: &str, postfix: bool) -> &str {
+// Allocation expressions are Unary nodes in our syntax tree, while CDT has
+// separate new/delete AST classes. Keep that lexical bridge separate from the
+// mechanically translated IASTUnaryExpression operator match.
+fn unary_operator(operator: &str, postfix: bool) -> &'static str {
     match operator {
-        "++" if postfix => "<operator>.postIncrement",
-        "--" if postfix => "<operator>.postDecrement",
-        "++" => "<operator>.preIncrement",
-        "--" => "<operator>.preDecrement",
-        "+" => "<operator>.plus",
-        "-" => "<operator>.minus",
-        "!" => "<operator>.logicalNot",
-        "~" => "<operator>.not",
-        "*" => "<operator>.indirection",
-        "&" => "<operator>.addressOf",
-        "sizeof" | "sizeof..." => "<operator>.sizeOf",
-        "typeid" => "<operator>.typeOf",
+        "sizeof..." => "<operator>.sizeOf",
         "new" => "<operator>.new",
         "delete" | "delete[]" => "<operator>.delete",
-        _ => "<operator>.unknown",
+        _ => crate::joern_operators::unary_operator(operator, postfix),
     }
 }
 
@@ -1974,49 +1967,30 @@ fn member_pointer_expression(expression: &Expr) -> bool {
     }
 }
 
-fn binary_operator(operator: &str) -> &str {
-    match operator {
-        "=" => "<operator>.assignment",
-        "+=" => "<operator>.assignmentPlus",
-        "-=" => "<operator>.assignmentMinus",
-        "*=" => "<operator>.assignmentMultiplication",
-        "/=" => "<operator>.assignmentDivision",
-        "%=" => "<operators>.assignmentModulo",
-        "&=" => "<operators>.assignmentAnd",
-        "|=" => "<operators>.assignmentOr",
-        "^=" => "<operators>.assignmentXor",
-        "<<=" => "<operators>.assignmentShiftLeft",
-        ">>=" => "<operators>.assignmentArithmeticShiftRight",
-        "+" => "<operator>.addition",
-        "-" => "<operator>.subtraction",
-        "*" => "<operator>.multiplication",
-        "/" => "<operator>.division",
-        "%" => "<operator>.modulo",
-        "&" => "<operator>.and",
-        "|" => "<operator>.or",
-        "^" => "<operator>.xor",
-        "&&" => "<operator>.logicalAnd",
-        "||" => "<operator>.logicalOr",
-        "<<" => "<operator>.shiftLeft",
-        ">>" => "<operator>.arithmeticShiftRight",
-        "==" => "<operator>.equals",
-        "!=" => "<operator>.notEquals",
-        "<" => "<operator>.lessThan",
-        ">" => "<operator>.greaterThan",
-        "<=" => "<operator>.lessEqualsThan",
-        ">=" => "<operator>.greaterEqualsThan",
-        ".*" | "->*" => "<operator>.indirectFieldAccess",
-        // A GNU case range.
-        "..." => "<operator>.op_ellipses",
-        _ => "<operator>.unknown",
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use crate::{analyze, graph::Options};
     use serde_json::Value;
     use std::collections::HashMap;
+
+    #[test]
+    fn gnu_case_range_keeps_joern_ellipsis_operator() {
+        let analysis = analyze(
+            "int f(int x) { switch (x) { case 1 ... 3: return 1; } return 0; }",
+            "input.c",
+            &Options::default(),
+        )
+        .unwrap();
+        let cpg = serde_json::to_value(&analysis.functions[0].cpg).unwrap();
+        assert!(
+            cpg["nodes"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|node| node["name"] == "<operator>.op_ellipses"),
+            "{cpg}"
+        );
+    }
 
     #[test]
     fn nested_function_method_is_an_ast_child_without_parent_cfg_execution() {
