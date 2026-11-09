@@ -6,6 +6,19 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++ range-for retains the range evaluation and loop exits
+
+**Introduced:** 2026-11-09.
+
+Joern 4.0.150 skips the range initializer in the CFG and uses the body as
+the loop condition. Rust Joern evaluates the range once before the loop, then
+uses abstract test and advance nodes. The test can exit before the first
+iteration, `continue` goes to advance, and `break` goes to the successor.
+The nodes represent control flow without resolving iterator overloads or
+modeling implicit calls. This affects the CPG and raw and normalized CFGs,
+and may affect the data-flow views derived from them. No option restores
+the original range-for CFG.
+
 ## Constant-true loop heads lower like `for (;;)`
 
 **Introduced:** 2026-10-14, [PR #2](https://github.com/Noelo-Lab/rust-joern/pull/2).

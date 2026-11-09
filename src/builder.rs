@@ -1708,7 +1708,7 @@ impl Builder<'_> {
             } => {
                 let id = self.control(statement, parent, "FOR");
                 self.scopes.push(HashMap::new());
-                self.expression(iterable, id, None);
+                let initial = self.expression(iterable, id, None);
                 self.declarations(
                     &[Declaration {
                         initializer: None,
@@ -1718,19 +1718,41 @@ impl Builder<'_> {
                     &declaration.span,
                     id,
                 );
-                // Joern 4.0.150 selects for children by local count and order.
-                // Its range-for body occupies the condition slot, while the
-                // initializer is never evaluated. Preserve the DecBench oracle.
-                let mut condition = self.statement(body, id, false);
-                if let Some(target) = condition.entry {
-                    condition
-                        .edges
-                        .extend(condition.fringe.iter().map(|&source| [source, target]));
+                // The iterator protocol is implicit. Represent its test and
+                // advance without inventing calls to particular overloads.
+                let test = self.node("UNKNOWN", &iterable.span, None, Some("<range-for test>"));
+                self.ast(id, test, None);
+                let mut body = self.statement(body, id, false);
+                let mut fringe = vec![test];
+                fringe.append(&mut body.breaks);
+                let mut links = Vec::new();
+                if let Some(body_entry) = body.entry {
+                    links.push([test, body_entry]);
                 }
-                condition.breaks.clear();
-                condition.continues.clear();
+                if body.entry.is_none() || !body.fringe.is_empty() || !body.continues.is_empty() {
+                    let advance =
+                        self.node("UNKNOWN", &iterable.span, None, Some("<range-for advance>"));
+                    self.ast(id, advance, None);
+                    links.push([advance, test]);
+                    if body.entry.is_none() {
+                        links.push([test, advance]);
+                    }
+                    links.extend(
+                        body.fringe
+                            .iter()
+                            .chain(&body.continues)
+                            .map(|&node| [node, advance]),
+                    );
+                }
+                body.continues.clear();
+                let initial = initial.append(Fragment::single(test));
+                let entry = initial.entry;
+                let mut flow = Fragment::combine([initial, body]);
+                flow.entry = entry;
+                flow.fringe = fringe;
+                flow.edges.extend(links);
                 self.scopes.pop();
-                condition
+                flow
             }
             StmtKind::Switch { condition, body } => {
                 let id = self.control(statement, parent, "SWITCH");
