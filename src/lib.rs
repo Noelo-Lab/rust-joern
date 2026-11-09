@@ -2,6 +2,8 @@ mod builder;
 mod dataflow;
 mod ddg;
 pub mod graph;
+mod joern_calls;
+mod joern_operators;
 mod lexer;
 mod normalize;
 mod parser;
@@ -142,7 +144,13 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             return Err(format!("invalid C++ context type name: {name:?}"));
         }
     }
-    let unit = parser::parse_preprocessed(source, cpp, preprocessed, &options.cpp_type_names);
+    let unit = parser::parse_with(
+        source,
+        cpp,
+        preprocessed,
+        options.joern_cdt_failures,
+        &options.cpp_type_names,
+    );
     let mut diagnostics: Vec<_> = unit
         .diagnostics
         .iter()
@@ -172,6 +180,10 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             .or_default()
             .push(function);
     }
+    let call_bindings = builder::CallBindings {
+        methods: &methods,
+        known_types: &unit.known_type_names,
+    };
     let mut built: Vec<_> = unit
         .functions
         .par_iter()
@@ -182,8 +194,8 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
                 filename,
                 &known_functions,
                 cpp,
-                &methods,
-                options.joern_loop_conditions,
+                &call_bindings,
+                options,
             )
         })
         .collect();
@@ -216,6 +228,7 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             member_cv_qualified: false,
             lambda: false,
             is_static: false,
+            is_virtual: false,
             inherited_bindings: Vec::new(),
             inherited_closures: Vec::new(),
             parameters: Vec::new(),
@@ -239,8 +252,8 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             filename,
             &known_functions,
             cpp,
-            &methods,
-            options.joern_loop_conditions,
+            &call_bindings,
+            options,
         )
         .0
         .cpg
@@ -654,10 +667,62 @@ fn export_ffi_result(result: std::thread::Result<Result<String, String>>) -> *mu
         .into_raw()
 }
 
-/// Release a string returned by either native analysis entry point.
+/// Input of `rust_joern_project_ddg`: one method's raw graph, with each node's
+/// REACHING_DEF edges listed in stored in-edge order, and the callee context
+/// `ddg::project` resolves calls against.
+#[derive(serde::Deserialize)]
+struct ProjectionRequest {
+    function: FunctionGraph,
+    #[serde(default)]
+    nonstub_methods: HashSet<String>,
+    #[serde(default)]
+    internal_methods: HashSet<String>,
+    #[serde(default)]
+    cpp: bool,
+}
+
+/// Apply the DOT DDG projection to a supplied raw method graph, such as one
+/// captured from original Joern. Returns the projected nodes and edges, and
+/// the order in which destination nodes were evaluated.
+pub fn project_ddg(request_json: &str) -> Result<String, String> {
+    let request: ProjectionRequest =
+        serde_json::from_str(request_json).map_err(|e| format!("invalid request: {e}"))?;
+    let projection = dataflow::project_ddg(
+        &request.function,
+        &request.nonstub_methods,
+        &request.internal_methods,
+        request.cpp,
+    );
+    Ok(serde_json::json!({
+        "nodes": projection.nodes,
+        "edges": projection.edges,
+        "order": ddg::display_order(&request.function),
+    })
+    .to_string())
+}
+
+/// C ABI of `project_ddg`. The result must be released with `rust_joern_free`.
 ///
 /// # Safety
-/// `pointer` must be null or an unreleased allocation from an analysis function.
+/// `request_json` must be a valid NUL-terminated UTF-8 string.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn rust_joern_project_ddg(request_json: *const c_char) -> *mut c_char {
+    let result = std::panic::catch_unwind(|| -> Result<String, String> {
+        if request_json.is_null() {
+            return Err("null request pointer".into());
+        }
+        let request = unsafe { CStr::from_ptr(request_json) }
+            .to_str()
+            .map_err(|e| e.to_string())?;
+        project_ddg(request)
+    });
+    export_ffi_result(result)
+}
+
+/// Release a string returned by a native entry point.
+///
+/// # Safety
+/// `pointer` must be null or an unreleased allocation from a native entry point.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn rust_joern_free(pointer: *mut c_char) {
     if !pointer.is_null() {

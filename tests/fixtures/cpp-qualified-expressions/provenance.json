@@ -1,0 +1,55 @@
+{
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "capture_date": "2026-10-19",
+  "reference_execution": "Unchanged original PyJoern in a separate Python interpreter and temporary cwd, PYTHONPATH removed. No native shim.",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_ddg": true,
+    "no_ast": true
+  },
+  "captures": [
+    {
+      "source": "member_control.cpp",
+      "source_sha256": "185bfffa0e5a0e190f2b5254bce4f614015bf0a4609176830b7967f6f6a8e430",
+      "reference_sha256": "40e1ff8cf758e5afeb07fdf401034d510057ce8d0394ae052f96ea87723986dc"
+    },
+    {
+      "source": "nested_template_argument.cpp",
+      "source_sha256": "8e8d30e79fe87f5acd8f6df23128ee224778076dfd1359c228199a73502fa4f5",
+      "reference_sha256": "ede5784df5b6cee99ec44b4fe83b4f2a6a52a181b104ffc918b9d3c80e7fa60e"
+    },
+    {
+      "source": "qualified_control.cpp",
+      "source_sha256": "cf7051b14af10ef5dec983f5dad54eb8440c4914ef46a5e348d953f83eb491b3",
+      "reference_sha256": "4ad5a6b727f66fa46beae4f2781ec5ce400426776ff9493f757be3f17afbaa52"
+    },
+    {
+      "source": "qualified_subscript.cpp",
+      "source_sha256": "ac6331ca6ddae3cb334d857b51aebac8f4e1f1ce712c8a1e58a10ee329584f40",
+      "reference_sha256": "576cff504f7e5d4eb64cbc4f85193592f7d11705f4de2147dfb6833dc3219c1e"
+    },
+    {
+      "source": "template_expression.cpp",
+      "source_sha256": "78b2b07f0f67428bec9fba20a27727207ac4de1da8bff0a5bee4a6287b3aca81",
+      "reference_sha256": "9db3ccbf2395f8928d2af474512d914a9bbb4207d711c6bc35d58187bf98923b"
+    },
+    {
+      "source": "template_statement.cpp",
+      "source_sha256": "3e5a6a4cd5f3ce6e2dc47de06c0b75809911713664d7832803183a31a0d941da",
+      "reference_sha256": "8df9ca36ac2abe97c33c82c79f41a9cfa85ff29fb89013f9b77ed3ee86898521"
+    },
+    {
+      "source": "operator_template_return.cpp",
+      "source_sha256": "88cc91f5bcab4d71bce188fa443725c3d5585f04af49c8c1b8e9a79d99885e2d",
+      "reference_sha256": "6991b1ea55b36a0df2dc0cfae028be91df18a0a53960c538177df76898b332a4",
+      "capture_date": "2026-10-22"
+    },
+    {
+      "source": "operator_template_loop.cpp",
+      "source_sha256": "4b60bf6b090b7d5921167a032150d651e9e1a26e1a1eca8885341bdcf231ba96",
+      "reference_sha256": "b6797e2167e943e616eb84121af37592b9649208c6dfc03d9c0362076277c0d8",
+      "capture_date": "2026-10-22"
+    }
+  ],
+  "followup_capture_date": "2026-10-22"
+}

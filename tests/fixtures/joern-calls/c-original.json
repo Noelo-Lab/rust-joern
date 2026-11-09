@@ -1,0 +1,204 @@
+{
+  "schema": "joern-call-ast-contract-v1",
+  "generator": "Original Joern v4.0.150 bundled with PyJoern 4.0.150.4",
+  "source_sha256": "a5b08dc5c8d907c03ecb205098864484ae7cba92004c9237f38960a6336b3470",
+  "capture_sha256": "2b7017b294c34caa687bbec7a59f87016053c434561cb2a05f88bf1ad2684178",
+  "raw_log_sha256": "ab5e645bd78775b253df2b99c394832939eabaa13e67c95969a4658ccd5259bc",
+  "projector_sha256": "8ce6ae53487654366b7efafc7136ea3e3d5e657b3b5c4ea539fb83e3a4601576",
+  "bounds": "Call identity, operand roles and AST ownership; excludes type inference, dispatch property, DDG and execution parity",
+  "methods": [
+    {
+      "fullname": "direct",
+      "line": 2,
+      "calls": [
+        {
+          "code": "missing(x)",
+          "name": "missing",
+          "line": 2,
+          "column": 28,
+          "method_full_name": "missing",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "IDENTIFIER",
+                "code": "x",
+                "name": "x"
+              }
+            }
+          ],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "x",
+              "name": "x"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "grouped",
+      "line": 6,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 6,
+          "column": 43,
+          "method_full_name": "tick",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "(fn)(tick())",
+          "name": "<operator>.pointerCall",
+          "line": 6,
+          "column": 38,
+          "method_full_name": "<operator>.pointerCall",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "IDENTIFIER",
+            "code": "fn",
+            "name": "fn"
+          },
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "fn",
+              "name": "fn"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "member",
+      "line": 5,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 5,
+          "column": 42,
+          "method_full_name": "tick",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "p->fn(tick())",
+          "name": "<operator>.pointerCall",
+          "line": 5,
+          "column": 36,
+          "method_full_name": "<operator>.pointerCall",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "CALL",
+            "code": "p->fn",
+            "name": "<operator>.indirectFieldAccess"
+          },
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "CALL",
+              "code": "p->fn",
+              "name": "<operator>.indirectFieldAccess"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "pointer",
+      "line": 3,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 3,
+          "column": 41,
+          "method_full_name": "tick",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "fn(tick())",
+          "name": "<operator>.pointerCall",
+          "line": 3,
+          "column": 38,
+          "method_full_name": "<operator>.pointerCall",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "IDENTIFIER",
+            "code": "fn",
+            "name": "fn"
+          },
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "fn",
+              "name": "fn"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "tick",
+      "line": 1,
+      "calls": []
+    }
+  ]
+}

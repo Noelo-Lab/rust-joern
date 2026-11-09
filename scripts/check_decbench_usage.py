@@ -149,6 +149,7 @@ def check_case(case: dict, output_root: str) -> dict:
         unchanged(guard)
 
     original_parse = pyjoern.parse_source
+    original_native_parse = rust_joern.parse_source
     original_analyze = rust_joern._analyze
     original_cfg = rust_joern.Function._cfg
     phase = "primary"
@@ -188,12 +189,17 @@ def check_case(case: dict, output_root: str) -> dict:
             clocks[phase]["proof"] += time.perf_counter() - started
         return graph
 
-    def capture_parse(path, *args, **kwargs):
+    def capturing(parse):
+        def capture_parse(path, *args, **kwargs):
+            return captured_parse(parse, path, *args, **kwargs)
+        return capture_parse
+
+    def captured_parse(parse, path, *args, **kwargs):
         source = Path(path).read_bytes()
         captured.update(source=source, filename=str(path), prepared_sha256=hashlib.sha256(source).hexdigest())
         started = time.perf_counter()
         try:
-            parsed = original_parse(path, *args, **kwargs)
+            parsed = parse(path, *args, **kwargs)
             started_proof = time.perf_counter()
             verify_selection(captured["primary_analysis"], parsed, proof["primary"])
             clocks[phase]["proof"] += time.perf_counter() - started_proof
@@ -206,7 +212,10 @@ def check_case(case: dict, output_root: str) -> dict:
         finally:
             clocks[phase]["parse"] += time.perf_counter() - started
 
-    pyjoern.parse_source = capture_parse
+    # An older DecBench reaches the parser through the shim; a current one
+    # imports rust_joern.parse_source when it extracts.
+    pyjoern.parse_source = capturing(original_parse)
+    rust_joern.parse_source = capturing(original_native_parse)
     rust_joern._analyze = timed_analyze
     rust_joern.Function._cfg = staticmethod(timed_cfg)
     record = {key: case.get(key) for key in ("id", "optimization", "project", "kind", "source", "metric_excluded", "native_library_sha256")}
@@ -285,6 +294,7 @@ def check_case(case: dict, output_root: str) -> dict:
                 }
     finally:
         pyjoern.parse_source = original_parse
+        rust_joern.parse_source = original_native_parse
         rust_joern._analyze = original_analyze
         rust_joern.Function._cfg = staticmethod(original_cfg)
 

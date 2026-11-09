@@ -1,0 +1,31 @@
+{
+  "captures": [
+    {
+      "source": "declared-destructor-controls.cpp",
+      "source_sha256": "cc6852b8a7ccecc9132aca10bf5acb99b1fd962b470417e48b7957a0eb423ff5",
+      "reference_sha256": "bd437d5bed4ca3365ed2612bcbec2fa0cd2a06d5840125d277b83b4c9ee3384a",
+      "kind": "synthetic Clang-accepted syntax/reference control"
+    },
+    {
+      "source": "destructor-effect-controls.cpp",
+      "source_sha256": "19b79366c298a2fe28efbaf7068313c27c4227bdf036257dca734cc801dff2be",
+      "reference_sha256": "b77d563d455d1d4c3041bde81ca2dcfc11e00ec6314b8d81ee07810ebbd321bb",
+      "kind": "synthetic Clang-accepted effect/reference control"
+    },
+    {
+      "source": "destructor-spelling-controls.cpp",
+      "source_sha256": "36022b0241f6e94690e552cc09a73fd2a5df870e9cf52826835ce6f02b5e4c24",
+      "reference_sha256": "b6894c07db2774440c889690f854cea041d47a37a5f3c4a3fb7345c8426dbbf8",
+      "kind": "synthetic Clang-accepted spelling/reference control; whitespace and alternative compl token"
+    }
+  ],
+  "reference_backend": "unchanged PyJoern 4.0.150.4 / Joern 4.0.150",
+  "rejected_controls": [
+    {
+      "source": "invalid-arguments.cpp",
+      "source_sha256": "34e27537bd23070a6575ee1f5de9931dc60ae2b2eda3944a33fff1cb55e1f247",
+      "reference_sha256": "b8aecacdfa9b6962b27864dc98b68c47f8ade3927cf836b6695cd8560ba07046",
+      "kind": "synthetic invalid C++ control; Clang rejects arguments to a destructor; original Joern recovers method f; Rust strict mode deliberately rejects"
+    }
+  ]
+}

@@ -1,9 +1,14 @@
 use crate::{
-    graph::{Diagnostic, Edge, ExternalReference, FunctionGraph, Node, NodeId, PropertyGraph},
+    graph::{
+        Diagnostic, Edge, ExternalReference, FunctionGraph, Node, NodeId, Options, PropertyGraph,
+    },
+    joern_calls::{CallKind, CallLayout, Operand, unresolved_full_name},
+    joern_operators::binary_operator,
     lexer::integer_truth,
     normalize,
     syntax::*,
 };
+use std::borrow::Cow;
 use std::collections::{HashMap, HashSet};
 
 #[derive(Default)]
@@ -67,6 +72,12 @@ impl Fragment {
     }
 }
 
+/// Canonical parser declarations consumed by bounded call lookup.
+pub struct CallBindings<'a> {
+    pub methods: &'a HashMap<String, Vec<&'a Function>>,
+    pub known_types: &'a HashSet<String>,
+}
+
 struct Builder<'a> {
     source: &'a str,
     filename: &'a str,
@@ -75,6 +86,7 @@ struct Builder<'a> {
     scopes: Vec<HashMap<String, (NodeId, String)>>,
     functions: &'a HashSet<String>,
     methods: &'a HashMap<String, Vec<&'a Function>>,
+    known_types: &'a HashSet<String>,
     function_pointers: HashSet<NodeId>,
     closures: HashMap<NodeId, Closure>,
     inherited_bindings: HashMap<String, String>,
@@ -87,6 +99,7 @@ struct Builder<'a> {
     diagnostics: Vec<Diagnostic>,
     try_depth: usize,
     joern_loop_conditions: bool,
+    joern_cpp_control_flow: bool,
 }
 
 pub fn build(
@@ -95,8 +108,8 @@ pub fn build(
     filename: &str,
     known_functions: &HashSet<String>,
     cpp: bool,
-    methods: &HashMap<String, Vec<&Function>>,
-    joern_loop_conditions: bool,
+    bindings: &CallBindings<'_>,
+    options: &Options,
 ) -> (FunctionGraph, Vec<Diagnostic>) {
     let mut builder = Builder {
         source,
@@ -105,7 +118,8 @@ pub fn build(
         graph: PropertyGraph::default(),
         scopes: vec![HashMap::new()],
         functions: known_functions,
-        methods,
+        methods: bindings.methods,
+        known_types: bindings.known_types,
         function_pointers: HashSet::new(),
         closures: HashMap::new(),
         inherited_bindings: function.inherited_bindings.iter().cloned().collect(),
@@ -128,7 +142,8 @@ pub fn build(
         },
         diagnostics: Vec::new(),
         try_depth: 0,
-        joern_loop_conditions,
+        joern_loop_conditions: options.joern_loop_conditions,
+        joern_cpp_control_flow: options.joern_cpp_control_flow,
     };
     let entry = builder.node("METHOD", &function.span, Some(&function.name), None);
     let exit = builder.node("METHOD_RETURN", &function.span, None, Some("RET"));
@@ -144,13 +159,30 @@ pub fn build(
         builder.ast(entry, id, None);
         builder.scopes[0].insert("this".into(), (id, owner.clone()));
     }
-    for parameter in &function.parameters {
+    let mut parameters: Vec<_> = function.parameters.iter().collect();
+    if options.joern_knr_parameters && parameters.iter().any(|parameter| parameter.knr.is_some()) {
+        // ICASTKnRFunctionDeclarator.getParameterDeclarations: `int a, b;`
+        // is one parameter named `a`, and an undeclared name is not one.
+        parameters.retain(|parameter| parameter.knr == Some(KnrParameter::First));
+        parameters.sort_by_key(|parameter| parameter.span.start);
+    }
+    let mut last_parameter = None;
+    for parameter in parameters {
+        if parameter.type_name == "..." && parameter.name == "..." {
+            // setVariadic marks the last named parameter instead of creating
+            // one for the ellipsis; `f(...)` has no parameter at all.
+            if let Some(id) = last_parameter {
+                builder.graph.nodes[id as usize].code.push_str("...");
+            }
+            continue;
+        }
         let id = builder.node(
             "METHOD_PARAMETER_IN",
             &parameter.span,
             (!parameter.name.is_empty()).then_some(parameter.name.as_str()),
             None,
         );
+        last_parameter = Some(id);
         builder.graph.nodes[id as usize].type_name = Some(parameter.type_name.clone());
         if parameter.function_pointer {
             builder.function_pointers.insert(id);
@@ -222,7 +254,11 @@ impl Builder<'_> {
         self.graph.nodes.push(Node {
             id,
             kind: kind.into(),
-            code: code.unwrap_or_else(|| self.code(span)).into(),
+            code: match code {
+                // A control structure's CODE joins already shortened parts.
+                Some(code) if kind == "CONTROL_STRUCTURE" => code.into(),
+                _ => shorten_code(code.unwrap_or_else(|| self.code(span))).into(),
+            },
             name: name.map(str::to_string),
             method_full_name: (kind == "CALL")
                 .then(|| {
@@ -386,11 +422,11 @@ impl Builder<'_> {
             }
         }
         if declaration.nested_declarator {
-            // Scalar parentheses leave the outer declarator's name empty.
-            // Pointer declarators above still recover their nested binding.
-            let id = self.node("IDENTIFIER", &Span::default(), Some(""), Some(""));
-            self.graph.nodes[id as usize].type_name = Some("ANY".into());
-            self.ast(parent, id, Some(argument));
+            // `T (x) = v`, including CDT's reading of `LOBYTE(x) = v`, takes
+            // the same path: nameForIdentifier resolves the outer
+            // declarator's empty name to the nested variable's binding.
+            let id = self.identifier(&declaration.name, &Span::default(), parent, Some(argument));
+            self.graph.nodes[id as usize].code.clear();
             return id;
         }
         if declaration.is_typedef {
@@ -503,13 +539,14 @@ impl Builder<'_> {
         });
     }
     fn control(&mut self, statement: &Stmt, parent: NodeId, name: &str) -> NodeId {
+        let short = |span: &Span| shorten_code(self.code(span));
         let code = match &statement.kind {
-            StmtKind::If { condition, .. } => Some(format!("if ({})", self.code(&condition.span))),
+            StmtKind::If { condition, .. } => Some(format!("if ({})", short(&condition.span))),
             StmtKind::While { condition, .. } => {
-                Some(format!("while ({})", self.code(&condition.span)))
+                Some(format!("while ({})", short(&condition.span)))
             }
             StmtKind::Switch { condition, .. } => {
-                Some(format!("switch({})", self.code(&condition.span)))
+                Some(format!("switch({})", short(&condition.span)))
             }
             StmtKind::For {
                 initializer,
@@ -517,19 +554,35 @@ impl Builder<'_> {
                 update,
                 ..
             } => Some(format!(
-                "for ({};{};{})",
-                initializer
+                "for ({}{};{})",
+                // The initializer statement is shortened with its semicolon,
+                // and keeps the white space before it: `for (i = 0 ;i;i++)`.
+                initializer.as_ref().map_or(";".into(), |x| {
+                    let code = self.code(&x.span).trim_end_matches(';');
+                    let rest = self.source.get(x.span.end..).unwrap_or("");
+                    let space = &rest[..rest.len() - rest.trim_start().len()];
+                    let space = if rest[space.len()..].starts_with(';') {
+                        space
+                    } else {
+                        ""
+                    };
+                    shorten_code(&format!("{code}{space};")).into_owned()
+                }),
+                condition
                     .as_ref()
-                    .map(|x| self.code(&x.span).trim_end_matches(';'))
-                    .unwrap_or(""),
-                condition.as_ref().map(|x| self.code(&x.span)).unwrap_or(""),
-                update.as_ref().map(|x| self.code(&x.span)).unwrap_or(""),
+                    .map(|x| short(&x.span))
+                    .unwrap_or_default(),
+                update.as_ref().map(|x| short(&x.span)).unwrap_or_default(),
             )),
             StmtKind::Try { .. } if name == "TRY" => Some("try".into()),
             StmtKind::Throw(expression) => Some(
                 expression
                     .as_ref()
-                    .map(|expression| format!("throw {}", self.code(&expression.span)))
+                    // The whole throw expression is one shortened CODE.
+                    .map(|expression| {
+                        let code = format!("throw {}", self.code(&expression.span));
+                        shorten_code(&code).into_owned()
+                    })
                     .unwrap_or_else(|| "throw".into()),
             ),
             _ => None,
@@ -673,8 +726,14 @@ impl Builder<'_> {
                 };
                 let id = self.node("CALL", span, Some(name), None);
                 self.ast(parent, id, argument);
-                self.expression(operand, id, Some(1))
-                    .append(Fragment::single(id))
+                let operand_flow = self.expression(operand, id, Some(1));
+                if self.cpp && op == "noexcept" && !self.joern_cpp_control_flow {
+                    // The operand is still represented in the AST, but C++
+                    // does not evaluate it and its effects cannot enter the CFG.
+                    Fragment::single(id)
+                } else {
+                    operand_flow.append(Fragment::single(id))
+                }
             }
             ExprKind::Binary { .. } => self.binary_expression(expression, parent, argument),
             ExprKind::Conditional {
@@ -733,12 +792,45 @@ impl Builder<'_> {
                     "<operator>.pointerCall"
                 } else {
                     match &callee.kind {
-                        ExprKind::Identifier(name) if self.cpp => name.rsplit("::").next().unwrap(),
+                        ExprKind::Identifier(name) if self.cpp => cpp_call_leaf(name),
                         ExprKind::Identifier(name) => name.as_str(),
+                        ExprKind::Member { name, .. } if self.cpp => cpp_call_leaf(name),
                         ExprKind::Member { name, .. } => name.as_str(),
                         _ => "<operator>.pointerCall",
                     }
                 };
+                let resolved = (!pointer && closure.is_none() && !unresolved_operator)
+                    .then(|| self.resolve_call(callee, arguments))
+                    .flatten()
+                    .map(|method| {
+                        (
+                            method.full_name.clone(),
+                            if self.cpp {
+                                method.binding_return_type.clone()
+                            } else {
+                                method.return_type.clone()
+                            },
+                            method.is_virtual,
+                        )
+                    });
+                let kind = if pointer {
+                    CallKind::Pointer
+                } else if closure.is_some() {
+                    CallKind::Closure
+                } else if unresolved_operator {
+                    CallKind::UnresolvedExpression
+                } else if self.cpp && matches!(callee.kind, ExprKind::Member { .. }) {
+                    match &resolved {
+                        Some((_, _, is_virtual)) => CallKind::ResolvedMember {
+                            is_virtual: *is_virtual,
+                        },
+                        None if self.member_binding_is_opaque(callee) => CallKind::OpaqueMember,
+                        None => CallKind::UnresolvedMember,
+                    }
+                } else {
+                    CallKind::Named
+                };
+                let layout = CallLayout::for_kind(kind);
                 let id = self.node("CALL", span, Some(name), None);
                 if let Some(closure) = &closure {
                     self.graph.nodes[id as usize].method_full_name = Some(format!(
@@ -747,43 +839,47 @@ impl Builder<'_> {
                         closure.parameter_types.join(","),
                     ));
                     self.graph.nodes[id as usize].type_name = Some(closure.return_type.clone());
-                } else if unresolved_operator {
-                    self.graph.nodes[id as usize].method_full_name = Some(format!(
-                        "<unresolvedNamespace>.<operator>():<unresolvedSignature>({})",
-                        arguments.len(),
-                    ));
-                } else if !pointer
-                    && let Some((fullname, return_type)) =
-                        self.resolve_call(callee, arguments).map(|method| {
-                            (
-                                method.full_name.clone(),
-                                if self.cpp {
-                                    method.binding_return_type.clone()
-                                } else {
-                                    method.return_type.clone()
-                                },
-                            )
-                        })
-                {
+                } else if let Some((fullname, return_type, _)) = resolved {
                     self.graph.nodes[id as usize].method_full_name = Some(fullname);
                     self.graph.nodes[id as usize].type_name = Some(return_type);
+                } else if self.cpp
+                    && !pointer
+                    && kind != CallKind::OpaqueMember
+                    && self.graph.nodes[id as usize].method_full_name.is_none()
+                {
+                    // Our parser also lowers CDT's distinct new-expression
+                    // class to a synthetic Call. Its canonical intrinsic
+                    // identity is already supplied by node(); it is not an
+                    // unresolved source-level function call.
+                    self.graph.nodes[id as usize].method_full_name =
+                        Some(unresolved_full_name(name, arguments.len()));
                 }
                 self.ast(parent, id, argument);
+                // createCallAst shares a base/receiver AST: lower the selected
+                // expression exactly once, and attach both edges to its root.
+                // Root identity comes from the AST edge, not allocation order.
+                let operand = match layout.operand {
+                    Operand::None => None,
+                    Operand::Callee => Some(callee.as_ref()),
+                    Operand::MemberBase => match &callee.kind {
+                        ExprKind::Member { base, .. } => Some(base.as_ref()),
+                        _ => unreachable!("member layout requires a member callee"),
+                    },
+                };
                 let mut flow = Fragment::default();
-                if pointer || closure.is_some() || unresolved_operator {
-                    let receiver = self.graph.nodes.len() as NodeId;
-                    flow = self.expression(callee, id, unresolved_operator.then_some(0));
-                    if self.graph.nodes.len() != receiver as usize {
-                        self.edge(id, receiver, "RECEIVER", None);
-                    }
-                } else {
-                    match &callee.kind {
-                        ExprKind::Identifier(_) => (),
-                        ExprKind::Member { base, .. } if self.cpp => {
-                            flow = self.expression(base, id, Some(0));
-                        }
-                        _ => {
-                            flow = self.expression(callee, id, Some(0));
+                if let Some(operand) = operand {
+                    let start = self.graph.edges.len();
+                    flow = self.expression(operand, id, layout.base_index());
+                    if layout.receiver {
+                        let mut roots = self.graph.edges[start..]
+                            .iter()
+                            .filter(|edge| edge.kind == "AST" && edge.source == id)
+                            .map(|edge| edge.target);
+                        let root = roots.next();
+                        if root.is_none() || roots.next().is_some() {
+                            self.unsupported(span, "call receiver has no unique AST root");
+                        } else if let Some(root) = root {
+                            self.edge(id, root, "RECEIVER", None);
                         }
                     }
                 }
@@ -1052,6 +1148,53 @@ impl Builder<'_> {
                 .is_some_and(|ty| ty.contains('*')),
         }
     }
+    fn member_binding_is_opaque(&self, callee: &Expr) -> bool {
+        let ExprKind::Member { base, name, .. } = &callee.kind else {
+            return false;
+        };
+        if name.contains("::") {
+            return true;
+        }
+        self.receiver_has_known_type(base)
+    }
+    fn receiver_has_known_type(&self, base: &Expr) -> bool {
+        // A known owner can require inheritance, overload or qualified lookup
+        // that we have not implemented. Retain the prior base-only AST rather
+        // than treating our incomplete lookup as CDT's problem binding.
+        let owner = match &base.kind {
+            ExprKind::Call { callee, arguments } => self
+                .resolve_call(callee, arguments)
+                .map(|method| method.binding_return_type.clone()),
+            _ => self.expression_type(base),
+        };
+        if owner.is_some_and(|ty| {
+            let owner = ty
+                .trim_end_matches(['*', '&'])
+                .split_whitespace()
+                .filter(|word| !matches!(*word, "const" | "volatile"))
+                .collect::<Vec<_>>()
+                .join(" ");
+            self.known_types.contains(&owner)
+        }) {
+            return true;
+        }
+        // This is a refusal boundary, not result-type inference: a known
+        // carrier through indexing/field access can require missing lookup.
+        // Do not turn that missing evidence into a guessed problem binding.
+        match &base.kind {
+            ExprKind::Index { base, .. } | ExprKind::Member { base, .. } => {
+                self.receiver_has_known_type(base)
+            }
+            ExprKind::Bracketed(inner)
+            | ExprKind::Generated {
+                expression: inner, ..
+            }
+            | ExprKind::Unary {
+                argument: inner, ..
+            } => self.receiver_has_known_type(inner),
+            _ => false,
+        }
+    }
     fn resolve_call(&self, callee: &Expr, arguments: &[Expr]) -> Option<&Function> {
         let mut keys = Vec::new();
         match &callee.kind {
@@ -1062,9 +1205,16 @@ impl Builder<'_> {
                 keys.push(name.trim_start_matches("::").replace("::", "."));
             }
             ExprKind::Member { base, name, .. } if self.cpp => {
-                let owner = self.expression_type(base)?;
-                let owner = owner.trim_end_matches(['*', '&']).replace("::", ".");
-                keys.push(format!("{owner}.{name}"));
+                if name.contains("::") {
+                    // A base/namespace qualifier requires C++ qualified lookup,
+                    // not a same-named method on the receiver's type or a
+                    // guessed global owner. Retain the callee text unresolved.
+                    return None;
+                } else {
+                    let owner = self.expression_type(base)?;
+                    let owner = owner.trim_end_matches(['*', '&']).replace("::", ".");
+                    keys.push(format!("{owner}.{name}"));
+                }
             }
             _ => return None,
         }
@@ -1287,7 +1437,9 @@ impl Builder<'_> {
         let mut flow = Fragment::combine([initial, condition, inner]);
         flow.entry = entry;
         flow.fringe = fringe;
-        flow.edges.extend(links);
+        // cfgForForStatement lists the loop's own edges before the nested
+        // ones, which orders the successors of a node ending the body.
+        flow.edges.splice(0..0, links);
         flow.breaks.clear();
         flow.continues.clear();
         flow
@@ -1480,7 +1632,20 @@ impl Builder<'_> {
                 }
                 flow
             }
-            StmtKind::Expression(expression) => self.expression(expression, parent, None),
+            StmtKind::Expression(expression) => {
+                let flow = self.expression(expression, parent, None);
+                // The parser represents block-scope C++ static_assert as a
+                // call. Its operands belong in the AST, but none run at runtime.
+                if self.cpp
+                    && !self.joern_cpp_control_flow
+                    && matches!(&expression.kind, ExprKind::Call { callee, .. }
+                        if matches!(&callee.kind, ExprKind::Identifier(name) if name == "static_assert"))
+                {
+                    Fragment::default()
+                } else {
+                    flow
+                }
+            }
             StmtKind::Declaration(declarations) => {
                 self.declarations(declarations, &statement.span, parent)
             }
@@ -1627,7 +1792,8 @@ impl Builder<'_> {
                 let mut flow = Fragment::combine([condition, body, alternative]);
                 flow.entry = entry;
                 flow.fringe = fringe;
-                flow.edges.extend(links);
+                // cfgForWhileStatement: own edges precede the nested ones.
+                flow.edges.splice(0..0, links);
                 flow.breaks.clear();
                 flow.continues.clear();
                 self.scopes.pop();
@@ -1659,7 +1825,8 @@ impl Builder<'_> {
                 let mut flow = Fragment::combine([body, condition]);
                 flow.entry = entry;
                 flow.fringe = fringe;
-                flow.edges.extend(links);
+                // cfgForDoStatement: own edges precede the nested ones.
+                flow.edges.splice(0..0, links);
                 flow.breaks.clear();
                 flow.continues.clear();
                 flow
@@ -1701,14 +1868,24 @@ impl Builder<'_> {
                 self.scopes.pop();
                 flow
             }
+            // CDT cannot parse a C++20 init-statement, so Joern has no loop.
             StmtKind::RangeFor {
+                initializer: Some(_),
+                ..
+            } if self.joern_cpp_control_flow => Fragment::default(),
+            StmtKind::RangeFor {
+                initializer,
                 declaration,
                 iterable,
                 body,
             } => {
                 let id = self.control(statement, parent, "FOR");
                 self.scopes.push(HashMap::new());
-                self.expression(iterable, id, None);
+                let initial = initializer
+                    .as_ref()
+                    .map(|statement| self.statement(statement, id, false))
+                    .unwrap_or_default();
+                let initial = initial.append(self.expression(iterable, id, None));
                 self.declarations(
                     &[Declaration {
                         initializer: None,
@@ -1718,19 +1895,56 @@ impl Builder<'_> {
                     &declaration.span,
                     id,
                 );
-                // Joern 4.0.150 selects for children by local count and order.
-                // Its range-for body occupies the condition slot, while the
-                // initializer is never evaluated. Preserve the DecBench oracle.
-                let mut condition = self.statement(body, id, false);
-                if let Some(target) = condition.entry {
-                    condition
-                        .edges
-                        .extend(condition.fringe.iter().map(|&source| [source, target]));
+                if self.joern_cpp_control_flow {
+                    // Joern 4.0.150 selects for children by local count and order.
+                    // Its range-for body occupies the condition slot, while the
+                    // initializer is never evaluated.
+                    let mut condition = self.statement(body, id, false);
+                    if let Some(target) = condition.entry {
+                        condition
+                            .edges
+                            .extend(condition.fringe.iter().map(|&source| [source, target]));
+                    }
+                    condition.breaks.clear();
+                    condition.continues.clear();
+                    self.scopes.pop();
+                    return condition;
                 }
-                condition.breaks.clear();
-                condition.continues.clear();
+                // The iterator protocol is implicit. Represent its test and
+                // advance without inventing calls to particular overloads.
+                let test = self.node("UNKNOWN", &iterable.span, None, Some("<range-for test>"));
+                self.ast(id, test, None);
+                let mut body = self.statement(body, id, false);
+                let mut fringe = vec![test];
+                fringe.append(&mut body.breaks);
+                let mut links = Vec::new();
+                if let Some(body_entry) = body.entry {
+                    links.push([test, body_entry]);
+                }
+                if body.entry.is_none() || !body.fringe.is_empty() || !body.continues.is_empty() {
+                    let advance =
+                        self.node("UNKNOWN", &iterable.span, None, Some("<range-for advance>"));
+                    self.ast(id, advance, None);
+                    links.push([advance, test]);
+                    if body.entry.is_none() {
+                        links.push([test, advance]);
+                    }
+                    links.extend(
+                        body.fringe
+                            .iter()
+                            .chain(&body.continues)
+                            .map(|&node| [node, advance]),
+                    );
+                }
+                body.continues.clear();
+                let initial = initial.append(Fragment::single(test));
+                let entry = initial.entry;
+                let mut flow = Fragment::combine([initial, body]);
+                flow.entry = entry;
+                flow.fringe = fringe;
+                flow.edges.extend(links);
                 self.scopes.pop();
-                condition
+                flow
             }
             StmtKind::Switch { condition, body } => {
                 let id = self.control(statement, parent, "SWITCH");
@@ -1824,6 +2038,56 @@ impl Builder<'_> {
     }
 }
 
+/// The parser has already accepted the expression name. Scope separators in
+/// template arguments do not qualify the callee itself, and punctuation in an
+/// operator-function-id is not the start of a template argument list.
+fn cpp_call_leaf(name: &str) -> &str {
+    let mut leaf = 0;
+    let mut depth = 0usize;
+    for (index, ch) in name.char_indices() {
+        if depth == 0 && index >= leaf {
+            let rest = &name[index..];
+            if name[leaf..index].trim().is_empty()
+                && rest.strip_prefix("operator").is_some_and(|suffix| {
+                    !suffix.starts_with(|c: char| c.is_alphanumeric() || c == '_')
+                })
+            {
+                return rest;
+            }
+            if rest.starts_with("::") {
+                leaf = index + 2;
+            }
+        }
+        match ch {
+            '<' => depth += 1,
+            '>' => depth = depth.saturating_sub(1),
+            _ => {}
+        }
+    }
+    name[leaf..].trim_start()
+}
+
+/// AstNodeBuilder.shortenCode: commons-lang `abbreviate(code, 1000)`, which
+/// keeps 997 UTF-16 units of a longer CODE and appends an ellipsis.
+fn shorten_code(code: &str) -> Cow<'_, str> {
+    const MAX: usize = 1000;
+    if code.len() <= MAX {
+        return Cow::Borrowed(code);
+    }
+    let (mut units, mut cut) = (0, code.len());
+    for (at, character) in code.char_indices() {
+        units += character.len_utf16();
+        if units > MAX - 3 && cut == code.len() {
+            cut = at;
+        }
+    }
+    if units <= MAX {
+        Cow::Borrowed(code)
+    } else {
+        Cow::Owned(format!("{}...", &code[..cut]))
+    }
+}
+
 fn is_expression_list(expression: &Expr) -> bool {
     match &expression.kind {
         ExprKind::Generated { expression, .. } => is_expression_list(expression),
@@ -1869,23 +2133,15 @@ fn function_pointer_parameter(fullname: &str, argument: usize) -> Option<String>
     None
 }
 
-fn unary_operator(operator: &str, postfix: bool) -> &str {
+// Allocation expressions are Unary nodes in our syntax tree, while CDT has
+// separate new/delete AST classes. Keep that lexical bridge separate from the
+// mechanically translated IASTUnaryExpression operator match.
+fn unary_operator(operator: &str, postfix: bool) -> &'static str {
     match operator {
-        "++" if postfix => "<operator>.postIncrement",
-        "--" if postfix => "<operator>.postDecrement",
-        "++" => "<operator>.preIncrement",
-        "--" => "<operator>.preDecrement",
-        "+" => "<operator>.plus",
-        "-" => "<operator>.minus",
-        "!" => "<operator>.logicalNot",
-        "~" => "<operator>.not",
-        "*" => "<operator>.indirection",
-        "&" => "<operator>.addressOf",
-        "sizeof" => "<operator>.sizeOf",
-        "typeid" => "<operator>.typeOf",
+        "sizeof..." => "<operator>.sizeOf",
         "new" => "<operator>.new",
         "delete" | "delete[]" => "<operator>.delete",
-        _ => "<operator>.unknown",
+        _ => crate::joern_operators::unary_operator(operator, postfix),
     }
 }
 
@@ -1908,47 +2164,45 @@ fn member_pointer_expression(expression: &Expr) -> bool {
     }
 }
 
-fn binary_operator(operator: &str) -> &str {
-    match operator {
-        "=" => "<operator>.assignment",
-        "+=" => "<operator>.assignmentPlus",
-        "-=" => "<operator>.assignmentMinus",
-        "*=" => "<operator>.assignmentMultiplication",
-        "/=" => "<operator>.assignmentDivision",
-        "%=" => "<operators>.assignmentModulo",
-        "&=" => "<operators>.assignmentAnd",
-        "|=" => "<operators>.assignmentOr",
-        "^=" => "<operators>.assignmentXor",
-        "<<=" => "<operators>.assignmentShiftLeft",
-        ">>=" => "<operators>.assignmentArithmeticShiftRight",
-        "+" => "<operator>.addition",
-        "-" => "<operator>.subtraction",
-        "*" => "<operator>.multiplication",
-        "/" => "<operator>.division",
-        "%" => "<operator>.modulo",
-        "&" => "<operator>.and",
-        "|" => "<operator>.or",
-        "^" => "<operator>.xor",
-        "&&" => "<operator>.logicalAnd",
-        "||" => "<operator>.logicalOr",
-        "<<" => "<operator>.shiftLeft",
-        ">>" => "<operator>.arithmeticShiftRight",
-        "==" => "<operator>.equals",
-        "!=" => "<operator>.notEquals",
-        "<" => "<operator>.lessThan",
-        ">" => "<operator>.greaterThan",
-        "<=" => "<operator>.lessEqualsThan",
-        ">=" => "<operator>.greaterEqualsThan",
-        ".*" | "->*" => "<operator>.indirectFieldAccess",
-        _ => "<operator>.unknown",
-    }
-}
-
 #[cfg(test)]
 mod tests {
+    use super::cpp_call_leaf;
     use crate::{analyze, graph::Options};
     use serde_json::Value;
     use std::collections::HashMap;
+
+    #[test]
+    fn cpp_call_leaves_ignore_template_argument_qualification() {
+        for (name, expected) in [
+            ("::demo::get<types::Box<int>>", "get<types::Box<int>>"),
+            ("demo::operator+<types::Tag>", "operator+<types::Tag>"),
+            ("demo::operator< <types::Tag>", "operator< <types::Tag>"),
+            ("demo::operator>><types::Tag>", "operator>><types::Tag>"),
+            ("demo::myoperator<types::Tag>", "myoperator<types::Tag>"),
+            ("demo::operator_names", "operator_names"),
+        ] {
+            assert_eq!(cpp_call_leaf(name), expected);
+        }
+    }
+
+    #[test]
+    fn gnu_case_range_keeps_joern_ellipsis_operator() {
+        let analysis = analyze(
+            "int f(int x) { switch (x) { case 1 ... 3: return 1; } return 0; }",
+            "input.c",
+            &Options::default(),
+        )
+        .unwrap();
+        let cpg = serde_json::to_value(&analysis.functions[0].cpg).unwrap();
+        assert!(
+            cpg["nodes"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|node| node["name"] == "<operator>.op_ellipses"),
+            "{cpg}"
+        );
+    }
 
     #[test]
     fn nested_function_method_is_an_ast_child_without_parent_cfg_execution() {
@@ -2031,7 +2285,7 @@ mod tests {
                 const DEPTH: usize = 4096;
                 let source = "int deep(int x) { return x; }";
                 for right_associated in [false, true] {
-                    let mut unit = crate::parser::parse_preprocessed(source, false, true, &[]);
+                    let mut unit = crate::parser::parse_preprocessed(source, false, true);
                     let identifier = || Expr {
                         kind: ExprKind::Identifier("x".into()),
                         span: Span::default(),
@@ -2061,9 +2315,13 @@ mod tests {
                     };
                     let function = &unit.functions[0];
                     let known_functions = [function.name.clone()].into_iter().collect();
-                    let methods = [(function.full_name.clone(), vec![function])]
+                    let methods: HashMap<_, _> = [(function.full_name.clone(), vec![function])]
                         .into_iter()
                         .collect();
+                    let bindings = super::CallBindings {
+                        methods: &methods,
+                        known_types: &unit.known_type_names,
+                    };
                     let (graph, diagnostics) = std::thread::scope(|scope| {
                         std::thread::Builder::new()
                             .stack_size(2 * 1024 * 1024)
@@ -2074,8 +2332,8 @@ mod tests {
                                     "input.c",
                                     &known_functions,
                                     false,
-                                    &methods,
-                                    false,
+                                    &bindings,
+                                    &Options::default(),
                                 )
                             })
                             .unwrap()
