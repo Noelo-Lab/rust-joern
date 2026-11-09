@@ -38,7 +38,7 @@ pub(crate) fn binary_operator(operator: &str) -> &'static str {
         "->*" => "<operator>.indirectFieldAccess",
         // IASTBinaryExpression.op_max: separate/unsupported parser owner.
         // IASTBinaryExpression.op_min: separate/unsupported parser owner.
-        // IASTBinaryExpression.op_ellipses: separate/unsupported parser owner.
+        "..." => "<operator>.op_ellipses",
         _ => "<operator>.unknown",
     }
 }

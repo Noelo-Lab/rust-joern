@@ -1,10 +1,13 @@
 use crate::{
-    graph::{Diagnostic, Edge, ExternalReference, FunctionGraph, Node, NodeId, PropertyGraph},
+    graph::{
+        Diagnostic, Edge, ExternalReference, FunctionGraph, Node, NodeId, Options, PropertyGraph,
+    },
     joern_operators::binary_operator,
     lexer::integer_truth,
     normalize,
     syntax::*,
 };
+use std::borrow::Cow;
 use std::collections::{HashMap, HashSet};
 
 #[derive(Default)]
@@ -97,7 +100,7 @@ pub fn build(
     known_functions: &HashSet<String>,
     cpp: bool,
     methods: &HashMap<String, Vec<&Function>>,
-    joern_loop_conditions: bool,
+    options: &Options,
 ) -> (FunctionGraph, Vec<Diagnostic>) {
     let mut builder = Builder {
         source,
@@ -129,7 +132,7 @@ pub fn build(
         },
         diagnostics: Vec::new(),
         try_depth: 0,
-        joern_loop_conditions,
+        joern_loop_conditions: options.joern_loop_conditions,
     };
     let entry = builder.node("METHOD", &function.span, Some(&function.name), None);
     let exit = builder.node("METHOD_RETURN", &function.span, None, Some("RET"));
@@ -145,13 +148,30 @@ pub fn build(
         builder.ast(entry, id, None);
         builder.scopes[0].insert("this".into(), (id, owner.clone()));
     }
-    for parameter in &function.parameters {
+    let mut parameters: Vec<_> = function.parameters.iter().collect();
+    if options.joern_knr_parameters && parameters.iter().any(|parameter| parameter.knr.is_some()) {
+        // ICASTKnRFunctionDeclarator.getParameterDeclarations: `int a, b;`
+        // is one parameter named `a`, and an undeclared name is not one.
+        parameters.retain(|parameter| parameter.knr == Some(KnrParameter::First));
+        parameters.sort_by_key(|parameter| parameter.span.start);
+    }
+    let mut last_parameter = None;
+    for parameter in parameters {
+        if parameter.type_name == "..." && parameter.name == "..." {
+            // setVariadic marks the last named parameter instead of creating
+            // one for the ellipsis; `f(...)` has no parameter at all.
+            if let Some(id) = last_parameter {
+                builder.graph.nodes[id as usize].code.push_str("...");
+            }
+            continue;
+        }
         let id = builder.node(
             "METHOD_PARAMETER_IN",
             &parameter.span,
             (!parameter.name.is_empty()).then_some(parameter.name.as_str()),
             None,
         );
+        last_parameter = Some(id);
         builder.graph.nodes[id as usize].type_name = Some(parameter.type_name.clone());
         if parameter.function_pointer {
             builder.function_pointers.insert(id);
@@ -223,7 +243,11 @@ impl Builder<'_> {
         self.graph.nodes.push(Node {
             id,
             kind: kind.into(),
-            code: code.unwrap_or_else(|| self.code(span)).into(),
+            code: match code {
+                // A control structure's CODE joins already shortened parts.
+                Some(code) if kind == "CONTROL_STRUCTURE" => code.into(),
+                _ => shorten_code(code.unwrap_or_else(|| self.code(span))).into(),
+            },
             name: name.map(str::to_string),
             method_full_name: (kind == "CALL")
                 .then(|| {
@@ -387,11 +411,11 @@ impl Builder<'_> {
             }
         }
         if declaration.nested_declarator {
-            // Scalar parentheses leave the outer declarator's name empty.
-            // Pointer declarators above still recover their nested binding.
-            let id = self.node("IDENTIFIER", &Span::default(), Some(""), Some(""));
-            self.graph.nodes[id as usize].type_name = Some("ANY".into());
-            self.ast(parent, id, Some(argument));
+            // `T (x) = v`, including CDT's reading of `LOBYTE(x) = v`, takes
+            // the same path: nameForIdentifier resolves the outer
+            // declarator's empty name to the nested variable's binding.
+            let id = self.identifier(&declaration.name, &Span::default(), parent, Some(argument));
+            self.graph.nodes[id as usize].code.clear();
             return id;
         }
         if declaration.is_typedef {
@@ -504,13 +528,14 @@ impl Builder<'_> {
         });
     }
     fn control(&mut self, statement: &Stmt, parent: NodeId, name: &str) -> NodeId {
+        let short = |span: &Span| shorten_code(self.code(span));
         let code = match &statement.kind {
-            StmtKind::If { condition, .. } => Some(format!("if ({})", self.code(&condition.span))),
+            StmtKind::If { condition, .. } => Some(format!("if ({})", short(&condition.span))),
             StmtKind::While { condition, .. } => {
-                Some(format!("while ({})", self.code(&condition.span)))
+                Some(format!("while ({})", short(&condition.span)))
             }
             StmtKind::Switch { condition, .. } => {
-                Some(format!("switch({})", self.code(&condition.span)))
+                Some(format!("switch({})", short(&condition.span)))
             }
             StmtKind::For {
                 initializer,
@@ -518,19 +543,35 @@ impl Builder<'_> {
                 update,
                 ..
             } => Some(format!(
-                "for ({};{};{})",
-                initializer
+                "for ({}{};{})",
+                // The initializer statement is shortened with its semicolon,
+                // and keeps the white space before it: `for (i = 0 ;i;i++)`.
+                initializer.as_ref().map_or(";".into(), |x| {
+                    let code = self.code(&x.span).trim_end_matches(';');
+                    let rest = self.source.get(x.span.end..).unwrap_or("");
+                    let space = &rest[..rest.len() - rest.trim_start().len()];
+                    let space = if rest[space.len()..].starts_with(';') {
+                        space
+                    } else {
+                        ""
+                    };
+                    shorten_code(&format!("{code}{space};")).into_owned()
+                }),
+                condition
                     .as_ref()
-                    .map(|x| self.code(&x.span).trim_end_matches(';'))
-                    .unwrap_or(""),
-                condition.as_ref().map(|x| self.code(&x.span)).unwrap_or(""),
-                update.as_ref().map(|x| self.code(&x.span)).unwrap_or(""),
+                    .map(|x| short(&x.span))
+                    .unwrap_or_default(),
+                update.as_ref().map(|x| short(&x.span)).unwrap_or_default(),
             )),
             StmtKind::Try { .. } if name == "TRY" => Some("try".into()),
             StmtKind::Throw(expression) => Some(
                 expression
                     .as_ref()
-                    .map(|expression| format!("throw {}", self.code(&expression.span)))
+                    // The whole throw expression is one shortened CODE.
+                    .map(|expression| {
+                        let code = format!("throw {}", self.code(&expression.span));
+                        shorten_code(&code).into_owned()
+                    })
                     .unwrap_or_else(|| "throw".into()),
             ),
             _ => None,
@@ -1288,7 +1329,9 @@ impl Builder<'_> {
         let mut flow = Fragment::combine([initial, condition, inner]);
         flow.entry = entry;
         flow.fringe = fringe;
-        flow.edges.extend(links);
+        // cfgForForStatement lists the loop's own edges before the nested
+        // ones, which orders the successors of a node ending the body.
+        flow.edges.splice(0..0, links);
         flow.breaks.clear();
         flow.continues.clear();
         flow
@@ -1628,7 +1671,8 @@ impl Builder<'_> {
                 let mut flow = Fragment::combine([condition, body, alternative]);
                 flow.entry = entry;
                 flow.fringe = fringe;
-                flow.edges.extend(links);
+                // cfgForWhileStatement: own edges precede the nested ones.
+                flow.edges.splice(0..0, links);
                 flow.breaks.clear();
                 flow.continues.clear();
                 self.scopes.pop();
@@ -1660,7 +1704,8 @@ impl Builder<'_> {
                 let mut flow = Fragment::combine([body, condition]);
                 flow.entry = entry;
                 flow.fringe = fringe;
-                flow.edges.extend(links);
+                // cfgForDoStatement: own edges precede the nested ones.
+                flow.edges.splice(0..0, links);
                 flow.breaks.clear();
                 flow.continues.clear();
                 flow
@@ -1825,6 +1870,27 @@ impl Builder<'_> {
     }
 }
 
+/// AstNodeBuilder.shortenCode: commons-lang `abbreviate(code, 1000)`, which
+/// keeps 997 UTF-16 units of a longer CODE and appends an ellipsis.
+fn shorten_code(code: &str) -> Cow<'_, str> {
+    const MAX: usize = 1000;
+    if code.len() <= MAX {
+        return Cow::Borrowed(code);
+    }
+    let (mut units, mut cut) = (0, code.len());
+    for (at, character) in code.char_indices() {
+        units += character.len_utf16();
+        if units > MAX - 3 && cut == code.len() {
+            cut = at;
+        }
+    }
+    if units <= MAX {
+        Cow::Borrowed(code)
+    } else {
+        Cow::Owned(format!("{}...", &code[..cut]))
+    }
+}
+
 fn is_expression_list(expression: &Expr) -> bool {
     match &expression.kind {
         ExprKind::Generated { expression, .. } => is_expression_list(expression),
@@ -1875,6 +1941,7 @@ fn function_pointer_parameter(fullname: &str, argument: usize) -> Option<String>
 // mechanically translated IASTUnaryExpression operator match.
 fn unary_operator(operator: &str, postfix: bool) -> &'static str {
     match operator {
+        "sizeof..." => "<operator>.sizeOf",
         "new" => "<operator>.new",
         "delete" | "delete[]" => "<operator>.delete",
         _ => crate::joern_operators::unary_operator(operator, postfix),
@@ -1905,6 +1972,25 @@ mod tests {
     use crate::{analyze, graph::Options};
     use serde_json::Value;
     use std::collections::HashMap;
+
+    #[test]
+    fn gnu_case_range_keeps_joern_ellipsis_operator() {
+        let analysis = analyze(
+            "int f(int x) { switch (x) { case 1 ... 3: return 1; } return 0; }",
+            "input.c",
+            &Options::default(),
+        )
+        .unwrap();
+        let cpg = serde_json::to_value(&analysis.functions[0].cpg).unwrap();
+        assert!(
+            cpg["nodes"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|node| node["name"] == "<operator>.op_ellipses"),
+            "{cpg}"
+        );
+    }
 
     #[test]
     fn nested_function_method_is_an_ast_child_without_parent_cfg_execution() {
@@ -2031,7 +2117,7 @@ mod tests {
                                     &known_functions,
                                     false,
                                     &methods,
-                                    false,
+                                    &Options::default(),
                                 )
                             })
                             .unwrap()

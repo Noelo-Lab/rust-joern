@@ -1,0 +1,4985 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 12.32289013825357,
+    "supplemental_raw_parse_seconds": 10.919103851076216
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "spaced": {
+      "name": "spaced",
+      "fullname": "spaced",
+      "filename": "code-text.c",
+      "start_line": 3,
+      "end_line": 10,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 3,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,spaced",
+                    "source_line_number": 3,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct node *list)<SUB>3</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct node *list)<SUB>3</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct node *wl)<SUB>3</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct node *wl)<SUB>3</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,l,for(rval=0,l=wl?wl:list;l;l=l-&gt;next)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,l,for(rval=0,l=wl?wl:list;l;l=l-&gt;next)",
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['assignmentPlus', 'rval+=l-&gt;v']>",
+                  "fields": {
+                    "raw_text": [
+                      "assignmentPlus",
+                      "rval+=l-&gt;v"
+                    ],
+                    "source_line_number": 8
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 9,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,rval,returnrval;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,rval,returnrval;",
+                    "source_line_number": 9
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['expressionList', 'rval=0', 'l=wl?wl:list']>",
+                  "fields": {
+                    "raw_text": [
+                      "expressionList",
+                      "rval=0",
+                      "l=wl?wl:list"
+                    ],
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "rval = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "rval=0"
+                    ],
+                    "source_line_number": 7,
+                    "src": "rval",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "l = wl?wl:list",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "l=wl?wl:list"
+                    ],
+                    "source_line_number": 7,
+                    "src": "l",
+                    "dst": "wl?wl:list"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "wl ? w : l",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,wl?wl:list",
+                    "source_line_number": 7,
+                    "cond": "wl",
+                    "true": "w",
+                    "false": "l"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 9,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return rval;,returnrval;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnrval;",
+                      "returnrval;"
+                    ],
+                    "source_line_number": 9,
+                    "ret": "rval;,returnrval;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 3,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "l = l-&gt;next",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "l=l-&gt;next"
+                    ],
+                    "source_line_number": 7,
+                    "src": "l",
+                    "dst": "l-&gt;next"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 4,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 3,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,spaced",
+                    "source_line_number": 3,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct node *list)<SUB>3</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct node *list)<SUB>3</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct node *wl)<SUB>3</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct node *wl)<SUB>3</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,l,for(rval=0,l=wl?wl:list;l;l=l-&gt;next)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,l,for(rval=0,l=wl?wl:list;l;l=l-&gt;next)",
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['assignmentPlus', 'rval+=l-&gt;v']>",
+                  "fields": {
+                    "raw_text": [
+                      "assignmentPlus",
+                      "rval+=l-&gt;v"
+                    ],
+                    "source_line_number": 8
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 9,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,rval,returnrval;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,rval,returnrval;",
+                    "source_line_number": 9
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['expressionList', 'rval=0', 'l=wl?wl:list']>",
+                  "fields": {
+                    "raw_text": [
+                      "expressionList",
+                      "rval=0",
+                      "l=wl?wl:list"
+                    ],
+                    "source_line_number": 7
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "rval = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "rval=0"
+                    ],
+                    "source_line_number": 7,
+                    "src": "rval",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "l = wl?wl:list",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "l=wl?wl:list"
+                    ],
+                    "source_line_number": 7,
+                    "src": "l",
+                    "dst": "wl?wl:list"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Ternary",
+                  "text": "wl ? w : l",
+                  "fields": {
+                    "raw_text": "&lt;operator&gt;.conditional,wl?wl:list",
+                    "source_line_number": 7,
+                    "cond": "wl",
+                    "true": "w",
+                    "false": "l"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 9,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return rval;,returnrval;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnrval;",
+                      "returnrval;"
+                    ],
+                    "source_line_number": 9,
+                    "ret": "rval;,returnrval;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 3,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "l = l-&gt;next",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "l=l-&gt;next"
+                    ],
+                    "source_line_number": 7,
+                    "src": "l",
+                    "dst": "l-&gt;next"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 4,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,spaced)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,struct node *list)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,struct node *wl)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(RETURN,return rval;,return rval;)<SUB>9</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,l,for (rval = 0, l = wl ? wl : list ;l;l = l->next))<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.assignment,l = l->next)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.assignmentPlus,rval += l->v)<SUB>8</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(IDENTIFIER,rval,return rval;)<SUB>9</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.expressionList,rval = 0, l = wl ? wl : list)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.assignment,rval = 0)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.assignment,l = wl ? wl : list)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(<operator>.conditional,wl ? wl : list)<SUB>7</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 9,
+            "label": "list"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "label": "list"
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "label": "list"
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": "wl"
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "label": "wl"
+          },
+          {
+            "source": 3,
+            "target": 12,
+            "label": "wl"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "l"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "l->next"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "l = l->next"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "label": "l"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "rval"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "l->v"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "rval += l->v"
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "label": "rval"
+          },
+          {
+            "source": 8,
+            "target": 4,
+            "label": "rval"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "rval = 0"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "l = wl ? wl : list"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "rval = 0, l = wl ? wl : list"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "rval"
+          },
+          {
+            "source": 10,
+            "target": 7,
+            "label": "rval"
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "label": "rval"
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": "rval"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "l"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "wl ? wl : list"
+          },
+          {
+            "source": 11,
+            "target": 6,
+            "label": "l"
+          },
+          {
+            "source": 11,
+            "target": 7,
+            "label": "l"
+          },
+          {
+            "source": 11,
+            "target": 9,
+            "label": "l"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "wl"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "list"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"spaced\" {  \n\"111669149697\" [label = <(METHOD,spaced)<SUB>3</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>3</SUB>> ]\n\"115964116992\" [label = <(PARAM,struct node *list)<SUB>3</SUB>> ]\n\"115964116993\" [label = <(PARAM,struct node *wl)<SUB>3</SUB>> ]\n\"146028888064\" [label = <(RETURN,return rval;,return rval;)<SUB>9</SUB>> ]\n\"68719476741\" [label = <(IDENTIFIER,l,for (rval = 0, l = wl ? wl : list ;l;l = l-&gt;next))<SUB>7</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,l = l-&gt;next)<SUB>7</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.assignmentPlus,rval += l-&gt;v)<SUB>8</SUB>> ]\n\"68719476746\" [label = <(IDENTIFIER,rval,return rval;)<SUB>9</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.expressionList,rval = 0, l = wl ? wl : list)<SUB>7</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,l = l-&gt;next)<SUB>7</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,l = l-&gt;next)<SUB>7</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.assignmentPlus,rval += l-&gt;v)<SUB>8</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.assignmentPlus,rval += l-&gt;v)<SUB>8</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.expressionList,rval = 0, l = wl ? wl : list)<SUB>7</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.expressionList,rval = 0, l = wl ? wl : list)<SUB>7</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,rval = 0)<SUB>7</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,rval = 0)<SUB>7</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.assignment,l = wl ? wl : list)<SUB>7</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.assignment,l = wl ? wl : list)<SUB>7</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.conditional,wl ? wl : list)<SUB>7</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.conditional,wl ? wl : list)<SUB>7</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.conditional,wl ? wl : list)<SUB>7</SUB>> ]\n  \"146028888064\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771073\" -> \"128849018880\"  [ label = \"rval\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"rval = 0\"] \n  \"30064771074\" -> \"128849018880\"  [ label = \"l\"] \n  \"30064771075\" -> \"128849018880\"  [ label = \"wl\"] \n  \"30064771075\" -> \"128849018880\"  [ label = \"list\"] \n  \"30064771074\" -> \"128849018880\"  [ label = \"wl ? wl : list\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"l = wl ? wl : list\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"rval = 0, l = wl ? wl : list\"] \n  \"30064771078\" -> \"128849018880\"  [ label = \"rval\"] \n  \"30064771078\" -> \"128849018880\"  [ label = \"l-&gt;v\"] \n  \"30064771078\" -> \"128849018880\"  [ label = \"rval += l-&gt;v\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"l\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"l-&gt;next\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"l = l-&gt;next\"] \n  \"111669149697\" -> \"115964116992\" \n  \"111669149697\" -> \"115964116993\" \n  \"68719476746\" -> \"146028888064\"  [ label = \"rval\"] \n  \"111669149697\" -> \"68719476741\" \n  \"30064771074\" -> \"30064771076\"  [ label = \"l\"] \n  \"30064771074\" -> \"30064771078\"  [ label = \"l\"] \n  \"30064771076\" -> \"30064771078\"  [ label = \"l\"] \n  \"30064771078\" -> \"68719476746\"  [ label = \"rval\"] \n  \"30064771073\" -> \"68719476746\"  [ label = \"rval\"] \n  \"111669149697\" -> \"68719476746\" \n  \"30064771073\" -> \"30064771078\"  [ label = \"rval\"] \n  \"111669149697\" -> \"30064771078\" \n  \"30064771073\" -> \"30064771072\"  [ label = \"rval\"] \n  \"111669149697\" -> \"30064771072\" \n  \"30064771074\" -> \"30064771072\"  [ label = \"l\"] \n  \"115964116993\" -> \"30064771072\"  [ label = \"wl\"] \n  \"115964116992\" -> \"30064771072\"  [ label = \"list\"] \n  \"111669149697\" -> \"30064771073\" \n  \"115964116993\" -> \"30064771074\"  [ label = \"wl\"] \n  \"111669149697\" -> \"30064771074\" \n  \"115964116992\" -> \"30064771074\"  [ label = \"list\"] \n  \"115964116993\" -> \"30064771075\"  [ label = \"wl\"] \n  \"111669149697\" -> \"30064771075\" \n  \"115964116992\" -> \"30064771075\"  [ label = \"list\"] \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"spaced\" {  \n\"146028888064\" [label = <(RETURN,return rval;,return rval;)<SUB>9</SUB>> ]\n\"68719476741\" [label = <(IDENTIFIER,l,for (rval = 0, l = wl ? wl : list ;l;l = l-&gt;next))<SUB>7</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.assignment,l = l-&gt;next)<SUB>7</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.assignmentPlus,rval += l-&gt;v)<SUB>8</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.expressionList,rval = 0, l = wl ? wl : list)<SUB>7</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.indirectFieldAccess,l-&gt;next)<SUB>7</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.indirectFieldAccess,l-&gt;v)<SUB>8</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,rval = 0)<SUB>7</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.assignment,l = wl ? wl : list)<SUB>7</SUB>> ]\n\"55834574848\" [label = <(FIELD_IDENTIFIER,next,next)<SUB>7</SUB>> ]\n\"55834574849\" [label = <(FIELD_IDENTIFIER,v,v)<SUB>8</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.conditional,wl ? wl : list)<SUB>7</SUB>> ]\n\"111669149697\" [label = <(METHOD,spaced)<SUB>3</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>3</SUB>> ]\n  \"146028888064\" -> \"128849018880\" \n  \"68719476741\" -> \"55834574849\" \n  \"68719476741\" -> \"146028888064\" \n  \"30064771076\" -> \"68719476741\" \n  \"30064771078\" -> \"55834574848\" \n  \"30064771072\" -> \"68719476741\" \n  \"30064771077\" -> \"30064771076\" \n  \"30064771079\" -> \"30064771078\" \n  \"30064771073\" -> \"30064771075\" \n  \"30064771074\" -> \"30064771072\" \n  \"55834574848\" -> \"30064771077\" \n  \"55834574849\" -> \"30064771079\" \n  \"30064771075\" -> \"30064771074\" \n  \"111669149697\" -> \"30064771073\" \n}\n"
+      ]
+    },
+    "both_spaced": {
+      "name": "both_spaced",
+      "fullname": "both_spaced",
+      "filename": "code-text.c",
+      "start_line": 11,
+      "end_line": 24,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 11,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,both_spaced",
+                    "source_line_number": 11,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct node *vp)<SUB>11</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct node *vp)<SUB>11</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "n = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "n=0"
+                    ],
+                    "source_line_number": 13,
+                    "src": "n",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,vp,for(n=0;vp;vp=vp-&gt;next)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,vp,for(n=0;vp;vp=vp-&gt;next)",
+                    "source_line_number": 14
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'n++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "n++"
+                    ],
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,for(inti=0;n;n--)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,for(inti=0;n;n--)",
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "vp = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "vp=0"
+                    ],
+                    "source_line_number": 17,
+                    "src": "vp",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 19
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 19
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 20,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "vp = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "vp=0"
+                    ],
+                    "source_line_number": 20,
+                    "src": "vp",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,for(;n;)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,for(;n;)",
+                    "source_line_number": 21
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 22,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 22
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 23,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,returnn;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,returnn;",
+                    "source_line_number": 23
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "n = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "n=0"
+                    ],
+                    "source_line_number": 14,
+                    "src": "n",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "i = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "i=0"
+                    ],
+                    "source_line_number": 16,
+                    "src": "i",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "n = 3",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "n=3"
+                    ],
+                    "source_line_number": 18,
+                    "src": "n",
+                    "dst": "3"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 11,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "vp = vp-&gt;next",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "vp=vp-&gt;next"
+                    ],
+                    "source_line_number": 14,
+                    "src": "vp",
+                    "dst": "vp-&gt;next"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "addr": 23,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return n;,returnn;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnn;",
+                      "returnn;"
+                    ],
+                    "source_line_number": 23,
+                    "ret": "n;,returnn;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 18,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 19,
+            "target": 17,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 11,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,both_spaced",
+                    "source_line_number": 11,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct node *vp)<SUB>11</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct node *vp)<SUB>11</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "n = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "n=0"
+                    ],
+                    "source_line_number": 13,
+                    "src": "n",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,vp,for(n=0;vp;vp=vp-&gt;next)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,vp,for(n=0;vp;vp=vp-&gt;next)",
+                    "source_line_number": 14
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'n++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "n++"
+                    ],
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,for(inti=0;n;n--)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,for(inti=0;n;n--)",
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "vp = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "vp=0"
+                    ],
+                    "source_line_number": 17,
+                    "src": "vp",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 19
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 19
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 20,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "vp = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "vp=0"
+                    ],
+                    "source_line_number": 20,
+                    "src": "vp",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,for(;n;)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,for(;n;)",
+                    "source_line_number": 21
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 22,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 22
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 23,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,returnn;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,returnn;",
+                    "source_line_number": 23
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "n = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "n=0"
+                    ],
+                    "source_line_number": 14,
+                    "src": "n",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "i = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "i=0"
+                    ],
+                    "source_line_number": 16,
+                    "src": "i",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 18,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "n = 3",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "n=3"
+                    ],
+                    "source_line_number": 18,
+                    "src": "n",
+                    "dst": "3"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 11,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "vp = vp-&gt;next",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "vp=vp-&gt;next"
+                    ],
+                    "source_line_number": 14,
+                    "src": "vp",
+                    "dst": "vp-&gt;next"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "addr": 23,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return n;,returnn;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnn;",
+                      "returnn;"
+                    ],
+                    "source_line_number": 23,
+                    "ret": "n;,returnn;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 18,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 19,
+            "target": 17,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,both_spaced)<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,struct node *vp)<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(<operator>.assignment,n = 0)<SUB>13</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(RETURN,return n;,return n;)<SUB>23</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,vp,for (n = 0 ;vp;vp = vp->next))<SUB>14</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.assignment,vp = vp->next)<SUB>14</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,n++)<SUB>15</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(IDENTIFIER,n,for (int i = 0 ;n;n--))<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.postDecrement,n--)<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.assignment,vp = 0)<SUB>17</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(IDENTIFIER,n,for (n = 3\n\t     ;n;n--))<SUB>19</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(<operator>.postDecrement,n--)<SUB>19</SUB>"
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "dot_label": "(<operator>.assignment,vp = 0)<SUB>20</SUB>"
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "dot_label": "(IDENTIFIER,n,for (;n;))<SUB>21</SUB>"
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "dot_label": "(<operator>.postDecrement,n--)<SUB>22</SUB>"
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "dot_label": "(IDENTIFIER,n,return n;)<SUB>23</SUB>"
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "dot_label": "(<operator>.assignment,n = 0)<SUB>14</SUB>"
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "dot_label": "(<operator>.assignment,i = 0)<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "dot_label": "(<operator>.assignment,n = 3)<SUB>18</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "vp"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": "vp"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "vp"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "vp->next"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "vp = vp->next"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "n++"
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "label": "n"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "n--"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "vp"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "vp = 0"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "n"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "n--"
+          },
+          {
+            "source": 12,
+            "target": 15,
+            "label": "n"
+          },
+          {
+            "source": 12,
+            "target": 16,
+            "label": "n"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "vp"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "vp = 0"
+          },
+          {
+            "source": 15,
+            "target": 1,
+            "label": "n"
+          },
+          {
+            "source": 15,
+            "target": 1,
+            "label": "n--"
+          },
+          {
+            "source": 15,
+            "target": 16,
+            "label": "n"
+          },
+          {
+            "source": 16,
+            "target": 4,
+            "label": "n"
+          },
+          {
+            "source": 17,
+            "target": 1,
+            "label": "n = 0"
+          },
+          {
+            "source": 17,
+            "target": 7,
+            "label": "n"
+          },
+          {
+            "source": 17,
+            "target": 9,
+            "label": "n"
+          },
+          {
+            "source": 18,
+            "target": 1,
+            "label": "i"
+          },
+          {
+            "source": 18,
+            "target": 1,
+            "label": "i = 0"
+          },
+          {
+            "source": 19,
+            "target": 1,
+            "label": "n"
+          },
+          {
+            "source": 19,
+            "target": 1,
+            "label": "n = 3"
+          },
+          {
+            "source": 19,
+            "target": 12,
+            "label": "n"
+          },
+          {
+            "source": 19,
+            "target": 15,
+            "label": "n"
+          },
+          {
+            "source": 19,
+            "target": 16,
+            "label": "n"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"both_spaced\" {  \n\"111669149698\" [label = <(METHOD,both_spaced)<SUB>11</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>11</SUB>> ]\n\"115964116994\" [label = <(PARAM,struct node *vp)<SUB>11</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,n = 0)<SUB>13</SUB>> ]\n\"146028888065\" [label = <(RETURN,return n;,return n;)<SUB>23</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,n = 0)<SUB>13</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,n = 0)<SUB>13</SUB>> ]\n\"68719476749\" [label = <(IDENTIFIER,vp,for (n = 0 ;vp;vp = vp-&gt;next))<SUB>14</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.assignment,vp = vp-&gt;next)<SUB>14</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.postIncrement,n++)<SUB>15</SUB>> ]\n\"68719476754\" [label = <(IDENTIFIER,n,for (int i = 0 ;n;n--))<SUB>16</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>16</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.assignment,vp = 0)<SUB>17</SUB>> ]\n\"68719476758\" [label = <(IDENTIFIER,n,for (n = 3\n\t     ;n;n--))<SUB>19</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>19</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,vp = 0)<SUB>20</SUB>> ]\n\"68719476761\" [label = <(IDENTIFIER,n,for (;n;))<SUB>21</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>22</SUB>> ]\n\"68719476763\" [label = <(IDENTIFIER,n,return n;)<SUB>23</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.assignment,n = 0)<SUB>14</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.assignment,vp = vp-&gt;next)<SUB>14</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.assignment,vp = vp-&gt;next)<SUB>14</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.postIncrement,n++)<SUB>15</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.assignment,i = 0)<SUB>16</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>16</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.assignment,vp = 0)<SUB>17</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.assignment,vp = 0)<SUB>17</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.assignment,n = 3)<SUB>18</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>19</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,vp = 0)<SUB>20</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,vp = 0)<SUB>20</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>22</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.assignment,n = 0)<SUB>14</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.assignment,n = 0)<SUB>14</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.assignment,i = 0)<SUB>16</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.assignment,i = 0)<SUB>16</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.assignment,n = 3)<SUB>18</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.assignment,n = 3)<SUB>18</SUB>> ]\n  \"146028888065\" -> \"128849018881\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116994\" -> \"128849018881\"  [ label = \"vp\"] \n  \"30064771081\" -> \"128849018881\"  [ label = \"n = 0\"] \n  \"30064771085\" -> \"128849018881\"  [ label = \"i\"] \n  \"30064771085\" -> \"128849018881\"  [ label = \"i = 0\"] \n  \"30064771088\" -> \"128849018881\"  [ label = \"n\"] \n  \"30064771088\" -> \"128849018881\"  [ label = \"n = 3\"] \n  \"30064771091\" -> \"128849018881\"  [ label = \"n\"] \n  \"30064771091\" -> \"128849018881\"  [ label = \"n--\"] \n  \"30064771090\" -> \"128849018881\"  [ label = \"vp\"] \n  \"30064771090\" -> \"128849018881\"  [ label = \"vp = 0\"] \n  \"30064771089\" -> \"128849018881\"  [ label = \"n\"] \n  \"30064771089\" -> \"128849018881\"  [ label = \"n--\"] \n  \"30064771087\" -> \"128849018881\"  [ label = \"vp\"] \n  \"30064771087\" -> \"128849018881\"  [ label = \"vp = 0\"] \n  \"30064771086\" -> \"128849018881\"  [ label = \"n--\"] \n  \"30064771084\" -> \"128849018881\"  [ label = \"n++\"] \n  \"30064771082\" -> \"128849018881\"  [ label = \"vp\"] \n  \"30064771082\" -> \"128849018881\"  [ label = \"vp-&gt;next\"] \n  \"30064771082\" -> \"128849018881\"  [ label = \"vp = vp-&gt;next\"] \n  \"111669149698\" -> \"115964116994\" \n  \"111669149698\" -> \"30064771080\" \n  \"68719476763\" -> \"146028888065\"  [ label = \"n\"] \n  \"111669149698\" -> \"68719476749\" \n  \"115964116994\" -> \"30064771082\"  [ label = \"vp\"] \n  \"111669149698\" -> \"68719476754\" \n  \"111669149698\" -> \"30064771087\" \n  \"111669149698\" -> \"68719476758\" \n  \"111669149698\" -> \"30064771090\" \n  \"111669149698\" -> \"68719476761\" \n  \"30064771091\" -> \"68719476763\"  [ label = \"n\"] \n  \"30064771089\" -> \"68719476763\"  [ label = \"n\"] \n  \"30064771088\" -> \"68719476763\"  [ label = \"n\"] \n  \"111669149698\" -> \"68719476763\" \n  \"111669149698\" -> \"30064771081\" \n  \"30064771081\" -> \"30064771084\"  [ label = \"n\"] \n  \"111669149698\" -> \"30064771084\" \n  \"111669149698\" -> \"30064771085\" \n  \"30064771081\" -> \"30064771086\"  [ label = \"n\"] \n  \"30064771084\" -> \"30064771086\"  [ label = \"n\"] \n  \"111669149698\" -> \"30064771086\" \n  \"111669149698\" -> \"30064771088\" \n  \"30064771088\" -> \"30064771089\"  [ label = \"n\"] \n  \"111669149698\" -> \"30064771089\" \n  \"30064771088\" -> \"30064771091\"  [ label = \"n\"] \n  \"30064771089\" -> \"30064771091\"  [ label = \"n\"] \n  \"111669149698\" -> \"30064771091\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"both_spaced\" {  \n\"30064771080\" [label = <(&lt;operator&gt;.assignment,n = 0)<SUB>13</SUB>> ]\n\"146028888065\" [label = <(RETURN,return n;,return n;)<SUB>23</SUB>> ]\n\"68719476749\" [label = <(IDENTIFIER,vp,for (n = 0 ;vp;vp = vp-&gt;next))<SUB>14</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.assignment,vp = vp-&gt;next)<SUB>14</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.postIncrement,n++)<SUB>15</SUB>> ]\n\"68719476754\" [label = <(IDENTIFIER,n,for (int i = 0 ;n;n--))<SUB>16</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>16</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.assignment,vp = 0)<SUB>17</SUB>> ]\n\"68719476758\" [label = <(IDENTIFIER,n,for (n = 3\n\t     ;n;n--))<SUB>19</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>19</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,vp = 0)<SUB>20</SUB>> ]\n\"68719476761\" [label = <(IDENTIFIER,n,for (;n;))<SUB>21</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>22</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.assignment,n = 0)<SUB>14</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.indirectFieldAccess,vp-&gt;next)<SUB>14</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.assignment,i = 0)<SUB>16</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.assignment,n = 3)<SUB>18</SUB>> ]\n\"55834574850\" [label = <(FIELD_IDENTIFIER,next,next)<SUB>14</SUB>> ]\n\"111669149698\" [label = <(METHOD,both_spaced)<SUB>11</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>11</SUB>> ]\n  \"30064771080\" -> \"30064771081\" \n  \"146028888065\" -> \"128849018881\" \n  \"68719476749\" -> \"30064771084\" \n  \"68719476749\" -> \"30064771085\" \n  \"30064771082\" -> \"68719476749\" \n  \"30064771084\" -> \"55834574850\" \n  \"68719476754\" -> \"30064771087\" \n  \"68719476754\" -> \"30064771088\" \n  \"30064771086\" -> \"68719476754\" \n  \"30064771087\" -> \"30064771086\" \n  \"68719476758\" -> \"68719476761\" \n  \"68719476758\" -> \"30064771090\" \n  \"30064771089\" -> \"68719476758\" \n  \"30064771090\" -> \"30064771089\" \n  \"68719476761\" -> \"30064771091\" \n  \"68719476761\" -> \"146028888065\" \n  \"30064771091\" -> \"68719476761\" \n  \"30064771081\" -> \"68719476749\" \n  \"30064771083\" -> \"30064771082\" \n  \"30064771085\" -> \"68719476754\" \n  \"30064771088\" -> \"68719476758\" \n  \"55834574850\" -> \"30064771083\" \n  \"111669149698\" -> \"30064771080\" \n}\n"
+      ]
+    },
+    "first_child": {
+      "name": "first_child",
+      "fullname": "first_child",
+      "filename": "code-text.c",
+      "start_line": 28,
+      "end_line": 33,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 28,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,first_child",
+                    "source_line_number": 28,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct list_head *head)<SUB>28</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct list_head *head)<SUB>28</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "dev = ({consttypeof(((typeof(*dev)*)0)-&gt;sib...",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "dev=({consttypeof(((typeof(*dev)*)0)-&gt;sib..."
+                    ],
+                    "source_line_number": 31,
+                    "src": "dev",
+                    "dst": "({consttypeof(((typeof(*dev)*)0)-&gt;sib..."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,dev,returndev;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,dev,returndev;",
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['subtraction', '(char*)__mptr-__builtin_offsetof(typeof(*dev...']>",
+                  "fields": {
+                    "raw_text": [
+                      "subtraction",
+                      "(char*)__mptr-__builtin_offsetof(typeof(*dev..."
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(char*)__mptr']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(char*)__mptr"
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(typeof*)0']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(typeof*)0"
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 28,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,structudevice",
+                    "source_line_number": 28,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*__mptr = (head-&gt;next)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*__mptr=(head-&gt;next)"
+                    ],
+                    "source_line_number": 31,
+                    "src": "*__mptr",
+                    "dst": "(head-&gt;next)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return dev;,returndev;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returndev;",
+                      "returndev;"
+                    ],
+                    "source_line_number": 32,
+                    "ret": "dev;,returndev;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(typeof(*dev)*)((char*)__mptr-__builtin_of...']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(typeof(*dev)*)((char*)__mptr-__builtin_of..."
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(size_t)&amp;((typeof*)0)-&gt;sibling_node']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(size_t)&amp;((typeof*)0)-&gt;sibling_node"
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 7,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 28,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,first_child",
+                    "source_line_number": 28,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct list_head *head)<SUB>28</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct list_head *head)<SUB>28</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "dev = ({consttypeof(((typeof(*dev)*)0)-&gt;sib...",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "dev=({consttypeof(((typeof(*dev)*)0)-&gt;sib..."
+                    ],
+                    "source_line_number": 31,
+                    "src": "dev",
+                    "dst": "({consttypeof(((typeof(*dev)*)0)-&gt;sib..."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,dev,returndev;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,dev,returndev;",
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['subtraction', '(char*)__mptr-__builtin_offsetof(typeof(*dev...']>",
+                  "fields": {
+                    "raw_text": [
+                      "subtraction",
+                      "(char*)__mptr-__builtin_offsetof(typeof(*dev..."
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(char*)__mptr']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(char*)__mptr"
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(typeof*)0']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(typeof*)0"
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 28,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,structudevice",
+                    "source_line_number": 28,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*__mptr = (head-&gt;next)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*__mptr=(head-&gt;next)"
+                    ],
+                    "source_line_number": 31,
+                    "src": "*__mptr",
+                    "dst": "(head-&gt;next)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return dev;,returndev;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returndev;",
+                      "returndev;"
+                    ],
+                    "source_line_number": 32,
+                    "ret": "dev;,returndev;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(typeof(*dev)*)((char*)__mptr-__builtin_of...']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(typeof(*dev)*)((char*)__mptr-__builtin_of..."
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(size_t)&amp;((typeof*)0)-&gt;sibling_node']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(size_t)&amp;((typeof*)0)-&gt;sibling_node"
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 7,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,first_child)<SUB>28</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,struct udevice)<SUB>28</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,struct list_head *head)<SUB>28</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(<operator>.assignment,dev = ({ const typeof( ((typeof(*dev) *)0)->sib...)<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(RETURN,return dev;,return dev;)<SUB>32</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,dev,return dev;)<SUB>32</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.assignment,*__mptr = (head->next))<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.cast,(typeof(*dev) *)( (char *)__mptr - __builtin_of...)<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.subtraction,(char *)__mptr - __builtin_offsetof(typeof(*dev...)<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.cast,(char *)__mptr)<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.cast,(size_t)&((typeof *)0)->sibling_node)<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.cast,(typeof *)0)<SUB>31</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "head"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": "head"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "dev"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "dev = ({ const typeof( ((typeof(*dev) *)0)->sibling_node ) *__mptr = (head->next); (typeof(*dev) *)( (char *)__mptr - __builtin_offsetof(typeof(*dev), sibling_node) );})"
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "label": "dev"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": "dev"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "head->next"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "*__mptr = (head->next)"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": "__mptr"
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "label": "__mptr"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "(char *)__mptr - __builtin_offsetof(typeof(*dev), sibling_node)"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "(typeof(*dev) *)( (char *)__mptr - __builtin_offsetof(typeof(*dev), sibling_node) )"
+          },
+          {
+            "source": 7,
+            "target": 3,
+            "label": "(typeof(*dev) *)( (char *)__mptr - __builtin_offsetof(typeof(*dev), sibling_node) )"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "(char *)__mptr"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "__builtin_offsetof(typeof(*dev), sibling_node)"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": "(char *)__mptr"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": "__builtin_offsetof(typeof(*dev), sibling_node)"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "__mptr"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "&((typeof *)0)->sibling_node"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "(size_t)&((typeof *)0)->sibling_node"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"first_child\" {  \n\"111669149699\" [label = <(METHOD,first_child)<SUB>28</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,struct udevice)<SUB>28</SUB>> ]\n\"115964116995\" [label = <(PARAM,struct list_head *head)<SUB>28</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.assignment,dev = ({ const typeof( ((typeof(*dev) *)0)-&gt;sib...)<SUB>31</SUB>> ]\n\"146028888066\" [label = <(RETURN,return dev;,return dev;)<SUB>32</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.assignment,dev = ({ const typeof( ((typeof(*dev) *)0)-&gt;sib...)<SUB>31</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.assignment,dev = ({ const typeof( ((typeof(*dev) *)0)-&gt;sib...)<SUB>31</SUB>> ]\n\"68719476768\" [label = <(IDENTIFIER,dev,return dev;)<SUB>32</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.assignment,*__mptr = (head-&gt;next))<SUB>31</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.cast,(typeof(*dev) *)( (char *)__mptr - __builtin_of...)<SUB>31</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.assignment,*__mptr = (head-&gt;next))<SUB>31</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.assignment,*__mptr = (head-&gt;next))<SUB>31</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.cast,(typeof(*dev) *)( (char *)__mptr - __builtin_of...)<SUB>31</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.subtraction,(char *)__mptr - __builtin_offsetof(typeof(*dev...)<SUB>31</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.subtraction,(char *)__mptr - __builtin_offsetof(typeof(*dev...)<SUB>31</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.cast,(char *)__mptr)<SUB>31</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((typeof *)0)-&gt;sibling_node)<SUB>31</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((typeof *)0)-&gt;sibling_node)<SUB>31</SUB>> ]\n\"30064771102\" [label = <(&lt;operator&gt;.cast,(typeof *)0)<SUB>31</SUB>> ]\n  \"146028888066\" -> \"128849018882\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116995\" -> \"128849018882\"  [ label = \"head\"] \n  \"30064771092\" -> \"128849018882\"  [ label = \"dev\"] \n  \"30064771093\" -> \"128849018882\"  [ label = \"head-&gt;next\"] \n  \"30064771093\" -> \"128849018882\"  [ label = \"*__mptr = (head-&gt;next)\"] \n  \"30064771097\" -> \"128849018882\"  [ label = \"__mptr\"] \n  \"30064771096\" -> \"128849018882\"  [ label = \"(char *)__mptr\"] \n  \"30064771096\" -> \"128849018882\"  [ label = \"__builtin_offsetof(typeof(*dev), sibling_node)\"] \n  \"30064771099\" -> \"128849018882\"  [ label = \"&amp;((typeof *)0)-&gt;sibling_node\"] \n  \"30064771099\" -> \"128849018882\"  [ label = \"(size_t)&amp;((typeof *)0)-&gt;sibling_node\"] \n  \"30064771095\" -> \"128849018882\"  [ label = \"(char *)__mptr - __builtin_offsetof(typeof(*dev), sibling_node)\"] \n  \"30064771095\" -> \"128849018882\"  [ label = \"(typeof(*dev) *)( (char *)__mptr - __builtin_offsetof(typeof(*dev), sibling_node) )\"] \n  \"30064771092\" -> \"128849018882\"  [ label = \"dev = ({ const typeof( ((typeof(*dev) *)0)-&gt;sibling_node ) *__mptr = (head-&gt;next); (typeof(*dev) *)( (char *)__mptr - __builtin_offsetof(typeof(*dev), sibling_node) );})\"] \n  \"111669149699\" -> \"115964116995\" \n  \"30064771095\" -> \"30064771092\"  [ label = \"(typeof(*dev) *)( (char *)__mptr - __builtin_offsetof(typeof(*dev), sibling_node) )\"] \n  \"111669149699\" -> \"30064771092\" \n  \"68719476768\" -> \"146028888066\"  [ label = \"dev\"] \n  \"30064771092\" -> \"68719476768\"  [ label = \"dev\"] \n  \"111669149699\" -> \"68719476768\" \n  \"115964116995\" -> \"30064771093\"  [ label = \"head\"] \n  \"30064771096\" -> \"30064771095\"  [ label = \"(char *)__mptr\"] \n  \"30064771096\" -> \"30064771095\"  [ label = \"__builtin_offsetof(typeof(*dev), sibling_node)\"] \n  \"30064771093\" -> \"30064771096\"  [ label = \"__mptr\"] \n  \"111669149699\" -> \"30064771096\" \n  \"30064771093\" -> \"30064771097\"  [ label = \"__mptr\"] \n  \"111669149699\" -> \"30064771097\" \n  \"111669149699\" -> \"30064771102\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"first_child\" {  \n\"30064771092\" [label = <(&lt;operator&gt;.assignment,dev = ({ const typeof( ((typeof(*dev) *)0)-&gt;sib...)<SUB>31</SUB>> ]\n\"146028888066\" [label = <(RETURN,return dev;,return dev;)<SUB>32</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.assignment,*__mptr = (head-&gt;next))<SUB>31</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.cast,(typeof(*dev) *)( (char *)__mptr - __builtin_of...)<SUB>31</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.indirectFieldAccess,head-&gt;next)<SUB>31</SUB>> ]\n\"184683593728\" [label = <(UNKNOWN,typeof(*dev) *,typeof(*dev) *)<SUB>31</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.subtraction,(char *)__mptr - __builtin_offsetof(typeof(*dev...)<SUB>31</SUB>> ]\n\"55834574851\" [label = <(FIELD_IDENTIFIER,next,next)<SUB>31</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.cast,(char *)__mptr)<SUB>31</SUB>> ]\n\"30064771098\" [label = <(__builtin_offsetof,__builtin_offsetof(typeof(*dev), sibling_node))<SUB>31</SUB>> ]\n\"184683593729\" [label = <(UNKNOWN,char *,char *)<SUB>31</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((typeof *)0)-&gt;sibling_node)<SUB>31</SUB>> ]\n\"184683593730\" [label = <(UNKNOWN,size_t,size_t)<SUB>31</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.addressOf,&amp;((typeof *)0)-&gt;sibling_node)<SUB>31</SUB>> ]\n\"30064771101\" [label = <(&lt;operator&gt;.indirectFieldAccess,((typeof *)0)-&gt;sibling_node)<SUB>31</SUB>> ]\n\"30064771102\" [label = <(&lt;operator&gt;.cast,(typeof *)0)<SUB>31</SUB>> ]\n\"55834574852\" [label = <(FIELD_IDENTIFIER,sibling_node,sibling_node)<SUB>31</SUB>> ]\n\"184683593731\" [label = <(UNKNOWN,typeof *,typeof *)<SUB>31</SUB>> ]\n\"111669149699\" [label = <(METHOD,first_child)<SUB>28</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,struct udevice)<SUB>28</SUB>> ]\n  \"30064771092\" -> \"146028888066\" \n  \"146028888066\" -> \"128849018882\" \n  \"30064771093\" -> \"184683593728\" \n  \"30064771095\" -> \"30064771092\" \n  \"30064771094\" -> \"30064771093\" \n  \"184683593728\" -> \"184683593729\" \n  \"30064771096\" -> \"30064771095\" \n  \"55834574851\" -> \"30064771094\" \n  \"30064771097\" -> \"30064771098\" \n  \"30064771098\" -> \"184683593730\" \n  \"30064771098\" -> \"30064771096\" \n  \"184683593729\" -> \"30064771097\" \n  \"30064771099\" -> \"30064771096\" \n  \"184683593730\" -> \"184683593731\" \n  \"30064771100\" -> \"30064771099\" \n  \"30064771101\" -> \"30064771100\" \n  \"30064771102\" -> \"55834574852\" \n  \"55834574852\" -> \"30064771101\" \n  \"184683593731\" -> \"30064771102\" \n  \"111669149699\" -> \"55834574851\" \n}\n"
+      ]
+    },
+    "offsets": {
+      "name": "offsets",
+      "fullname": "offsets",
+      "filename": "code-text.c",
+      "start_line": 34,
+      "end_line": 40,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 34,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,offsets",
+                    "source_line_number": 34,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct udevice *aeb)<SUB>34</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct udevice *aeb)<SUB>34</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "a = __builtin_offsetof(__typeof__(*aeb),u.rb)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "a=__builtin_offsetof(__typeof__(*aeb)",
+                      "u.rb)"
+                    ],
+                    "source_line_number": 36,
+                    "src": "a",
+                    "dst": "__builtin_offsetof(__typeof__(*aeb),u.rb)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "b = __builtin_offsetof(consttypeof(aeb-&gt;u),rb)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "b=__builtin_offsetof(consttypeof(aeb-&gt;u)",
+                      "rb)"
+                    ],
+                    "source_line_number": 37,
+                    "src": "b",
+                    "dst": "__builtin_offsetof(consttypeof(aeb-&gt;u),rb)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 38,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "c = __builtin_offsetof(structudevice,seq)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "c=__builtin_offsetof(structudevice",
+                      "seq)"
+                    ],
+                    "source_line_number": 38,
+                    "src": "c",
+                    "dst": "__builtin_offsetof(structudevice,seq)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'a+b+c']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "a+b+c"
+                    ],
+                    "source_line_number": 39
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'a+b']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "a+b"
+                    ],
+                    "source_line_number": 39
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(consttypeof*)0']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(consttypeof*)0"
+                    ],
+                    "source_line_number": 37
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 38,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(udevice*)0']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(udevice*)0"
+                    ],
+                    "source_line_number": 38
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(typeof*)0']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(typeof*)0"
+                    ],
+                    "source_line_number": 36
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,size_t",
+                    "source_line_number": 34,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return a+b+c;,returna+b+c;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returna+b+c;",
+                      "returna+b+c;"
+                    ],
+                    "source_line_number": 39,
+                    "ret": "a+b+c;,returna+b+c;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(size_t)&amp;((typeof*)0)-&gt;u.rb']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(size_t)&amp;((typeof*)0)-&gt;u.rb"
+                    ],
+                    "source_line_number": 36
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(size_t)&amp;((consttypeof*)0)-&gt;rb']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(size_t)&amp;((consttypeof*)0)-&gt;rb"
+                    ],
+                    "source_line_number": 37
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 38,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(size_t)&amp;((udevice*)0)-&gt;seq']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(size_t)&amp;((udevice*)0)-&gt;seq"
+                    ],
+                    "source_line_number": 38
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 10,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 34,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,offsets",
+                    "source_line_number": 34,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: (PARAM,struct udevice *aeb)<SUB>34</SUB>>",
+                  "fields": {
+                    "raw_text": "(PARAM,struct udevice *aeb)<SUB>34</SUB>",
+                    "source_line_number": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "a = __builtin_offsetof(__typeof__(*aeb),u.rb)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "a=__builtin_offsetof(__typeof__(*aeb)",
+                      "u.rb)"
+                    ],
+                    "source_line_number": 36,
+                    "src": "a",
+                    "dst": "__builtin_offsetof(__typeof__(*aeb),u.rb)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "b = __builtin_offsetof(consttypeof(aeb-&gt;u),rb)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "b=__builtin_offsetof(consttypeof(aeb-&gt;u)",
+                      "rb)"
+                    ],
+                    "source_line_number": 37,
+                    "src": "b",
+                    "dst": "__builtin_offsetof(consttypeof(aeb-&gt;u),rb)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 38,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "c = __builtin_offsetof(structudevice,seq)",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "c=__builtin_offsetof(structudevice",
+                      "seq)"
+                    ],
+                    "source_line_number": 38,
+                    "src": "c",
+                    "dst": "__builtin_offsetof(structudevice,seq)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'a+b+c']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "a+b+c"
+                    ],
+                    "source_line_number": 39
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'a+b']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "a+b"
+                    ],
+                    "source_line_number": 39
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(consttypeof*)0']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(consttypeof*)0"
+                    ],
+                    "source_line_number": 37
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 38,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(udevice*)0']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(udevice*)0"
+                    ],
+                    "source_line_number": 38
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(typeof*)0']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(typeof*)0"
+                    ],
+                    "source_line_number": 36
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,size_t",
+                    "source_line_number": 34,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return a+b+c;,returna+b+c;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returna+b+c;",
+                      "returna+b+c;"
+                    ],
+                    "source_line_number": 39,
+                    "ret": "a+b+c;,returna+b+c;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(size_t)&amp;((typeof*)0)-&gt;u.rb']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(size_t)&amp;((typeof*)0)-&gt;u.rb"
+                    ],
+                    "source_line_number": 36
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(size_t)&amp;((consttypeof*)0)-&gt;rb']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(size_t)&amp;((consttypeof*)0)-&gt;rb"
+                    ],
+                    "source_line_number": 37
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 38,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['cast', '(size_t)&amp;((udevice*)0)-&gt;seq']>",
+                  "fields": {
+                    "raw_text": [
+                      "cast",
+                      "(size_t)&amp;((udevice*)0)-&gt;seq"
+                    ],
+                    "source_line_number": 38
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 10,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,offsets)<SUB>34</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,size_t)<SUB>34</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,struct udevice *aeb)<SUB>34</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(<operator>.assignment,a = __builtin_offsetof(__typeof__(*aeb), u.rb))<SUB>36</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.assignment,b = __builtin_offsetof(const typeof(aeb->u), rb))<SUB>37</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(<operator>.assignment,c = __builtin_offsetof(struct udevice, seq))<SUB>38</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(RETURN,return a + b + c;,return a + b + c;)<SUB>39</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.addition,a + b + c)<SUB>39</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.cast,(size_t)&((typeof *)0)->u.rb)<SUB>36</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.cast,(size_t)&((const typeof *)0)->rb)<SUB>37</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.cast,(size_t)&((udevice *)0)->seq)<SUB>38</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.addition,a + b)<SUB>39</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(<operator>.cast,(const typeof *)0)<SUB>37</SUB>"
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "dot_label": "(<operator>.cast,(udevice *)0)<SUB>38</SUB>"
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "dot_label": "(<operator>.cast,(typeof *)0)<SUB>36</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "aeb"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "__builtin_offsetof(__typeof__(*aeb), u.rb)"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "a = __builtin_offsetof(__typeof__(*aeb), u.rb)"
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "label": "a"
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "label": "a"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "__builtin_offsetof(const typeof(aeb->u), rb)"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "b = __builtin_offsetof(const typeof(aeb->u), rb)"
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "label": "b"
+          },
+          {
+            "source": 4,
+            "target": 11,
+            "label": "b"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "__builtin_offsetof(struct udevice, seq)"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "c = __builtin_offsetof(struct udevice, seq)"
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "label": "c"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "a + b"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "c"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "a + b + c"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": "a + b + c"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "&((typeof *)0)->u.rb"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "(size_t)&((typeof *)0)->u.rb"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "&((const typeof *)0)->rb"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "(size_t)&((const typeof *)0)->rb"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "&((udevice *)0)->seq"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "(size_t)&((udevice *)0)->seq"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "a"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "b"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"offsets\" {  \n\"111669149700\" [label = <(METHOD,offsets)<SUB>34</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,size_t)<SUB>34</SUB>> ]\n\"115964116996\" [label = <(PARAM,struct udevice *aeb)<SUB>34</SUB>> ]\n\"30064771103\" [label = <(&lt;operator&gt;.assignment,a = __builtin_offsetof(__typeof__(*aeb), u.rb))<SUB>36</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,b = __builtin_offsetof(const typeof(aeb-&gt;u), rb))<SUB>37</SUB>> ]\n\"30064771116\" [label = <(&lt;operator&gt;.assignment,c = __builtin_offsetof(struct udevice, seq))<SUB>38</SUB>> ]\n\"146028888067\" [label = <(RETURN,return a + b + c;,return a + b + c;)<SUB>39</SUB>> ]\n\"30064771103\" [label = <(&lt;operator&gt;.assignment,a = __builtin_offsetof(__typeof__(*aeb), u.rb))<SUB>36</SUB>> ]\n\"30064771103\" [label = <(&lt;operator&gt;.assignment,a = __builtin_offsetof(__typeof__(*aeb), u.rb))<SUB>36</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,b = __builtin_offsetof(const typeof(aeb-&gt;u), rb))<SUB>37</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,b = __builtin_offsetof(const typeof(aeb-&gt;u), rb))<SUB>37</SUB>> ]\n\"30064771116\" [label = <(&lt;operator&gt;.assignment,c = __builtin_offsetof(struct udevice, seq))<SUB>38</SUB>> ]\n\"30064771116\" [label = <(&lt;operator&gt;.assignment,c = __builtin_offsetof(struct udevice, seq))<SUB>38</SUB>> ]\n\"30064771122\" [label = <(&lt;operator&gt;.addition,a + b + c)<SUB>39</SUB>> ]\n\"30064771122\" [label = <(&lt;operator&gt;.addition,a + b + c)<SUB>39</SUB>> ]\n\"30064771122\" [label = <(&lt;operator&gt;.addition,a + b + c)<SUB>39</SUB>> ]\n\"30064771105\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((typeof *)0)-&gt;u.rb)<SUB>36</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((const typeof *)0)-&gt;rb)<SUB>37</SUB>> ]\n\"30064771118\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((udevice *)0)-&gt;seq)<SUB>38</SUB>> ]\n\"30064771123\" [label = <(&lt;operator&gt;.addition,a + b)<SUB>39</SUB>> ]\n\"30064771123\" [label = <(&lt;operator&gt;.addition,a + b)<SUB>39</SUB>> ]\n\"30064771105\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((typeof *)0)-&gt;u.rb)<SUB>36</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((const typeof *)0)-&gt;rb)<SUB>37</SUB>> ]\n\"30064771118\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((udevice *)0)-&gt;seq)<SUB>38</SUB>> ]\n\"30064771115\" [label = <(&lt;operator&gt;.cast,(const typeof *)0)<SUB>37</SUB>> ]\n\"30064771121\" [label = <(&lt;operator&gt;.cast,(udevice *)0)<SUB>38</SUB>> ]\n\"30064771109\" [label = <(&lt;operator&gt;.cast,(typeof *)0)<SUB>36</SUB>> ]\n  \"146028888067\" -> \"128849018883\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116996\" -> \"128849018883\"  [ label = \"aeb\"] \n  \"30064771103\" -> \"128849018883\"  [ label = \"__builtin_offsetof(__typeof__(*aeb), u.rb)\"] \n  \"30064771105\" -> \"128849018883\"  [ label = \"&amp;((typeof *)0)-&gt;u.rb\"] \n  \"30064771105\" -> \"128849018883\"  [ label = \"(size_t)&amp;((typeof *)0)-&gt;u.rb\"] \n  \"30064771103\" -> \"128849018883\"  [ label = \"a = __builtin_offsetof(__typeof__(*aeb), u.rb)\"] \n  \"30064771110\" -> \"128849018883\"  [ label = \"__builtin_offsetof(const typeof(aeb-&gt;u), rb)\"] \n  \"30064771112\" -> \"128849018883\"  [ label = \"&amp;((const typeof *)0)-&gt;rb\"] \n  \"30064771112\" -> \"128849018883\"  [ label = \"(size_t)&amp;((const typeof *)0)-&gt;rb\"] \n  \"30064771110\" -> \"128849018883\"  [ label = \"b = __builtin_offsetof(const typeof(aeb-&gt;u), rb)\"] \n  \"30064771116\" -> \"128849018883\"  [ label = \"__builtin_offsetof(struct udevice, seq)\"] \n  \"30064771118\" -> \"128849018883\"  [ label = \"&amp;((udevice *)0)-&gt;seq\"] \n  \"30064771118\" -> \"128849018883\"  [ label = \"(size_t)&amp;((udevice *)0)-&gt;seq\"] \n  \"30064771116\" -> \"128849018883\"  [ label = \"c = __builtin_offsetof(struct udevice, seq)\"] \n  \"30064771123\" -> \"128849018883\"  [ label = \"a\"] \n  \"30064771123\" -> \"128849018883\"  [ label = \"b\"] \n  \"30064771122\" -> \"128849018883\"  [ label = \"a + b\"] \n  \"30064771122\" -> \"128849018883\"  [ label = \"c\"] \n  \"30064771122\" -> \"128849018883\"  [ label = \"a + b + c\"] \n  \"111669149700\" -> \"115964116996\" \n  \"111669149700\" -> \"30064771103\" \n  \"111669149700\" -> \"30064771110\" \n  \"111669149700\" -> \"30064771116\" \n  \"30064771122\" -> \"146028888067\"  [ label = \"a + b + c\"] \n  \"30064771103\" -> \"30064771122\"  [ label = \"a\"] \n  \"111669149700\" -> \"30064771122\" \n  \"30064771110\" -> \"30064771122\"  [ label = \"b\"] \n  \"30064771116\" -> \"30064771122\"  [ label = \"c\"] \n  \"30064771103\" -> \"30064771123\"  [ label = \"a\"] \n  \"111669149700\" -> \"30064771123\" \n  \"30064771110\" -> \"30064771123\"  [ label = \"b\"] \n  \"111669149700\" -> \"30064771115\" \n  \"111669149700\" -> \"30064771121\" \n  \"111669149700\" -> \"30064771109\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"offsets\" {  \n\"30064771103\" [label = <(&lt;operator&gt;.assignment,a = __builtin_offsetof(__typeof__(*aeb), u.rb))<SUB>36</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,b = __builtin_offsetof(const typeof(aeb-&gt;u), rb))<SUB>37</SUB>> ]\n\"30064771116\" [label = <(&lt;operator&gt;.assignment,c = __builtin_offsetof(struct udevice, seq))<SUB>38</SUB>> ]\n\"146028888067\" [label = <(RETURN,return a + b + c;,return a + b + c;)<SUB>39</SUB>> ]\n\"30064771104\" [label = <(__builtin_offsetof,__builtin_offsetof(__typeof__(*aeb), u.rb))<SUB>36</SUB>> ]\n\"30064771111\" [label = <(__builtin_offsetof,__builtin_offsetof(const typeof(aeb-&gt;u), rb))<SUB>37</SUB>> ]\n\"30064771117\" [label = <(__builtin_offsetof,__builtin_offsetof(struct udevice, seq))<SUB>38</SUB>> ]\n\"30064771122\" [label = <(&lt;operator&gt;.addition,a + b + c)<SUB>39</SUB>> ]\n\"30064771123\" [label = <(&lt;operator&gt;.addition,a + b)<SUB>39</SUB>> ]\n\"30064771105\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((typeof *)0)-&gt;u.rb)<SUB>36</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((const typeof *)0)-&gt;rb)<SUB>37</SUB>> ]\n\"30064771118\" [label = <(&lt;operator&gt;.cast,(size_t)&amp;((udevice *)0)-&gt;seq)<SUB>38</SUB>> ]\n\"184683593732\" [label = <(UNKNOWN,size_t,size_t)<SUB>36</SUB>> ]\n\"30064771106\" [label = <(&lt;operator&gt;.addressOf,&amp;((typeof *)0)-&gt;u.rb)<SUB>36</SUB>> ]\n\"184683593734\" [label = <(UNKNOWN,size_t,size_t)<SUB>37</SUB>> ]\n\"30064771113\" [label = <(&lt;operator&gt;.addressOf,&amp;((const typeof *)0)-&gt;rb)<SUB>37</SUB>> ]\n\"184683593736\" [label = <(UNKNOWN,size_t,size_t)<SUB>38</SUB>> ]\n\"30064771119\" [label = <(&lt;operator&gt;.addressOf,&amp;((udevice *)0)-&gt;seq)<SUB>38</SUB>> ]\n\"30064771107\" [label = <(&lt;operator&gt;.fieldAccess,((typeof *)0)-&gt;u.rb)<SUB>36</SUB>> ]\n\"30064771114\" [label = <(&lt;operator&gt;.indirectFieldAccess,((const typeof *)0)-&gt;rb)<SUB>37</SUB>> ]\n\"30064771120\" [label = <(&lt;operator&gt;.indirectFieldAccess,((udevice *)0)-&gt;seq)<SUB>38</SUB>> ]\n\"30064771108\" [label = <(&lt;operator&gt;.indirectFieldAccess,((typeof *)0)-&gt;u)<SUB>36</SUB>> ]\n\"55834574854\" [label = <(FIELD_IDENTIFIER,rb,rb)<SUB>36</SUB>> ]\n\"30064771115\" [label = <(&lt;operator&gt;.cast,(const typeof *)0)<SUB>37</SUB>> ]\n\"55834574855\" [label = <(FIELD_IDENTIFIER,rb,rb)<SUB>37</SUB>> ]\n\"30064771121\" [label = <(&lt;operator&gt;.cast,(udevice *)0)<SUB>38</SUB>> ]\n\"55834574856\" [label = <(FIELD_IDENTIFIER,seq,seq)<SUB>38</SUB>> ]\n\"30064771109\" [label = <(&lt;operator&gt;.cast,(typeof *)0)<SUB>36</SUB>> ]\n\"55834574853\" [label = <(FIELD_IDENTIFIER,u,u)<SUB>36</SUB>> ]\n\"184683593735\" [label = <(UNKNOWN,const typeof *,const typeof *)<SUB>37</SUB>> ]\n\"184683593737\" [label = <(UNKNOWN,udevice *,udevice *)<SUB>38</SUB>> ]\n\"184683593733\" [label = <(UNKNOWN,typeof *,typeof *)<SUB>36</SUB>> ]\n\"111669149700\" [label = <(METHOD,offsets)<SUB>34</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,size_t)<SUB>34</SUB>> ]\n  \"30064771103\" -> \"30064771111\" \n  \"30064771110\" -> \"30064771117\" \n  \"30064771116\" -> \"30064771123\" \n  \"146028888067\" -> \"128849018883\" \n  \"30064771104\" -> \"184683593732\" \n  \"30064771104\" -> \"30064771103\" \n  \"30064771111\" -> \"184683593734\" \n  \"30064771111\" -> \"30064771110\" \n  \"30064771117\" -> \"184683593736\" \n  \"30064771117\" -> \"30064771116\" \n  \"30064771122\" -> \"146028888067\" \n  \"30064771123\" -> \"30064771122\" \n  \"30064771105\" -> \"30064771103\" \n  \"30064771112\" -> \"30064771110\" \n  \"30064771118\" -> \"30064771116\" \n  \"184683593732\" -> \"184683593733\" \n  \"30064771106\" -> \"30064771105\" \n  \"184683593734\" -> \"184683593735\" \n  \"30064771113\" -> \"30064771112\" \n  \"184683593736\" -> \"184683593737\" \n  \"30064771119\" -> \"30064771118\" \n  \"30064771107\" -> \"30064771106\" \n  \"30064771114\" -> \"30064771113\" \n  \"30064771120\" -> \"30064771119\" \n  \"30064771108\" -> \"55834574854\" \n  \"55834574854\" -> \"30064771107\" \n  \"30064771115\" -> \"55834574855\" \n  \"55834574855\" -> \"30064771114\" \n  \"30064771121\" -> \"55834574856\" \n  \"55834574856\" -> \"30064771120\" \n  \"30064771109\" -> \"55834574853\" \n  \"55834574853\" -> \"30064771108\" \n  \"184683593735\" -> \"30064771115\" \n  \"184683593737\" -> \"30064771121\" \n  \"184683593733\" -> \"30064771109\" \n  \"111669149700\" -> \"30064771104\" \n}\n"
+      ]
+    },
+    "__builtin_offsetof": {
+      "name": "__builtin_offsetof",
+      "fullname": ":-1:-1:__builtin_offsetof:2",
+      "filename": ".",
+      "start_line": -1,
+      "end_line": -1,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [],
+        "edges": []
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [],
+        "edges": []
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [],
+        "edges": []
+      },
+      "ddg_dot": [
+        "digraph \"__builtin_offsetof\" {  \n\n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"__builtin_offsetof\" {  \n\"111669149711\" [label = <(METHOD,__builtin_offsetof)<SUB>-1</SUB>> ]\n\"128849018895\" [label = <(METHOD_RETURN,ANY)> ]\n  \"111669149711\" -> \"128849018895\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "64311c4889f01b799d1eab9f7941f7f54e32ea4b18e0d5f2bce4ef7802ae3e8b",
+  "prepared_sha256": "64311c4889f01b799d1eab9f7941f7f54e32ea4b18e0d5f2bce4ef7802ae3e8b",
+  "language": "c",
+  "input_kind": "file",
+  "source": "/home/mahaloz/github/rust-joern/tests/fixtures/ddg-decbench/code-text.c",
+  "capture_worker_sha256": "544aaf7609ab89e1f1d11d339b6fd6f8c0d64c47f097113b32ca66b2470745bd",
+  "captured_at": "2026-11-09T10:06:32.493710+00:00",
+  "preparation": {
+    "strip_system_headers": false,
+    "sanitize_decompiled": false,
+    "decbench": null
+  }
+}

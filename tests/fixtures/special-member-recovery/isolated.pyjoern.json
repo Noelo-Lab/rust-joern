@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 13.289918750000652,
+  "functions": {
+    "~Record": {
+      "name": "~Record",
+      "start_line": 1,
+      "end_line": 1,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "1.1:\nFUNCTION_START\nrelease()\nFUNCTION_END\n"
+        }
+      }
+    },
+    "Record": {
+      "name": "Record",
+      "start_line": 2,
+      "end_line": 2,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "2.2:\nFUNCTION_START\nfirst()\nsecond()\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "b352db1ce12e8ba8b0dfeefb1e93bce3a8b413ba7ca455785bc07d0d511acaa0",
+  "prepared_sha256": "b352db1ce12e8ba8b0dfeefb1e93bce3a8b413ba7ca455785bc07d0d511acaa0"
+}

@@ -54,7 +54,8 @@ BINARY = {
     "pmarrow": "->*",
     "max": None,
     "min": None,
-    "ellipses": None,
+    # A GNU case range is parsed as a binary expression.
+    "ellipses": "...",
 }
 UNARY = {
     "prefixIncr": ("++", False),

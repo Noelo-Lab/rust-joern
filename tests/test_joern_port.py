@@ -77,8 +77,9 @@ class PortTests(unittest.TestCase):
         output = generate.generate()
         self.assertIn('"%=" => "<operators>.assignmentModulo"', output)
         self.assertIn('("typeid", _) => "<operator>.typeOf"', output)
-        self.assertIn("op_ellipses: separate/unsupported parser owner", output)
-        self.assertEqual(output.count("=>"), 45)
+        self.assertIn("op_max: separate/unsupported parser owner", output)
+        self.assertIn('"..." => "<operator>.op_ellipses"', output)
+        self.assertEqual(output.count("=>"), 46)
 
     def test_translation_rejects_new_scala_statements_and_missing_default(self):
         for source in (
