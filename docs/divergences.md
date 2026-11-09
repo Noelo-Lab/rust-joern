@@ -6,6 +6,32 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## Invalid explicit-destructor call diagnostics
+
+**Recorded:** 2026-10-28, follow-up to PR #3; no DecBench pin update.
+
+**Joern:** the frozen declared control `p->~Object(tick())` still exports method
+`f` and a recovered graph in 4.0.150. Clang rejects the call because a destructor
+accepts no arguments. Reference recovery does not establish source validity.
+
+**Rust Joern:** an explicit destructor-id is one member name with its receiver,
+not a field named `~` followed by a separate constructor/function call. Recognized
+destructor-ids require an empty call. Arguments or a missing call produce an
+unsupported diagnostic; strict mode rejects it while permissive output retains
+the diagnostic. Complete supported controls have original-reference CFG coverage, roles and
+topology regressions.
+
+**Why:** neither a split callee nor permissive reference recovery should silently
+qualify an unsupported destructor invocation. This is bounded call preservation,
+not full C++ validation or hidden lifetime/exception modeling.
+
+**Affects:** member-call CPG identity, receiver operands and strict acceptance of
+these malformed calls. Other malformed forms keep their existing recovery.
+
+**Reference behavior:** no option restores the split-name fallback or suppresses
+this diagnostic. Consumers requiring old immutable behavior retain their pinned
+library; DecBench's production pin and cache generations remain unchanged here.
+
 ## Operator-template recovery in incomplete pseudocode
 
 **Introduced:** 2026-11-09, [PR #3](https://github.com/Noelo-Lab/rust-joern/pull/3).

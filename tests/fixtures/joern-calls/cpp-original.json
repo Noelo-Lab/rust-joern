@@ -1,0 +1,741 @@
+{
+  "schema": "joern-call-ast-contract-v1",
+  "generator": "Original Joern v4.0.150 bundled with PyJoern 4.0.150.4",
+  "source_sha256": "82aa41d0143fc419a263f4c7b5e6ea4fea33a4f5afe769911564d776662285e7",
+  "capture_sha256": "2b7017b294c34caa687bbec7a59f87016053c434561cb2a05f88bf1ad2684178",
+  "raw_log_sha256": "3411cf59bcfa3b57f909ebe42856b1676e3d0d78b491d201a5a6d911424f775a",
+  "projector_sha256": "8ce6ae53487654366b7efafc7136ea3e3d5e657b3b5c4ea539fb83e3a4601576",
+  "bounds": "Call identity, operand roles and AST ownership; excludes type inference, dispatch property, DDG and execution parity",
+  "methods": [
+    {
+      "fullname": "Box.method:int(int)",
+      "line": 3,
+      "calls": []
+    },
+    {
+      "fullname": "Object.~Object:ANY()",
+      "line": 15,
+      "calls": []
+    },
+    {
+      "fullname": "VirtualBox.method:int(int)",
+      "line": 17,
+      "calls": []
+    },
+    {
+      "fullname": "destructor:void(Object*)",
+      "line": 16,
+      "calls": [
+        {
+          "code": "p->~Object()",
+          "name": "~Object",
+          "line": 16,
+          "column": 30,
+          "method_full_name": "Object.~Object:ANY()",
+          "arguments": [
+            {
+              "index": 0,
+              "node": {
+                "kind": "IDENTIFIER",
+                "code": "p",
+                "name": "p"
+              }
+            }
+          ],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "p",
+              "name": "p"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "direct_pointer:int(int(*)(int))",
+      "line": 10,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 10,
+          "column": 48,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "fn(tick())",
+          "name": "<operator>.pointerCall",
+          "line": 10,
+          "column": 45,
+          "method_full_name": "<operator>.pointerCall",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "IDENTIFIER",
+            "code": "fn",
+            "name": "fn"
+          },
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "fn",
+              "name": "fn"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "direct_unknown:int(int)",
+      "line": 8,
+      "calls": [
+        {
+          "code": "missing(x)",
+          "name": "missing",
+          "line": 8,
+          "column": 36,
+          "method_full_name": "<unresolvedNamespace>.missing:<unresolvedSignature>(1)",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "IDENTIFIER",
+                "code": "x",
+                "name": "x"
+              }
+            }
+          ],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "x",
+              "name": "x"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "grouped_pointer:int(int(*)(int))",
+      "line": 11,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 11,
+          "column": 51,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "(fn)(tick())",
+          "name": "<operator>.pointerCall",
+          "line": 11,
+          "column": 46,
+          "method_full_name": "<operator>.pointerCall",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "IDENTIFIER",
+            "code": "fn",
+            "name": "fn"
+          },
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "fn",
+              "name": "fn"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "grouped_unknown:int(int)",
+      "line": 12,
+      "calls": [
+        {
+          "code": "(missing)(x)",
+          "name": "<operator>()",
+          "line": 12,
+          "column": 37,
+          "method_full_name": "<unresolvedNamespace>.<operator>():<unresolvedSignature>(1)",
+          "arguments": [
+            {
+              "index": 0,
+              "node": {
+                "kind": "IDENTIFIER",
+                "code": "missing",
+                "name": "missing"
+              }
+            },
+            {
+              "index": 1,
+              "node": {
+                "kind": "IDENTIFIER",
+                "code": "x",
+                "name": "x"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "IDENTIFIER",
+            "code": "missing",
+            "name": "missing"
+          },
+          "shared_base_receiver": true,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "missing",
+              "name": "missing"
+            },
+            {
+              "kind": "IDENTIFIER",
+              "code": "x",
+              "name": "x"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "indexed_member:int(ANY,int)",
+      "line": 7,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 7,
+          "column": 65,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "p[i++]->missing(tick())",
+          "name": "missing",
+          "line": 7,
+          "column": 49,
+          "method_full_name": "<unresolvedNamespace>.missing:<unresolvedSignature>(1)",
+          "arguments": [
+            {
+              "index": 0,
+              "node": {
+                "kind": "CALL",
+                "code": "p[i++]",
+                "name": "<operator>.indirectIndexAccess"
+              }
+            },
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "CALL",
+            "code": "p[i++]",
+            "name": "<operator>.indirectIndexAccess"
+          },
+          "shared_base_receiver": true,
+          "ast_children": [
+            {
+              "kind": "CALL",
+              "code": "p[i++]",
+              "name": "<operator>.indirectIndexAccess"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "known_member:int(Box*)",
+      "line": 4,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 4,
+          "column": 45,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "p->method(tick())",
+          "name": "method",
+          "line": 4,
+          "column": 35,
+          "method_full_name": "Box.method:int(int)",
+          "arguments": [
+            {
+              "index": 0,
+              "node": {
+                "kind": "IDENTIFIER",
+                "code": "p",
+                "name": "p"
+              }
+            },
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "p",
+              "name": "p"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "known_virtual:int(VirtualBox*)",
+      "line": 18,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 18,
+          "column": 53,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "p->method(tick())",
+          "name": "method",
+          "line": 18,
+          "column": 43,
+          "method_full_name": "VirtualBox.method:int(int)",
+          "arguments": [
+            {
+              "index": 0,
+              "node": {
+                "kind": "IDENTIFIER",
+                "code": "p",
+                "name": "p"
+              }
+            },
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "IDENTIFIER",
+            "code": "p",
+            "name": "p"
+          },
+          "shared_base_receiver": true,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "p",
+              "name": "p"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "lambda_call:int(int)",
+      "line": 13,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 13,
+          "column": 74,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "fn(tick())",
+          "name": "<operator>()",
+          "line": 13,
+          "column": 71,
+          "method_full_name": "<operator>():int(int)",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "IDENTIFIER",
+            "code": "fn",
+            "name": "fn"
+          },
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "fn",
+              "name": "fn"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "lambda_call:int(int).<lambda>0",
+      "line": 13,
+      "calls": []
+    },
+    {
+      "fullname": "nested_unknown:int()",
+      "line": 9,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 9,
+          "column": 47,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "missing(missing(tick()))",
+          "name": "missing",
+          "line": 9,
+          "column": 31,
+          "method_full_name": "<unresolvedNamespace>.missing:<unresolvedSignature>(1)",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "missing(tick())",
+                "name": "missing"
+              }
+            }
+          ],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "CALL",
+              "code": "missing(tick())",
+              "name": "missing"
+            }
+          ]
+        },
+        {
+          "code": "missing(tick())",
+          "name": "missing",
+          "line": 9,
+          "column": 39,
+          "method_full_name": "<unresolvedNamespace>.missing:<unresolvedSignature>(1)",
+          "arguments": [
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": [
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "short_circuit:int(int,ANY)",
+      "line": 14,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 14,
+          "column": 69,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "p->missing(tick())",
+          "name": "missing",
+          "line": 14,
+          "column": 58,
+          "method_full_name": "<unresolvedNamespace>.missing:<unresolvedSignature>(1)",
+          "arguments": [
+            {
+              "index": 0,
+              "node": {
+                "kind": "IDENTIFIER",
+                "code": "p",
+                "name": "p"
+              }
+            },
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "IDENTIFIER",
+            "code": "p",
+            "name": "p"
+          },
+          "shared_base_receiver": true,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "p",
+              "name": "p"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "tick:int()",
+      "line": 2,
+      "calls": []
+    },
+    {
+      "fullname": "unknown_factory:int()",
+      "line": 6,
+      "calls": [
+        {
+          "code": "factory()",
+          "name": "factory",
+          "line": 6,
+          "column": 32,
+          "method_full_name": "<unresolvedNamespace>.factory:<unresolvedSignature>(0)",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 6,
+          "column": 51,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "factory()->missing(tick())",
+          "name": "missing",
+          "line": 6,
+          "column": 32,
+          "method_full_name": "<unresolvedNamespace>.missing:<unresolvedSignature>(1)",
+          "arguments": [
+            {
+              "index": 0,
+              "node": {
+                "kind": "CALL",
+                "code": "factory()",
+                "name": "factory"
+              }
+            },
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "CALL",
+            "code": "factory()",
+            "name": "factory"
+          },
+          "shared_base_receiver": true,
+          "ast_children": [
+            {
+              "kind": "CALL",
+              "code": "factory()",
+              "name": "factory"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "unknown_member:int(ANY)",
+      "line": 5,
+      "calls": [
+        {
+          "code": "tick()",
+          "name": "tick",
+          "line": 5,
+          "column": 52,
+          "method_full_name": "tick:int()",
+          "arguments": [],
+          "receiver": null,
+          "shared_base_receiver": false,
+          "ast_children": []
+        },
+        {
+          "code": "p->missing(tick())",
+          "name": "missing",
+          "line": 5,
+          "column": 41,
+          "method_full_name": "<unresolvedNamespace>.missing:<unresolvedSignature>(1)",
+          "arguments": [
+            {
+              "index": 0,
+              "node": {
+                "kind": "IDENTIFIER",
+                "code": "p",
+                "name": "p"
+              }
+            },
+            {
+              "index": 1,
+              "node": {
+                "kind": "CALL",
+                "code": "tick()",
+                "name": "tick"
+              }
+            }
+          ],
+          "receiver": {
+            "kind": "IDENTIFIER",
+            "code": "p",
+            "name": "p"
+          },
+          "shared_base_receiver": true,
+          "ast_children": [
+            {
+              "kind": "IDENTIFIER",
+              "code": "p",
+              "name": "p"
+            },
+            {
+              "kind": "CALL",
+              "code": "tick()",
+              "name": "tick"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

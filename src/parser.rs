@@ -144,6 +144,11 @@ fn parse_unit(
         .map(|event| event.descriptor)
         .collect();
     let unit = TranslationUnit {
+        known_type_names: parser
+            .explicit_types
+            .union(&parser.class_scopes)
+            .cloned()
+            .collect(),
         functions,
         global_expressions: parser.global_expressions,
         retained_macro_calls,
@@ -812,6 +817,11 @@ struct Header {
     /// The parameter list after a group that nests this function declarator,
     /// as in `void (*hook(void))(int)`.
     outer_parameters: Option<(usize, usize)>,
+}
+
+struct CppExpressionName {
+    end: usize,
+    destructor: Option<usize>,
 }
 
 impl Parser<'_> {
@@ -2322,6 +2332,7 @@ impl Parser<'_> {
             member_cv_qualified,
             lambda: false,
             is_static: (start..header.name_start).any(|i| self.text(i) == "static"),
+            is_virtual: (start..header.name_start).any(|i| self.text(i) == "virtual"),
             inherited_bindings: Vec::new(),
             inherited_closures: Vec::new(),
             parameters,
@@ -3348,6 +3359,7 @@ impl Parser<'_> {
                         member_cv_qualified: false,
                         lambda: false,
                         is_static: false,
+                        is_virtual: false,
                         inherited_bindings: Vec::new(),
                         inherited_closures: Vec::new(),
                         parameters,
@@ -7869,15 +7881,33 @@ impl Parser<'_> {
     }
 
     /// Consume a C++ expression name as components, including template-ids
-    /// between scope separators and operator-function-ids. Template arguments remain
-    /// tokens in the callee span; they are not executable comparison nodes.
+    /// between scope separators, operator-function-ids and member destructor-ids.
+    /// Template arguments are not executable comparison nodes.
     fn cpp_expression_name_end(&self, start: usize, end: usize, member: bool) -> Option<usize> {
+        self.cpp_expression_name(start, end, member)
+            .map(|name| name.end)
+    }
+
+    fn cpp_expression_name(
+        &self,
+        start: usize,
+        end: usize,
+        member: bool,
+    ) -> Option<CppExpressionName> {
         if !self.cpp {
             return None;
         }
         let mut cursor = start + usize::from(self.text(start) == "::");
         loop {
-            if self.tokens.get(cursor)?.kind != TokenKind::Identifier || cursor >= end {
+            let destructor_marker = cursor;
+            let destructor = member && alternative_operator(self.text(cursor)) == "~";
+            if destructor {
+                cursor += 1;
+            }
+            if cursor >= end
+                || self.tokens.get(cursor)?.kind != TokenKind::Identifier
+                || (destructor && self.text(cursor) == "operator")
+            {
                 return None;
             }
             let component = cursor;
@@ -7917,8 +7947,11 @@ impl Parser<'_> {
                     cursor = close + 1;
                 }
             }
-            if self.text(cursor) != "::" {
-                return (cursor <= end).then_some(cursor);
+            if destructor || self.text(cursor) != "::" {
+                return (cursor <= end).then_some(CppExpressionName {
+                    end: cursor,
+                    destructor: destructor.then_some(destructor_marker),
+                });
             }
             cursor += 1;
             if self.text(cursor) == "template" {
@@ -8028,12 +8061,37 @@ impl Parser<'_> {
                     self.eat("template");
                 }
                 let name_start = self.pos;
-                if let Some(after) = self.cpp_expression_name_end(name_start, self.limit, true) {
-                    self.pos = after;
+                let mut destructor = None;
+                if let Some(name) = self.cpp_expression_name(name_start, self.limit, true) {
+                    self.pos = name.end;
+                    destructor = name.destructor;
+                    if destructor.is_some() && !(self.at("(") && self.text(self.pos + 1) == ")") {
+                        self.diagnose(
+                            name_start,
+                            self.pos,
+                            "unsupported destructor-id; an empty destructor call is required",
+                        );
+                    }
+                } else if self.cpp && alternative_operator(self.peek()) == "~" {
+                    self.pos += 1;
+                    self.diagnose(
+                        name_start,
+                        self.pos,
+                        "unsupported destructor-id; an empty destructor call is required",
+                    );
                 } else if !self.peek().is_empty() {
                     self.pos += 1;
                 }
-                let name = self.raw(name_start, self.pos);
+                let name = if let Some(marker) = destructor {
+                    let owner = if marker > name_start {
+                        self.raw(name_start, marker)
+                    } else {
+                        String::new()
+                    };
+                    format!("{owner}~{}", self.raw(marker + 1, self.pos))
+                } else {
+                    self.raw(name_start, self.pos)
+                };
                 left = Expr {
                     kind: ExprKind::Member {
                         base: Box::new(left),
@@ -8384,6 +8442,7 @@ impl Parser<'_> {
             member_cv_qualified: self.function_member_cv,
             lambda: true,
             is_static: false,
+            is_virtual: false,
             inherited_bindings,
             inherited_closures,
             parameters,

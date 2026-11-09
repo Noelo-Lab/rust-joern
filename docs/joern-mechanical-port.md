@@ -100,3 +100,35 @@ unchanged by this batch. Local evidence is recorded under
 
 The [2026-10-25 pilot report](eval/joern_port_2026-10-25.md) records the actual
 measurements, unavailable original comparisons and remaining work.
+
+## Second batch: call operands
+
+`src/joern_calls.rs` directly translates the operand-placement decisions from
+the pinned C/C++ call creators and c2cpg's `createCallAst`. It distinguishes
+named calls, pointer/closure receivers, resolved members and unresolved
+members/expressions. A shared base/receiver is evaluated once and uses one
+AST root. c2cpg's helper is important: x2cpg's generic `callAst` implicitly
+promotes a base to a receiver, which is wrong for resolved nonvirtual calls.
+
+`CallBindings` borrows the canonical parser's explicit type declarations and
+method facts. Guessed parameter spellings do not become known type evidence.
+Explicit `virtual` declaration evidence is carried on the internal Function;
+there is no new serialized dispatch/type policy. Incomplete lookup on a known
+owner (including inheritance, overloads and qualified members) retains the
+legacy base-only path and absent identity. It is not mislabeled as CDT's
+problem binding. Synthetic intrinsic calls such as `new` keep their canonical
+operator identity.
+
+Freeze/recheck the seven original functions across three owners:
+
+```sh
+python3 scripts/joern_port/capture_call_rules.py \
+  --source workspace/joern-port-4.0.150/source --check
+```
+
+This is a direct bounded algorithm port, not an automatic translation of CDT
+or a claim that the complete generic helper API is implemented. The source
+bodies/hashes are in `tests/reference/joern-4.0.150/call-rules.json`.
+`tests/fixtures/joern-calls/README.md` describes original capture, exact checked
+properties and omissions. The [call-port report](eval/joern_call_port_2026-10-25.md)
+records the measured before/after and full-input regression audit.

@@ -25,6 +25,8 @@ pub struct Function {
     /// CDT stores a lambda method separately from the enclosing method AST.
     pub lambda: bool,
     pub is_static: bool,
+    /// Explicit virtual declaration evidence; no inferred hierarchy resolution.
+    pub is_virtual: bool,
     /// Lambda bodies are converted in the enclosing lexical scope, after the
     /// lambda parameter scope has already been popped by c2cpg 4.0.150.
     pub inherited_bindings: Vec<(String, String)>,
@@ -236,6 +238,8 @@ pub struct ParseDiagnostic {
 
 #[derive(Clone, Debug, Default)]
 pub struct TranslationUnit {
+    /// Explicit source/context declarations, not guessed parameter spellings.
+    pub known_type_names: std::collections::HashSet<String>,
     pub functions: Vec<Function>,
     pub global_expressions: Vec<Expr>,
     pub retained_macro_calls: Vec<RetainedMacroCall>,

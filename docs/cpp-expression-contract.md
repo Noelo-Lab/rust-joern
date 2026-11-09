@@ -74,3 +74,25 @@ Before treating a parse as measurable output:
 These are integration requirements, not a newly implemented validation API or
 an official C++ metric policy. No new adapter field, normalization step or
 benchmark population rule is introduced by the expression-name change.
+
+## Explicit destructor calls
+
+After `.` or `->`, an explicit destructor-id such as `~Object` is one member
+name. `pointer->~Object()`, `reference.~Object()` and
+`receiver()->Box<int>::~Box()` retain a destructor call, with the original
+receiver as argument zero. Receiver/index computations are evaluated once
+through the existing expression and short-circuit CFG lowering. The tilde must
+not become a field name followed by a separate constructor/function call.
+Whitespace and the alternative `compl` token preserve their original source
+code while the member name uses the canonical destructor marker `~`.
+
+This uses the same typed expression-name recognizer as operator/template names.
+Unary bitwise complement and `operator~()` remain separate syntax. Recognized
+destructor names require an empty call; argument lists or a missing call produce
+an unsupported diagnostic. Other malformed C++ still follows the existing
+recovery/validation contract; this does not make strict mode a compiler.
+
+This is explicit call preservation, not implicit scope-exit cleanup, virtual
+lookup, object lifetime/unwinding or template-instantiation support. Source
+slices lacking a class owner may still be unmeasurable. No class/field layout,
+missing receiver declaration or hidden destruction is invented.

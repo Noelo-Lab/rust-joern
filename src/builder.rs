@@ -2,6 +2,7 @@ use crate::{
     graph::{
         Diagnostic, Edge, ExternalReference, FunctionGraph, Node, NodeId, Options, PropertyGraph,
     },
+    joern_calls::{CallKind, CallLayout, Operand, unresolved_full_name},
     joern_operators::binary_operator,
     lexer::integer_truth,
     normalize,
@@ -71,6 +72,12 @@ impl Fragment {
     }
 }
 
+/// Canonical parser declarations consumed by bounded call lookup.
+pub struct CallBindings<'a> {
+    pub methods: &'a HashMap<String, Vec<&'a Function>>,
+    pub known_types: &'a HashSet<String>,
+}
+
 struct Builder<'a> {
     source: &'a str,
     filename: &'a str,
@@ -79,6 +86,7 @@ struct Builder<'a> {
     scopes: Vec<HashMap<String, (NodeId, String)>>,
     functions: &'a HashSet<String>,
     methods: &'a HashMap<String, Vec<&'a Function>>,
+    known_types: &'a HashSet<String>,
     function_pointers: HashSet<NodeId>,
     closures: HashMap<NodeId, Closure>,
     inherited_bindings: HashMap<String, String>,
@@ -100,7 +108,7 @@ pub fn build(
     filename: &str,
     known_functions: &HashSet<String>,
     cpp: bool,
-    methods: &HashMap<String, Vec<&Function>>,
+    bindings: &CallBindings<'_>,
     options: &Options,
 ) -> (FunctionGraph, Vec<Diagnostic>) {
     let mut builder = Builder {
@@ -110,7 +118,8 @@ pub fn build(
         graph: PropertyGraph::default(),
         scopes: vec![HashMap::new()],
         functions: known_functions,
-        methods,
+        methods: bindings.methods,
+        known_types: bindings.known_types,
         function_pointers: HashSet::new(),
         closures: HashMap::new(),
         inherited_bindings: function.inherited_bindings.iter().cloned().collect(),
@@ -790,6 +799,38 @@ impl Builder<'_> {
                         _ => "<operator>.pointerCall",
                     }
                 };
+                let resolved = (!pointer && closure.is_none() && !unresolved_operator)
+                    .then(|| self.resolve_call(callee, arguments))
+                    .flatten()
+                    .map(|method| {
+                        (
+                            method.full_name.clone(),
+                            if self.cpp {
+                                method.binding_return_type.clone()
+                            } else {
+                                method.return_type.clone()
+                            },
+                            method.is_virtual,
+                        )
+                    });
+                let kind = if pointer {
+                    CallKind::Pointer
+                } else if closure.is_some() {
+                    CallKind::Closure
+                } else if unresolved_operator {
+                    CallKind::UnresolvedExpression
+                } else if self.cpp && matches!(callee.kind, ExprKind::Member { .. }) {
+                    match &resolved {
+                        Some((_, _, is_virtual)) => CallKind::ResolvedMember {
+                            is_virtual: *is_virtual,
+                        },
+                        None if self.member_binding_is_opaque(callee) => CallKind::OpaqueMember,
+                        None => CallKind::UnresolvedMember,
+                    }
+                } else {
+                    CallKind::Named
+                };
+                let layout = CallLayout::for_kind(kind);
                 let id = self.node("CALL", span, Some(name), None);
                 if let Some(closure) = &closure {
                     self.graph.nodes[id as usize].method_full_name = Some(format!(
@@ -798,43 +839,47 @@ impl Builder<'_> {
                         closure.parameter_types.join(","),
                     ));
                     self.graph.nodes[id as usize].type_name = Some(closure.return_type.clone());
-                } else if unresolved_operator {
-                    self.graph.nodes[id as usize].method_full_name = Some(format!(
-                        "<unresolvedNamespace>.<operator>():<unresolvedSignature>({})",
-                        arguments.len(),
-                    ));
-                } else if !pointer
-                    && let Some((fullname, return_type)) =
-                        self.resolve_call(callee, arguments).map(|method| {
-                            (
-                                method.full_name.clone(),
-                                if self.cpp {
-                                    method.binding_return_type.clone()
-                                } else {
-                                    method.return_type.clone()
-                                },
-                            )
-                        })
-                {
+                } else if let Some((fullname, return_type, _)) = resolved {
                     self.graph.nodes[id as usize].method_full_name = Some(fullname);
                     self.graph.nodes[id as usize].type_name = Some(return_type);
+                } else if self.cpp
+                    && !pointer
+                    && kind != CallKind::OpaqueMember
+                    && self.graph.nodes[id as usize].method_full_name.is_none()
+                {
+                    // Our parser also lowers CDT's distinct new-expression
+                    // class to a synthetic Call. Its canonical intrinsic
+                    // identity is already supplied by node(); it is not an
+                    // unresolved source-level function call.
+                    self.graph.nodes[id as usize].method_full_name =
+                        Some(unresolved_full_name(name, arguments.len()));
                 }
                 self.ast(parent, id, argument);
+                // createCallAst shares a base/receiver AST: lower the selected
+                // expression exactly once, and attach both edges to its root.
+                // Root identity comes from the AST edge, not allocation order.
+                let operand = match layout.operand {
+                    Operand::None => None,
+                    Operand::Callee => Some(callee.as_ref()),
+                    Operand::MemberBase => match &callee.kind {
+                        ExprKind::Member { base, .. } => Some(base.as_ref()),
+                        _ => unreachable!("member layout requires a member callee"),
+                    },
+                };
                 let mut flow = Fragment::default();
-                if pointer || closure.is_some() || unresolved_operator {
-                    let receiver = self.graph.nodes.len() as NodeId;
-                    flow = self.expression(callee, id, unresolved_operator.then_some(0));
-                    if self.graph.nodes.len() != receiver as usize {
-                        self.edge(id, receiver, "RECEIVER", None);
-                    }
-                } else {
-                    match &callee.kind {
-                        ExprKind::Identifier(_) => (),
-                        ExprKind::Member { base, .. } if self.cpp => {
-                            flow = self.expression(base, id, Some(0));
-                        }
-                        _ => {
-                            flow = self.expression(callee, id, Some(0));
+                if let Some(operand) = operand {
+                    let start = self.graph.edges.len();
+                    flow = self.expression(operand, id, layout.base_index());
+                    if layout.receiver {
+                        let mut roots = self.graph.edges[start..]
+                            .iter()
+                            .filter(|edge| edge.kind == "AST" && edge.source == id)
+                            .map(|edge| edge.target);
+                        let root = roots.next();
+                        if root.is_none() || roots.next().is_some() {
+                            self.unsupported(span, "call receiver has no unique AST root");
+                        } else if let Some(root) = root {
+                            self.edge(id, root, "RECEIVER", None);
                         }
                     }
                 }
@@ -1101,6 +1146,53 @@ impl Builder<'_> {
             _ => self
                 .expression_type(expression)
                 .is_some_and(|ty| ty.contains('*')),
+        }
+    }
+    fn member_binding_is_opaque(&self, callee: &Expr) -> bool {
+        let ExprKind::Member { base, name, .. } = &callee.kind else {
+            return false;
+        };
+        if name.contains("::") {
+            return true;
+        }
+        self.receiver_has_known_type(base)
+    }
+    fn receiver_has_known_type(&self, base: &Expr) -> bool {
+        // A known owner can require inheritance, overload or qualified lookup
+        // that we have not implemented. Retain the prior base-only AST rather
+        // than treating our incomplete lookup as CDT's problem binding.
+        let owner = match &base.kind {
+            ExprKind::Call { callee, arguments } => self
+                .resolve_call(callee, arguments)
+                .map(|method| method.binding_return_type.clone()),
+            _ => self.expression_type(base),
+        };
+        if owner.is_some_and(|ty| {
+            let owner = ty
+                .trim_end_matches(['*', '&'])
+                .split_whitespace()
+                .filter(|word| !matches!(*word, "const" | "volatile"))
+                .collect::<Vec<_>>()
+                .join(" ");
+            self.known_types.contains(&owner)
+        }) {
+            return true;
+        }
+        // This is a refusal boundary, not result-type inference: a known
+        // carrier through indexing/field access can require missing lookup.
+        // Do not turn that missing evidence into a guessed problem binding.
+        match &base.kind {
+            ExprKind::Index { base, .. } | ExprKind::Member { base, .. } => {
+                self.receiver_has_known_type(base)
+            }
+            ExprKind::Bracketed(inner)
+            | ExprKind::Generated {
+                expression: inner, ..
+            }
+            | ExprKind::Unary {
+                argument: inner, ..
+            } => self.receiver_has_known_type(inner),
+            _ => false,
         }
     }
     fn resolve_call(&self, callee: &Expr, arguments: &[Expr]) -> Option<&Function> {
@@ -2223,9 +2315,13 @@ mod tests {
                     };
                     let function = &unit.functions[0];
                     let known_functions = [function.name.clone()].into_iter().collect();
-                    let methods = [(function.full_name.clone(), vec![function])]
+                    let methods: HashMap<_, _> = [(function.full_name.clone(), vec![function])]
                         .into_iter()
                         .collect();
+                    let bindings = super::CallBindings {
+                        methods: &methods,
+                        known_types: &unit.known_type_names,
+                    };
                     let (graph, diagnostics) = std::thread::scope(|scope| {
                         std::thread::Builder::new()
                             .stack_size(2 * 1024 * 1024)
@@ -2236,7 +2332,7 @@ mod tests {
                                     "input.c",
                                     &known_functions,
                                     false,
-                                    &methods,
+                                    &bindings,
                                     &Options::default(),
                                 )
                             })

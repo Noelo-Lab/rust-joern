@@ -2,6 +2,7 @@ mod builder;
 mod dataflow;
 mod ddg;
 pub mod graph;
+mod joern_calls;
 mod joern_operators;
 mod lexer;
 mod normalize;
@@ -151,6 +152,10 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             .or_default()
             .push(function);
     }
+    let call_bindings = builder::CallBindings {
+        methods: &methods,
+        known_types: &unit.known_type_names,
+    };
     let mut built: Vec<_> = unit
         .functions
         .par_iter()
@@ -161,7 +166,7 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
                 filename,
                 &known_functions,
                 cpp,
-                &methods,
+                &call_bindings,
                 options,
             )
         })
@@ -195,6 +200,7 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             member_cv_qualified: false,
             lambda: false,
             is_static: false,
+            is_virtual: false,
             inherited_bindings: Vec::new(),
             inherited_closures: Vec::new(),
             parameters: Vec::new(),
@@ -218,7 +224,7 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             filename,
             &known_functions,
             cpp,
-            &methods,
+            &call_bindings,
             options,
         )
         .0
