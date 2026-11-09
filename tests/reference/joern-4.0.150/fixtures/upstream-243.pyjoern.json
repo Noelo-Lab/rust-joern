@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/Users/sjkim1127/.pyenv/versions/3.12.1/lib/python3.12/site-packages/pyjoern/__init__.py",
+  "seconds": 4.851331333862618,
+  "functions": {
+    "square": {
+      "name": "square",
+      "start_line": 4,
+      "end_line": 6,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "4.0:\nFUNCTION_START\n<UnsupportedStmt: ['multiplication', 'num*num']>\nreturn num*num;,returnnum*num;\nFUNCTION_END\n"
+        }
+      }
+    },
+    "call_square": {
+      "name": "call_square",
+      "start_line": 9,
+      "end_line": 11,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "9.0:\nFUNCTION_START\n<UnsupportedStmt: square,A::square(10)>\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "dc0192ca24819d403969b91f81c3021e44eb67f48cf6850cbb3b13448495fe75",
+  "prepared_sha256": "dc0192ca24819d403969b91f81c3021e44eb67f48cf6850cbb3b13448495fe75"
+}

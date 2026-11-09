@@ -362,12 +362,24 @@ pub fn apply_with_context(
             }
         }
     }
+    // loneIdentifiers collects `(call, identifier)` pairs from a map grouped
+    // by name into a map keyed by call, so a call keeps only the last of its
+    // lone identifiers in that map's iteration order. The others stay
+    // ordinary generated definitions.
+    let mut ordered = Vec::new();
+    scala_hash_map_order(candidates.keys().copied().collect(), 0, &mut ordered);
+    let mut lone_of_call: HashMap<usize, usize> = HashMap::new();
+    for name in ordered {
+        if let [(at, arg)] = candidates[name][..] {
+            lone_of_call.insert(at, arg);
+        }
+    }
     let mut lone = Vec::new();
-    for values in candidates.values().filter(|values| values.len() == 1) {
-        let (at, arg) = values[0];
+    for (at, arg) in lone_of_call {
         gens[at].retain(|&i| i != arg);
         lone.push(arg);
     }
+    lone.sort_unstable();
     // Joern counts definitions at each generating CFG node, after removing
     // lone identifiers, rather than counting unique definition nodes.
     let skip_overlay = gens.iter().map(Vec::len).sum::<usize>() > MAX_DEFINITIONS;
@@ -376,15 +388,25 @@ pub fn apply_with_context(
         function.reaching_definitions = None;
         return;
     }
-    let definitions: Vec<_> = gens
+    // Definition numbers are positions in ReachingDefFlowGraph's
+    // allNodesEvenUnreachable: the solver order, then the remaining CFG nodes
+    // in `method.cfgNode` order. A BitSet of definitions iterates by number,
+    // which fixes the stored order of the REACHING_DEF edges created from it.
+    let mut number = vec![usize::MAX; n];
+    let unreachable = contained(entry, &graph.ast, nodes);
+    for (position, &i) in order.iter().chain(&unreachable).enumerate() {
+        if number[i] == usize::MAX {
+            number[i] = position;
+        }
+    }
+    let mut definitions: Vec<_> = gens
         .iter()
         .flatten()
         .copied()
         .collect::<HashSet<_>>()
         .into_iter()
         .collect();
-    let mut definitions = definitions;
-    definitions.sort_unstable();
+    definitions.sort_unstable_by_key(|&i| (number[i], i));
     let bits: HashMap<_, _> = definitions
         .iter()
         .enumerate()
@@ -442,31 +464,40 @@ pub fn apply_with_context(
     }
     let mut incoming = vec![Bits::new(definitions.len()); n];
     let mut outgoing = gen_sets.clone();
-    let mut queued = vec![false; n];
-    let mut queue = VecDeque::from(order.clone());
-    for &i in &order {
-        queued[i] = true;
-    }
-    while let Some(i) = queue.pop_front() {
-        queued[i] = false;
-        let mut value = Bits::new(definitions.len());
-        for &predecessor in &prev[i] {
-            value.union(&outgoing[predecessor]);
-        }
-        incoming[i] = value.clone();
-        for ((word, kill), generated) in value.0.iter_mut().zip(&kill_sets[i].0).zip(&gen_sets[i].0)
-        {
-            *word = *word & !kill | generated;
-        }
-        if value != outgoing[i] {
-            outgoing[i] = value;
-            for &successor in &next[i] {
-                if !queued[successor] {
-                    queued[successor] = true;
-                    queue.push_back(successor);
+    // DataFlowSolver works in rounds: every node of a round sees the sets
+    // updated earlier in it, and the successors of its changed nodes form the
+    // next round, each at its first position. The flow graph's successor and
+    // predecessor maps disagree around output parameters, so this is not an
+    // order-independent fixed point: a node on both a round and the next is
+    // evaluated twice, and the sets reaching the exit depend on that.
+    let mut round = order.clone();
+    let mut listed = vec![usize::MAX; n];
+    let mut rounds = 0;
+    while !round.is_empty() {
+        let mut following = Vec::new();
+        for &i in &round {
+            let mut value = Bits::new(definitions.len());
+            for &predecessor in &prev[i] {
+                value.union(&outgoing[predecessor]);
+            }
+            incoming[i] = value.clone();
+            for ((word, kill), generated) in
+                value.0.iter_mut().zip(&kill_sets[i].0).zip(&gen_sets[i].0)
+            {
+                *word = *word & !kill | generated;
+            }
+            if value != outgoing[i] {
+                outgoing[i] = value;
+                for &successor in &next[i] {
+                    if listed[successor] != rounds {
+                        listed[successor] = rounds;
+                        following.push(successor);
+                    }
                 }
             }
         }
+        round = following;
+        rounds += 1;
     }
     function.reaching_definitions = expose_sets.then(|| {
         order
@@ -494,46 +525,79 @@ pub fn apply_with_context(
         graph: &graph,
         edges: Vec::new(),
     };
+    // DdgGenerator.addReachingDefEdges: entry edges first, then one group of
+    // edges per call, return and output parameter, then the exit's. Within a
+    // group the order is Joern's: it decides each node's stored in-edge
+    // order, which the DOT projection's edge cache depends on. Joern orders
+    // the rest by node hashes that include the Graph's identity hash, so it
+    // varies between runs: the groups themselves (keys of `solution.in`), the
+    // uses of a call with more than four arguments, the definitions reaching
+    // a return's operand and the lone identifiers. The solver order, argument
+    // order and definition numbers stand in for those here.
     for &i in &order {
-        let uses = graph.uses(i);
-        if ddg_node(&nodes[i]) && uses.is_empty() {
+        if ddg_node(&nodes[i]) && graph.uses(i).is_empty() {
             ddg.add(entry, i, "");
         }
-        if call(&nodes[i]) || nodes[i].kind == "RETURN" || output(&nodes[i]) {
+    }
+    for &i in &order {
+        let uses = graph.uses(i);
+        let reaching = |used: usize| -> Vec<usize> {
+            incoming[i]
+                .iter()
+                .map(|d| definitions[d])
+                .filter(|&d| graph.is_using(used, d))
+                .collect()
+        };
+        if call(&nodes[i]) {
+            // addEdgesToCallSite: used incoming definitions of every
+            // argument, then argument to generated definition, then blocks.
             for &used in &uses {
-                let relevant: Vec<_> = incoming[i]
-                    .iter()
-                    .map(|d| definitions[d])
-                    .filter(|&d| graph.is_using(used, d))
-                    .collect();
+                for definition in reaching(used) {
+                    if definition != used {
+                        ddg.add(definition, used, graph.label(definition));
+                    }
+                }
+            }
+            for &used in &uses {
+                for &generated in &gens[i] {
+                    if used != generated && ddg_node(&nodes[used]) {
+                        ddg.add(used, generated, graph.label(used));
+                    }
+                }
+            }
+            for &used in &uses {
+                if nodes[used].kind == "BLOCK" {
+                    graph.block_edges(used, i, &incoming, &definitions, &mut ddg);
+                }
+            }
+        } else if nodes[i].kind == "RETURN" {
+            // addEdgesToReturn: blocks, then per returned expression its edge
+            // to the return followed by its used incoming definitions.
+            for &used in &uses {
+                if nodes[used].kind == "BLOCK" {
+                    graph.block_edges(used, i, &incoming, &definitions, &mut ddg);
+                }
+            }
+            for &used in &uses {
+                ddg.add(used, i, &nodes[used].code);
+                let relevant = reaching(used);
                 for &definition in &relevant {
                     if definition != used {
                         ddg.add(definition, used, graph.label(definition));
                     }
                 }
-                if call(&nodes[i]) {
-                    for &generated in &gens[i] {
-                        if used != generated && ddg_node(&nodes[used]) {
-                            ddg.add(used, generated, graph.label(used));
-                        }
-                    }
-                } else if nodes[i].kind == "RETURN" {
-                    ddg.add(used, i, &nodes[used].code);
-                    if relevant.is_empty() {
-                        ddg.add(entry, i, "");
-                    }
-                }
-                if nodes[used].kind == "BLOCK" {
-                    graph.block_edges(used, i, &incoming, &definitions, &mut ddg);
+                if relevant.is_empty() {
+                    ddg.add(entry, i, "");
                 }
             }
-        }
-        if nodes[i].kind == "RETURN" {
             ddg.add(i, exit, "<RET>");
+        } else if let Some(position) = outputs.iter().position(|&out| out == i) {
+            // addEdgesToMethodParameterOut: the input parameter's edge first.
+            ddg.add(params[position], i, name(&nodes[params[position]]));
+            for definition in reaching(i) {
+                ddg.add(definition, i, graph.label(definition));
+            }
         }
-    }
-    for (&param, &out) in params.iter().zip(&outputs) {
-        ddg.add(param, out, name(&nodes[param]));
     }
     for definition in incoming[exit].iter().map(|d| definitions[d]).chain(lone) {
         ddg.add(definition, exit, graph.label(definition));
@@ -568,6 +632,62 @@ pub fn project_ddg(
         all_internal_methods,
         cpp,
     )
+}
+
+/// `method.cfgNode`: the CFG-node targets of the method's CONTAINS edges.
+/// ContainsEdgePass traverses the AST breadth first without descending into
+/// nested methods and type declarations. Locals and parameters are not
+/// CONTAINS targets, though output parameters themselves are CfgNodes.
+pub(crate) fn contained(entry: usize, ast: &[Vec<usize>], nodes: &[Node]) -> Vec<usize> {
+    let mut result = Vec::new();
+    let mut queue = VecDeque::from([entry]);
+    let mut seen = HashSet::from([entry]);
+    while let Some(parent) = queue.pop_front() {
+        for &node in &ast[parent] {
+            if !seen.insert(node) {
+                continue;
+            }
+            let kind = nodes[node].kind.as_str();
+            if expression(&nodes[node]) || matches!(kind, "JUMP_TARGET" | "METHOD") {
+                result.push(node);
+            }
+            if !matches!(kind, "METHOD" | "TYPE_DECL") {
+                queue.push_back(node);
+            }
+        }
+    }
+    result
+}
+
+/// Iteration order of a Scala 2.13 `immutable.HashMap` with these string keys:
+/// a trie node yields its own entries by hash chunk, then its child nodes.
+fn scala_hash_map_order<'a>(keys: Vec<&'a str>, shift: u32, output: &mut Vec<&'a str>) {
+    fn improved_hash(key: &str) -> u32 {
+        let hash = key.encode_utf16().fold(0u32, |hash, unit| {
+            hash.wrapping_mul(31).wrapping_add(unit as u32)
+        });
+        let hash = hash.wrapping_add(!(hash << 9));
+        let hash = hash ^ (hash >> 14);
+        let hash = hash.wrapping_add(hash << 4);
+        hash ^ (hash >> 10)
+    }
+    if shift >= 32 {
+        output.extend(keys);
+        return;
+    }
+    let mut slots: [Vec<&str>; 32] = std::array::from_fn(|_| Vec::new());
+    for key in keys {
+        slots[((improved_hash(key) >> shift) & 31) as usize].push(key);
+    }
+    output.extend(
+        slots
+            .iter()
+            .filter(|slot| slot.len() == 1)
+            .map(|slot| slot[0]),
+    );
+    for slot in slots.into_iter().filter(|slot| slot.len() > 1) {
+        scala_hash_map_order(slot, shift + 5, output);
+    }
 }
 
 fn reverse_postorder(entry: usize, next: &[Vec<usize>]) -> Vec<usize> {
@@ -854,9 +974,23 @@ impl Graph<'_> {
                 }
             });
             let token = field.map(Access::Field).unwrap_or(Access::Variable);
+            // extractAccessIntToken reads a constant only from a literal or
+            // field identifier: `p[-1]` indexes by a call and stays variable.
             let shift = self
                 .argument(at, 2)
-                .and_then(|i| self.nodes[i].code.parse::<i32>().ok())
+                .and_then(|i| {
+                    let node = &self.nodes[i];
+                    match node.kind.as_str() {
+                        "LITERAL" => node.code.parse::<i32>().ok(),
+                        "FIELD_IDENTIFIER" => node
+                            .name
+                            .as_deref()
+                            .unwrap_or(&node.code)
+                            .parse::<i32>()
+                            .ok(),
+                        _ => None,
+                    }
+                })
                 .map(Access::Shift)
                 .unwrap_or(Access::VariableShift);
             steps.push(match op {

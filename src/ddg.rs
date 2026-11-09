@@ -1,9 +1,9 @@
 //! Joern 4.0.150's semantic DOT DDG projection. The reaching-definition graph
 //! remains available separately: DOT hides some sources, bypasses them while
 //! retaining their incoming labels, and maps arguments to their enclosing call.
-use crate::dataflow::{Semantic, expression, member, semantics};
-use crate::graph::{Edge, FunctionGraph, Node, PropertyGraph};
-use std::collections::{HashMap, HashSet, VecDeque};
+use crate::dataflow::{Semantic, contained, expression, member, semantics};
+use crate::graph::{Edge, FunctionGraph, Node, NodeId, PropertyGraph};
+use std::collections::{HashMap, HashSet};
 
 pub fn project(
     function: &FunctionGraph,
@@ -49,6 +49,18 @@ pub fn project(
         })
         .collect();
     PropertyGraph { nodes, edges }
+}
+
+/// The destination nodes in the order `project` evaluates them: Joern's
+/// `visibleNodes`. The edge cache makes the projection depend on this order.
+pub fn display_order(function: &FunctionGraph) -> Vec<NodeId> {
+    let (nonstub, internal) = (HashSet::new(), HashSet::new());
+    let context = Context::new(function, &nonstub, &internal, false);
+    let order = context.candidates();
+    order
+        .into_iter()
+        .map(|node| context.nodes[node].id)
+        .collect()
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
@@ -293,39 +305,18 @@ impl<'a> Context<'a> {
         let Some(entry) = self.nodes.iter().position(|node| node.kind == "METHOD") else {
             return Vec::new();
         };
+        // List(entry, exit) ++ method.parameter ++ method.cfgNode: the exit
+        // and the parameters are the entry's own AST children.
+        let own = |kind: &'static str| {
+            self.ast[entry]
+                .iter()
+                .copied()
+                .filter(move |&node| self.nodes[node].kind == kind)
+        };
         let mut result = vec![entry];
-        result.extend(
-            self.nodes
-                .iter()
-                .enumerate()
-                .filter_map(|(position, node)| (node.kind == "METHOD_RETURN").then_some(position)),
-        );
-        result.extend(
-            self.nodes
-                .iter()
-                .enumerate()
-                .filter_map(|(position, node)| {
-                    (node.kind == "METHOD_PARAMETER_IN").then_some(position)
-                }),
-        );
-        // ContainsEdgePass traverses breadth first, stopping at nested method
-        // and type declarations. Output parameters and locals are not CONTAINS
-        // targets even though output parameters themselves are CfgNodes.
-        let mut queue = VecDeque::from([entry]);
-        let mut seen = HashSet::from([entry]);
-        while let Some(parent) = queue.pop_front() {
-            for &node in &self.ast[parent] {
-                if !seen.insert(node) {
-                    continue;
-                }
-                if expression(&self.nodes[node]) || self.nodes[node].kind == "JUMP_TARGET" {
-                    result.push(node);
-                }
-                if !matches!(self.nodes[node].kind.as_str(), "METHOD" | "TYPE_DECL") {
-                    queue.push_back(node);
-                }
-            }
-        }
+        result.extend(own("METHOD_RETURN").take(1));
+        result.extend(own("METHOD_PARAMETER_IN"));
+        result.extend(contained(entry, &self.ast, self.nodes));
         result.retain(|&node| self.displayed(node));
         result
     }
