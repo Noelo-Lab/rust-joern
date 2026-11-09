@@ -106,6 +106,10 @@ sets for methods above that limit.
 
 ## DecBench
 
+See [C++ expression names and caller validation](docs/cpp-expression-contract.md)
+for the supported name syntax and the boundary between parsing pseudocode and
+validating benchmark output.
+
 See [DecBench integration](docs/decbench.md) for setup, saved-artifact GED
 rescoring, and the recorded reevaluation results.
 

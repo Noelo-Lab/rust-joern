@@ -6,6 +6,36 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## Operator-template recovery in incomplete pseudocode
+
+**Introduced:** 2026-11-09, [PR #3](https://github.com/Noelo-Lab/rust-joern/pull/3).
+
+**Joern:** complete declared controls for `operator!=<>(a,b)` retain calls,
+returns and comma/short-circuit loop structure. On incomplete ABI pseudocode,
+the original CDT frontend may recover different problem-expression structure.
+
+**Rust Joern:** recognize the operator-function-id and its template suffix
+before expression recovery checks, preserving executable operands and returns.
+This restores the declared controls, including one-node CFG degeneracy. It
+does not attempt to reproduce every CDT recovery path on undeclared or
+malformed types. In the fixed C++ qualification input audit, one previously
+non-isomorphic large pseudocode CFG remains non-isomorphic after this fix;
+its calls are no longer discarded into problem expressions. The input is not
+qualified as complete valid C++, and this is not certified reference parity.
+
+**Why:** discarding a call or enclosing return to make an incomplete input's
+graph resemble reference recovery would conceal an expression-parser defect.
+Caller validation and declaration/dialect evidence remain necessary.
+
+**Affects:** CPG calls/returns, CFGs and dependent DDGs for operator-template
+expressions previously recovered as problems. A template argument's scope
+separator must not rename the callee to that argument's leaf type.
+
+**Reference behavior:** no option restores the dropped-call recovery.
+`joern_loop_conditions` controls the separate constant-true loop policy below;
+it does not certify arbitrary pseudocode recovery. Existing DecBench pins and
+metric profiles are unchanged by this frontend patch.
+
 ## C++20 range-for init-statements execute before the range
 
 **Introduced:** 2026-11-09, [PR #18](https://github.com/Noelo-Lab/rust-joern/pull/18).

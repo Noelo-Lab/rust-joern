@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/Users/sjkim1127/.pyenv/versions/3.12.1/lib/python3.12/site-packages/pyjoern/__init__.py",
+  "seconds": 4.959781334036961,
+  "functions": {
+    "f": {
+      "name": "f",
+      "start_line": 3,
+      "end_line": 3,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "3.3:\nFUNCTION_START\n<UnsupportedStmt: get,demo::Box&lt;int&gt;::get(x)>\nsink(demo::Box&lt;int&gt;::get(x))\nreturn sink(demo::Box&lt;int&gt;::get(x));,returnsink(demo::Box&lt;int&gt;::get(x));\nFUNCTION_END\n"
+        }
+      }
+    },
+    "sink": {
+      "name": "sink",
+      "start_line": 2,
+      "end_line": 2,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "2.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "get": {
+      "name": "get",
+      "start_line": 1,
+      "end_line": 1,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "1.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "8e8d30e79fe87f5acd8f6df23128ee224778076dfd1359c228199a73502fa4f5",
+  "prepared_sha256": "8e8d30e79fe87f5acd8f6df23128ee224778076dfd1359c228199a73502fa4f5"
+}
