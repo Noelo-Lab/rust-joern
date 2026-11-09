@@ -1,6 +1,7 @@
 //! The C/C++ syntax used by the CDT-to-CPG conversion, without a parser runtime.
 //! Unsupported executable syntax is reported, rather than silently dropping its CFG.
 use std::collections::{HashMap, HashSet};
+use std::rc::Rc;
 
 use crate::lexer::{
     RetainedMacroInvocation, Token, TokenKind, lex_preprocessed,
@@ -63,9 +64,9 @@ fn parse_unit(
         class_fields: HashMap::new(),
         function_fields: Vec::new(),
         function_member_cv: false,
-        variables: HashSet::new(),
-        variable_types: HashMap::new(),
-        variable_closures: HashMap::new(),
+        variables: Rc::new(HashSet::new()),
+        variable_types: Rc::new(HashMap::new()),
+        variable_closures: Rc::new(HashMap::new()),
         function_returns: HashMap::new(),
         object_bindings: HashSet::new(),
         global_pointers: HashSet::new(),
@@ -767,9 +768,9 @@ struct Parser<'a> {
     class_fields: HashMap<String, Vec<(String, String)>>,
     function_fields: Vec<(String, String)>,
     function_member_cv: bool,
-    variables: HashSet<String>,
-    variable_types: HashMap<String, String>,
-    variable_closures: HashMap<String, Closure>,
+    variables: Rc<HashSet<String>>,
+    variable_types: Rc<HashMap<String, String>>,
+    variable_closures: Rc<HashMap<String, Closure>>,
     function_returns: HashMap<String, String>,
     /// File-scope C names whose first declaration is an object.
     object_bindings: HashSet<String>,
@@ -1197,7 +1198,8 @@ impl Parser<'_> {
                             if let (Some(name), _) = self.declarator_name(a, b) {
                                 if self.function_header(a, b).is_some() {
                                     // Still a function binding to CDT.
-                                    self.variables.insert(self.text(name).to_string());
+                                    let name = self.text(name).to_string();
+                                    Rc::make_mut(&mut self.variables).insert(name);
                                 } else {
                                     self.bind_object(name, prefix);
                                 }
@@ -1365,7 +1367,7 @@ impl Parser<'_> {
             }
             self.object_bindings.insert(name.clone());
         }
-        self.variables.insert(name);
+        Rc::make_mut(&mut self.variables).insert(name);
     }
 
     fn record_retained_macro_call(&mut self, callee: &Expr, _arguments: &[Expr]) {
@@ -2196,11 +2198,11 @@ impl Parser<'_> {
             name.clone()
         };
         for parameter in &parameters {
-            self.variables.insert(parameter.name.clone());
-            self.variable_types
+            Rc::make_mut(&mut self.variables).insert(parameter.name.clone());
+            Rc::make_mut(&mut self.variable_types)
                 .insert(parameter.name.clone(), parameter.type_name.clone());
         }
-        self.variables.insert(header.name.clone());
+        Rc::make_mut(&mut self.variables).insert(header.name.clone());
         if definition && (header.parameters_end + 1..body_start).any(|i| self.text(i) == ":") {
             self.diagnose(
                 header.parameters_end + 1,
@@ -2225,8 +2227,8 @@ impl Parser<'_> {
         }
         self.function_member_cv = member_cv_qualified;
         if let Some(owner) = &implicit_this {
-            self.variables.insert("this".into());
-            self.variable_types.insert("this".into(), owner.clone());
+            Rc::make_mut(&mut self.variables).insert("this".into());
+            Rc::make_mut(&mut self.variable_types).insert("this".into(), owner.clone());
         }
         self.function_returns
             .insert(name.clone(), return_type.clone());
@@ -2268,7 +2270,7 @@ impl Parser<'_> {
         self.in_function_body = old_body_context;
         self.current_method = old_method;
         self.lambda_ast_parent = old_ast_parent;
-        self.variables.insert(header.name.clone());
+        Rc::make_mut(&mut self.variables).insert(header.name.clone());
         for name in leaked {
             self.bind_object(name, prefix);
         }
@@ -2947,7 +2949,7 @@ impl Parser<'_> {
                     // reached this far.
                     Some(name) if renamed > named && after == name + 1 => {
                         let name = self.text(name).to_string();
-                        self.variables.insert(name.clone());
+                        Rc::make_mut(&mut self.variables).insert(name.clone());
                         vec![Declaration {
                             type_name: joern_clean_type(
                                 &(start..after - 1)
@@ -3326,7 +3328,7 @@ impl Parser<'_> {
                         })
                         .collect();
                     let name = self.text(start).to_string();
-                    self.variables.insert(name.clone());
+                    Rc::make_mut(&mut self.variables).insert(name.clone());
                     self.function_declarations.push(Function {
                         full_name: name.clone(),
                         name,
@@ -4311,8 +4313,8 @@ impl Parser<'_> {
                 if let Some(name) = name {
                     let type_name = self.declarator_type(start, base_end, Some(name), b);
                     let name = self.text(name).to_string();
-                    self.variables.insert(name.clone());
-                    self.variable_types.insert(name.clone(), type_name.clone());
+                    Rc::make_mut(&mut self.variables).insert(name.clone());
+                    Rc::make_mut(&mut self.variable_types).insert(name.clone(), type_name.clone());
                     return vec![Declaration {
                         name,
                         type_name,
@@ -4402,16 +4404,16 @@ impl Parser<'_> {
             });
             let type_name = self.declarator_type(start, base_end, Some(name_index), b);
             if !is_typedef {
-                self.variables.insert(name.clone());
-                self.variable_types.insert(name.clone(), type_name.clone());
+                Rc::make_mut(&mut self.variables).insert(name.clone());
+                Rc::make_mut(&mut self.variable_types).insert(name.clone(), type_name.clone());
                 if let Some(closure) = initializer
                     .as_ref()
                     .and_then(|value| self.closure_expression(value))
                     .cloned()
                 {
-                    self.variable_closures.insert(name.clone(), closure);
+                    Rc::make_mut(&mut self.variable_closures).insert(name.clone(), closure);
                 } else {
-                    self.variable_closures.remove(&name);
+                    Rc::make_mut(&mut self.variable_closures).remove(&name);
                 }
             }
             // CDT ends a declarator before its trailing attributes; only an
@@ -8192,7 +8194,7 @@ impl Parser<'_> {
         }
         let old_variables = self.variables.clone();
         for parameter in &parameters {
-            self.variables.insert(parameter.name.clone());
+            Rc::make_mut(&mut self.variables).insert(parameter.name.clone());
         }
         let parent = self.current_method.clone();
         let old_method = std::mem::replace(&mut self.current_method, full_name.clone());
@@ -8209,7 +8211,7 @@ impl Parser<'_> {
                 .collect::<Vec<_>>()
                 .join(",")
         );
-        let mut types = self.variable_types.clone();
+        let mut types = self.variable_types.as_ref().clone();
         for (name, ty) in &self.function_fields {
             types.entry(name.clone()).or_insert_with(|| ty.clone());
         }
@@ -8220,7 +8222,7 @@ impl Parser<'_> {
         infer_return_types(
             &body,
             &mut types,
-            &mut self.variable_closures.clone(),
+            &mut self.variable_closures.as_ref().clone(),
             &self.function_returns,
             &mut returns,
         );
