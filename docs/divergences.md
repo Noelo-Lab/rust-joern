@@ -8,7 +8,7 @@ belong in regression fixtures, not here.
 
 ## Block-scope C++ `static_assert` stays out of the runtime CFG
 
-**Introduced:** 2026-11-09.
+**Introduced:** 2026-11-09, [PR #16](https://github.com/Noelo-Lab/rust-joern/pull/16).
 
 Joern 4.0.150 includes a block-scope `static_assert` and its operands in the
 CFG. Rust Joern keeps their AST nodes and omits their flow because the
