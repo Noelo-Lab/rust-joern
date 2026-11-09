@@ -1532,7 +1532,20 @@ impl Builder<'_> {
                 }
                 flow
             }
-            StmtKind::Expression(expression) => self.expression(expression, parent, None),
+            StmtKind::Expression(expression) => {
+                let flow = self.expression(expression, parent, None);
+                // The parser represents block-scope C++ static_assert as a
+                // call. Its operands belong in the AST, but none run at runtime.
+                if self.cpp
+                    && !self.joern_cpp_control_flow
+                    && matches!(&expression.kind, ExprKind::Call { callee, .. }
+                        if matches!(&callee.kind, ExprKind::Identifier(name) if name == "static_assert"))
+                {
+                    Fragment::default()
+                } else {
+                    flow
+                }
+            }
             StmtKind::Declaration(declarations) => {
                 self.declarations(declarations, &statement.span, parent)
             }

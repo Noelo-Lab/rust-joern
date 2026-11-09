@@ -6,6 +6,24 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## Block-scope C++ `static_assert` stays out of the runtime CFG
+
+**Introduced:** 2026-11-09, [PR #16](https://github.com/Noelo-Lab/rust-joern/pull/16).
+
+**Joern:** a block-scope `static_assert` and its operands are in the CFG.
+
+**Rust Joern:** their AST nodes stay and they have no flow. C mode keeps its
+existing handling.
+
+**Why:** the assertion is checked during compilation, so a compiled binary
+contains no such code.
+
+**Affects:** the CFG, reaching definitions and DDG of C++ functions containing
+the declaration. The DecBench corpus contains none.
+
+**Reference behavior:** `joern_cpp_control_flow`, as for `noexcept` operands
+below.
+
 ## C++ `noexcept` operands are excluded from the CFG
 
 **Introduced:** 2026-11-09, [PR #13](https://github.com/Noelo-Lab/rust-joern/pull/13).
