@@ -86,8 +86,9 @@ the relevant checks and stating the scope actually measured.
 - Record every intentional difference from Joern in
   [divergences.md](divergences.md) in the change that makes it, with its date,
   PR, rationale, affected graphs and any option restoring Joern's behavior.
-  Direct comparisons with original references request those options, such as
-  `joern_loop_conditions`; DecBench and its shim use the defaults.
+  Direct comparisons with original references request those options,
+  `joern_loop_conditions`, `joern_knr_parameters` and `joern_cdt_failures`;
+  DecBench and its shim use the defaults.
 - Keep raw reaching-definition edges, labeled DDG projection, and public
   lifted DDG views distinct. Joern's 4,000-generated-definition cutoff applies
   to DDG generation; explicit reaching-definition requests still return solver
@@ -105,7 +106,10 @@ and retain failures separately from warnings and supplemental recovery.
 
 Use `inventory_decbench.py` and `capture_pyjoern_corpus.py` to create fresh
 corpus inputs and references. `compare_pyjoern.py`, `compare_ddg_pyjoern.py`,
-and `compare_native_corpus.py` implement the graph comparisons.
+and `compare_native_corpus.py` implement the graph comparisons. `ddg_corpus.py`
+inventories, captures and compares DDGs for the whole corpus by content.
+Joern's DDG export varies between runs for some functions;
+`replay_ddg_projection.py` checks those against one original run.
 `check_decbench_usage.py`, `check_cfg_views.py`, `compare_decbench.py`, and
 `check_source_ownership.py` validate DecBench extraction and ownership.
 `rescore_decbench_ged.py` and `summarize_decbench_ged.py` generate GED overlays

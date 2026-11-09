@@ -14,7 +14,35 @@ pub fn parse(source: &str, cpp: bool) -> TranslationUnit {
     parse_preprocessed(source, cpp, false)
 }
 
+#[cfg(test)]
 pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> TranslationUnit {
+    parse_with(source, cpp, preprocessed, false)
+}
+
+/// `cdt_failures` reproduces CDT's failure on a parameter list or expression
+/// it cannot parse; otherwise that code is still analyzed.
+pub fn parse_with(
+    source: &str,
+    cpp: bool,
+    preprocessed: bool,
+    cdt_failures: bool,
+) -> TranslationUnit {
+    let (unit, later) = parse_unit(source, cpp, preprocessed, cdt_failures, HashSet::new());
+    if later.is_empty() {
+        return unit;
+    }
+    // C binds a function before its declaration as well (`CScope`). A
+    // `T *x;` that names a later one is parsed again with those bindings.
+    parse_unit(source, cpp, preprocessed, cdt_failures, later).0
+}
+
+fn parse_unit(
+    source: &str,
+    cpp: bool,
+    preprocessed: bool,
+    cdt_failures: bool,
+    later_functions: HashSet<String>,
+) -> (TranslationUnit, HashSet<String>) {
     let (tokens, diagnostics, retained_macro_invocations) =
         lex_preprocessed_with_macros_for_language(source, preprocessed, cpp);
     let limit = tokens.len();
@@ -24,10 +52,12 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         pos: 0,
         limit,
         cpp,
+        cdt_failures,
         diagnostics,
         types: HashSet::new(),
         explicit_types: HashSet::new(),
         type_aliases: HashMap::new(),
+        class_alias_undo: Vec::new(),
         extern_c: false,
         extern_c_names: HashSet::new(),
         class_scopes: HashSet::new(),
@@ -38,6 +68,11 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         variable_types: Rc::new(HashMap::new()),
         variable_closures: Rc::new(HashMap::new()),
         function_returns: HashMap::new(),
+        object_bindings: HashSet::new(),
+        global_pointers: HashSet::new(),
+        external_functions: HashSet::new(),
+        later_functions,
+        record_depth: 0,
         function_full_name: String::new(),
         imports: HashMap::new(),
         using_namespaces: Vec::new(),
@@ -57,6 +92,7 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
     let mut functions = Vec::new();
     parser.translation_scope("", &mut functions, false);
     functions.append(&mut parser.function_declarations);
+    let later = parser.later_function_names(&functions);
     let declaration_count = functions
         .iter()
         .filter(|function| matches!(function.body.kind, StmtKind::Empty))
@@ -70,10 +106,23 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         .filter(|f| !matches!(f.body.kind, StmtKind::Empty))
         .map(|f| f.full_name.clone())
         .collect();
+    // registerMethodDeclaration keeps the first declaration it visits, which
+    // may be a block-scope one inside an earlier function body.
+    let mut first_declaration: HashMap<String, usize> = HashMap::new();
+    for function in &functions {
+        if matches!(function.body.kind, StmtKind::Empty) {
+            first_declaration
+                .entry(function.full_name.clone())
+                .and_modify(|start| *start = (*start).min(function.span.start))
+                .or_insert(function.span.start);
+        }
+    }
     let mut declarations = HashSet::new();
     functions.retain(|f| {
         !matches!(f.body.kind, StmtKind::Empty)
-            || !definitions.contains(&f.full_name) && declarations.insert(f.full_name.clone())
+            || !definitions.contains(&f.full_name)
+                && first_declaration[&f.full_name] == f.span.start
+                && declarations.insert(f.full_name.clone())
     });
     let declaration_names: Vec<_> = functions
         .iter()
@@ -94,12 +143,13 @@ pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> Transl
         .filter(|event| parser.retained_macro_call_ends.contains(&event.callee_end))
         .map(|event| event.descriptor)
         .collect();
-    TranslationUnit {
+    let unit = TranslationUnit {
         functions,
         global_expressions: parser.global_expressions,
         retained_macro_calls,
         diagnostics: parser.diagnostics,
-    }
+    };
+    (unit, later)
 }
 
 fn joern_declaration_order(names: &[String], registered_count: usize) -> HashMap<String, usize> {
@@ -693,16 +743,25 @@ mod expression_port_tests {
     }
 }
 
+struct AliasUndo {
+    alias: Option<String>,
+    was_type: bool,
+    was_explicit: bool,
+}
+
 struct Parser<'a> {
     source: &'a str,
     tokens: Vec<Token>,
     pos: usize,
     limit: usize,
     cpp: bool,
+    /// Whether code that CDT fails to parse is dropped as Joern drops it.
+    cdt_failures: bool,
     diagnostics: Vec<ParseDiagnostic>,
     types: HashSet<String>,
     explicit_types: HashSet<String>,
     type_aliases: HashMap<String, String>,
+    class_alias_undo: Vec<HashMap<String, AliasUndo>>,
     extern_c: bool,
     extern_c_names: HashSet<String>,
     class_scopes: HashSet<String>,
@@ -713,6 +772,17 @@ struct Parser<'a> {
     variable_types: Rc<HashMap<String, String>>,
     variable_closures: Rc<HashMap<String, Closure>>,
     function_returns: HashMap<String, String>,
+    /// File-scope C names whose first declaration is an object.
+    object_bindings: HashSet<String>,
+    /// File-scope C objects whose first declarator is a pointer.
+    global_pointers: HashSet<String>,
+    /// Undeclared C names that CDT bound as external functions while it
+    /// resolved a statement ambiguity; the binding lasts for the unit.
+    external_functions: HashSet<String>,
+    /// C functions that a `T *x;` statement names before their declaration.
+    later_functions: HashSet<String>,
+    /// Nesting of record bodies, whose members are not file-scope names.
+    record_depth: usize,
     function_full_name: String,
     imports: HashMap<String, String>,
     using_namespaces: Vec<String>,
@@ -736,9 +806,23 @@ struct Header {
     parameters_start: usize,
     parameters_end: usize,
     return_type: Option<String>,
+    /// For one declarator of a declaration with several: the end of their
+    /// shared specifiers, then the starts of the first declarator and this one.
+    shared: Option<(usize, usize, usize)>,
+    /// The parameter list after a group that nests this function declarator,
+    /// as in `void (*hook(void))(int)`.
+    outer_parameters: Option<(usize, usize)>,
 }
 
 impl Parser<'_> {
+    /// A builtin type specifier of the parsed language. C has no `bool` or
+    /// `wchar_t` keyword: without a typedef they are ordinary identifiers, so
+    /// `(bool)(x)` is a call through a parenthesized name, as for any
+    /// unknown `(T)(x)`.
+    fn type_word(&self, text: &str) -> bool {
+        type_word(text) && (self.cpp || !c_typedef_name(text))
+    }
+
     fn text(&self, i: usize) -> &str {
         self.tokens
             .get(i)
@@ -998,10 +1082,15 @@ impl Parser<'_> {
                 continue;
             }
             let is_typedef = (start..cursor).any(|i| self.text(i) == "typedef");
+            // A group that is no declarator makes CDT declare a function by
+            // the type's name, which turns later `T *x;` into expressions.
+            // By default such a declaration stays a problem.
+            let file_scope =
+                self.cdt_failures && !self.cpp && self.record_depth == 0 && prefix.is_empty();
             let header = if is_typedef {
                 None
             } else {
-                self.function_header(start, cursor)
+                self.function_header_in(start, cursor, file_scope)
             };
             // CDT accepts K&R definitions. Their parameter declarations contain
             // semicolons before the function body, unlike ordinary prototypes.
@@ -1082,17 +1171,22 @@ impl Parser<'_> {
                         // specifier recovery may consume its class-name token.
                         self.add_function(start, cursor, header, prefix, false, functions);
                     } else {
-                        for (a, b) in self.split_ranges(base_end, cursor, ",") {
-                            if let Some(mut header) = self.function_header(a, b) {
+                        let declarators = self.split_ranges(base_end, cursor, ",");
+                        let first = declarators.first().map_or(base_end, |range| range.0);
+                        let several = declarators.len() > 1;
+                        for (a, b) in declarators {
+                            if let Some(mut header) = self.function_header_in(a, b, file_scope) {
                                 let declarator_type = header
                                     .return_type
                                     .take()
                                     .unwrap_or_else(|| self.clean_type(a, header.name_start));
                                 header.return_type = Some(format!("{base_type}{declarator_type}"));
+                                if several {
+                                    header.shared = Some((base_end, first, a));
+                                }
                                 self.add_function(start, cursor, header, prefix, false, functions);
                             } else if let (Some(name), _) = self.declarator_name(a, b) {
-                                let name = self.text(name).to_string();
-                                Rc::make_mut(&mut self.variables).insert(name);
+                                self.bind_object(name, prefix);
                             }
                         }
                     }
@@ -1102,8 +1196,13 @@ impl Parser<'_> {
                         let base_end = self.specifier_end(start, cursor);
                         for (a, b) in self.split_ranges(base_end, cursor, ",") {
                             if let (Some(name), _) = self.declarator_name(a, b) {
-                                let name = self.text(name).to_string();
-                                Rc::make_mut(&mut self.variables).insert(name);
+                                if self.function_header(a, b).is_some() {
+                                    // Still a function binding to CDT.
+                                    let name = self.text(name).to_string();
+                                    Rc::make_mut(&mut self.variables).insert(name);
+                                } else {
+                                    self.bind_object(name, prefix);
+                                }
                             }
                         }
                     }
@@ -1155,14 +1254,34 @@ impl Parser<'_> {
                     }
                     let previous_linkage = self.extern_c;
                     let outer_variables = class.map(|_| self.variables.clone());
+                    if self.cpp && class.is_some() {
+                        self.class_alias_undo.push(HashMap::new());
+                    }
                     if self.cpp && linkage {
                         self.extern_c = self.text(start + 1) == "\"C\"";
                     }
                     self.pos = cursor + 1;
+                    self.record_depth += usize::from(class.is_some());
                     self.translation_scope(&nested, functions, true);
+                    self.record_depth -= usize::from(class.is_some());
                     self.extern_c = previous_linkage;
                     if let Some(variables) = outer_variables {
                         self.variables = variables;
+                    }
+                    if self.cpp && class.is_some() {
+                        for (name, undo) in self.class_alias_undo.pop().unwrap() {
+                            if let Some(alias) = undo.alias {
+                                self.type_aliases.insert(name.clone(), alias);
+                            } else {
+                                self.type_aliases.remove(&name);
+                            }
+                            if !undo.was_type {
+                                self.types.remove(&name);
+                            }
+                            if !undo.was_explicit {
+                                self.explicit_types.remove(&name);
+                            }
+                        }
                     }
                     self.expect("}");
                     // Names after an anonymous record, including typedef aliases.
@@ -1178,8 +1297,7 @@ impl Parser<'_> {
                                     self.types.insert(self.text(name).to_string());
                                     self.explicit_types.insert(self.text(name).to_string());
                                 } else {
-                                    let name = self.text(name).to_string();
-                                    Rc::make_mut(&mut self.variables).insert(name);
+                                    self.bind_object(name, prefix);
                                 }
                             }
                         }
@@ -1227,6 +1345,31 @@ impl Parser<'_> {
         self.using_namespaces = old_using_namespaces;
     }
 
+    fn bind_object(&mut self, at: usize, prefix: &str) {
+        let name = self.text(at).to_string();
+        if !self.cpp
+            && prefix.is_empty()
+            && self.record_depth == 0
+            && !self.function_returns.contains_key(&name)
+        {
+            let mut before = at;
+            while before > 0 && qualifier(self.text(before - 1)) {
+                before -= 1;
+            }
+            // CDT types the name by its first declarator: a pointer unless
+            // an array or function suffix binds to the name first.
+            if !self.variables.contains(&name)
+                && before > 0
+                && self.text(before - 1) == "*"
+                && !matches!(self.text(at + 1), "[" | "(")
+            {
+                self.global_pointers.insert(name.clone());
+            }
+            self.object_bindings.insert(name.clone());
+        }
+        Rc::make_mut(&mut self.variables).insert(name);
+    }
+
     fn record_retained_macro_call(&mut self, callee: &Expr, _arguments: &[Expr]) {
         if !self.retained_macro_invocations.is_empty()
             && matches!(callee.kind, ExprKind::Member { .. })
@@ -1255,7 +1398,7 @@ impl Parser<'_> {
             || parameters.iter().any(|&(a, b)| {
                 b != a + 1
                     || self.tokens[a].kind != TokenKind::Identifier
-                    || type_word(self.text(a))
+                    || self.type_word(self.text(a))
                     || qualifier(self.text(a))
             })
         {
@@ -1303,6 +1446,11 @@ impl Parser<'_> {
         }
         let introducer =
             (start..end).find(|i| matches!(self.text(*i), "struct" | "class" | "union"))?;
+        // In C++, the class/struct token in an enum-key does not introduce a
+        // record scope. Its brace body contains enumerators, not members.
+        if self.cpp && introducer > start && self.text(introducer - 1) == "enum" {
+            return None;
+        }
         let mut after = introducer + 1;
         while let Some(next) = self.skip_attribute(after, end) {
             after = next;
@@ -1323,6 +1471,11 @@ impl Parser<'_> {
     }
 
     fn function_header(&self, start: usize, end: usize) -> Option<Header> {
+        self.function_header_in(start, end, false)
+    }
+
+    /// `c_file_scope` marks the start of a C declaration at file scope.
+    fn function_header_in(&self, start: usize, end: usize, c_file_scope: bool) -> Option<Header> {
         if matches!(self.text(start), "static_assert" | "_Static_assert")
             || (self.cpp && self.text(start) == "using")
         {
@@ -1403,7 +1556,7 @@ impl Parser<'_> {
             {
                 name_start -= 3;
             } else if self.tokens[name_start].kind != TokenKind::Identifier
-                || type_word(self.text(name_start))
+                || self.type_word(self.text(name_start))
                 || qualifier(self.text(name_start))
             {
                 i += 1;
@@ -1423,6 +1576,10 @@ impl Parser<'_> {
                 continue;
             }
             // A direct initializer with values is not a function prototype.
+            // At file scope CDT's C parser has no such initializer: a list
+            // it accepts, as of abstract pointers, declares a function
+            // unless the group reads further as a nested declarator, or as
+            // far and the name before it is a type.
             if self.split_ranges(i + 1, close, ",").iter().any(|(a, b)| {
                 a < b
                     && (self.tokens[*a].kind == TokenKind::Literal
@@ -1430,7 +1587,14 @@ impl Parser<'_> {
                             self.text(*a),
                             "{" | "+" | "-" | "!" | "~" | "*" | "&" | "&&"
                         ))
-            }) {
+            }) && (!c_file_scope
+                || self.cdt_parameter_list(i, close + 1, true).is_none()
+                || self
+                    .cdt_declarator(i, end, false)
+                    .is_some_and(|(nested, _)| {
+                        nested > close + 1 || self.explicit_types.contains(self.text(name_start))
+                    }))
+            {
                 i = close + 1;
                 continue;
             }
@@ -1454,6 +1618,8 @@ impl Parser<'_> {
                 parameters_start: i + 1,
                 parameters_end: close,
                 return_type: None,
+                shared: None,
+                outer_parameters: None,
             });
         }
         None
@@ -1471,7 +1637,10 @@ impl Parser<'_> {
             return None;
         }
         let close = self.matching(group, end)?;
-        let mut header = if let Some(header) = self.function_header(group + 1, close) {
+        let mut header = if let Some(mut header) = self.function_header(group + 1, close) {
+            if self.text(close + 1) == "(" {
+                header.outer_parameters = Some((close + 2, self.matching(close + 1, end)?));
+            }
             header
         } else {
             let (name, suffix) = self.declarator_name(group + 1, close);
@@ -1492,6 +1661,8 @@ impl Parser<'_> {
                 parameters_start: close + 2,
                 parameters_end: self.matching(close + 1, end)?,
                 return_type: None,
+                shared: None,
+                outer_parameters: None,
             }
         };
         let mut return_type = self.clean_type(start, base_end);
@@ -1583,6 +1754,9 @@ impl Parser<'_> {
             || self.cdt_problem_record_header(start, body_start)
             || self.cdt_problem_return_prefix(start, &header)
             || self.cdt_problem_parameters(&header)
+            || (self.cdt_failures
+                && (self.cdt_parameter_backtrack(&header)
+                    || self.cdt_nested_declarator_problem(start, body_start, &header)))
         {
             // The original CDT version recovers these as problem declarations;
             // Joern's declaration conversion emits no method for them.
@@ -1591,6 +1765,16 @@ impl Parser<'_> {
                     .brace_end(body_start, self.limit)
                     .map_or(self.limit, |close| close + 1);
             }
+            return;
+        }
+        if !definition
+            && prefix.is_empty()
+            && self.record_depth == 0
+            && self.object_bindings.contains(&header.name)
+        {
+            // CDT binds a C name to its first declaration: a later function
+            // declarator of an object's name is not an IFunction, so
+            // astForFunctionDeclarator emits no method.
             return;
         }
         if !definition
@@ -1638,19 +1822,24 @@ impl Parser<'_> {
             let body_end = self.brace_end(body_start, self.limit);
             self.add_function(start, declaration_end, header, prefix, false, functions);
             if !self.cpp
-                && let Some(mut recovered) = self.function_header(marker, body_start)
+                && let Some(recovered) = self.function_header(marker, body_start)
             {
-                recovered.return_type = Some("ANY".into());
                 self.add_function(marker, body_start, recovered, prefix, true, functions);
             } else {
                 self.pos = body_end.map_or(self.limit, |close| close + 1);
             }
             return;
         }
-        let (return_start, recovered_return_type) =
-            self.return_specifier_start(start, header.name_start);
-        let base_end = self.specifier_end(return_start, header.name_start);
-        let primitive_return = (return_start..base_end).any(|i| type_word(self.text(i)));
+        let (return_start, recovered_return_type) = match header.shared {
+            // An earlier declarator is not part of this one's specifiers.
+            Some((shared_end, _, _)) => (self.return_specifier_start(start, shared_end).0, false),
+            None => self.return_specifier_start(start, header.name_start),
+        };
+        let base_end = match header.shared {
+            Some((shared_end, _, _)) => shared_end,
+            None => self.specifier_end(return_start, header.name_start),
+        };
+        let primitive_return = (return_start..base_end).any(|i| self.type_word(self.text(i)));
         if (!self.cpp && self.text(base_end) == "<")
             || (primitive_return
                 && self
@@ -1689,10 +1878,19 @@ impl Parser<'_> {
                         .contains(prefix)
                         .then(|| prefix.to_string())
                 });
-            let constructor = owner.as_ref().is_some_and(|owner| {
-                method.strip_prefix('~').unwrap_or(method)
-                    == owner.rsplit("::").next().unwrap_or(owner)
-            });
+            let qualified_special_member = definition
+                && header
+                    .name
+                    .rsplit_once("::")
+                    .is_some_and(|(spelled_owner, _)| {
+                        let leaf = spelled_owner.rsplit("::").next().unwrap_or(spelled_owner);
+                        !leaf.contains('<') && method.strip_prefix('~').unwrap_or(method) == leaf
+                    });
+            let constructor = qualified_special_member
+                || owner.as_ref().is_some_and(|owner| {
+                    method.strip_prefix('~').unwrap_or(method)
+                        == owner.rsplit("::").next().unwrap_or(owner)
+                });
             let conversion = owner.is_some()
                 && (header.name_start..header.parameters_start - 1).any(|i| {
                     self.text(i) == "operator"
@@ -1726,23 +1924,60 @@ impl Parser<'_> {
                 && (return_start..header.name_start).any(|i| self.text(i) == "virtual")
             {
                 "virtual".into()
-            } else {
+            } else if self.cpp {
                 return_binding_type.clone()
+            } else if definition {
+                // CDT's return type string of an empty C specifier keeps
+                // only its cv-qualifiers; Joern reports an empty one as ANY.
+                let display =
+                    primitive_return_display(&self.type_code(return_start, base_end, true));
+                if display.is_empty() {
+                    "ANY".into()
+                } else {
+                    display
+                }
+            } else {
+                self.prototype_return_display(return_start, base_end, base_end)
+                    .unwrap_or_else(|| "ANY".into())
             }
         } else if definition {
-            let base = return_type.trim_end_matches(['*', '&']).trim();
-            if base.split_whitespace().all(type_word) {
-                primitive_return_display(&self.type_code(return_start, header.name_start, true))
-            } else if self.explicit_types.contains(base)
-                || self.class_scopes.contains(base)
-                || base.contains("::")
-            {
-                simple_type_name(base).to_string()
+            // returnTypeForIASTFunctionDefinition does not clean its type. A
+            // simple specifier keeps CDT's return type string, an elaborated
+            // one its signature, and a named one only its simple name: the
+            // last two lose the declarator's pointer operators.
+            let base = return_type
+                .split(['*', '&', '['])
+                .next()
+                .unwrap_or("")
+                .trim();
+            if self.cpp && base == "auto" {
+                // CDT's return type string of a deduced type is empty.
+                "ANY".into()
+            } else if base.split_whitespace().all(|word| self.type_word(word)) {
+                // The pointer operators end where a grouped declarator begins.
+                let pointers_end = (base_end..header.name_start)
+                    .find(|&i| {
+                        !matches!(self.text(i), "*" | "&" | "&&") && !qualifier(self.text(i))
+                    })
+                    .unwrap_or(header.name_start);
+                let display =
+                    primitive_return_display(&self.type_code(return_start, pointers_end, true));
+                self.function_pointer_return(pointers_end, header.name_start, body_start)
+                    .map_or(display.clone(), |suffix| format!("{display}{suffix}"))
+            } else if let Some(elaborated) = self.elaborated_return_display(start, base_end) {
+                elaborated
             } else {
-                return_type
+                simple_type_name(base).replace(" <", "<")
             }
         } else {
-            return_type
+            // typeForDeclSpecifier reads the pointer operators of the
+            // declaration's first declarator for every function it declares.
+            self.prototype_return_display(
+                return_start,
+                base_end,
+                header.shared.map_or(base_end, |(_, first, _)| first),
+            )
+            .unwrap_or(return_type)
         };
         let old_variables = self.variables.clone();
         let old_variable_types = self.variable_types.clone();
@@ -1752,62 +1987,78 @@ impl Parser<'_> {
         let old_function_member_cv = self.function_member_cv;
         let old_body_context = self.in_function_body;
         self.in_function_body = false;
-        let parameters = if definition
-            && (header.parameters_end + 1..body_start).any(|i| self.text(i) == ";")
-        {
-            let mut declared = Vec::new();
-            for (a, b) in self.split_ranges(header.parameters_end + 1, body_start, ";") {
-                if a < b {
-                    let span = self.span(a, b + 1);
-                    declared.extend(
-                        self.declarations_range(a, b)
-                            .into_iter()
-                            .map(|d| (d, span.clone())),
-                    );
-                }
-            }
-            self.split_ranges(header.parameters_start, header.parameters_end, ",")
-                .into_iter()
-                .filter(|(a, b)| a < b)
-                .map(|(a, b)| {
-                    let name = self.raw(a, b);
-                    let declaration = declared.iter().find(|(d, _)| d.name == name);
-                    let type_name = declaration.map_or("int".into(), |(d, _)| d.type_name.clone());
-                    Parameter {
-                        name,
-                        type_name,
-                        function_pointer: false,
-                        span: declaration.map_or_else(|| self.span(a, b), |(_, span)| span.clone()),
+        let parameters =
+            if definition && (header.parameters_end + 1..body_start).any(|i| self.text(i) == ";") {
+                let mut declared = Vec::new();
+                for (a, b) in self.split_ranges(header.parameters_end + 1, body_start, ";") {
+                    if a < b {
+                        let span = self.span(a, b + 1);
+                        declared.extend(
+                            self.declarations_range(a, b)
+                                .into_iter()
+                                .enumerate()
+                                .map(|(position, d)| (d, span.clone(), position == 0)),
+                        );
                     }
-                })
-                .collect()
-        } else if definition
-            && !self.cpp
-            && self
-                .split_ranges(header.parameters_start, header.parameters_end, ",")
-                .iter()
-                .all(|&(a, b)| {
-                    a == b
-                        || b == a + 1
-                            && self.tokens[a].kind == TokenKind::Identifier
-                            && !type_word(self.text(a))
-                            && !qualifier(self.text(a))
-                            && !self.explicit_types.contains(self.text(a))
-                })
-        {
-            self.split_ranges(header.parameters_start, header.parameters_end, ",")
-                .into_iter()
-                .filter(|(a, b)| a < b)
-                .map(|(a, b)| Parameter {
-                    name: self.raw(a, b),
-                    type_name: "ANY".into(),
-                    function_pointer: false,
-                    span: self.span(a, b),
-                })
-                .collect()
-        } else {
-            self.parameters(header.parameters_start, header.parameters_end)
-        };
+                }
+                self.split_ranges(header.parameters_start, header.parameters_end, ",")
+                    .into_iter()
+                    .filter(|(a, b)| a < b)
+                    .map(|(a, b)| {
+                        let name = self.raw(a, b);
+                        let declaration = declared.iter().find(|(d, _, _)| d.name == name);
+                        let type_name =
+                            declaration.map_or("int".into(), |(d, _, _)| d.type_name.clone());
+                        Parameter {
+                            name,
+                            type_name,
+                            function_pointer: false,
+                            knr: Some(if declaration.is_some_and(|(_, _, first)| *first) {
+                                KnrParameter::First
+                            } else {
+                                KnrParameter::Unlisted
+                            }),
+                            span: declaration
+                                .map_or_else(|| self.span(a, b), |(_, span, _)| span.clone()),
+                        }
+                    })
+                    .collect()
+            } else if definition
+                && !self.cpp
+                && self
+                    .split_ranges(header.parameters_start, header.parameters_end, ",")
+                    .iter()
+                    .all(|&(a, b)| {
+                        a == b
+                            || b == a + 1
+                                && self.tokens[a].kind == TokenKind::Identifier
+                                && !self.type_word(self.text(a))
+                                && !qualifier(self.text(a))
+                                && !self.explicit_types.contains(self.text(a))
+                    })
+            {
+                self.split_ranges(header.parameters_start, header.parameters_end, ",")
+                    .into_iter()
+                    .filter(|(a, b)| a < b)
+                    .map(|(a, b)| Parameter {
+                        name: self.raw(a, b),
+                        type_name: "ANY".into(),
+                        function_pointer: false,
+                        knr: None,
+                        span: self.span(a, b),
+                    })
+                    .collect()
+            } else if let Some((outer_start, outer_end)) =
+                header.outer_parameters.filter(|_| !definition)
+            {
+                // A declared method's outer function declarator lists its own
+                // parameters before those of the declarator it nests.
+                let mut parameters = self.parameters(outer_start, outer_end);
+                parameters.extend(self.parameters(header.parameters_start, header.parameters_end));
+                parameters
+            } else {
+                self.parameters(header.parameters_start, header.parameters_end)
+            };
         let signature = format!(
             "{}({})",
             return_type,
@@ -2001,12 +2252,13 @@ impl Parser<'_> {
             }
         };
         let end = if definition { self.pos } else { body_start + 1 };
+        let mut leaked = Vec::new();
         if self.asm_problem_recovery
             && let Some(body_end) = original_body_end
         {
             // CDT closes the enclosing compound at a problem assembly brace.
             // The balanced source body still delimits recovery of later methods.
-            self.asm_tail_declarations(end, body_end);
+            leaked = self.asm_tail_declarations(end, body_end);
             self.pos = body_end + 1;
         }
         self.variables = old_variables;
@@ -2019,11 +2271,37 @@ impl Parser<'_> {
         self.current_method = old_method;
         self.lambda_ast_parent = old_ast_parent;
         Rc::make_mut(&mut self.variables).insert(header.name.clone());
-        let mut span = self.span(start, end);
+        for name in leaked {
+            self.bind_object(name, prefix);
+        }
+        // Leading identifiers that CDT skipped are a separate problem node.
+        let mut span = self.span(
+            if recovered_return_type {
+                return_start
+            } else {
+                start
+            },
+            end,
+        );
         if !definition {
-            let name_span = self.span(header.name_start, header.name_start + 1);
-            span.line = name_span.line;
-            span.column = name_span.column;
+            // A declared method takes the position of its declarator, which
+            // starts at the pointer operators or group before its name.
+            let lower = header.shared.map_or(start, |(_, _, own)| own);
+            let (mut declarator, mut candidate) = (header.name_start, header.name_start);
+            while candidate > lower {
+                let previous = self.text(candidate - 1);
+                if matches!(previous, "*" | "&" | "&&" | "(") {
+                    candidate -= 1;
+                    declarator = candidate;
+                } else if qualifier(previous) {
+                    candidate -= 1;
+                } else {
+                    break;
+                }
+            }
+            let declarator_span = self.span(declarator, declarator + 1);
+            span.line = declarator_span.line;
+            span.column = declarator_span.column;
         }
         functions.push(Function {
             name,
@@ -2055,14 +2333,47 @@ impl Parser<'_> {
             cursor = close + 1;
         }
         let original = cursor;
+        if !self.cpp {
+            // CDT retries a failed declaration after each leading identifier
+            // and keeps the first start from which the declarator is reached.
+            let reaches = |mut from: usize| loop {
+                from = self.cdt_attributes(from, name_start);
+                if from >= name_start {
+                    break true;
+                }
+                if !matches!(
+                    self.text(from),
+                    "*" | "(" | "const" | "volatile" | "restrict" | "__const" | "__restrict"
+                ) {
+                    break false;
+                }
+                from += 1;
+            };
+            let mut retry = cursor;
+            while retry < name_start {
+                if self
+                    .cdt_decl_specifiers(retry, name_start, true)
+                    .is_some_and(|(end, alternative)| {
+                        reaches(end) || alternative.is_some_and(reaches)
+                    })
+                {
+                    return (retry, retry != original);
+                }
+                if !self.cdt_identifier(retry, name_start) {
+                    break;
+                }
+                retry += 1;
+            }
+        }
         while cursor + 1 < name_start
             && self.tokens[cursor].kind == TokenKind::Identifier
             && self.tokens[cursor + 1].kind == TokenKind::Identifier
             && !self.explicit_types.contains(self.text(cursor))
-            && !type_word(self.text(cursor))
+            && !self.type_word(self.text(cursor))
             && !qualifier(self.text(cursor))
-            && !type_word(self.text(cursor + 1))
+            && !self.type_word(self.text(cursor + 1))
             && !qualifier(self.text(cursor + 1))
+            && self.skip_attribute(cursor + 1, name_start).is_none()
         {
             // Leading unbound specifiers become separate CDT problem nodes.
             cursor += 1;
@@ -2091,11 +2402,630 @@ impl Parser<'_> {
                 }
                 let specifier = self.text(start + 1);
                 self.text(start + 2) == "("
-                    && !type_word(specifier)
+                    && !self.type_word(specifier)
                     && !qualifier(specifier)
                     && !self.explicit_types.contains(specifier)
                     && !matches!(specifier, "typeof" | "__typeof__" | "__typeof" | "_Atomic")
             })
+    }
+
+    /// The token at `i`, past the macros CDT's GNU scanner defines as empty.
+    fn cdt_token(&self, mut i: usize, end: usize) -> (usize, &str) {
+        while i < end && matches!(self.text(i), "__extension__" | "__stdcall" | "__thread") {
+            i += 1;
+        }
+        (i, if i < end { self.text(i) } else { "" })
+    }
+
+    fn cdt_identifier(&self, i: usize, end: usize) -> bool {
+        i < end && self.tokens[i].kind == TokenKind::Identifier && !cdt_c_keyword(self.text(i))
+    }
+
+    /// CDT `__attribute_decl_seq`. c2cpg's default defines expand the
+    /// calling conventions `__cdecl`, `__fastcall` and `__pascal` to attributes.
+    fn cdt_attributes(&self, i: usize, end: usize) -> usize {
+        let (mut i, mut text) = self.cdt_token(i, end);
+        while cdt_attribute(text) {
+            let arguments = !matches!(text, "__cdecl" | "__fastcall" | "__pascal");
+            i += 1;
+            if arguments && i < end && self.text(i) == "(" {
+                i = self.matching(i, end).map_or(end, |close| close + 1);
+            }
+            (i, text) = self.cdt_token(i, end);
+        }
+        i
+    }
+
+    /// CDT's C `declSpecifierSeq`: the end of the specifiers and, when an
+    /// identifier read as the type name may instead be the declarator, the
+    /// token to which the second reading returns.
+    fn cdt_decl_specifiers(
+        &self,
+        start: usize,
+        end: usize,
+        allow_empty: bool,
+    ) -> Option<(usize, Option<usize>)> {
+        let (mut i, mut raw, mut named, mut any, mut alternative) =
+            (start, false, false, false, None);
+        loop {
+            let (at, text) = self.cdt_token(i, end);
+            i = at;
+            match text {
+                "auto" | "register" | "static" | "extern" | "typedef" | "inline" | "__inline"
+                | "__inline__" | "const" | "__const" | "__const__" | "volatile" | "__volatile"
+                | "__volatile__" | "restrict" | "__restrict" | "__restrict__" => i += 1,
+                "void" | "char" | "short" | "int" | "__int128" | "long" | "float" | "double"
+                | "__float128" | "_Decimal32" | "_Decimal64" | "_Decimal128" | "signed"
+                | "__signed" | "__signed__" | "unsigned" | "_Bool" => {
+                    if named {
+                        break;
+                    }
+                    raw = true;
+                    i += 1;
+                }
+                "_Complex" | "_Imaginary" | "__complex__" => {
+                    if named {
+                        break;
+                    }
+                    i += 1;
+                }
+                "struct" | "union" | "enum" => {
+                    if named || raw {
+                        break;
+                    }
+                    let mut tag = self.cdt_attributes(i + 1, end);
+                    let name = self.cdt_identifier(tag, end);
+                    tag = self.cdt_attributes(tag + usize::from(name), end);
+                    if tag < end && self.text(tag) == "{" {
+                        tag = self.matching(tag, end)? + 1;
+                    } else if !name {
+                        return None;
+                    }
+                    named = true;
+                    i = tag;
+                }
+                "typeof" | "__typeof" | "__typeof__" => {
+                    if raw || named {
+                        return alternative.map(|at| (at, None));
+                    }
+                    i += 1;
+                    i = if i < end && self.text(i) == "(" {
+                        self.matching(i, end)? + 1
+                    } else {
+                        i + 1
+                    };
+                    named = true;
+                }
+                "_Alignas" => {
+                    i = self.matching(i + 1, end).map_or(i + 1, |close| close + 1);
+                    continue;
+                }
+                _ if cdt_attribute(text) => {
+                    i = self.cdt_attributes(i, end);
+                    continue;
+                }
+                _ if self.cdt_identifier(i, end) => {
+                    if named || raw {
+                        break;
+                    }
+                    if any || allow_empty {
+                        alternative = Some(i);
+                    }
+                    named = true;
+                    i += 1;
+                }
+                _ => break,
+            }
+            any = true;
+        }
+        (any || allow_empty).then_some((i, alternative))
+    }
+
+    /// CDT's C `declarator`: its end and whether it declares a name.
+    fn cdt_declarator(&self, start: usize, end: usize, abstract_: bool) -> Option<(usize, bool)> {
+        let mut i = start;
+        loop {
+            i = self.cdt_attributes(i, end);
+            if i >= end || self.text(i) != "*" {
+                break;
+            }
+            i += 1;
+            while let (
+                at,
+                "const" | "__const" | "__const__" | "volatile" | "__volatile" | "__volatile__"
+                | "restrict" | "__restrict" | "__restrict__",
+            ) = self.cdt_token(i, end)
+            {
+                i = at + 1;
+            }
+        }
+        if self.cdt_identifier(i, end) {
+            return Some((self.cdt_declarator_suffix(i + 1, end, true)?, true));
+        }
+        if i < end && self.text(i) == "(" {
+            // An abstract function declarator and a nested declarator are
+            // both tried; the longer one wins.
+            let function = abstract_
+                .then(|| self.cdt_declarator_suffix(i, end, false))
+                .flatten();
+            let nested = (|| {
+                let (inner, text) = self.cdt_token(i + 1, end);
+                if text == ")" {
+                    return None;
+                }
+                let (close, named) = self.cdt_declarator(inner, end, abstract_)?;
+                (close < end && self.text(close) == ")")
+                    .then(|| self.cdt_declarator_suffix(close + 1, end, named))
+                    .flatten()
+                    .map(|after| (after, named))
+            })();
+            return match (function, nested) {
+                (Some(function), Some(nested)) if nested.0 < function => Some((function, false)),
+                (Some(function), None) => Some((function, false)),
+                (_, nested) => nested,
+            };
+        }
+        if !abstract_ {
+            return None;
+        }
+        Some((self.cdt_declarator_suffix(i, end, false)?, false))
+    }
+
+    /// The function or array suffix, attributes and asm label of a declarator.
+    fn cdt_declarator_suffix(&self, start: usize, end: usize, named: bool) -> Option<usize> {
+        let mut i = self.cdt_attributes(start, end);
+        match if i < end { self.text(i) } else { "" } {
+            "(" => i = self.cdt_parameter_list(i, end, named)?,
+            "[" => {
+                while i < end && self.text(i) == "[" {
+                    i = self.matching(i, end)? + 1;
+                }
+            }
+            // Only members may be bit-fields.
+            ":" => return None,
+            _ => {}
+        }
+        i = self.cdt_attributes(i, end);
+        if i < end && matches!(self.text(i), "asm" | "__asm" | "__asm__") {
+            i += 1;
+            if i < end && self.text(i) == "(" {
+                i = self.matching(i, end)? + 1;
+            }
+            i = self.cdt_attributes(i, end);
+        }
+        Some(i)
+    }
+
+    /// CDT's C `functionDeclarator` parameter loop, from the opening
+    /// parenthesis to past the closing one. `None` is a backtrack: a
+    /// parameter must be followed by a comma, an ellipsis or the close.
+    fn cdt_parameter_list(&self, open: usize, end: usize, named: bool) -> Option<usize> {
+        let (mut i, mut seen) = (open + 1, false);
+        loop {
+            let (at, text) = self.cdt_token(i, end);
+            i = at;
+            match text {
+                ")" => return Some(i + 1),
+                "..." => i += 1,
+                "," => {
+                    i += 1;
+                    seen = false;
+                }
+                _ if seen || i >= end => return None,
+                _ => {
+                    // The parameters of a named function may omit specifiers.
+                    let (specifiers, alternative) = self.cdt_decl_specifiers(i, end, named)?;
+                    i = self
+                        .cdt_init_declarator(specifiers, end)
+                        .max(alternative.and_then(|at| self.cdt_init_declarator(at, end)))?;
+                    seen = true;
+                }
+            }
+        }
+    }
+
+    fn cdt_init_declarator(&self, start: usize, end: usize) -> Option<usize> {
+        let (mut i, _) = self.cdt_declarator(start, end, true)?;
+        if i + 1 < end && self.text(i) == "=" && self.text(i + 1) != "{" {
+            while i < end && !matches!(self.text(i), "," | ")") {
+                i = if matches!(self.text(i), "(" | "[" | "{") {
+                    self.matching(i, end)? + 1
+                } else {
+                    i + 1
+                };
+            }
+        }
+        Some(i)
+    }
+
+    /// The end of a C local declaration `specifiers name` that an
+    /// identifier follows, where CDT's `simpleDeclaration` stops.
+    fn cdt_unterminated_declarator(&self, start: usize) -> Option<usize> {
+        if self.cpp {
+            return None;
+        }
+        let end = self.limit;
+        let (specifiers, alternative) = self.cdt_decl_specifiers(start, end, false)?;
+        let declarator = |from: usize| {
+            let mut name = from;
+            while name < end && self.text(name) == "*" {
+                name += 1;
+            }
+            self.cdt_identifier(name, end).then_some(name + 1)
+        };
+        let after = declarator(specifiers).max(alternative.and_then(declarator))?;
+        self.cdt_identifier(after, end).then_some(after)
+    }
+
+    /// A statement without its semicolon, the problem CDT reports for it,
+    /// and the statement that starts at the current token.
+    fn missing_semicolon(
+        &mut self,
+        start: usize,
+        kind: StmtKind,
+        span: Span,
+        enclosing_fails: bool,
+    ) -> Stmt {
+        let rest = self.recovered_statement();
+        self.unterminated(start, kind, span, rest, enclosing_fails)
+    }
+
+    /// A statement without its semicolon and the one parsed after it. CDT's
+    /// problem there also fails an enclosing label or control statement, so
+    /// that the two become its siblings; `enclosing_fails` marks that.
+    fn unterminated(
+        &self,
+        start: usize,
+        kind: StmtKind,
+        span: Span,
+        rest: Stmt,
+        enclosing_fails: bool,
+    ) -> Stmt {
+        let mut statements = Vec::with_capacity(3);
+        if enclosing_fails {
+            statements.push(Stmt {
+                kind: StmtKind::Problem,
+                span: span.clone(),
+            });
+        }
+        statements.extend([Stmt { kind, span }, rest]);
+        Stmt {
+            span: self.span(start, self.pos),
+            kind: StmtKind::Sequence(statements),
+        }
+    }
+
+    /// The statement after a missing semicolon. One that reaches a brace
+    /// before its own semicolon is no whole statement for the type-directed
+    /// path; CDT's two attempts decide it instead. An operand chain that an
+    /// identifier follows is an expression statement, again without its
+    /// semicolon. A call whose group holds adjacent names and is no
+    /// declarator fails both attempts, and the problem ends with the block.
+    fn recovered_statement(&mut self) -> Stmt {
+        let start = self.pos;
+        let mut end = start;
+        while end < self.limit && !matches!(self.text(end), ";" | "{" | "}" | "<%" | "%>") {
+            end = if matches!(self.text(end), "(" | "[") {
+                self.matching(end, self.limit)
+                    .map_or(end + 1, |close| close + 1)
+            } else {
+                end + 1
+            };
+        }
+        if self.cpp
+            || end >= self.limit
+            || !matches!(self.text(end), "{" | "<%")
+            || !self.cdt_identifier(start, end)
+            || self.cdt_unterminated_declarator(start).is_some()
+        {
+            return self.statement();
+        }
+        let operand = |i: usize| {
+            self.cdt_identifier(i, end) || (i < end && self.tokens[i].kind == TokenKind::Literal)
+        };
+        let mut stop = start + 1;
+        while matches!(
+            self.text(stop),
+            "." | "->"
+                | "+"
+                | "-"
+                | "*"
+                | "/"
+                | "%"
+                | "&"
+                | "|"
+                | "^"
+                | "<<"
+                | ">>"
+                | "<"
+                | ">"
+                | "<="
+                | ">="
+                | "=="
+                | "!="
+                | "&&"
+                | "||"
+                | "="
+        ) && operand(stop + 1)
+        {
+            stop += 2;
+        }
+        if stop > start + 1 && self.cdt_identifier(stop, end) {
+            let diagnostics = self.diagnostics.len();
+            let expression = self.expression_range(start, stop);
+            if self.diagnostics.len() == diagnostics
+                && !matches!(expression.kind, ExprKind::Problem(_))
+            {
+                self.pos = stop;
+                let span = expression.span.clone();
+                return self.missing_semicolon(
+                    start,
+                    StmtKind::Expression(expression),
+                    span,
+                    self.cdt_failures,
+                );
+            }
+            self.diagnostics.truncate(diagnostics);
+        } else if stop == start + 1
+            && self.text(stop) == "("
+            && let Some(close) = self.matching(stop, end)
+            && close + 1 == end
+            && (stop + 1..close.saturating_sub(1)).any(|i| {
+                self.tokens[i].kind == TokenKind::Identifier
+                    && self.tokens[i + 1].kind == TokenKind::Identifier
+            })
+            && self.cdt_declarator(stop, end, false).is_none()
+        {
+            self.pos = self.problem_declaration_end(start);
+            return Stmt {
+                kind: StmtKind::Problem,
+                span: self.span(start, self.pos),
+            };
+        }
+        self.pos = start;
+        self.statement()
+    }
+
+    /// CDT's C expression ends at a literal that follows a complete operand,
+    /// as inside `"a "%s" b"`, and at a name that follows a literal. In an
+    /// expression statement or a local initializer the semicolon is then
+    /// missing and the rest is parsed as the next statement.
+    fn cdt_literal_recovery(&mut self, start: usize, end: usize) -> Option<Stmt> {
+        if self.cpp || self.pos != start || !self.cdt_adjacent_operands(start, end) {
+            return None;
+        }
+        let diagnostics = self.diagnostics.len();
+        let (kind, span) = if self.looks_declaration(start, end) {
+            let (specifiers, _) = self.cdt_decl_specifiers(start, end, false)?;
+            let (at, _) = self
+                .split_ranges(specifiers, end, ",")
+                .into_iter()
+                .find_map(|(a, b)| {
+                    let (value, _) = self.cdt_declarator(a, b, false)?;
+                    (value + 1 < b && self.text(value) == "=" && self.text(value + 1) != "{")
+                        .then(|| self.cdt_expression_stop(value + 1, b))
+                        .flatten()
+                })?;
+            self.remember_types(start, at);
+            let declarations = self.declarations_range(start, at);
+            if self.diagnostics.len() > diagnostics {
+                self.diagnostics.truncate(diagnostics);
+                self.pos = start;
+                return None;
+            }
+            self.pos = at;
+            (StmtKind::Declaration(declarations), self.span(start, at))
+        } else {
+            let (at, expression) = self.cdt_expression_stop(start, end)?;
+            let declarator = |from: usize| Some(self.cdt_declarator(from, end, false)?.0);
+            if self
+                .cdt_decl_specifiers(start, end, false)
+                .and_then(|(specifiers, alternative)| {
+                    declarator(specifiers).max(alternative.and_then(declarator))
+                })
+                .is_some_and(|after| after >= at)
+            {
+                // A declaration that reaches as far is CDT's reading.
+                return None;
+            }
+            self.pos = at;
+            let span = expression.span.clone();
+            (StmtKind::Expression(expression), span)
+        };
+        // CDT's problem also fails an enclosing label or control statement.
+        // By default that stays.
+        Some(self.missing_semicolon(start, kind, span, self.cdt_failures))
+    }
+
+    /// Whether a literal follows a complete operand, or a name a literal,
+    /// outside the groups of `start..end`.
+    fn cdt_adjacent_operands(&self, start: usize, end: usize) -> bool {
+        let literal = |i: usize| self.tokens[i].kind == TokenKind::Literal;
+        let string = |i: usize| string_literal_token(self.text(i));
+        let mut i = start + 1;
+        while i < end {
+            if literal(i) && unclosed_quoted_literal(self.text(i)) {
+                return false;
+            }
+            let after_operand = (literal(i - 1) && !(string(i - 1) && string(i)))
+                || self.cdt_identifier(i - 1, end)
+                || matches!(self.text(i - 1), ")" | "]");
+            if (literal(i) && after_operand) || (self.cdt_identifier(i, end) && literal(i - 1)) {
+                return true;
+            }
+            i = match self.text(i) {
+                "(" | "[" | "{" => self.matching(i, end).map_or(end, |close| close + 1),
+                _ => i + 1,
+            };
+        }
+        false
+    }
+
+    /// The expression from `from` and its end, where that end comes before
+    /// `to` at a literal or at a name after a literal.
+    fn cdt_expression_stop(&mut self, from: usize, to: usize) -> Option<(usize, Expr)> {
+        let diagnostics = self.diagnostics.len();
+        let (pos, limit) = (self.pos, std::mem::replace(&mut self.limit, to));
+        self.pos = from;
+        let expression = self.expression(0);
+        let at = std::mem::replace(&mut self.pos, pos);
+        self.limit = limit;
+        let literal = |i: usize| self.tokens[i].kind == TokenKind::Literal;
+        let ended = self.diagnostics.len() == diagnostics
+            && at > from
+            && at < to
+            && !matches!(expression.kind, ExprKind::Problem(_))
+            && (literal(at) || (self.cdt_identifier(at, to) && literal(at - 1)));
+        self.diagnostics.truncate(diagnostics);
+        ended.then_some((at, expression))
+    }
+
+    /// CDT parses a local declaration without type bindings. One whose
+    /// declarator fails is an expression statement, or a problem if no
+    /// expression parses there; one that ends early is followed by another
+    /// statement. `None` leaves the statement to the type-directed path.
+    fn cdt_declaration_recovery(&mut self, start: usize, end: usize) -> Option<Stmt> {
+        if !self.cdt_failures && self.function_header(start, end).is_some() {
+            // By default a prototype keeps its method even where CDT
+            // backtracks on the parameter list.
+            return None;
+        }
+        let (specifiers, alternative) = self.cdt_decl_specifiers(start, end, false)?;
+        let declarator = |from: usize| Some(self.cdt_declarator(from, end, false)?.0);
+        let named = declarator(specifiers);
+        let renamed = alternative.and_then(declarator);
+        let diagnostics = self.diagnostics.len();
+        // CDT's missing semicolon fails an enclosing label or control
+        // statement. By default that stays as the type-directed path left
+        // it: failed only where the whole statement was a problem.
+        let enclosing_fails = self.cdt_failures
+            || self.declaration_shape_problem(start, end)
+            || self.declaration_expression_problem(start, end);
+        match named.max(renamed) {
+            None if specifiers < end => {
+                let mut kind = StmtKind::Problem;
+                if self.cdt_identifier(start, end) {
+                    let limit = std::mem::replace(&mut self.limit, end);
+                    let expression = self.expression(0);
+                    self.limit = limit;
+                    if self.diagnostics.len() == diagnostics && self.pos > start && self.pos < end {
+                        // An expression that ends early lacks its semicolon.
+                        let span = expression.span.clone();
+                        return Some(self.missing_semicolon(
+                            start,
+                            StmtKind::Expression(expression),
+                            span,
+                            enclosing_fails,
+                        ));
+                    }
+                    self.pos = start;
+                    let expression = if self.diagnostics.len() == diagnostics {
+                        self.expression_range(start, end)
+                    } else {
+                        expression
+                    };
+                    if self.diagnostics.len() > diagnostics {
+                        self.diagnostics.truncate(diagnostics);
+                        return None;
+                    }
+                    if !matches!(expression.kind, ExprKind::Problem(_)) {
+                        kind = StmtKind::Expression(expression);
+                    }
+                }
+                if matches!(kind, StmtKind::Problem) && !self.cdt_failures {
+                    // By default no statement is dropped for CDT's failure.
+                    return None;
+                }
+                self.pos = end;
+                self.finish_statement(start);
+                Some(Stmt {
+                    kind,
+                    span: self.span(start, self.pos),
+                })
+            }
+            Some(after) if after < end && !matches!(self.text(after), "=" | "," | ":" | "{") => {
+                let declarations = match alternative {
+                    // Only the reading that declares the type name itself
+                    // reached this far.
+                    Some(name) if renamed > named && after == name + 1 => {
+                        let name = self.text(name).to_string();
+                        Rc::make_mut(&mut self.variables).insert(name.clone());
+                        vec![Declaration {
+                            type_name: joern_clean_type(
+                                &(start..after - 1)
+                                    .map(|i| self.text(i))
+                                    .collect::<Vec<_>>()
+                                    .join(" "),
+                            ),
+                            name,
+                            initializer: None,
+                            dimensions: Vec::new(),
+                            problem: false,
+                            is_typedef: false,
+                            nested_declarator: false,
+                            span: self.span(start, after),
+                        }]
+                    }
+                    _ => self.declarations_range(start, after),
+                };
+                if self.diagnostics.len() > diagnostics {
+                    self.diagnostics.truncate(diagnostics);
+                    self.pos = start;
+                    return None;
+                }
+                let span = self.span(start, after);
+                self.pos = after;
+                // The type-directed path already failed the enclosing
+                // statement of a declarator that no group follows.
+                Some(self.missing_semicolon(
+                    start,
+                    StmtKind::Declaration(declarations),
+                    span,
+                    enclosing_fails || self.text(after) != "(",
+                ))
+            }
+            _ => None,
+        }
+    }
+
+    /// Whether CDT's C parser backtracks out of this header's parameter
+    /// lists, which makes the declaration and any body one problem node.
+    fn cdt_parameter_backtrack(&self, header: &Header) -> bool {
+        if self.cpp {
+            return false;
+        }
+        let (open, close) = (header.parameters_start - 1, header.parameters_end);
+        // An identifier list followed by declarations is a K&R definition.
+        let knr = close > open + 1
+            && (open + 1..close).all(|i| {
+                if (i - open) % 2 == 1 {
+                    self.cdt_identifier(i, close)
+                } else {
+                    self.text(i) == ","
+                }
+            })
+            && (close - open) % 2 == 0
+            && !matches!(self.text(close + 1), ";" | "{");
+        let outer = header.outer_parameters.is_some_and(|(start, close)| {
+            self.cdt_parameter_list(start - 1, close + 1, true) != Some(close + 1)
+        });
+        outer || (!knr && self.cdt_parameter_list(open, close + 1, true) != Some(close + 1))
+    }
+
+    /// `name (declarator) suffix` on one line: CDT keeps the reading with
+    /// the type `name` and a nested declarator. Only a function declarator
+    /// may precede a missing semicolon there, so the declaration backtracks.
+    fn cdt_nested_declarator_problem(&self, start: usize, end: usize, header: &Header) -> bool {
+        let (open, close) = (header.parameters_start - 1, header.parameters_end);
+        !self.cpp
+            && header.name_start + 1 == open
+            && self.cdt_decl_specifiers(start, end, true) == Some((open, Some(header.name_start)))
+            && self.cdt_declarator(open, close + 1, false) == Some((close + 1, true))
+            && self
+                .unknown_function_suffix(close + 1, end)
+                .is_some_and(|marker| {
+                    self.tokens[marker].span.line == self.tokens[close].span.end_line
+                })
     }
 
     fn cdt_problem_return_prefix(&self, start: usize, header: &Header) -> bool {
@@ -2274,7 +3204,7 @@ impl Parser<'_> {
             return true;
         }
         if end >= start + 2
-            && !type_word(self.text(start))
+            && !self.type_word(self.text(start))
             && !qualifier(self.text(start))
             && (start..end).all(|i| self.tokens[i].kind == TokenKind::Identifier)
         {
@@ -2321,9 +3251,12 @@ impl Parser<'_> {
         false
     }
 
-    fn asm_tail_declarations(&mut self, start: usize, end: usize) {
+    /// Recovers the rest of a body that CDT closed early, as the file-scope
+    /// declarations it is to CDT, and returns the object names they declare.
+    fn asm_tail_declarations(&mut self, start: usize, end: usize) -> Vec<usize> {
+        let mut objects = Vec::new();
         if self.cpp {
-            return;
+            return objects;
         }
         let saved_limit = self.limit;
         self.limit = end;
@@ -2349,7 +3282,7 @@ impl Parser<'_> {
             if self.tokens[start].kind == TokenKind::Identifier
                 && self.text(start + 1) == "("
                 && !recovered_variables.contains(self.text(start))
-                && !type_word(self.text(start))
+                && !self.type_word(self.text(start))
                 && !qualifier(self.text(start))
                 && !matches!(
                     self.text(start),
@@ -2377,7 +3310,7 @@ impl Parser<'_> {
                     a == b
                         || b == a + 1
                             && self.tokens[a].kind == TokenKind::Identifier
-                            && !type_word(self.text(a))
+                            && !self.type_word(self.text(a))
                             && !qualifier(self.text(a))
                 }) {
                     // These are recovered K&R parameter names, not named type
@@ -2390,6 +3323,7 @@ impl Parser<'_> {
                             name: self.raw(a, b),
                             type_name: "ANY".into(),
                             function_pointer: false,
+                            knr: None,
                             span: self.span(a, b),
                         })
                         .collect();
@@ -2421,9 +3355,60 @@ impl Parser<'_> {
                     continue;
                 }
             }
-            self.pos = self.problem_statement_end(start).max(start + 1);
+            if self.cdt_failures
+                && let Some((semicolon, names)) = self.cdt_object_declaration(start, end)
+            {
+                // By default the names stay local to the body they left.
+                objects.extend(names);
+                self.pos = semicolon + 1;
+                continue;
+            }
+            self.pos = self.problem_declaration_end(start).max(start + 1);
         }
         self.limit = saved_limit;
+        objects
+    }
+
+    /// A C file-scope `simpleDeclaration` that reaches its semicolon: that
+    /// semicolon and the names of the objects it declares. The specifiers
+    /// may be empty, and a leading identifier may be the declarator.
+    fn cdt_object_declaration(&self, start: usize, end: usize) -> Option<(usize, Vec<usize>)> {
+        let (specifiers, alternative) = self.cdt_decl_specifiers(start, end, true)?;
+        let typedef = (start..specifiers).any(|i| self.text(i) == "typedef");
+        let declarators = |mut i: usize| {
+            let mut names = Vec::new();
+            loop {
+                let (after, _) = self.cdt_declarator(i, end, false)?;
+                if !typedef
+                    && self.function_header(i, after).is_none()
+                    && let (Some(name), _) = self.declarator_name(i, after)
+                {
+                    names.push(name);
+                }
+                i = after;
+                if i < end && self.text(i) == "=" {
+                    // Only a whole initializer may be a brace list.
+                    let value = i + 1;
+                    i = value;
+                    while i < end && !matches!(self.text(i), "," | ";") {
+                        i = match self.text(i) {
+                            "{" if i > value => return None,
+                            "(" | "[" | "{" => self.matching(i, end)? + 1,
+                            _ => i + 1,
+                        };
+                    }
+                    if i == value {
+                        return None;
+                    }
+                }
+                match if i < end { self.text(i) } else { "" } {
+                    "," => i += 1,
+                    ";" => return Some((i, names)),
+                    _ => return None,
+                }
+            }
+        };
+        declarators(specifiers).or_else(|| alternative.and_then(declarators))
     }
 
     fn collect_global_expressions(&mut self, start: usize, end: usize) {
@@ -2469,6 +3454,16 @@ impl Parser<'_> {
         }
     }
 
+    fn remember_class_alias(&mut self, name: &str) {
+        if let Some(undo) = self.class_alias_undo.last_mut() {
+            undo.entry(name.to_string()).or_insert_with(|| AliasUndo {
+                alias: self.type_aliases.get(name).cloned(),
+                was_type: self.types.contains(name),
+                was_explicit: self.explicit_types.contains(name),
+            });
+        }
+    }
+
     fn remember_types(&mut self, start: usize, end: usize) {
         for i in start..end {
             if self.cpp
@@ -2483,6 +3478,8 @@ impl Parser<'_> {
             }
         }
         if self.text(start) == "using" && self.text(start + 2) == "=" {
+            let alias = self.text(start + 1).to_string();
+            self.remember_class_alias(&alias);
             self.types.insert(self.text(start + 1).to_string());
             self.explicit_types.insert(self.text(start + 1).to_string());
             self.type_aliases.insert(
@@ -2510,6 +3507,8 @@ impl Parser<'_> {
             self.remember_inferred_type(start, base_end);
             for (a, b) in self.split_ranges(base_end, end, ",") {
                 if let (Some(name), _) = self.declarator_name(a, b) {
+                    let alias = self.text(name).to_string();
+                    self.remember_class_alias(&alias);
                     self.types.insert(self.text(name).to_string());
                     self.explicit_types.insert(self.text(name).to_string());
                     self.type_aliases.insert(
@@ -2532,6 +3531,7 @@ impl Parser<'_> {
                     name: "...".into(),
                     type_name: "...".into(),
                     function_pointer: false,
+                    knr: None,
                     span: self.span(a, b),
                 });
                 continue;
@@ -2565,7 +3565,7 @@ impl Parser<'_> {
                 && name_index.is_none()
                 && b > a
                 && self.tokens[b - 1].kind == TokenKind::Identifier
-                && !type_word(self.text(b - 1))
+                && !self.type_word(self.text(b - 1))
                 && !self.explicit_types.contains(self.text(b - 1))
                 && (a..b - 1).all(|i| qualifier(self.text(i)))
             {
@@ -2576,11 +3576,29 @@ impl Parser<'_> {
                     self.type_code(a, b - 1, true)
                 };
             }
+            // The parameter declaration ends with its declarator: attributes
+            // after it are not part of CDT's node or of Joern's CODE.
+            let mut code_end = b;
+            'trailing: loop {
+                let mut i = a + 1;
+                while i < code_end {
+                    match self.skip_attribute(i, code_end) {
+                        Some(after) if after == code_end => {
+                            code_end = i;
+                            continue 'trailing;
+                        }
+                        Some(after) => i = after,
+                        None => i += 1,
+                    }
+                }
+                break;
+            }
             result.push(Parameter {
                 name,
                 type_name,
                 function_pointer: self.text(suffix) == "(",
-                span: self.span(a, b),
+                knr: None,
+                span: self.span(a, code_end),
             });
         }
         result
@@ -2689,7 +3707,7 @@ impl Parser<'_> {
             "unsigned long long" => "unsigned long long int".into(),
             _ => base,
         };
-        if !base.split_whitespace().all(type_word)
+        if !base.split_whitespace().all(|word| self.type_word(word))
             && !self.explicit_types.contains(&base)
             && !self.class_scopes.contains(&base)
             && !base.contains("::")
@@ -2832,7 +3850,8 @@ impl Parser<'_> {
                 i += 1;
                 continue;
             }
-            if matches!(t, "struct" | "union" | "enum" | "class") {
+            // `class` is an ordinary identifier in C.
+            if matches!(t, "struct" | "union" | "enum") || (self.cpp && t == "class") {
                 has_type = true;
                 i += 1;
                 while let Some(after) = self.skip_attribute(i, end) {
@@ -2850,7 +3869,7 @@ impl Parser<'_> {
                 }
                 continue;
             }
-            if type_word(t) {
+            if self.type_word(t) {
                 has_type = true;
                 i += 1;
                 continue;
@@ -2921,6 +3940,237 @@ impl Parser<'_> {
             }
         }
         self.text(i) == "("
+    }
+
+    /// `ASTStringUtil.getSignatureString` of an elaborated type specifier
+    /// such as `const struct S`, which is Joern's return type for a definition.
+    fn elaborated_return_display(&self, start: usize, end: usize) -> Option<String> {
+        let start = if self.text(start) == "template" && self.text(start + 1) == "<" {
+            self.angle_close(start + 1, end)? + 1
+        } else {
+            start
+        };
+        let keyword = (start..end)
+            .find(|&i| matches!(self.text(i), "struct" | "union" | "enum" | "class"))?;
+        let mut name = String::new();
+        let mut i = keyword + 1;
+        while let Some(after) = self.skip_attribute(i, end) {
+            i = after;
+        }
+        while i < end
+            && (self.tokens[i].kind == TokenKind::Identifier && !qualifier(self.text(i))
+                || self.text(i) == "::")
+            && self.skip_attribute(i, end).is_none()
+        {
+            name.push_str(self.text(i));
+            i += 1;
+        }
+        if name.is_empty() {
+            return None;
+        }
+        if self.text(i) == "<"
+            && let Some(close) = self.angle_close(i, end)
+        {
+            name.push_str(&(i..=close).map(|at| self.text(at)).collect::<String>());
+        }
+        if (start..end).any(|i| self.text(i) == "{") {
+            // A composite or enumeration specifier has only its simple name.
+            return Some(simple_type_name(&name).to_string());
+        }
+        let mut out = String::new();
+        for (word, spellings) in [
+            ("const", &["const"][..]),
+            ("volatile", &["volatile", "__volatile__"][..]),
+        ] {
+            if (start..end).any(|i| spellings.contains(&self.text(i))) {
+                out.push_str(word);
+                out.push(' ');
+            }
+        }
+        out.push_str(self.text(keyword));
+        out.push(' ');
+        out.push_str(&name);
+        Some(joern_register_type(&out))
+    }
+
+    /// The `(*)(int)` that CDT's return type string appends for a definition
+    /// whose grouped declarator returns a function pointer.
+    fn function_pointer_return(&self, group: usize, name: usize, limit: usize) -> Option<String> {
+        if self.text(group) != "(" {
+            return None;
+        }
+        let close = self.matching(group, limit)?;
+        let pointers: String = (group + 1..name)
+            .map(|i| self.text(i))
+            .filter(|text| matches!(*text, "*" | "&" | "&&"))
+            .collect();
+        if pointers.is_empty() || self.text(close + 1) != "(" {
+            return None;
+        }
+        let parameters_close = self.matching(close + 1, limit)?;
+        let parameters = self
+            .split_ranges(close + 2, parameters_close, ",")
+            .into_iter()
+            .filter(|(a, b)| a < b)
+            .map(|(a, b)| {
+                let (name, _) = self.declarator_name(self.specifier_end(a, b), b);
+                let mut out = String::new();
+                for i in (a..b).filter(|&i| Some(i) != name) {
+                    let text = self.text(i);
+                    if !out.is_empty() && !matches!(text, "*" | "&" | "&&" | "[" | "]" | ")") {
+                        out.push(' ');
+                    }
+                    out.push_str(text);
+                }
+                out
+            })
+            .collect::<Vec<_>>()
+            .join(", ");
+        Some(format!("({pointers})({parameters})"))
+    }
+
+    /// returnTypeForIASTFunctionDeclarator: the declaration specifier's
+    /// signature and the declarator's raw pointer operators, each cleaned.
+    fn prototype_return_display(
+        &self,
+        start: usize,
+        base_end: usize,
+        declarator: usize,
+    ) -> Option<String> {
+        let mut storage = None;
+        let (mut constant, mut inline, mut restrict, mut volatile) = (false, false, false, false);
+        let mut words = Vec::new();
+        let mut named = String::new();
+        let mut i = start;
+        while i < base_end {
+            if let Some(after) = self.skip_attribute(i, base_end) {
+                i = after;
+                continue;
+            }
+            let text = self.text(i);
+            match text {
+                "struct" | "union" | "enum" | "class" | "typename" | "decltype" | "(" | "{" => {
+                    return None;
+                }
+                "static" | "extern" | "register" | "typedef" | "mutable" => {
+                    if text == "extern" && self.tokens[i + 1].kind == TokenKind::Literal {
+                        i += 1;
+                    } else {
+                        storage.get_or_insert(text);
+                    }
+                }
+                "const" => constant = true,
+                "inline" | "__inline" | "__inline__" => inline = true,
+                "restrict" | "__restrict" | "__restrict__" => restrict = true,
+                "volatile" | "__volatile__" => volatile = true,
+                "__extension__" | "_Noreturn" | "__noreturn" | "__cdecl" | "__fastcall"
+                | "__stdcall" | "__thiscall" | "constexpr" | "consteval" | "friend" | "virtual"
+                | "explicit" => {}
+                "<" if !named.is_empty() => {
+                    // A template-id keeps its arguments without spaces.
+                    let close = self.angle_close(i, base_end)?;
+                    named.push_str(&(i..=close).map(|at| self.text(at)).collect::<String>());
+                    i = close;
+                }
+                _ if self.type_word(text) => words.push(text),
+                _ => {
+                    if !named.is_empty()
+                        && !named.ends_with("::")
+                        && !matches!(text, "::" | "<" | ">" | ",")
+                        && !named.ends_with(['<', ','])
+                    {
+                        return None;
+                    }
+                    named.push_str(text);
+                }
+            }
+            i += 1;
+        }
+        let specifier = if named.is_empty() {
+            // An empty C specifier has the signature of its modifiers alone.
+            if (words.is_empty() && self.cpp)
+                || words
+                    .iter()
+                    .any(|word| matches!(*word, "auto" | "__auto_type"))
+            {
+                return None;
+            }
+            // ASTSignatureUtil.getSignature for a simple declaration specifier.
+            let mut out: Vec<&str> = storage.into_iter().collect();
+            for (present, word) in [
+                (constant, "const"),
+                (inline, "inline"),
+                (restrict, "restrict"),
+                (volatile, "volatile"),
+            ] {
+                if present {
+                    out.push(word);
+                }
+            }
+            let longs = words.iter().filter(|word| **word == "long").count();
+            if longs >= 2 {
+                out.push("long long");
+            }
+            for word in ["_Complex", "_Imaginary"] {
+                if words.contains(&word) {
+                    out.push(word);
+                }
+            }
+            if longs == 1 {
+                out.push("long");
+            }
+            for word in ["short", "signed", "unsigned"] {
+                if words.contains(&word) {
+                    out.push(word);
+                }
+            }
+            for word in &words {
+                // A repeated specifier such as dewolf's `void void` is one type.
+                if !matches!(
+                    *word,
+                    "long" | "short" | "signed" | "unsigned" | "_Complex" | "_Imaginary"
+                ) && !out.contains(word)
+                {
+                    out.push(word);
+                }
+            }
+            out.join(" ")
+        } else if words.is_empty() {
+            // ASTStringUtil.getReturnTypeString for a named type specifier.
+            format!(
+                "{}{}{named}",
+                if constant { "const " } else { "" },
+                if volatile { "volatile " } else { "" }
+            )
+        } else {
+            return None;
+        };
+        let mut out = joern_clean_type(&specifier);
+        let mut i = declarator;
+        loop {
+            if let Some(after) = self.skip_attribute(i, self.limit) {
+                i = after;
+                continue;
+            }
+            let text = self.text(i);
+            if matches!(text, "*" | "&" | "&&") {
+                out.push_str(text);
+            } else if matches!(
+                text,
+                "__cdecl" | "__fastcall" | "__pascal" | "__stdcall" | "__extension__"
+            ) {
+                // Macros of the scanner configuration: attributes or nothing.
+            } else if qualifier(text) {
+                // A pointer operator's raw signature keeps its qualifiers.
+                out.push(' ');
+                out.push_str(text);
+            } else if text != "__thiscall" {
+                // The declarator's name, or the group that nests it.
+                break;
+            }
+            i += 1;
+        }
+        Some(joern_register_type(&joern_clean_type(out.trim())))
     }
 
     fn clean_type(&self, start: usize, end: usize) -> String {
@@ -3166,6 +4416,29 @@ impl Parser<'_> {
                     Rc::make_mut(&mut self.variable_closures).remove(&name);
                 }
             }
+            // CDT ends a declarator before its trailing attributes; only an
+            // initializer extends the node past them.
+            let mut code_end = b;
+            if initializer.is_none() && !self.cpp {
+                let (mut i, mut last) = (a, a);
+                while i < b {
+                    if matches!(self.text(i), "__attribute__" | "__attribute")
+                        && let Some(after) = self.skip_attribute(i, b)
+                    {
+                        i = after;
+                        continue;
+                    }
+                    i = if matches!(self.text(i), "(" | "[" | "{") {
+                        self.matching(i, b).map_or(i + 1, |close| close + 1)
+                    } else {
+                        i + 1
+                    };
+                    last = i;
+                }
+                if last > a {
+                    code_end = last;
+                }
+            }
             result.push(Declaration {
                 name,
                 type_name,
@@ -3174,7 +4447,7 @@ impl Parser<'_> {
                 problem: false,
                 is_typedef,
                 nested_declarator: self.nested_declarator(a, b),
-                span: self.span(a, b),
+                span: self.span(a, code_end),
             });
         }
         result
@@ -3448,11 +4721,64 @@ impl Parser<'_> {
             .is_some_and(|token| token.kind == TokenKind::Literal)
     }
 
+    /// Whether `T *name;` is a product for the binding of `name`: a local
+    /// in scope or, in C, a file-scope object declared before or a function
+    /// (`CScope`). A declared type `T` keeps the declaration.
+    fn resolves(&self, t: &str, name: &str) -> bool {
+        self.variable_types.contains_key(name)
+            || (!self.cpp
+                && !self.explicit_types.contains(t)
+                && (self.object_bindings.contains(name)
+                    || self.function_returns.contains_key(name)
+                    || self.later_functions.contains(name)))
+    }
+
+    /// The functions that a C `T *x;` statement names, as `T` or as `x`,
+    /// before the first declaration among `functions`.
+    fn later_function_names(&self, functions: &[Function]) -> HashSet<String> {
+        let mut names = HashSet::new();
+        if self.cpp || !self.later_functions.is_empty() {
+            return names;
+        }
+        let mut first = HashMap::new();
+        for function in functions {
+            let start = first.entry(function.name.as_str()).or_insert(usize::MAX);
+            *start = (*start).min(function.span.start);
+        }
+        let end = self.tokens.len();
+        for star in 1..end {
+            if self.text(star) != "*"
+                || !self.cdt_identifier(star - 1, end)
+                || (star > 1
+                    && !matches!(
+                        self.text(star - 2),
+                        ";" | "{" | "}" | ")" | ":" | "else" | "do"
+                    ))
+            {
+                continue;
+            }
+            let mut name = star;
+            while name < end && self.text(name) == "*" {
+                name += 1;
+            }
+            if self.cdt_identifier(name, end) && self.text(name + 1) == ";" {
+                let at = self.tokens[star - 1].span.start;
+                names.extend(
+                    [star - 1, name]
+                        .into_iter()
+                        .filter(|&i| first.get(self.text(i)).is_some_and(|&start| at < start))
+                        .map(|i| self.text(i).to_string()),
+                );
+            }
+        }
+        names
+    }
+
     fn looks_declaration(&self, start: usize, end: usize) -> bool {
         let t = self.text(start);
         if start < end
             && self.tokens[start].kind == TokenKind::Identifier
-            && !type_word(t)
+            && !self.type_word(t)
             && !qualifier(t)
             && matches!(self.text(start + 1), "*" | "&" | "&&")
         {
@@ -3469,8 +4795,16 @@ impl Parser<'_> {
                 {
                     return true;
                 }
-                if (self.variables.contains(t) && !matches!(self.text(after), "=" | "{"))
-                    || (after == end && self.variable_types.contains_key(self.text(name)))
+                let function = self.variables.contains(t) || self.later_functions.contains(t);
+                if (function && !matches!(self.text(after), "=" | "{"))
+                    || (after == end && self.resolves(t, self.text(name)))
+                    // `T *x;` ties between its two readings once `T` binds
+                    // to an external function, and the expression is first.
+                    // By default it stays a declaration.
+                    || (after == end
+                        && self.cdt_failures
+                        && !self.cpp
+                        && self.external_functions.contains(t))
                     || matches!(
                         self.text(after),
                         "==" | "!="
@@ -3514,7 +4848,7 @@ impl Parser<'_> {
                 return false;
             }
         }
-        if !type_word(t)
+        if !self.type_word(t)
             && !qualifier(t)
             && matches!(self.text(start + 1), "*" | "&" | "&&")
             && self.declarator_name(start + 2, end).0.is_none()
@@ -3543,20 +4877,25 @@ impl Parser<'_> {
             && self.text(start + 1) == "("
             && let Some(close) = self.matching(start + 1, end)
             && let (Some(name), after) = self.declarator_name(start + 2, close)
-            && after == close
-            && !type_word(self.text(name))
+            // CDT's C declarator may carry array suffixes inside the group.
+            && (after == close
+                || (!self.cpp
+                    && self.text(close + 1) == "="
+                    && self.cdt_declarator(start + 1, close + 1, false)
+                        == Some((close + 1, true))))
+            && !self.type_word(self.text(name))
             && !qualifier(self.text(name))
         {
             if self.text(close + 1) == "=" {
                 // C resolves T(x)=value as a declaration even when T binds
                 // to a function. C++ instead chooses a call expression when
                 // the grouped name already has an object binding.
-                return type_word(t)
+                return self.type_word(t)
                     || qualifier(t)
                     || !self.cpp
                     || !self.variables.contains(self.text(name));
             }
-            if close + 1 == end && !type_word(t) && !qualifier(t) {
+            if close + 1 == end && !self.type_word(t) && !qualifier(t) {
                 // A syntactically named but unresolved type does not establish
                 // a C typedef binding. C++ also accepts the declaration form
                 // when neither its callee nor grouped name already binds.
@@ -3570,7 +4909,7 @@ impl Parser<'_> {
         }
         if start < end
             && self.tokens[start].kind == TokenKind::Identifier
-            && !type_word(t)
+            && !self.type_word(t)
             && !qualifier(t)
             && self.text(start + 1) == "("
             && self
@@ -3649,7 +4988,7 @@ impl Parser<'_> {
             return declaration;
         }
         if qualifier(t)
-            || type_word(t)
+            || self.type_word(t)
             || matches!(
                 t,
                 "struct"
@@ -3706,7 +5045,7 @@ impl Parser<'_> {
         let t = self.text(start);
         if self.cpp
             || self.tokens[start].kind != TokenKind::Identifier
-            || type_word(t)
+            || self.type_word(t)
             || qualifier(t)
             || self.text(start + 1) != "("
             || self.text(start + 2) != "*"
@@ -3723,6 +5062,21 @@ impl Parser<'_> {
         let mut consecutive_calls = false;
         while i < end {
             let open = i;
+            if self.text(open) == "=" {
+                // An initializer follows. Only a left side that also reads
+                // as an expression is ambiguous: no pointer qualifier and
+                // no empty subscript. A C call is no lvalue, so CDT keeps
+                // the declaration when that expression ends in one.
+                if (start + 2..close).any(|k| qualifier(self.text(k)))
+                    || (close + 1..open).any(|k| self.text(k) == "[" && self.text(k + 1) == "]")
+                {
+                    return None;
+                }
+                if previous_call {
+                    return Some(true);
+                }
+                break;
+            }
             let group_end = self.matching(open, end)?;
             if self.text(open) == "(" {
                 let adjacent_names = (open + 1..group_end - 1).any(|k| {
@@ -3732,7 +5086,7 @@ impl Parser<'_> {
                 if adjacent_names
                     || (open + 1..group_end).any(|k| {
                         let text = self.text(k);
-                        text == "..." || type_word(text) || qualifier(text)
+                        text == "..." || self.type_word(text) || qualifier(text)
                     })
                 {
                     return None;
@@ -3751,6 +5105,53 @@ impl Parser<'_> {
 
     fn statement(&mut self) -> Stmt {
         let start = self.pos;
+        let empty_initializer = self.text(start + 2) == "=" && self.text(start + 3) == ";";
+        if !self.cpp
+            && self.cdt_identifier(start, self.limit)
+            && self.cdt_identifier(start + 1, self.limit)
+            && (self.text(start + 2) == ":" || empty_initializer)
+        {
+            // `T name : ...` is no C declaration, as only members may be
+            // bit-fields. CDT keeps the expression statement `T`, reports its
+            // missing semicolon, and parses a labeled statement from `name`.
+            // After `T name = ;` the rest is one problem statement instead.
+            let expression = self.expression_range(start, start + 1);
+            self.pos = start + 1;
+            let labeled = if empty_initializer {
+                self.pos = start + 4;
+                Stmt {
+                    kind: StmtKind::Problem,
+                    span: self.span(start + 1, self.pos),
+                }
+            } else {
+                self.statement()
+            };
+            let span = expression.span.clone();
+            return self.unterminated(start, StmtKind::Expression(expression), span, labeled, true);
+        }
+        if let Some(after) = self.cdt_unterminated_declarator(start) {
+            // CDT ends a local declaration at an identifier that follows its
+            // declarator, reports the missing semicolon, and parses the rest
+            // as the next statement.
+            // By default a label or control statement before the declaration
+            // stays, although CDT fails it with the missing semicolon.
+            let diagnostics = self.diagnostics.len();
+            let declarations = self.declarations_range(start, after);
+            if self.diagnostics.len() == diagnostics {
+                let span = self.span(start, after);
+                self.pos = after;
+                return self.missing_semicolon(
+                    start,
+                    StmtKind::Declaration(declarations),
+                    span,
+                    self.cdt_failures,
+                );
+            }
+            // Its declarator has no name for the type-directed conversion,
+            // which then keeps the whole statement.
+            self.diagnostics.truncate(diagnostics);
+            self.pos = start;
+        }
         if let Some(statement) = self.local_problem_enum_statement(start) {
             return statement;
         }
@@ -4100,6 +5501,7 @@ impl Parser<'_> {
                     || (self.pos < end && self.call_argument_problem(self.pos, end))
                     || self.detached_identifier_suffix(self.pos, end).is_some()
                     || self.unpaired_expression_colon(self.pos, end).is_some()
+                    || self.star_literal_problem(self.pos, end)
                 {
                     self.pos = end;
                     self.finish_statement(start);
@@ -4228,6 +5630,24 @@ impl Parser<'_> {
                     self.pos = self.problem_declaration_end(end + 1);
                     return self.problem_statement(start, false);
                 }
+                if self.cdt_failures
+                    && !self.cpp
+                    && let Some((open, close)) = self.call_brace(self.pos, end)
+                    && self.problem_declaration_end(start) > close
+                    && self
+                        .unclosed_literal_call(self.pos, end)
+                        .is_some_and(|(_, literal)| literal < open)
+                {
+                    // An unclosed literal ran this call into a later
+                    // statement with a brace group. CDT's skip from here
+                    // ends with that group; it is no call that the brace
+                    // follows. By default the problem runs on as it did.
+                    self.pos = self.problem_declaration_end(start);
+                    return Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                }
                 if let Some(literal_end) = self.unclosed_literal_expression_end(self.pos, end, true)
                 {
                     if self.unclosed_conditional_literal(self.pos, literal_end) {
@@ -4322,6 +5742,51 @@ impl Parser<'_> {
                 {
                     return self.reparse_macro_declaration(start, end);
                 }
+                if !self.cpp
+                    && self.text(start + 1) == "("
+                    && self.cdt_identifier(start, end)
+                    && !self.explicit_types.contains(self.text(start))
+                    && !self.variables.contains(self.text(start))
+                    && let Some((after, _)) = self.cdt_declarator(start + 1, end, false)
+                    && !(start + 2..after).any(|i| cdt_c_keyword(self.text(i)))
+                    && (after == end
+                        || (self.text(after) == "="
+                            && self.text(after - 1) == "]"
+                            && !(start + 2..after)
+                                .any(|i| self.text(i) == "[" && self.text(i + 1) == "]")
+                            && after + 1 < end
+                            && self.text(after + 1) != "{"))
+                {
+                    // `T (declarator);` also reads as a call, and so does
+                    // `T (declarator)[n] = v;`, whose left side is no call.
+                    // Resolving that reading binds an undeclared `T` as an
+                    // external function.
+                    self.external_functions.insert(self.text(start).to_string());
+                }
+                if self.star_literal_problem(self.pos, end) {
+                    // Neither an expression nor a declaration parses.
+                    self.pos = end;
+                    self.finish_statement(start);
+                    let problem = Stmt {
+                        kind: StmtKind::Problem,
+                        span: self.span(start, self.pos),
+                    };
+                    if !self.cpp
+                        && self.cdt_identifier(start, end)
+                        && self.cdt_identifier(start + 1, end)
+                    {
+                        // The expression `T` of `T name = ...` does parse.
+                        // It lacks its semicolon, and the rest is the problem.
+                        let expression = self.expression_range(start, start + 1);
+                        let span = expression.span.clone();
+                        let kind = StmtKind::Expression(expression);
+                        return self.unterminated(start, kind, span, problem, true);
+                    }
+                    return problem;
+                }
+                if let Some(statement) = self.cdt_literal_recovery(start, end) {
+                    return statement;
+                }
                 let colon = self.unpaired_expression_colon(self.pos, end);
                 // CDT can recover a complete expression followed by a
                 // detached identifier as two block siblings. The
@@ -4372,6 +5837,11 @@ impl Parser<'_> {
                                 .is_some_and(|i| !expression_type_keyword(self.text(i), self.cpp))
                     })
                 {
+                    if !self.cpp
+                        && let Some(statement) = self.cdt_declaration_recovery(start, end)
+                    {
+                        return statement;
+                    }
                     if self.declaration_shape_problem(self.pos, end)
                         || self.declaration_expression_problem(self.pos, end)
                     {
@@ -4673,7 +6143,7 @@ impl Parser<'_> {
         (start + 1..end).find_map(|open| {
             (self.text(open) == "("
                 && self.tokens[open - 1].kind == TokenKind::Identifier
-                && !type_word(self.text(open - 1))
+                && !self.type_word(self.text(open - 1))
                 && !qualifier(self.text(open - 1))
                 && self.matching(open, end).is_none())
             .then(|| {
@@ -4828,9 +6298,12 @@ impl Parser<'_> {
             .unwrap_or(self.limit);
         let clauses = self.split_ranges(inside, end, ";");
         if clauses.len() == 1 && self.cpp {
-            let range = self.split_ranges(inside, end, ":");
-            if range.len() == 2 {
-                let mut declarations = self.declarations_range(range[0].0, range[0].1);
+            // The delimiter is a colon outside any conditional expression.
+            // A colon in the range initializer belongs to its `?:` expression.
+            if let Some(separator) = self.unpaired_expression_colon(inside, end)
+                && self.unpaired_expression_colon(separator + 1, end).is_none()
+            {
+                let mut declarations = self.declarations_range(inside, separator);
                 let declaration = if declarations.is_empty() {
                     self.diagnose(inside, end, "cannot recover range-for declaration");
                     Declaration {
@@ -4841,12 +6314,12 @@ impl Parser<'_> {
                         problem: false,
                         is_typedef: false,
                         nested_declarator: false,
-                        span: self.span(range[0].0, range[0].1),
+                        span: self.span(inside, separator),
                     }
                 } else {
                     declarations.remove(0)
                 };
-                let iterable = self.expression_range(range[1].0, range[1].1);
+                let iterable = self.expression_range(separator + 1, end);
                 self.pos = end;
                 self.expect(")");
                 let body = Box::new(self.statement());
@@ -4875,6 +6348,7 @@ impl Parser<'_> {
             self.c_qualification_problem(a, b)
                 || self.ordinary_call_problem(a, b)
                 || self.unpaired_expression_colon(a, b).is_some()
+                || self.star_literal_problem(a, b)
                 || if declaration {
                     let base = self.specifier_end(a, b);
                     let (_, after) = self.declarator_name(base, b);
@@ -4945,10 +6419,39 @@ impl Parser<'_> {
         }
     }
 
+    /// CDT's `unaryExpression` backtracks when `*` is applied directly to an
+    /// integer, floating or character literal, which fails the expression.
+    fn star_literal_problem(&self, start: usize, end: usize) -> bool {
+        // By default such an expression keeps its nodes.
+        if !self.cdt_failures {
+            return false;
+        }
+        (start..end.min(self.tokens.len()).saturating_sub(1)).any(|i| {
+            self.text(i) == "*"
+                && self.tokens[i + 1].kind == TokenKind::Literal
+                && !string_literal_token(self.text(i + 1))
+                // A postfix operator makes the operand a larger expression.
+                && !matches!(self.text(i + 2), "(" | "[" | "++" | "--" | "." | "->")
+                // After an operand the star multiplies.
+                && (i == start
+                    || match self.tokens[i - 1].kind {
+                        TokenKind::Literal => false,
+                        TokenKind::Identifier => matches!(
+                            self.text(i - 1),
+                            "return" | "case" | "sizeof" | "else" | "do" | "throw"
+                        ),
+                        TokenKind::Punctuation => {
+                            !matches!(self.text(i - 1), ")" | "]" | "++" | "--")
+                        }
+                    })
+        })
+    }
+
     fn expression_range(&mut self, start: usize, end: usize) -> Expr {
         if self.c_qualification_problem(start, end)
             || self.ordinary_call_problem(start, end)
             || self.unpaired_expression_colon(start, end).is_some()
+            || self.star_literal_problem(start, end)
         {
             return Expr {
                 kind: ExprKind::Problem(self.raw(start, end)),
@@ -5538,7 +7041,7 @@ impl Parser<'_> {
                 .get(next)
                 .is_some_and(|token| token.kind == TokenKind::Identifier)
                 && self.text(next + 1) == ":")
-            || type_word(text)
+            || self.type_word(text)
             || qualifier(text)
             || (self
                 .tokens
@@ -5568,7 +7071,7 @@ impl Parser<'_> {
             return None;
         }
         let direct_call = self.tokens.get(start)?.kind == TokenKind::Identifier
-            && !type_word(self.text(start))
+            && !self.type_word(self.text(start))
             && !qualifier(self.text(start))
             && self.text(start + 1) == "("
             && self.matching(start + 1, end) == end.checked_sub(1);
@@ -5687,7 +7190,9 @@ impl Parser<'_> {
                     self.text(i - 1),
                     "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
                 )
-                && !(self.cpp && type_word(self.text(i)) && matches!(self.text(i + 1), "(" | "{"))
+                && !(self.cpp
+                    && self.type_word(self.text(i))
+                    && matches!(self.text(i + 1), "(" | "{"))
             {
                 // A reserved type specifier is not an ordinary RHS operand.
                 // Cast and sizeof type-ids are consumed as complete groups.
@@ -5840,7 +7345,7 @@ impl Parser<'_> {
                 if (!type_id && self.call_argument_problem(i, close + 1))
                     || (type_id
                         && !self.can_start_expression(close + 1)
-                        && (type_word(self.text(i + 1))
+                        && (self.type_word(self.text(i + 1))
                             || qualifier(self.text(i + 1))
                             || (i + 1..close).any(|j| self.text(j) == "*")))
                 {
@@ -5964,7 +7469,7 @@ impl Parser<'_> {
             // C++ has functional casts to a simple type; a bare type-id is
             // never an ordinary call argument. Typedef spellings themselves
             // remain identifier expressions, as in CDT.
-            if !(self.cpp && type_word(first) && matches!(self.text(start + 1), "(" | "{")) {
+            if !(self.cpp && self.type_word(first) && matches!(self.text(start + 1), "(" | "{")) {
                 return true;
             }
         }
@@ -6292,7 +7797,11 @@ impl Parser<'_> {
     }
 
     fn expression(&mut self, minimum: u8) -> Expr {
-        let start = self.pos;
+        let mut start = self.pos;
+        // CDT's scanner expands `__extension__` to nothing: no node starts there.
+        while start + 1 < self.limit && self.text(start) == "__extension__" {
+            start += 1;
+        }
         let mut left = self.prefix();
         loop {
             if self.pos >= self.limit {
@@ -6346,8 +7855,13 @@ impl Parser<'_> {
                 }
                 self.expect(")");
                 self.record_retained_macro_call(&left, &arguments);
+                // A call through an identifier that CDT types as a pointer
+                // is a pointer call with that identifier as its receiver.
+                let global_pointer = matches!(&left.kind, ExprKind::Identifier(name)
+                    if self.global_pointers.contains(name)
+                        && !self.variable_types.contains_key(name));
                 if matches!(left.kind, ExprKind::Identifier(_))
-                    && self.span(start, start + 1).start < left.span.start
+                    && (global_pointer || self.span(start, start + 1).start < left.span.start)
                 {
                     let span = left.span.clone();
                     left = Expr {
@@ -6518,10 +8032,12 @@ impl Parser<'_> {
             pos: 0,
             limit,
             cpp: self.cpp,
+            cdt_failures: self.cdt_failures,
             diagnostics,
             types: self.types.clone(),
             explicit_types: self.explicit_types.clone(),
             type_aliases: self.type_aliases.clone(),
+            class_alias_undo: Vec::new(),
             variables: self.variables.clone(),
             imports: self.imports.clone(),
             extern_c: self.extern_c,
@@ -6533,6 +8049,11 @@ impl Parser<'_> {
             variable_types: self.variable_types.clone(),
             variable_closures: self.variable_closures.clone(),
             function_returns: self.function_returns.clone(),
+            object_bindings: HashSet::new(),
+            global_pointers: HashSet::new(),
+            external_functions: HashSet::new(),
+            later_functions: HashSet::new(),
+            record_depth: 0,
             function_full_name: self.function_full_name.clone(),
             using_namespaces: self.using_namespaces.clone(),
             lexical_scope: self.lexical_scope.clone(),
@@ -6903,6 +8424,30 @@ impl Parser<'_> {
                 self.expect("}");
                 ExprKind::ArrayInitializer(values)
             }
+            "sizeof"
+                if self.cpp
+                    && self.text(start + 1) == "..."
+                    && self.text(start + 2) == "("
+                    && self
+                        .tokens
+                        .get(start + 3)
+                        .is_some_and(|t| t.kind == TokenKind::Identifier)
+                    && self.text(start + 4) == ")" =>
+            {
+                // A pack-size operand is an unevaluated identifier, not an
+                // expression or a regular sizeof type-id. Preserve the full
+                // source span while matching CDT's sizeOf operator family.
+                self.pos = start + 5;
+                let argument = Expr {
+                    kind: ExprKind::Identifier(self.text(start + 3).to_string()),
+                    span: self.span(start + 3, start + 4),
+                };
+                ExprKind::Unary {
+                    op: "sizeof...".into(),
+                    argument: Box::new(argument),
+                    postfix: false,
+                }
+            }
             "++" | "--" | "+" | "-" | "*" | "&" | "!" | "~" | "&&" | "sizeof" | "alignof"
             | "_Alignof" | "__alignof__" | "__alignof" | "typeof" | "__typeof__" | "noexcept"
             | "delete" | "throw"
@@ -7120,7 +8665,7 @@ impl Parser<'_> {
         let next = self.text(end + 1);
         if end == start + 1
             && self.tokens[start].kind == TokenKind::Identifier
-            && !type_word(self.text(start))
+            && !self.type_word(self.text(start))
             && !qualifier(self.text(start))
         {
             // CDT chooses the syntactically complete cast/prefix form even
@@ -7161,12 +8706,19 @@ impl Parser<'_> {
             return false;
         }
         let first = self.text(start);
-        if type_word(first)
+        if self.type_word(first)
             || qualifier(first)
             || self.explicit_types.contains(first)
             || matches!(first, "struct" | "union" | "enum" | "class")
             || (start..end).any(|i| self.text(i) == "*")
         {
+            return true;
+        }
+        if matches!(first, "typeof" | "__typeof__" | "__typeof") {
+            // The group is a type-id whatever its operand names. Before
+            // `(` CDT tries the call reading only when a name in the type-id
+            // has no binding, and keeps it only for a callee of function
+            // type, which a typeof group never has.
             return true;
         }
         // An absent typedef is common after DecBench removes system headers.
@@ -7201,7 +8753,7 @@ impl Parser<'_> {
         if self.tokens[start].kind != TokenKind::Identifier && first != "::" {
             return false;
         }
-        let known = type_word(first)
+        let known = self.type_word(first)
             || qualifier(first)
             || self.types.contains(first)
             || matches!(
@@ -7327,7 +8879,7 @@ impl Parser<'_> {
                 continue;
             }
             if self.tokens[i].kind == TokenKind::Identifier
-                && !type_word(self.text(i))
+                && !self.type_word(self.text(i))
                 && !qualifier(self.text(i))
                 && !matches!(
                     self.text(i),
@@ -7431,6 +8983,8 @@ fn infer_value_type(
                 "*" => ty.strip_suffix('*').unwrap_or("ANY").into(),
                 "&" => format!("{ty}*"),
                 "sizeof" | "alignof" => "unsigned long".into(),
+                // C++ size_t varies with the target ABI; no target is available here.
+                "sizeof..." => "ANY".into(),
                 _ => ty,
             }
         }
@@ -7701,12 +9255,49 @@ fn macro_type_code(type_name: &str) -> String {
         .or_else(|| type_name.strip_prefix("union "))
         .or_else(|| type_name.strip_prefix("enum "))
         .unwrap_or(type_name);
-    type_name
+    without_typeof_operand(type_name)
         .replace('*', " *")
         .replace('&', " &")
         .split_whitespace()
         .collect::<Vec<_>>()
         .join(" ")
+}
+
+/// ASTSignatureUtil prints a typeof specifier as the keyword `typeof`,
+/// without its operand: `typeof(*p) *` is `typeof *`.
+fn without_typeof_operand(type_name: &str) -> String {
+    let mut out = String::new();
+    let mut rest = type_name;
+    while let Some(at) = ["__typeof__", "__typeof", "typeof"]
+        .into_iter()
+        .filter_map(|keyword| {
+            let at = rest.find(keyword)?;
+            let word = |c: char| c.is_alphanumeric() || c == '_';
+            let after = rest[at + keyword.len()..].trim_start();
+            (!rest[..at].ends_with(word) && after.starts_with('(')).then_some((at, keyword))
+        })
+        .min()
+    {
+        let (at, keyword) = at;
+        let group = &rest[at + keyword.len()..];
+        let open = group.find('(').unwrap_or(0);
+        let mut depth = 0usize;
+        let Some(close) = group[open..].char_indices().find_map(|(i, c)| {
+            match c {
+                '(' => depth += 1,
+                ')' => depth -= 1,
+                _ => {}
+            }
+            (depth == 0).then_some(open + i)
+        }) else {
+            break;
+        };
+        out.push_str(&rest[..at]);
+        out.push_str("typeof");
+        rest = &group[close + 1..];
+    }
+    out.push_str(rest);
+    out
 }
 
 fn expanded_argument(expression: &Expr, source: &str, argument: &str) -> Option<Expr> {
@@ -8020,6 +9611,102 @@ fn type_word(t: &str) -> bool {
     )
 }
 
+/// Tokens of CDT's C scanner, with its GNU extensions, that are not identifiers.
+fn cdt_c_keyword(word: &str) -> bool {
+    matches!(
+        word,
+        "auto"
+            | "break"
+            | "case"
+            | "char"
+            | "const"
+            | "continue"
+            | "default"
+            | "do"
+            | "double"
+            | "else"
+            | "enum"
+            | "extern"
+            | "float"
+            | "for"
+            | "goto"
+            | "if"
+            | "inline"
+            | "int"
+            | "long"
+            | "register"
+            | "return"
+            | "short"
+            | "signed"
+            | "sizeof"
+            | "static"
+            | "struct"
+            | "switch"
+            | "typedef"
+            | "union"
+            | "unsigned"
+            | "void"
+            | "volatile"
+            | "while"
+            | "asm"
+            | "restrict"
+            | "_Alignas"
+            | "_Alignof"
+            | "_Bool"
+            | "_Complex"
+            | "_Imaginary"
+            | "__alignof"
+            | "__alignof__"
+            | "__asm"
+            | "__asm__"
+            | "__attribute"
+            | "__attribute__"
+            | "__const"
+            | "__const__"
+            | "__declspec"
+            | "__decltype"
+            | "__inline"
+            | "__inline__"
+            | "__restrict"
+            | "__restrict__"
+            | "__volatile"
+            | "__volatile__"
+            | "__signed"
+            | "__signed__"
+            | "__typeof"
+            | "__typeof__"
+            | "typeof"
+            | "_Decimal32"
+            | "_Decimal64"
+            | "_Decimal128"
+            | "__float128"
+            | "__int128"
+            | "__complex__"
+            | "__extension__"
+            | "__stdcall"
+            | "__thread"
+            | "__cdecl"
+            | "__fastcall"
+            | "__pascal"
+    )
+}
+
+/// A token that starts an attribute specifier for CDT as c2cpg configures it.
+fn cdt_attribute(word: &str) -> bool {
+    matches!(
+        word,
+        "__attribute__" | "__attribute" | "__declspec" | "__cdecl" | "__fastcall" | "__pascal"
+    )
+}
+
+/// C++ type keywords that are ordinary typedef names in C.
+fn c_typedef_name(word: &str) -> bool {
+    matches!(
+        word,
+        "wchar_t" | "char8_t" | "char16_t" | "char32_t" | "bool"
+    )
+}
+
 fn binary_precedence(op: &str) -> Option<(u8, bool)> {
     Some(match op {
         "," => (0, false),
@@ -8066,6 +9753,82 @@ fn canonical_primitive_specifiers(code: &str) -> String {
     format!("{}{}", result.join(" "), &code[split..])
 }
 
+/// AstCreatorHelper.cleanType, including its substring keyword removal.
+fn joern_clean_type(raw: &str) -> String {
+    if raw == "ANY" {
+        return raw.into();
+    }
+    let mut cleaned = raw.to_string();
+    for keyword in [
+        "const",
+        "static",
+        "restrict",
+        "extern",
+        "typedef",
+        "inline",
+        "constexpr",
+        "auto",
+        "virtual",
+        "enum",
+        "struct",
+        "interface",
+        "class",
+    ] {
+        cleaned = cleaned.replace(&format!("{keyword} "), "");
+    }
+    let cleaned = cleaned.split_whitespace().collect::<Vec<_>>().join(" ");
+    let keep = |text: &str| text.starts_with("unsigned ") || text.starts_with("volatile ");
+    // replaceWhitespaceAfterTypeKeyword keeps only the space after a leading
+    // `unsigned` or `volatile`.
+    let compact = |text: &str| {
+        if !keep(text) {
+            return text.replace(' ', "");
+        }
+        let mut text = text.to_string();
+        for prefix in ["unsigned ", "volatile "] {
+            if let Some(rest) = text.strip_prefix(prefix) {
+                text = format!("{prefix}{}", rest.replace(' ', ""));
+            }
+        }
+        text
+    };
+    let qualified = |text: &str| {
+        text.trim_start_matches("::")
+            .replace("::", ".")
+            .trim_start_matches('.')
+            .to_string()
+    };
+    if cleaned.is_empty() {
+        "ANY".into()
+    } else if cleaned.starts_with('[') && cleaned.ends_with(']') {
+        "std.array".into()
+    } else if cleaned.contains("->") {
+        "std.function".into()
+    } else if cleaned.contains(['?', '#', '{', '}']) {
+        "ANY".into()
+    } else if let Some(at) = cleaned.find("( ") {
+        compact(&qualified(&cleaned[..at]))
+    } else if cleaned.contains("::") {
+        compact(&qualified(&cleaned))
+    } else if keep(&cleaned)
+        || cleaned.contains('[') && cleaned.contains(']')
+        || cleaned.contains('*')
+    {
+        compact(&cleaned)
+    } else {
+        cleaned
+    }
+}
+
+/// AstCreatorHelper.registerType's normalization of a type name.
+fn joern_register_type(name: &str) -> String {
+    let name = name.split_whitespace().collect::<Vec<_>>().join(" ");
+    name.trim_start_matches("::")
+        .replace("::", ".")
+        .trim_start_matches('.')
+        .to_string()
+}
+
 fn primitive_return_display(code: &str) -> String {
     let split = code.find(['*', '&', '[']).unwrap_or(code.len());
     let words: Vec<_> = code[..split].split_whitespace().collect();
@@ -8075,7 +9838,12 @@ fn primitive_return_display(code: &str) -> String {
         .copied()
         .filter(|modifier| words.contains(modifier))
         .collect();
-    base.extend(words.into_iter().filter(|word| !modifiers.contains(word)));
+    for word in words {
+        // A repeated specifier such as dewolf's `void void` sets one flag.
+        if !modifiers.contains(&word) && (word == "long" || !base.contains(&word)) {
+            base.push(word);
+        }
+    }
     format!("{}{}", base.join(" "), &code[split..]).replace("_Bool", "bool")
 }
 
@@ -9044,7 +10812,9 @@ mod declaration_tests {
                 .collect::<Vec<_>>(),
             ["arrays", "digit", "inside", "handler"]
         );
-        assert_eq!(unit.functions[0].return_type, "Number*[4]");
+        // A named return specifier keeps only its simple name: unchanged
+        // PyJoern exports `(METHOD_RETURN,Number)` for this definition.
+        assert_eq!(unit.functions[0].return_type, "Number");
         assert_eq!(unit.functions[1].parameters[0].name, "x");
     }
 
