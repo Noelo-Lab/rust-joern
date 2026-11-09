@@ -41,6 +41,33 @@ no loop-head rewrite. DecBench's GED cache key omits the Rust Joern build;
 bump its GED `cache_version` or disable caching after upgrading from a build
 without this lowering. The recorded evaluation below predates it.
 
+## Extract DDGs
+
+The same call returns data dependency graphs when `no_ddg=False`:
+
+```python
+import rust_joern
+
+functions = rust_joern.parse_source(path, no_ddg=False, strict=True, preprocessed=True)
+ddg = functions["main"].ddg  # NetworkX DiGraph of lifted Blocks
+```
+
+Source and decompiled inputs get the same defaults, so the two sides of a
+comparison are built the same way: every K&R parameter is kept, code that CDT
+fails to parse is still analyzed, and constant-true loop heads lower like
+`for (;;)`. [Divergences](divergences.md) describes each, and the
+[DDG parity evaluation](eval/ddg_parity.md) records how every function of every
+saved DecBench input compares with original PyJoern, and how many functions
+those defaults change.
+
+The same DDG is returned for the same bytes. Original PyJoern's export varies
+between runs for some functions, so cache or compare its DDGs with that in mind.
+
+The parser fixes of the DDG evaluation also changed the default CFG of 81
+functions in r2dec, Binary Ninja and codex output and removed six one-node
+prototype stubs, out of 3,457,377 corpus functions. Bump the GED
+`cache_version` when upgrading across that change as well.
+
 ## Rescore saved artifacts
 
 [rescore_decbench_ged.py](../scripts/rescore_decbench_ged.py) computes fresh CFGs

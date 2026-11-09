@@ -115,4 +115,13 @@ pub struct Options {
     /// with a condition node and exit edge, for original-reference parity.
     /// By default they lower like the omitted condition of `for (;;)`.
     pub joern_loop_conditions: bool,
+    /// Create the parameters of a K&R definition as Joern 4.0.150 does: one
+    /// for each parameter declaration, in declaration order, named by its
+    /// first declarator. By default every name of the identifier list is a
+    /// parameter.
+    pub joern_knr_parameters: bool,
+    /// Reproduce CDT's failure on a parameter list or expression it cannot
+    /// parse, after which Joern 4.0.150 has no method for the definition or
+    /// no nodes for the expression. By default that code is still analyzed.
+    pub joern_cdt_failures: bool,
 }
