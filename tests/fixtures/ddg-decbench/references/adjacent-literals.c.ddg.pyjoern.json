@@ -1,0 +1,6406 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 23.266837598755956,
+    "supplemental_raw_parse_seconds": 25.140305359847844
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "messages": {
+      "name": "messages",
+      "fullname": "messages",
+      "filename": "adjacent-literals.c",
+      "start_line": 4,
+      "end_line": 27,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 4,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,messages",
+                    "source_line_number": 4,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 4,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,char* arg2",
+                    "source_line_number": 4,
+                    "type": "char*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "report()",
+                  "fields": {
+                    "raw_text": "report,report(format,arg2,code)",
+                    "source_line_number": 25,
+                    "func": "report",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 9,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!arg1']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!arg1"
+                    ],
+                    "source_line_number": 9
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 26,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,code,returncode;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,code,returncode;",
+                    "source_line_number": 26
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "code = 0x7c",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "code=0x7c"
+                    ],
+                    "source_line_number": 12,
+                    "src": "code",
+                    "dst": "0x7c"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;emptyentryinlist&quot;%.100s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;emptyentryinlist&quot;%.100s"
+                    ],
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "arg1 == 1",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "arg1==1"
+                    ],
+                    "source_line_number": 14,
+                    "type": 0,
+                    "arg1": "arg1",
+                    "arg2": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "code = 0x89",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "code=0x89"
+                    ],
+                    "source_line_number": 17,
+                    "src": "code",
+                    "dst": "0x89"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;in&quot;%s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;in&quot;%s"
+                    ],
+                    "source_line_number": 21
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 21
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 22,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "code = arg1+2",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "code=arg1+2"
+                    ],
+                    "source_line_number": 22,
+                    "src": "code",
+                    "dst": "arg1+2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;listentry&quot;%.100s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;listentry&quot;%.100s"
+                    ],
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;entry&quot;%s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;entry&quot;%s"
+                    ],
+                    "source_line_number": 21
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 22,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'arg1+2']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "arg1+2"
+                    ],
+                    "source_line_number": 22
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 4,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "addr": 26,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return code;,returncode;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returncode;",
+                      "returncode;"
+                    ],
+                    "source_line_number": 26,
+                    "ret": "code;,returncode;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 20,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "format = &quot;emptyentryinlist&quot;%.100s",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "format=&quot;emptyentryinlist&quot;%.100s"
+                    ],
+                    "source_line_number": 11,
+                    "src": "format",
+                    "dst": "&quot;emptyentryinlist&quot;%.100s"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 21,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "format = &quot;listentry&quot;%.100s",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "format=&quot;listentry&quot;%.100s"
+                    ],
+                    "source_line_number": 16,
+                    "src": "format",
+                    "dst": "&quot;listentry&quot;%.100s"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 22,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "format = &quot;entry&quot;%s",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "format=&quot;entry&quot;%s"
+                    ],
+                    "source_line_number": 21,
+                    "src": "format",
+                    "dst": "&quot;entry&quot;%s"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 22,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 19,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 20,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 20,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 21,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 21,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 22,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 22,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 4,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,messages",
+                    "source_line_number": 4,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 4,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,char* arg2",
+                    "source_line_number": 4,
+                    "type": "char*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "report()",
+                  "fields": {
+                    "raw_text": "report,report(format,arg2,code)",
+                    "source_line_number": 25,
+                    "func": "report",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 9,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['logicalNot', '!arg1']>",
+                  "fields": {
+                    "raw_text": [
+                      "logicalNot",
+                      "!arg1"
+                    ],
+                    "source_line_number": 9
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 26,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,code,returncode;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,code,returncode;",
+                    "source_line_number": 26
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "code = 0x7c",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "code=0x7c"
+                    ],
+                    "source_line_number": 12,
+                    "src": "code",
+                    "dst": "0x7c"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;emptyentryinlist&quot;%.100s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;emptyentryinlist&quot;%.100s"
+                    ],
+                    "source_line_number": 11
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "arg1 == 1",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "arg1==1"
+                    ],
+                    "source_line_number": 14,
+                    "type": 0,
+                    "arg1": "arg1",
+                    "arg2": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "code = 0x89",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "code=0x89"
+                    ],
+                    "source_line_number": 17,
+                    "src": "code",
+                    "dst": "0x89"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;in&quot;%s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;in&quot;%s"
+                    ],
+                    "source_line_number": 21
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 21
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 22,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "code = arg1+2",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "code=arg1+2"
+                    ],
+                    "source_line_number": 22,
+                    "src": "code",
+                    "dst": "arg1+2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;listentry&quot;%.100s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;listentry&quot;%.100s"
+                    ],
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;entry&quot;%s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;entry&quot;%s"
+                    ],
+                    "source_line_number": 21
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 22,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'arg1+2']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "arg1+2"
+                    ],
+                    "source_line_number": 22
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 4,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "addr": 26,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return code;,returncode;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returncode;",
+                      "returncode;"
+                    ],
+                    "source_line_number": 26,
+                    "ret": "code;,returncode;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 20,
+            "identity": {
+              "addr": 11,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "format = &quot;emptyentryinlist&quot;%.100s",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "format=&quot;emptyentryinlist&quot;%.100s"
+                    ],
+                    "source_line_number": 11,
+                    "src": "format",
+                    "dst": "&quot;emptyentryinlist&quot;%.100s"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 21,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "format = &quot;listentry&quot;%.100s",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "format=&quot;listentry&quot;%.100s"
+                    ],
+                    "source_line_number": 16,
+                    "src": "format",
+                    "dst": "&quot;listentry&quot;%.100s"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 22,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "format = &quot;entry&quot;%s",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "format=&quot;entry&quot;%s"
+                    ],
+                    "source_line_number": 21,
+                    "src": "format",
+                    "dst": "&quot;entry&quot;%s"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 22,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 19,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 20,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 20,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 21,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 21,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 22,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 22,
+            "target": 3,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,messages)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int32_t)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int32_t arg1)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,char* arg2)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(report,report(format, arg2, code))<SUB>25</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(RETURN,return code;,return code;)<SUB>26</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.logicalNot,!arg1)<SUB>9</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(IDENTIFIER,code,return code;)<SUB>26</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.assignment,format = \"empty entry in list \"%.100s)<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(LITERAL,\"\",{\n        format = \"empty entry in list \"%.100s...)<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.assignment,code = 0x7c)<SUB>12</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.modulo,\"empty entry in list \"%.100s)<SUB>11</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(<operator>.equals,arg1 == 1)<SUB>14</SUB>"
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "dot_label": "(<operator>.assignment,format = \"list entry \"%.100s)<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "dot_label": "(LITERAL,\" too long\",{\n        format = \"list entry \"%.100s\" too lon...)<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "dot_label": "(<operator>.assignment,code = 0x89)<SUB>17</SUB>"
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "dot_label": "(<operator>.assignment,format = \"entry \"%s)<SUB>21</SUB>"
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "dot_label": "(<operator>.modulo,\" in \"%s)<SUB>21</SUB>"
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "dot_label": "(LITERAL,\" ignored\",{\n        format = \"entry \"%s\" in \"%s\" ignored\"...)<SUB>21</SUB>"
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "dot_label": "(<operator>.assignment,code = arg1 + 2)<SUB>22</SUB>"
+            }
+          },
+          {
+            "id": 20,
+            "identity": {
+              "dot_label": "(<operator>.modulo,\"list entry \"%.100s)<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 21,
+            "identity": {
+              "dot_label": "(<operator>.modulo,\"entry \"%s)<SUB>21</SUB>"
+            }
+          },
+          {
+            "id": 22,
+            "identity": {
+              "dot_label": "(<operator>.addition,arg1 + 2)<SUB>22</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 22,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": "arg1"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "label": "arg2"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "format"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "arg2"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "code"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "report(format, arg2, code)"
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "label": "code"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "arg1"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "!arg1"
+          },
+          {
+            "source": 6,
+            "target": 12,
+            "label": "arg1"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "label": "code"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "\"empty entry in list \"%.100s"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "format = \"empty entry in list \"%.100s"
+          },
+          {
+            "source": 8,
+            "target": 4,
+            "label": "format"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "code = 0x7c"
+          },
+          {
+            "source": 10,
+            "target": 4,
+            "label": "code"
+          },
+          {
+            "source": 11,
+            "target": 8,
+            "label": "\"empty entry in list \""
+          },
+          {
+            "source": 11,
+            "target": 8,
+            "label": ".100s"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "arg1"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "arg1 == 1"
+          },
+          {
+            "source": 12,
+            "target": 19,
+            "label": "arg1"
+          },
+          {
+            "source": 12,
+            "target": 22,
+            "label": "arg1"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "\"list entry \"%.100s"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "format = \"list entry \"%.100s"
+          },
+          {
+            "source": 13,
+            "target": 4,
+            "label": "format"
+          },
+          {
+            "source": 15,
+            "target": 1,
+            "label": "code = 0x89"
+          },
+          {
+            "source": 15,
+            "target": 4,
+            "label": "code"
+          },
+          {
+            "source": 16,
+            "target": 1,
+            "label": "\"entry \"%s"
+          },
+          {
+            "source": 16,
+            "target": 1,
+            "label": "format = \"entry \"%s"
+          },
+          {
+            "source": 16,
+            "target": 4,
+            "label": "format"
+          },
+          {
+            "source": 17,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 17,
+            "target": 1,
+            "label": "\" in \"%s"
+          },
+          {
+            "source": 19,
+            "target": 1,
+            "label": "arg1 + 2"
+          },
+          {
+            "source": 19,
+            "target": 1,
+            "label": "code = arg1 + 2"
+          },
+          {
+            "source": 19,
+            "target": 4,
+            "label": "code"
+          },
+          {
+            "source": 20,
+            "target": 13,
+            "label": "\"list entry \""
+          },
+          {
+            "source": 20,
+            "target": 13,
+            "label": ".100s"
+          },
+          {
+            "source": 21,
+            "target": 16,
+            "label": "\"entry \""
+          },
+          {
+            "source": 21,
+            "target": 16,
+            "label": "s"
+          },
+          {
+            "source": 21,
+            "target": 17,
+            "label": "s"
+          },
+          {
+            "source": 22,
+            "target": 1,
+            "label": "arg1"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"messages\" {  \n\"111669149697\" [label = <(METHOD,messages)<SUB>4</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int32_t)<SUB>4</SUB>> ]\n\"115964116992\" [label = <(PARAM,int32_t arg1)<SUB>4</SUB>> ]\n\"115964116993\" [label = <(PARAM,char* arg2)<SUB>4</SUB>> ]\n\"30064771085\" [label = <(report,report(format, arg2, code))<SUB>25</SUB>> ]\n\"146028888064\" [label = <(RETURN,return code;,return code;)<SUB>26</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.logicalNot,!arg1)<SUB>9</SUB>> ]\n\"30064771085\" [label = <(report,report(format, arg2, code))<SUB>25</SUB>> ]\n\"30064771085\" [label = <(report,report(format, arg2, code))<SUB>25</SUB>> ]\n\"30064771085\" [label = <(report,report(format, arg2, code))<SUB>25</SUB>> ]\n\"68719476750\" [label = <(IDENTIFIER,code,return code;)<SUB>26</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.logicalNot,!arg1)<SUB>9</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,format = &quot;empty entry in list &quot;%.100s)<SUB>11</SUB>> ]\n\"90194313218\" [label = <(LITERAL,&quot;&quot;,{\n        format = &quot;empty entry in list &quot;%.100s...)<SUB>11</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.assignment,code = 0x7c)<SUB>12</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,format = &quot;empty entry in list &quot;%.100s)<SUB>11</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,format = &quot;empty entry in list &quot;%.100s)<SUB>11</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.assignment,code = 0x7c)<SUB>12</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.assignment,code = 0x7c)<SUB>12</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.modulo,&quot;empty entry in list &quot;%.100s)<SUB>11</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.modulo,&quot;empty entry in list &quot;%.100s)<SUB>11</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.equals,arg1 == 1)<SUB>14</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.equals,arg1 == 1)<SUB>14</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.equals,arg1 == 1)<SUB>14</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.assignment,format = &quot;list entry &quot;%.100s)<SUB>16</SUB>> ]\n\"90194313223\" [label = <(LITERAL,&quot; too long&quot;,{\n        format = &quot;list entry &quot;%.100s&quot; too lon...)<SUB>16</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.assignment,code = 0x89)<SUB>17</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.assignment,format = &quot;list entry &quot;%.100s)<SUB>16</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.assignment,format = &quot;list entry &quot;%.100s)<SUB>16</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.assignment,code = 0x89)<SUB>17</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.assignment,code = 0x89)<SUB>17</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,format = &quot;entry &quot;%s)<SUB>21</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.modulo,&quot; in &quot;%s)<SUB>21</SUB>> ]\n\"90194313227\" [label = <(LITERAL,&quot; ignored&quot;,{\n        format = &quot;entry &quot;%s&quot; in &quot;%s&quot; ignored&quot;...)<SUB>21</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,code = arg1 + 2)<SUB>22</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.modulo,&quot;list entry &quot;%.100s)<SUB>16</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.modulo,&quot;list entry &quot;%.100s)<SUB>16</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,format = &quot;entry &quot;%s)<SUB>21</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,format = &quot;entry &quot;%s)<SUB>21</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.modulo,&quot; in &quot;%s)<SUB>21</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.modulo,&quot; in &quot;%s)<SUB>21</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,code = arg1 + 2)<SUB>22</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,code = arg1 + 2)<SUB>22</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.modulo,&quot;entry &quot;%s)<SUB>21</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.modulo,&quot;entry &quot;%s)<SUB>21</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.addition,arg1 + 2)<SUB>22</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.addition,arg1 + 2)<SUB>22</SUB>> ]\n  \"146028888064\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"arg1\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"!arg1\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"arg1\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"arg1 == 1\"] \n  \"30064771080\" -> \"128849018880\"  [ label = \"&quot;entry &quot;%s\"] \n  \"30064771080\" -> \"128849018880\"  [ label = \"format = &quot;entry &quot;%s\"] \n  \"30064771082\" -> \"128849018880\"  [ label = \"s\"] \n  \"30064771082\" -> \"128849018880\"  [ label = \"&quot; in &quot;%s\"] \n  \"30064771084\" -> \"128849018880\"  [ label = \"arg1\"] \n  \"30064771083\" -> \"128849018880\"  [ label = \"arg1 + 2\"] \n  \"30064771083\" -> \"128849018880\"  [ label = \"code = arg1 + 2\"] \n  \"30064771077\" -> \"128849018880\"  [ label = \"&quot;list entry &quot;%.100s\"] \n  \"30064771077\" -> \"128849018880\"  [ label = \"format = &quot;list entry &quot;%.100s\"] \n  \"30064771079\" -> \"128849018880\"  [ label = \"code = 0x89\"] \n  \"30064771073\" -> \"128849018880\"  [ label = \"&quot;empty entry in list &quot;%.100s\"] \n  \"30064771073\" -> \"128849018880\"  [ label = \"format = &quot;empty entry in list &quot;%.100s\"] \n  \"30064771075\" -> \"128849018880\"  [ label = \"code = 0x7c\"] \n  \"30064771085\" -> \"128849018880\"  [ label = \"format\"] \n  \"30064771085\" -> \"128849018880\"  [ label = \"arg2\"] \n  \"30064771085\" -> \"128849018880\"  [ label = \"code\"] \n  \"30064771085\" -> \"128849018880\"  [ label = \"report(format, arg2, code)\"] \n  \"111669149697\" -> \"115964116992\" \n  \"111669149697\" -> \"115964116993\" \n  \"68719476750\" -> \"146028888064\"  [ label = \"code\"] \n  \"30064771080\" -> \"30064771085\"  [ label = \"format\"] \n  \"30064771077\" -> \"30064771085\"  [ label = \"format\"] \n  \"30064771073\" -> \"30064771085\"  [ label = \"format\"] \n  \"111669149697\" -> \"30064771085\" \n  \"115964116993\" -> \"30064771085\"  [ label = \"arg2\"] \n  \"30064771083\" -> \"30064771085\"  [ label = \"code\"] \n  \"30064771079\" -> \"30064771085\"  [ label = \"code\"] \n  \"30064771075\" -> \"30064771085\"  [ label = \"code\"] \n  \"30064771085\" -> \"68719476750\"  [ label = \"code\"] \n  \"111669149697\" -> \"68719476750\" \n  \"115964116992\" -> \"30064771072\"  [ label = \"arg1\"] \n  \"111669149697\" -> \"30064771072\" \n  \"30064771074\" -> \"30064771073\"  [ label = \"&quot;empty entry in list &quot;\"] \n  \"30064771074\" -> \"30064771073\"  [ label = \".100s\"] \n  \"111669149697\" -> \"90194313218\" \n  \"111669149697\" -> \"30064771075\" \n  \"111669149697\" -> \"30064771074\" \n  \"30064771072\" -> \"30064771076\"  [ label = \"arg1\"] \n  \"111669149697\" -> \"30064771076\" \n  \"30064771078\" -> \"30064771077\"  [ label = \"&quot;list entry &quot;\"] \n  \"30064771078\" -> \"30064771077\"  [ label = \".100s\"] \n  \"111669149697\" -> \"90194313223\" \n  \"111669149697\" -> \"30064771079\" \n  \"30064771081\" -> \"30064771080\"  [ label = \"&quot;entry &quot;\"] \n  \"30064771081\" -> \"30064771080\"  [ label = \"s\"] \n  \"111669149697\" -> \"90194313227\" \n  \"30064771076\" -> \"30064771083\"  [ label = \"arg1\"] \n  \"111669149697\" -> \"30064771083\" \n  \"111669149697\" -> \"30064771078\" \n  \"111669149697\" -> \"30064771082\" \n  \"30064771081\" -> \"30064771082\"  [ label = \"s\"] \n  \"111669149697\" -> \"30064771081\" \n  \"30064771076\" -> \"30064771084\"  [ label = \"arg1\"] \n  \"111669149697\" -> \"30064771084\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"messages\" {  \n\"30064771085\" [label = <(report,report(format, arg2, code))<SUB>25</SUB>> ]\n\"146028888064\" [label = <(RETURN,return code;,return code;)<SUB>26</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.logicalNot,!arg1)<SUB>9</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,format = &quot;empty entry in list &quot;%.100s)<SUB>11</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.assignment,code = 0x7c)<SUB>12</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.modulo,&quot;empty entry in list &quot;%.100s)<SUB>11</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.equals,arg1 == 1)<SUB>14</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.assignment,format = &quot;list entry &quot;%.100s)<SUB>16</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.assignment,code = 0x89)<SUB>17</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.modulo,&quot;list entry &quot;%.100s)<SUB>16</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignment,format = &quot;entry &quot;%s)<SUB>21</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.modulo,&quot; in &quot;%s)<SUB>21</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,code = arg1 + 2)<SUB>22</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.modulo,&quot;entry &quot;%s)<SUB>21</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.addition,arg1 + 2)<SUB>22</SUB>> ]\n\"111669149697\" [label = <(METHOD,messages)<SUB>4</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int32_t)<SUB>4</SUB>> ]\n  \"30064771085\" -> \"146028888064\" \n  \"146028888064\" -> \"128849018880\" \n  \"30064771072\" -> \"30064771074\" \n  \"30064771072\" -> \"30064771076\" \n  \"30064771073\" -> \"30064771075\" \n  \"30064771075\" -> \"30064771085\" \n  \"30064771074\" -> \"30064771073\" \n  \"30064771076\" -> \"30064771078\" \n  \"30064771076\" -> \"30064771081\" \n  \"30064771077\" -> \"30064771079\" \n  \"30064771079\" -> \"30064771085\" \n  \"30064771078\" -> \"30064771077\" \n  \"30064771080\" -> \"30064771082\" \n  \"30064771082\" -> \"30064771084\" \n  \"30064771083\" -> \"30064771085\" \n  \"30064771081\" -> \"30064771080\" \n  \"30064771084\" -> \"30064771083\" \n  \"111669149697\" -> \"30064771072\" \n}\n"
+      ]
+    },
+    "declared": {
+      "name": "declared",
+      "fullname": "declared",
+      "filename": "adjacent-literals.c",
+      "start_line": 29,
+      "end_line": 35,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 29,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,declared",
+                    "source_line_number": 29,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 29,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 29,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 29,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,char* arg2",
+                    "source_line_number": 29,
+                    "type": "char*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "code = arg1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "code=arg1"
+                    ],
+                    "source_line_number": 32,
+                    "src": "code",
+                    "dst": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 33,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "report()",
+                  "fields": {
+                    "raw_text": "report,report(format,arg2,code)",
+                    "source_line_number": 33,
+                    "func": "report",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,code,returncode;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,code,returncode;",
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;domainname&quot;%.100s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;domainname&quot;%.100s"
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*format = &quot;domainname&quot;%.100s",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*format=&quot;domainname&quot;%.100s"
+                    ],
+                    "source_line_number": 31,
+                    "src": "*format",
+                    "dst": "&quot;domainname&quot;%.100s"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 29,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 29,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return code;,returncode;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returncode;",
+                      "returncode;"
+                    ],
+                    "source_line_number": 34,
+                    "ret": "code;,returncode;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 10,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 29,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,declared",
+                    "source_line_number": 29,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 29,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 29,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 29,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,char* arg2",
+                    "source_line_number": 29,
+                    "type": "char*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "code = arg1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "code=arg1"
+                    ],
+                    "source_line_number": 32,
+                    "src": "code",
+                    "dst": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 33,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "report()",
+                  "fields": {
+                    "raw_text": "report,report(format,arg2,code)",
+                    "source_line_number": 33,
+                    "func": "report",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,code,returncode;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,code,returncode;",
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;domainname&quot;%.100s']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;domainname&quot;%.100s"
+                    ],
+                    "source_line_number": 31
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*format = &quot;domainname&quot;%.100s",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*format=&quot;domainname&quot;%.100s"
+                    ],
+                    "source_line_number": 31,
+                    "src": "*format",
+                    "dst": "&quot;domainname&quot;%.100s"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 29,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 29,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return code;,returncode;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returncode;",
+                      "returncode;"
+                    ],
+                    "source_line_number": 34,
+                    "ret": "code;,returncode;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 10,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,declared)<SUB>29</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int32_t)<SUB>29</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int32_t arg1)<SUB>29</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,char* arg2)<SUB>29</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.assignment,* format = \"domain name \"%.100s)<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(LITERAL,\" too long\",{\n    char* format = \"domain name \"%.100s\" too ...)<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.assignment,code = arg1)<SUB>32</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(LITERAL,5,{\n    char* format = \"domain name \"%.100s\" too ...)<SUB>32</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(report,report(format, arg2, code))<SUB>33</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(RETURN,return code;,return code;)<SUB>34</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(IDENTIFIER,code,return code;)<SUB>34</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.modulo,\"domain name \"%.100s)<SUB>31</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": "arg1"
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": "arg2"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "\"domain name \"%.100s"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "* format = \"domain name \"%.100s"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "label": "format"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "arg1"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "code = arg1"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": "code"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "format"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "arg2"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "code"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "report(format, arg2, code)"
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "label": "code"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": "code"
+          },
+          {
+            "source": 11,
+            "target": 4,
+            "label": "\"domain name \""
+          },
+          {
+            "source": 11,
+            "target": 4,
+            "label": ".100s"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"declared\" {  \n\"111669149698\" [label = <(METHOD,declared)<SUB>29</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int32_t)<SUB>29</SUB>> ]\n\"115964116994\" [label = <(PARAM,int32_t arg1)<SUB>29</SUB>> ]\n\"115964116995\" [label = <(PARAM,char* arg2)<SUB>29</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.assignment,* format = &quot;domain name &quot;%.100s)<SUB>31</SUB>> ]\n\"90194313231\" [label = <(LITERAL,&quot; too long&quot;,{\n    char* format = &quot;domain name &quot;%.100s&quot; too ...)<SUB>31</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.assignment,code = arg1)<SUB>32</SUB>> ]\n\"90194313232\" [label = <(LITERAL,5,{\n    char* format = &quot;domain name &quot;%.100s&quot; too ...)<SUB>32</SUB>> ]\n\"30064771089\" [label = <(report,report(format, arg2, code))<SUB>33</SUB>> ]\n\"146028888065\" [label = <(RETURN,return code;,return code;)<SUB>34</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.assignment,* format = &quot;domain name &quot;%.100s)<SUB>31</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.assignment,* format = &quot;domain name &quot;%.100s)<SUB>31</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.assignment,code = arg1)<SUB>32</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.assignment,code = arg1)<SUB>32</SUB>> ]\n\"30064771089\" [label = <(report,report(format, arg2, code))<SUB>33</SUB>> ]\n\"30064771089\" [label = <(report,report(format, arg2, code))<SUB>33</SUB>> ]\n\"30064771089\" [label = <(report,report(format, arg2, code))<SUB>33</SUB>> ]\n\"68719476757\" [label = <(IDENTIFIER,code,return code;)<SUB>34</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.modulo,&quot;domain name &quot;%.100s)<SUB>31</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.modulo,&quot;domain name &quot;%.100s)<SUB>31</SUB>> ]\n  \"146028888065\" -> \"128849018881\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771086\" -> \"128849018881\"  [ label = \"&quot;domain name &quot;%.100s\"] \n  \"30064771086\" -> \"128849018881\"  [ label = \"* format = &quot;domain name &quot;%.100s\"] \n  \"30064771088\" -> \"128849018881\"  [ label = \"arg1\"] \n  \"30064771088\" -> \"128849018881\"  [ label = \"code = arg1\"] \n  \"30064771089\" -> \"128849018881\"  [ label = \"format\"] \n  \"30064771089\" -> \"128849018881\"  [ label = \"arg2\"] \n  \"30064771089\" -> \"128849018881\"  [ label = \"code\"] \n  \"30064771089\" -> \"128849018881\"  [ label = \"report(format, arg2, code)\"] \n  \"111669149698\" -> \"115964116994\" \n  \"111669149698\" -> \"115964116995\" \n  \"30064771087\" -> \"30064771086\"  [ label = \"&quot;domain name &quot;\"] \n  \"30064771087\" -> \"30064771086\"  [ label = \".100s\"] \n  \"111669149698\" -> \"90194313231\" \n  \"115964116994\" -> \"30064771088\"  [ label = \"arg1\"] \n  \"111669149698\" -> \"30064771088\" \n  \"111669149698\" -> \"90194313232\" \n  \"68719476757\" -> \"146028888065\"  [ label = \"code\"] \n  \"30064771086\" -> \"30064771089\"  [ label = \"format\"] \n  \"111669149698\" -> \"30064771089\" \n  \"115964116995\" -> \"30064771089\"  [ label = \"arg2\"] \n  \"30064771088\" -> \"30064771089\"  [ label = \"code\"] \n  \"30064771089\" -> \"68719476757\"  [ label = \"code\"] \n  \"111669149698\" -> \"68719476757\" \n  \"111669149698\" -> \"30064771087\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"declared\" {  \n\"30064771086\" [label = <(&lt;operator&gt;.assignment,* format = &quot;domain name &quot;%.100s)<SUB>31</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.assignment,code = arg1)<SUB>32</SUB>> ]\n\"30064771089\" [label = <(report,report(format, arg2, code))<SUB>33</SUB>> ]\n\"146028888065\" [label = <(RETURN,return code;,return code;)<SUB>34</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.modulo,&quot;domain name &quot;%.100s)<SUB>31</SUB>> ]\n\"111669149698\" [label = <(METHOD,declared)<SUB>29</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int32_t)<SUB>29</SUB>> ]\n  \"30064771086\" -> \"30064771088\" \n  \"30064771088\" -> \"30064771089\" \n  \"30064771089\" -> \"146028888065\" \n  \"146028888065\" -> \"128849018881\" \n  \"30064771087\" -> \"30064771086\" \n  \"111669149698\" -> \"30064771087\" \n}\n"
+      ]
+    },
+    "enclosed": {
+      "name": "enclosed",
+      "fullname": "enclosed",
+      "filename": "adjacent-literals.c",
+      "start_line": 37,
+      "end_line": 49,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 37,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,enclosed",
+                    "source_line_number": 37,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 37,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,char* arg2",
+                    "source_line_number": 37,
+                    "type": "char*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*format = arg2",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*format=arg2"
+                    ],
+                    "source_line_number": 39,
+                    "src": "*format",
+                    "dst": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 42
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 45
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,returnarg1;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,returnarg1;",
+                    "source_line_number": 48
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 42,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;retry&quot;%d']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;retry&quot;%d"
+                    ],
+                    "source_line_number": 42
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 45,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;x&quot;%c']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;x&quot;%c"
+                    ],
+                    "source_line_number": 45
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 37,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 42,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "format = &quot;retry&quot;%d",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "format=&quot;retry&quot;%d"
+                    ],
+                    "source_line_number": 42,
+                    "src": "format",
+                    "dst": "&quot;retry&quot;%d"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 45,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*format = &quot;x&quot;%c",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*format=&quot;x&quot;%c"
+                    ],
+                    "source_line_number": 45,
+                    "src": "*format",
+                    "dst": "&quot;x&quot;%c"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return arg1;,returnarg1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnarg1;",
+                      "returnarg1;"
+                    ],
+                    "source_line_number": 48,
+                    "ret": "arg1;,returnarg1;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 9,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 37,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,enclosed",
+                    "source_line_number": 37,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 37,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,char* arg2",
+                    "source_line_number": 37,
+                    "type": "char*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 39,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*format = arg2",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*format=arg2"
+                    ],
+                    "source_line_number": 39,
+                    "src": "*format",
+                    "dst": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 42
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 45
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,returnarg1;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,returnarg1;",
+                    "source_line_number": 48
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 42,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;retry&quot;%d']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;retry&quot;%d"
+                    ],
+                    "source_line_number": 42
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 45,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['modulo', '&quot;x&quot;%c']>",
+                  "fields": {
+                    "raw_text": [
+                      "modulo",
+                      "&quot;x&quot;%c"
+                    ],
+                    "source_line_number": 45
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 37,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 37,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 42,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "format = &quot;retry&quot;%d",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "format=&quot;retry&quot;%d"
+                    ],
+                    "source_line_number": 42,
+                    "src": "format",
+                    "dst": "&quot;retry&quot;%d"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 45,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "*format = &quot;x&quot;%c",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "*format=&quot;x&quot;%c"
+                    ],
+                    "source_line_number": 45,
+                    "src": "*format",
+                    "dst": "&quot;x&quot;%c"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 48,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return arg1;,returnarg1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnarg1;",
+                      "returnarg1;"
+                    ],
+                    "source_line_number": 48,
+                    "ret": "arg1;,returnarg1;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 9,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,enclosed)<SUB>37</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int32_t)<SUB>37</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int32_t arg1)<SUB>37</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,char* arg2)<SUB>37</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.assignment,* format = arg2)<SUB>39</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(<operator>.assignment,format = \"retry \"%d)<SUB>42</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(LITERAL,\" failed\",{\n    char* format = arg2;\n\n    while (arg1)\n  ...)<SUB>42</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.assignment,*format = \"x \"%c)<SUB>45</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(LITERAL,\" y\",{\n    char* format = arg2;\n\n    while (arg1)\n  ...)<SUB>45</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(RETURN,return arg1;,return arg1;)<SUB>48</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(IDENTIFIER,arg1,return arg1;)<SUB>48</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.modulo,\"retry \"%d)<SUB>42</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(<operator>.modulo,\"x \"%c)<SUB>45</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "arg1"
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "label": "arg1"
+          },
+          {
+            "source": 3,
+            "target": 4,
+            "label": "arg2"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "arg2"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "* format = arg2"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "format"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "\"retry \"%d"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "format = \"retry \"%d"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "*format"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "\"x \"%c"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "*format = \"x \"%c"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": "arg1"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "d"
+          },
+          {
+            "source": 11,
+            "target": 5,
+            "label": "\"retry \""
+          },
+          {
+            "source": 11,
+            "target": 5,
+            "label": "d"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "c"
+          },
+          {
+            "source": 12,
+            "target": 7,
+            "label": "\"x \""
+          },
+          {
+            "source": 12,
+            "target": 7,
+            "label": "c"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"enclosed\" {  \n\"111669149699\" [label = <(METHOD,enclosed)<SUB>37</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int32_t)<SUB>37</SUB>> ]\n\"115964116996\" [label = <(PARAM,int32_t arg1)<SUB>37</SUB>> ]\n\"115964116997\" [label = <(PARAM,char* arg2)<SUB>37</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,* format = arg2)<SUB>39</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.assignment,format = &quot;retry &quot;%d)<SUB>42</SUB>> ]\n\"90194313234\" [label = <(LITERAL,&quot; failed&quot;,{\n    char* format = arg2;\n\n    while (arg1)\n  ...)<SUB>42</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.assignment,*format = &quot;x &quot;%c)<SUB>45</SUB>> ]\n\"90194313236\" [label = <(LITERAL,&quot; y&quot;,{\n    char* format = arg2;\n\n    while (arg1)\n  ...)<SUB>45</SUB>> ]\n\"146028888066\" [label = <(RETURN,return arg1;,return arg1;)<SUB>48</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,* format = arg2)<SUB>39</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.assignment,* format = arg2)<SUB>39</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.assignment,format = &quot;retry &quot;%d)<SUB>42</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.assignment,format = &quot;retry &quot;%d)<SUB>42</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.assignment,*format = &quot;x &quot;%c)<SUB>45</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.assignment,*format = &quot;x &quot;%c)<SUB>45</SUB>> ]\n\"68719476764\" [label = <(IDENTIFIER,arg1,return arg1;)<SUB>48</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.modulo,&quot;retry &quot;%d)<SUB>42</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.modulo,&quot;retry &quot;%d)<SUB>42</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.modulo,&quot;x &quot;%c)<SUB>45</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.modulo,&quot;x &quot;%c)<SUB>45</SUB>> ]\n  \"146028888066\" -> \"128849018882\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116996\" -> \"128849018882\"  [ label = \"arg1\"] \n  \"30064771090\" -> \"128849018882\"  [ label = \"arg2\"] \n  \"30064771090\" -> \"128849018882\"  [ label = \"* format = arg2\"] \n  \"30064771091\" -> \"128849018882\"  [ label = \"format\"] \n  \"30064771091\" -> \"128849018882\"  [ label = \"&quot;retry &quot;%d\"] \n  \"30064771091\" -> \"128849018882\"  [ label = \"format = &quot;retry &quot;%d\"] \n  \"30064771093\" -> \"128849018882\"  [ label = \"*format\"] \n  \"30064771093\" -> \"128849018882\"  [ label = \"&quot;x &quot;%c\"] \n  \"30064771093\" -> \"128849018882\"  [ label = \"*format = &quot;x &quot;%c\"] \n  \"30064771095\" -> \"128849018882\"  [ label = \"c\"] \n  \"30064771092\" -> \"128849018882\"  [ label = \"d\"] \n  \"111669149699\" -> \"115964116996\" \n  \"111669149699\" -> \"115964116997\" \n  \"115964116997\" -> \"30064771090\"  [ label = \"arg2\"] \n  \"111669149699\" -> \"30064771090\" \n  \"30064771092\" -> \"30064771091\"  [ label = \"&quot;retry &quot;\"] \n  \"30064771092\" -> \"30064771091\"  [ label = \"d\"] \n  \"111669149699\" -> \"90194313234\" \n  \"30064771095\" -> \"30064771093\"  [ label = \"&quot;x &quot;\"] \n  \"30064771095\" -> \"30064771093\"  [ label = \"c\"] \n  \"111669149699\" -> \"90194313236\" \n  \"68719476764\" -> \"146028888066\"  [ label = \"arg1\"] \n  \"115964116996\" -> \"68719476764\"  [ label = \"arg1\"] \n  \"111669149699\" -> \"68719476764\" \n  \"111669149699\" -> \"30064771092\" \n  \"111669149699\" -> \"30064771095\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"enclosed\" {  \n\"30064771090\" [label = <(&lt;operator&gt;.assignment,* format = arg2)<SUB>39</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.assignment,format = &quot;retry &quot;%d)<SUB>42</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.assignment,*format = &quot;x &quot;%c)<SUB>45</SUB>> ]\n\"146028888066\" [label = <(RETURN,return arg1;,return arg1;)<SUB>48</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.modulo,&quot;retry &quot;%d)<SUB>42</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.indirection,*format)<SUB>45</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.modulo,&quot;x &quot;%c)<SUB>45</SUB>> ]\n\"111669149699\" [label = <(METHOD,enclosed)<SUB>37</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int32_t)<SUB>37</SUB>> ]\n  \"30064771090\" -> \"30064771092\" \n  \"30064771091\" -> \"30064771094\" \n  \"30064771093\" -> \"146028888066\" \n  \"146028888066\" -> \"128849018882\" \n  \"30064771092\" -> \"30064771091\" \n  \"30064771094\" -> \"30064771095\" \n  \"30064771095\" -> \"30064771093\" \n  \"111669149699\" -> \"30064771090\" \n}\n"
+      ]
+    },
+    "names": {
+      "name": "names",
+      "fullname": "names",
+      "filename": "adjacent-literals.c",
+      "start_line": 51,
+      "end_line": 56,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 51,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,names",
+                    "source_line_number": 51,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 51,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,char* arg2",
+                    "source_line_number": 51,
+                    "type": "char*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 53,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "arg2 = &quot;say&quot;",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "arg2=&quot;say&quot;"
+                    ],
+                    "source_line_number": 53,
+                    "src": "arg2",
+                    "dst": "&quot;say&quot;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 53
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 53
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 54,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "arg1 = arg1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "arg1=arg1"
+                    ],
+                    "source_line_number": 54,
+                    "src": "arg1",
+                    "dst": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 54
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 55,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,returnarg1;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,returnarg1;",
+                    "source_line_number": 55
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 51,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 55,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return arg1;,returnarg1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnarg1;",
+                      "returnarg1;"
+                    ],
+                    "source_line_number": 55,
+                    "ret": "arg1;,returnarg1;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 51,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,names",
+                    "source_line_number": 51,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 51,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "char* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,char* arg2",
+                    "source_line_number": 51,
+                    "type": "char*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 53,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "arg2 = &quot;say&quot;",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "arg2=&quot;say&quot;"
+                    ],
+                    "source_line_number": 53,
+                    "src": "arg2",
+                    "dst": "&quot;say&quot;"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 53
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 53
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 54,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "arg1 = arg1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "arg1=arg1"
+                    ],
+                    "source_line_number": 54,
+                    "src": "arg1",
+                    "dst": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 54
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 55,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,returnarg1;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,returnarg1;",
+                    "source_line_number": 55
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 51,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 51,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 55,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return arg1;,returnarg1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnarg1;",
+                      "returnarg1;"
+                    ],
+                    "source_line_number": 55,
+                    "ret": "arg1;,returnarg1;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,names)<SUB>51</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int32_t)<SUB>51</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int32_t arg1)<SUB>51</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,char* arg2)<SUB>51</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.assignment,arg2 = \"say \")<SUB>53</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,hello,{\n    arg2 = \"say \"hello\" now\";\n    arg1 = arg1...)<SUB>53</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(LITERAL,\" now\",{\n    arg2 = \"say \"hello\" now\";\n    arg1 = arg1...)<SUB>53</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.assignment,arg1 = arg1)<SUB>54</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(LITERAL,\"left\" \"right\",{\n    arg2 = \"say \"hello\" now\";\n    arg1 = arg1...)<SUB>54</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(RETURN,return arg1;,return arg1;)<SUB>55</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(IDENTIFIER,arg1,return arg1;)<SUB>55</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "label": "arg1"
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "label": "arg1"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "arg2"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "arg2 = \"say \""
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "arg1"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "arg1 = arg1"
+          },
+          {
+            "source": 7,
+            "target": 10,
+            "label": "arg1"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": "arg1"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"names\" {  \n\"111669149700\" [label = <(METHOD,names)<SUB>51</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int32_t)<SUB>51</SUB>> ]\n\"115964116998\" [label = <(PARAM,int32_t arg1)<SUB>51</SUB>> ]\n\"115964116999\" [label = <(PARAM,char* arg2)<SUB>51</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignment,arg2 = &quot;say &quot;)<SUB>53</SUB>> ]\n\"68719476766\" [label = <(IDENTIFIER,hello,{\n    arg2 = &quot;say &quot;hello&quot; now&quot;;\n    arg1 = arg1...)<SUB>53</SUB>> ]\n\"90194313238\" [label = <(LITERAL,&quot; now&quot;,{\n    arg2 = &quot;say &quot;hello&quot; now&quot;;\n    arg1 = arg1...)<SUB>53</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.assignment,arg1 = arg1)<SUB>54</SUB>> ]\n\"90194313239\" [label = <(LITERAL,&quot;left&quot; &quot;right&quot;,{\n    arg2 = &quot;say &quot;hello&quot; now&quot;;\n    arg1 = arg1...)<SUB>54</SUB>> ]\n\"146028888067\" [label = <(RETURN,return arg1;,return arg1;)<SUB>55</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignment,arg2 = &quot;say &quot;)<SUB>53</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignment,arg2 = &quot;say &quot;)<SUB>53</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.assignment,arg1 = arg1)<SUB>54</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.assignment,arg1 = arg1)<SUB>54</SUB>> ]\n\"68719476769\" [label = <(IDENTIFIER,arg1,return arg1;)<SUB>55</SUB>> ]\n  \"146028888067\" -> \"128849018883\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771096\" -> \"128849018883\"  [ label = \"arg2\"] \n  \"30064771096\" -> \"128849018883\"  [ label = \"arg2 = &quot;say &quot;\"] \n  \"30064771097\" -> \"128849018883\"  [ label = \"arg1\"] \n  \"30064771097\" -> \"128849018883\"  [ label = \"arg1 = arg1\"] \n  \"111669149700\" -> \"115964116998\" \n  \"111669149700\" -> \"115964116999\" \n  \"111669149700\" -> \"30064771096\" \n  \"111669149700\" -> \"68719476766\" \n  \"111669149700\" -> \"90194313238\" \n  \"115964116998\" -> \"30064771097\"  [ label = \"arg1\"] \n  \"111669149700\" -> \"30064771097\" \n  \"111669149700\" -> \"90194313239\" \n  \"68719476769\" -> \"146028888067\"  [ label = \"arg1\"] \n  \"30064771097\" -> \"68719476769\"  [ label = \"arg1\"] \n  \"111669149700\" -> \"68719476769\" \n  \"115964116998\" -> \"68719476769\"  [ label = \"arg1\"] \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"names\" {  \n\"30064771096\" [label = <(&lt;operator&gt;.assignment,arg2 = &quot;say &quot;)<SUB>53</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.assignment,arg1 = arg1)<SUB>54</SUB>> ]\n\"146028888067\" [label = <(RETURN,return arg1;,return arg1;)<SUB>55</SUB>> ]\n\"111669149700\" [label = <(METHOD,names)<SUB>51</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int32_t)<SUB>51</SUB>> ]\n  \"30064771096\" -> \"30064771097\" \n  \"30064771097\" -> \"146028888067\" \n  \"146028888067\" -> \"128849018883\" \n  \"111669149700\" -> \"30064771096\" \n}\n"
+      ]
+    },
+    "unclosed": {
+      "name": "unclosed",
+      "fullname": "unclosed",
+      "filename": "adjacent-literals.c",
+      "start_line": 60,
+      "end_line": 75,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 60,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,unclosed",
+                    "source_line_number": 60,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 60,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 60,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 60,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "void* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,void* arg2",
+                    "source_line_number": 60,
+                    "type": "void*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 62,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,if(arg1)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,if(arg1)",
+                    "source_line_number": 62
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 74,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,returnarg1;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,returnarg1;",
+                    "source_line_number": 74
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 71,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "arg1 = arg1+3",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "arg1=arg1+3"
+                    ],
+                    "source_line_number": 71,
+                    "src": "arg1",
+                    "dst": "arg1+3"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 71,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'arg1+3']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "arg1+3"
+                    ],
+                    "source_line_number": 71
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 60,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 60,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 74,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return arg1;,returnarg1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnarg1;",
+                      "returnarg1;"
+                    ],
+                    "source_line_number": 74,
+                    "ret": "arg1;,returnarg1;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 60,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,unclosed",
+                    "source_line_number": 60,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 60,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 60,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 60,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "void* arg2",
+                  "fields": {
+                    "raw_text": "PARAM,void* arg2",
+                    "source_line_number": 60,
+                    "type": "void*",
+                    "name": "arg2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 62,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,if(arg1)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,if(arg1)",
+                    "source_line_number": 62
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 74,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,returnarg1;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,returnarg1;",
+                    "source_line_number": 74
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 71,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "arg1 = arg1+3",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "arg1=arg1+3"
+                    ],
+                    "source_line_number": 71,
+                    "src": "arg1",
+                    "dst": "arg1+3"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 71,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['addition', 'arg1+3']>",
+                  "fields": {
+                    "raw_text": [
+                      "addition",
+                      "arg1+3"
+                    ],
+                    "source_line_number": 71
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 60,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 60,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 74,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return arg1;,returnarg1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnarg1;",
+                      "returnarg1;"
+                    ],
+                    "source_line_number": 74,
+                    "ret": "arg1;,returnarg1;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,unclosed)<SUB>60</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int32_t)<SUB>60</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int32_t arg1)<SUB>60</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,void* arg2)<SUB>60</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(RETURN,return arg1;,return arg1;)<SUB>74</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,arg1,if (arg1))<SUB>62</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(IDENTIFIER,arg1,return arg1;)<SUB>74</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.assignment,arg1 = arg1 + 3)<SUB>71</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.addition,arg1 + 3)<SUB>71</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "arg1"
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": "arg1"
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "label": "arg1"
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": "arg1"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "arg2"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "label": "arg1"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "arg1"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "arg1 + 3"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "arg1 = arg1 + 3"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": "arg1"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"unclosed\" {  \n\"111669149701\" [label = <(METHOD,unclosed)<SUB>60</SUB>> ]\n\"128849018884\" [label = <(METHOD_RETURN,int32_t)<SUB>60</SUB>> ]\n\"115964117000\" [label = <(PARAM,int32_t arg1)<SUB>60</SUB>> ]\n\"115964117001\" [label = <(PARAM,void* arg2)<SUB>60</SUB>> ]\n\"146028888068\" [label = <(RETURN,return arg1;,return arg1;)<SUB>74</SUB>> ]\n\"68719476770\" [label = <(IDENTIFIER,arg1,if (arg1))<SUB>62</SUB>> ]\n\"68719476773\" [label = <(IDENTIFIER,arg1,return arg1;)<SUB>74</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.assignment,arg1 = arg1 + 3)<SUB>71</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.assignment,arg1 = arg1 + 3)<SUB>71</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.assignment,arg1 = arg1 + 3)<SUB>71</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.addition,arg1 + 3)<SUB>71</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.addition,arg1 + 3)<SUB>71</SUB>> ]\n  \"146028888068\" -> \"128849018884\"  [ label = \"&lt;RET&gt;\"] \n  \"115964117000\" -> \"128849018884\"  [ label = \"arg1\"] \n  \"115964117001\" -> \"128849018884\"  [ label = \"arg2\"] \n  \"30064771098\" -> \"128849018884\"  [ label = \"arg1\"] \n  \"30064771098\" -> \"128849018884\"  [ label = \"arg1 + 3\"] \n  \"30064771098\" -> \"128849018884\"  [ label = \"arg1 = arg1 + 3\"] \n  \"111669149701\" -> \"115964117000\" \n  \"111669149701\" -> \"115964117001\" \n  \"68719476773\" -> \"146028888068\"  [ label = \"arg1\"] \n  \"111669149701\" -> \"68719476770\" \n  \"30064771098\" -> \"68719476773\"  [ label = \"arg1\"] \n  \"115964117000\" -> \"68719476773\"  [ label = \"arg1\"] \n  \"111669149701\" -> \"68719476773\" \n  \"115964117000\" -> \"30064771098\"  [ label = \"arg1\"] \n  \"111669149701\" -> \"30064771098\" \n  \"115964117000\" -> \"30064771099\"  [ label = \"arg1\"] \n  \"111669149701\" -> \"30064771099\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"unclosed\" {  \n\"146028888068\" [label = <(RETURN,return arg1;,return arg1;)<SUB>74</SUB>> ]\n\"68719476770\" [label = <(IDENTIFIER,arg1,if (arg1))<SUB>62</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.assignment,arg1 = arg1 + 3)<SUB>71</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.addition,arg1 + 3)<SUB>71</SUB>> ]\n\"111669149701\" [label = <(METHOD,unclosed)<SUB>60</SUB>> ]\n\"128849018884\" [label = <(METHOD_RETURN,int32_t)<SUB>60</SUB>> ]\n  \"146028888068\" -> \"128849018884\" \n  \"68719476770\" -> \"30064771099\" \n  \"68719476770\" -> \"146028888068\" \n  \"30064771098\" -> \"146028888068\" \n  \"30064771099\" -> \"30064771098\" \n  \"111669149701\" -> \"68719476770\" \n}\n"
+      ]
+    },
+    "registers": {
+      "name": "registers",
+      "fullname": "registers",
+      "filename": "adjacent-literals.c",
+      "start_line": 79,
+      "end_line": 90,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 79,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,registers",
+                    "source_line_number": 79,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 79,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 79,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 87
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 88,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "report()",
+                  "fields": {
+                    "raw_text": "report,report(&quot;node&quot;,r0_1)",
+                    "source_line_number": 88,
+                    "func": "report",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 81,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "arg1 > 0x10",
+                  "fields": {
+                    "raw_text": [
+                      "greaterThan",
+                      "arg1&gt;0x10"
+                    ],
+                    "source_line_number": 81,
+                    "type": 2,
+                    "arg1": "arg1",
+                    "arg2": "0x10"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 89,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,returnarg1;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,returnarg1;",
+                    "source_line_number": 89
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 83
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 84,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "report()",
+                  "fields": {
+                    "raw_text": "report,report(&quot;size&quot;,r1_43)",
+                    "source_line_number": 84,
+                    "func": "report",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 79,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 79,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 89,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return arg1;,returnarg1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnarg1;",
+                      "returnarg1;"
+                    ],
+                    "source_line_number": 89,
+                    "ret": "arg1;,returnarg1;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 79,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,registers",
+                    "source_line_number": 79,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 79,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int32_t arg1",
+                  "fields": {
+                    "raw_text": "PARAM,int32_t arg1",
+                    "source_line_number": 79,
+                    "type": "int32_t",
+                    "name": "arg1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 87
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 88,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "report()",
+                  "fields": {
+                    "raw_text": "report,report(&quot;node&quot;,r0_1)",
+                    "source_line_number": 88,
+                    "func": "report",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 81,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "arg1 > 0x10",
+                  "fields": {
+                    "raw_text": [
+                      "greaterThan",
+                      "arg1&gt;0x10"
+                    ],
+                    "source_line_number": 81,
+                    "type": 2,
+                    "arg1": "arg1",
+                    "arg2": "0x10"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 89,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,arg1,returnarg1;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,arg1,returnarg1;",
+                    "source_line_number": 89
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": null,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": null
+                  }
+                },
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: >",
+                  "fields": {
+                    "raw_text": "",
+                    "source_line_number": 83
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 84,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Call",
+                  "text": "report()",
+                  "fields": {
+                    "raw_text": "report,report(&quot;size&quot;,r1_43)",
+                    "source_line_number": 84,
+                    "func": "report",
+                    "args": [
+                      ""
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 79,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int32_t",
+                    "source_line_number": 79,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 89,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return arg1;,returnarg1;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returnarg1;",
+                      "returnarg1;"
+                    ],
+                    "source_line_number": 89,
+                    "ret": "arg1;,returnarg1;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,registers)<SUB>79</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int32_t)<SUB>79</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int32_t arg1)<SUB>79</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(IDENTIFIER,int32_t,{\n    if (arg1 > 0x10)\n    {\n        int32_t r1...)<SUB>87</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(report,report(\"node\", r0_1))<SUB>88</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(RETURN,return arg1;,return arg1;)<SUB>89</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.greaterThan,arg1 > 0x10)<SUB>81</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(IDENTIFIER,arg1,return arg1;)<SUB>89</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(IDENTIFIER,int32_t,{\n        int32_t r1_43 = *0x3b;\n        report...)<SUB>83</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(report,report(\"size\", r1_43))<SUB>84</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "label": "arg1"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "report(\"node\", r0_1)"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "r0_1"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "arg1"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "arg1 > 0x10"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "label": "arg1"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "label": "arg1"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "report(\"size\", r1_43)"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "r1_43"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"registers\" {  \n\"111669149702\" [label = <(METHOD,registers)<SUB>79</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,int32_t)<SUB>79</SUB>> ]\n\"115964117002\" [label = <(PARAM,int32_t arg1)<SUB>79</SUB>> ]\n\"68719476777\" [label = <(IDENTIFIER,int32_t,{\n    if (arg1 &gt; 0x10)\n    {\n        int32_t r1...)<SUB>87</SUB>> ]\n\"30064771102\" [label = <(report,report(&quot;node&quot;, r0_1))<SUB>88</SUB>> ]\n\"146028888069\" [label = <(RETURN,return arg1;,return arg1;)<SUB>89</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.greaterThan,arg1 &gt; 0x10)<SUB>81</SUB>> ]\n\"30064771102\" [label = <(report,report(&quot;node&quot;, r0_1))<SUB>88</SUB>> ]\n\"30064771102\" [label = <(report,report(&quot;node&quot;, r0_1))<SUB>88</SUB>> ]\n\"68719476779\" [label = <(IDENTIFIER,arg1,return arg1;)<SUB>89</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.greaterThan,arg1 &gt; 0x10)<SUB>81</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.greaterThan,arg1 &gt; 0x10)<SUB>81</SUB>> ]\n\"68719476775\" [label = <(IDENTIFIER,int32_t,{\n        int32_t r1_43 = *0x3b;\n        report...)<SUB>83</SUB>> ]\n\"30064771101\" [label = <(report,report(&quot;size&quot;, r1_43))<SUB>84</SUB>> ]\n\"30064771101\" [label = <(report,report(&quot;size&quot;, r1_43))<SUB>84</SUB>> ]\n\"30064771101\" [label = <(report,report(&quot;size&quot;, r1_43))<SUB>84</SUB>> ]\n  \"146028888069\" -> \"128849018885\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771100\" -> \"128849018885\"  [ label = \"arg1\"] \n  \"30064771100\" -> \"128849018885\"  [ label = \"arg1 &gt; 0x10\"] \n  \"30064771101\" -> \"128849018885\"  [ label = \"report(&quot;size&quot;, r1_43)\"] \n  \"30064771102\" -> \"128849018885\"  [ label = \"report(&quot;node&quot;, r0_1)\"] \n  \"30064771102\" -> \"128849018885\"  [ label = \"r0_1\"] \n  \"30064771101\" -> \"128849018885\"  [ label = \"r1_43\"] \n  \"111669149702\" -> \"115964117002\" \n  \"111669149702\" -> \"68719476777\" \n  \"68719476779\" -> \"146028888069\"  [ label = \"arg1\"] \n  \"111669149702\" -> \"30064771102\" \n  \"30064771100\" -> \"68719476779\"  [ label = \"arg1\"] \n  \"111669149702\" -> \"68719476779\" \n  \"115964117002\" -> \"30064771100\"  [ label = \"arg1\"] \n  \"111669149702\" -> \"30064771100\" \n  \"111669149702\" -> \"68719476775\" \n  \"111669149702\" -> \"30064771101\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"registers\" {  \n\"30064771102\" [label = <(report,report(&quot;node&quot;, r0_1))<SUB>88</SUB>> ]\n\"146028888069\" [label = <(RETURN,return arg1;,return arg1;)<SUB>89</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.greaterThan,arg1 &gt; 0x10)<SUB>81</SUB>> ]\n\"30064771101\" [label = <(report,report(&quot;size&quot;, r1_43))<SUB>84</SUB>> ]\n\"111669149702\" [label = <(METHOD,registers)<SUB>79</SUB>> ]\n\"128849018885\" [label = <(METHOD_RETURN,int32_t)<SUB>79</SUB>> ]\n  \"30064771102\" -> \"146028888069\" \n  \"146028888069\" -> \"128849018885\" \n  \"30064771100\" -> \"30064771101\" \n  \"30064771100\" -> \"30064771102\" \n  \"30064771101\" -> \"30064771102\" \n  \"111669149702\" -> \"30064771100\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "4a7b810af4ff99ecfcb9441e2b172f5d9039dcccc605944c8ca7b0ab9e882344",
+  "prepared_sha256": "4a7b810af4ff99ecfcb9441e2b172f5d9039dcccc605944c8ca7b0ab9e882344",
+  "language": "c",
+  "input_kind": "file",
+  "source": "/tmp/claude-1000/-home-mahaloz-github-rust-joern/ba78dd4d-6784-4ac2-81ab-a8a9d0f79e81/scratchpad/wt-recov/tests/fixtures/ddg-decbench/adjacent-literals.c",
+  "capture_worker_sha256": "544aaf7609ab89e1f1d11d339b6fd6f8c0d64c47f097113b32ca66b2470745bd",
+  "captured_at": "2026-11-09T08:23:03.433075+00:00",
+  "preparation": {
+    "strip_system_headers": false,
+    "sanitize_decompiled": false,
+    "decbench": null
+  }
+}

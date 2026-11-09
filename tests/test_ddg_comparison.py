@@ -170,11 +170,11 @@ class DdgComparisonTests(unittest.TestCase):
                 self.assertIn("public_parse_source_seconds", value["timings"])
 
 
-class NativeAuditDdgParityTests(unittest.TestCase):
-    """Exercise source -> native API, independently of original CPG replay.
+class NativeDdgParity(unittest.TestCase):
+    """Source -> native API -> frozen original references, without Joern.
 
     Build the library with ``cargo build --lib`` before running these gates.
-    Candidate library/wrapper bytes are frozen once for all twelve test cases.
+    Candidate library/wrapper bytes are frozen once per test class.
     """
 
     @classmethod
@@ -192,9 +192,7 @@ class NativeAuditDdgParityTests(unittest.TestCase):
     def tearDownClass(cls):
         cls.temporary.cleanup()
 
-    def assert_source_matches(self, filename, group):
-        source = ROOT / "tests/fixtures/dataflow-audit" / filename
-        reference = ROOT / "tests/fixtures/ddg-parity/references" / group / (filename + ".ddg.pyjoern.json")
+    def assert_matches(self, source, reference):
         baseline = json.loads(reference.read_text())
         sha = hashlib.sha256(source.read_bytes()).hexdigest()
         validate_reference(baseline, sha, sha, "cpp" if source.suffix == ".cpp" else "c")
@@ -207,7 +205,38 @@ class NativeAuditDdgParityTests(unittest.TestCase):
                  "python_package": str(self.snapshot / "python"), "library": str(self.library)}, cwd, 120, isolate=False)
         rows = compare(baseline["functions"], candidate["functions"])
         failed = [(row["function"], row["status"], row.get("mismatch_kind")) for row in rows if row["status"] != "match"]
-        self.assertEqual(failed, [], f"Exact source/public/labeled DDG parity failed for {filename}: {failed}")
+        self.assertTrue(rows, f"No functions compared for {source.name}")
+        self.assertEqual(failed, [], f"Exact source/public/labeled DDG parity failed for {source.name}: {failed}")
+
+
+class NativeAuditDdgParityTests(NativeDdgParity):
+    """The twelve dataflow-audit sources."""
+
+    def assert_source_matches(self, filename, group):
+        self.assert_matches(ROOT / "tests/fixtures/dataflow-audit" / filename,
+                            ROOT / "tests/fixtures/ddg-parity/references" / group / (filename + ".ddg.pyjoern.json"))
+
+
+class DecBenchDdgParityTests(NativeDdgParity):
+    """Reductions of differences found by the DecBench corpus audit."""
+
+    FIXTURES = ROOT / "tests/fixtures/ddg-decbench"
+
+    def test_every_reduction_has_a_frozen_original_reference(self):
+        sources = {path.name for path in self.FIXTURES.iterdir() if path.suffix in (".c", ".cpp")}
+        references = {path.name.removesuffix(".ddg.pyjoern.json") for path in (self.FIXTURES / "references").iterdir()}
+        self.assertTrue(sources)
+        self.assertEqual(sources, references)
+
+
+def _decbench_case(source):
+    def run(self):
+        self.assert_matches(source, source.parent / "references" / (source.name + ".ddg.pyjoern.json"))
+    return run
+
+
+for _source in sorted(DecBenchDdgParityTests.FIXTURES.glob("*.c*")):
+    setattr(DecBenchDdgParityTests, "test_" + _source.name.replace("-", "_").replace(".", "_"), _decbench_case(_source))
 
 
 def _native_audit_case(filename, group):
