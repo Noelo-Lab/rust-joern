@@ -6,6 +6,19 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++20 range-for init-statements execute before the range
+
+**Introduced:** 2026-11-09.
+
+Joern 4.0.150 omits a range-for with an init-statement on the reduced
+`for (int i = start(); const auto& x : values)` control. Rust Joern retains
+the initializer, evaluates it once before the range expression, and keeps
+its variable bindings in the loop scope. The zero-iteration path starts
+after both evaluations and the backedge returns to the iterator test.
+This changes the AST, CFG and derived data-flow views. The iterator protocol
+is represented by the same abstract test and advance nodes as ordinary
+range-for. No option restores the original omission.
+
 ## C++ range-for retains the range evaluation and loop exits
 
 **Introduced:** 2026-11-09, [PR #15](https://github.com/Noelo-Lab/rust-joern/pull/15).

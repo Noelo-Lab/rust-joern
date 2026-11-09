@@ -1702,13 +1702,18 @@ impl Builder<'_> {
                 flow
             }
             StmtKind::RangeFor {
+                initializer,
                 declaration,
                 iterable,
                 body,
             } => {
                 let id = self.control(statement, parent, "FOR");
                 self.scopes.push(HashMap::new());
-                let initial = self.expression(iterable, id, None);
+                let initial = initializer
+                    .as_ref()
+                    .map(|statement| self.statement(statement, id, false))
+                    .unwrap_or_default();
+                let initial = initial.append(self.expression(iterable, id, None));
                 self.declarations(
                     &[Declaration {
                         initializer: None,

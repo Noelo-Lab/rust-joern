@@ -4823,15 +4823,37 @@ impl Parser<'_> {
             .matching(inside.saturating_sub(1), self.limit)
             .unwrap_or(self.limit);
         let clauses = self.split_ranges(inside, end, ";");
-        if clauses.len() == 1 && self.cpp {
-            // The delimiter is a colon outside any conditional expression.
-            // A colon in the range initializer belongs to its `?:` expression.
-            if let Some(separator) = self.unpaired_expression_colon(inside, end)
+        if self.cpp
+            && let [range] | [_, range] = clauses.as_slice()
+        {
+            // In C++20 the range declaration may follow an init-statement.
+            // The delimiter is outside any conditional expression.
+            let (range_start, range_end) = *range;
+            if let Some(separator) = self.unpaired_expression_colon(range_start, range_end)
                 && self.unpaired_expression_colon(separator + 1, end).is_none()
             {
-                let mut declarations = self.declarations_range(inside, separator);
+                let saved_scope = (clauses.len() == 2).then(|| {
+                    (
+                        self.variables.clone(),
+                        self.variable_types.clone(),
+                        self.variable_closures.clone(),
+                    )
+                });
+                let initializer = if let [(a, b), _] = clauses.as_slice() {
+                    self.for_initializer(*a, *b)
+                } else {
+                    None
+                };
+                // The range expression can see the initializer's variables.
+                // The iteration variable only enters scope for the body.
+                let iterable = self.expression_range(separator + 1, end);
+                let mut declarations = self.declarations_range(range_start, separator);
                 let declaration = if declarations.is_empty() {
-                    self.diagnose(inside, end, "cannot recover range-for declaration");
+                    self.diagnose(
+                        range_start,
+                        separator,
+                        "cannot recover range-for declaration",
+                    );
                     Declaration {
                         name: "<unknown>".into(),
                         type_name: "ANY".into(),
@@ -4840,17 +4862,22 @@ impl Parser<'_> {
                         problem: false,
                         is_typedef: false,
                         nested_declarator: false,
-                        span: self.span(inside, separator),
+                        span: self.span(range_start, separator),
                     }
                 } else {
                     declarations.remove(0)
                 };
-                let iterable = self.expression_range(separator + 1, end);
                 self.pos = end;
                 self.expect(")");
                 let body = Box::new(self.statement());
+                if let Some((variables, types, closures)) = saved_scope {
+                    self.variables = variables;
+                    self.variable_types = types;
+                    self.variable_closures = closures;
+                }
                 return Stmt {
                     kind: StmtKind::RangeFor {
+                        initializer,
                         declaration,
                         iterable,
                         body,
@@ -4908,17 +4935,7 @@ impl Parser<'_> {
                 span: self.span(start, self.pos),
             };
         }
-        let initializer = clauses.first().filter(|(a, b)| a < b).map(|(a, b)| {
-            let kind = if self.looks_declaration(*a, *b) {
-                StmtKind::Declaration(self.declarations_range(*a, *b))
-            } else {
-                StmtKind::Expression(self.expression_range(*a, *b))
-            };
-            Box::new(Stmt {
-                kind,
-                span: self.span(*a, *b),
-            })
-        });
+        let initializer = self.for_initializer(clauses[0].0, clauses[0].1);
         let condition = clauses
             .get(1)
             .filter(|(a, b)| a < b)
@@ -4942,6 +4959,21 @@ impl Parser<'_> {
             },
             span: self.span(start, self.pos),
         }
+    }
+
+    fn for_initializer(&mut self, start: usize, end: usize) -> Option<Box<Stmt>> {
+        if start == end {
+            return None;
+        }
+        let kind = if self.looks_declaration(start, end) {
+            StmtKind::Declaration(self.declarations_range(start, end))
+        } else {
+            StmtKind::Expression(self.expression_range(start, end))
+        };
+        Some(Box::new(Stmt {
+            kind,
+            span: self.span(start, end),
+        }))
     }
 
     fn expression_range(&mut self, start: usize, end: usize) -> Expr {
@@ -7549,6 +7581,16 @@ fn infer_return_types(
                 );
             }
         }
+        StmtKind::RangeFor {
+            initializer: Some(initializer),
+            body,
+            ..
+        } => {
+            let mut types = types.clone();
+            let mut closures = closures.clone();
+            infer_return_types(initializer, &mut types, &mut closures, functions, returns);
+            infer_return_types(body, &mut types, &mut closures, functions, returns);
+        }
         StmtKind::While { body, .. }
         | StmtKind::DoWhile { body, .. }
         | StmtKind::Switch { body, .. }
@@ -7864,10 +7906,14 @@ fn generated_statement(statement: &mut Stmt, source: &str, span: &Span) {
             generated_statement(body, source, span);
         }
         StmtKind::RangeFor {
+            initializer,
             declaration,
             iterable,
             body,
         } => {
+            if let Some(statement) = initializer {
+                generated_statement(statement, source, span);
+            }
             declaration.span = span.clone();
             generated_expression(iterable, source, span);
             generated_statement(body, source, span);
