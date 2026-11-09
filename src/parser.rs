@@ -56,6 +56,7 @@ fn parse_unit(
         types: HashSet::new(),
         explicit_types: HashSet::new(),
         type_aliases: HashMap::new(),
+        class_alias_undo: Vec::new(),
         extern_c: false,
         extern_c_names: HashSet::new(),
         class_scopes: HashSet::new(),
@@ -741,6 +742,12 @@ mod expression_port_tests {
     }
 }
 
+struct AliasUndo {
+    alias: Option<String>,
+    was_type: bool,
+    was_explicit: bool,
+}
+
 struct Parser<'a> {
     source: &'a str,
     tokens: Vec<Token>,
@@ -753,6 +760,7 @@ struct Parser<'a> {
     types: HashSet<String>,
     explicit_types: HashSet<String>,
     type_aliases: HashMap<String, String>,
+    class_alias_undo: Vec<HashMap<String, AliasUndo>>,
     extern_c: bool,
     extern_c_names: HashSet<String>,
     class_scopes: HashSet<String>,
@@ -1244,6 +1252,9 @@ impl Parser<'_> {
                     }
                     let previous_linkage = self.extern_c;
                     let outer_variables = class.map(|_| self.variables.clone());
+                    if self.cpp && class.is_some() {
+                        self.class_alias_undo.push(HashMap::new());
+                    }
                     if self.cpp && linkage {
                         self.extern_c = self.text(start + 1) == "\"C\"";
                     }
@@ -1254,6 +1265,21 @@ impl Parser<'_> {
                     self.extern_c = previous_linkage;
                     if let Some(variables) = outer_variables {
                         self.variables = variables;
+                    }
+                    if self.cpp && class.is_some() {
+                        for (name, undo) in self.class_alias_undo.pop().unwrap() {
+                            if let Some(alias) = undo.alias {
+                                self.type_aliases.insert(name.clone(), alias);
+                            } else {
+                                self.type_aliases.remove(&name);
+                            }
+                            if !undo.was_type {
+                                self.types.remove(&name);
+                            }
+                            if !undo.was_explicit {
+                                self.explicit_types.remove(&name);
+                            }
+                        }
                     }
                     self.expect("}");
                     // Names after an anonymous record, including typedef aliases.
@@ -3417,6 +3443,16 @@ impl Parser<'_> {
         }
     }
 
+    fn remember_class_alias(&mut self, name: &str) {
+        if let Some(undo) = self.class_alias_undo.last_mut() {
+            undo.entry(name.to_string()).or_insert_with(|| AliasUndo {
+                alias: self.type_aliases.get(name).cloned(),
+                was_type: self.types.contains(name),
+                was_explicit: self.explicit_types.contains(name),
+            });
+        }
+    }
+
     fn remember_types(&mut self, start: usize, end: usize) {
         for i in start..end {
             if self.cpp
@@ -3431,6 +3467,8 @@ impl Parser<'_> {
             }
         }
         if self.text(start) == "using" && self.text(start + 2) == "=" {
+            let alias = self.text(start + 1).to_string();
+            self.remember_class_alias(&alias);
             self.types.insert(self.text(start + 1).to_string());
             self.explicit_types.insert(self.text(start + 1).to_string());
             self.type_aliases.insert(
@@ -3458,6 +3496,8 @@ impl Parser<'_> {
             self.remember_inferred_type(start, base_end);
             for (a, b) in self.split_ranges(base_end, end, ",") {
                 if let (Some(name), _) = self.declarator_name(a, b) {
+                    let alias = self.text(name).to_string();
+                    self.remember_class_alias(&alias);
                     self.types.insert(self.text(name).to_string());
                     self.explicit_types.insert(self.text(name).to_string());
                     self.type_aliases.insert(
@@ -7983,6 +8023,7 @@ impl Parser<'_> {
             types: self.types.clone(),
             explicit_types: self.explicit_types.clone(),
             type_aliases: self.type_aliases.clone(),
+            class_alias_undo: Vec::new(),
             variables: self.variables.clone(),
             imports: self.imports.clone(),
             extern_c: self.extern_c,
