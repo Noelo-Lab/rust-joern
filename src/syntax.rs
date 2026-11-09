@@ -199,6 +199,7 @@ pub enum StmtKind {
         body: Box<Stmt>,
     },
     RangeFor {
+        initializer: Option<Box<Stmt>>,
         declaration: Declaration,
         iterable: Expr,
         body: Box<Stmt>,

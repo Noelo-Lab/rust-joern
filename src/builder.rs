@@ -1768,14 +1768,24 @@ impl Builder<'_> {
                 self.scopes.pop();
                 flow
             }
+            // CDT cannot parse a C++20 init-statement, so Joern has no loop.
             StmtKind::RangeFor {
+                initializer: Some(_),
+                ..
+            } if self.joern_cpp_control_flow => Fragment::default(),
+            StmtKind::RangeFor {
+                initializer,
                 declaration,
                 iterable,
                 body,
             } => {
                 let id = self.control(statement, parent, "FOR");
                 self.scopes.push(HashMap::new());
-                let initial = self.expression(iterable, id, None);
+                let initial = initializer
+                    .as_ref()
+                    .map(|statement| self.statement(statement, id, false))
+                    .unwrap_or_default();
+                let initial = initial.append(self.expression(iterable, id, None));
                 self.declarations(
                     &[Declaration {
                         initializer: None,

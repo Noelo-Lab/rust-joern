@@ -6,6 +6,27 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++20 range-for init-statements execute before the range
+
+**Introduced:** 2026-11-09, [PR #18](https://github.com/Noelo-Lab/rust-joern/pull/18).
+
+**Joern:** a range-for with an init-statement, such as
+`for (int i = start(); const auto& x : values)`, is omitted entirely.
+
+**Rust Joern:** the initializer is kept and evaluated once before the range
+expression, and its variables are bound in the loop scope. The zero-iteration
+path starts after both evaluations and the backedge returns to the iterator
+test. The iterator protocol uses the same abstract test and advance nodes as an
+ordinary range-for.
+
+**Why:** dropping the loop loses all of its body.
+
+**Affects:** the AST, CFG, reaching definitions and DDG of C++ functions with
+such a loop. The DecBench corpus contains none.
+
+**Reference behavior:** `joern_cpp_control_flow`, as for `noexcept` operands
+below.
+
 ## C++ range-for retains the range evaluation and loop exits
 
 **Introduced:** 2026-11-09, [PR #15](https://github.com/Noelo-Lab/rust-joern/pull/15).
