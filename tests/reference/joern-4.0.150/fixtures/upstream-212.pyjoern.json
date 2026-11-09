@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/Users/sjkim1127/.pyenv/versions/3.12.1/lib/python3.12/site-packages/pyjoern/__init__.py",
+  "seconds": 4.5783075001090765,
+  "functions": {
+    "alloc": {
+      "name": "alloc",
+      "start_line": 2,
+      "end_line": 5,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "2.0:\nFUNCTION_START\n<UnsupportedStmt: ['new', 'newFoo(n', '42)']>\n*foo = newFoo(n,42)\nreturn foo;,returnfoo;\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "8aba77198e2715c0a1282bb836ed0b8fd819b0aae6ae98fc363bc7353e3af973",
+  "prepared_sha256": "8aba77198e2715c0a1282bb836ed0b8fd819b0aae6ae98fc363bc7353e3af973"
+}

@@ -155,8 +155,11 @@ source = pathlib.Path(config["source"])
 if input_digest(source) != config["prepared_sha256"]:
     raise RuntimeError("Prepared bytes changed before native parse")
 started = time.perf_counter()
-# Original references keep Joern's condition node for constant-true loops.
-parsed = rust_joern.parse_source(source, **config["flags"], joern_loop_conditions=True)
+# Original references keep Joern's condition node for constant-true loops,
+# its one parameter per K&R declaration, CDT's parse failures, and its C++ CFG.
+parsed = rust_joern.parse_source(source, **config["flags"], joern_loop_conditions=True,
+                                 joern_knr_parameters=True, joern_cdt_failures=True,
+                                 joern_cpp_control_flow=True)
 parse_seconds = time.perf_counter() - started
 started = time.perf_counter()
 for f in parsed.values():

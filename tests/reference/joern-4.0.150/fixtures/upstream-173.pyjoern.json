@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/Users/sjkim1127/.pyenv/versions/3.12.1/lib/python3.12/site-packages/pyjoern/__init__.py",
+  "seconds": 4.981939540943131,
+  "functions": {
+    "method": {
+      "name": "method",
+      "start_line": 6,
+      "end_line": 6,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "6.3:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,i,i>\n<UnsupportedStmt: ['indirectFieldAccess', 'this-&gt;i']>\nreturn i;,returni;\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "c02c2f55f90ce66930fed62bafcd201f950f64c07919e0ec40d49e2ba4aaf64e",
+  "prepared_sha256": "c02c2f55f90ce66930fed62bafcd201f950f64c07919e0ec40d49e2ba4aaf64e"
+}

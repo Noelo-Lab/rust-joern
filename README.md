@@ -80,8 +80,24 @@ condition that is `true` or a nonzero integer literal, such as `while (1)`,
 the omitted condition of `for (;;)`, without a CFG node or exit edge. Joern
 4.0.150 lowers those conditions with an exit edge; `--joern-loop-conditions` or
 Python `joern_loop_conditions=True` restores that for original-reference
-comparisons. [Divergences](docs/divergences.md) lists every intentional
-difference from Joern.
+comparisons.
+
+A K&R definition has one parameter for each name in its identifier list. Joern
+4.0.150 creates one for each parameter declaration instead, so `int a, b;`
+declares only `a`; `--joern-knr-parameters` or Python
+`joern_knr_parameters=True` restores that.
+
+Decompiler output that CDT fails to parse is still analyzed. Joern has no method
+for a definition whose parameter list CDT rejects, such as r2dec's
+`signed int64_t` parameters, and no nodes for `*0x40004000 = x;`.
+`--joern-cdt-failures` or Python `joern_cdt_failures=True` restores that.
+
+C++ `noexcept` operands and block-scope `static_assert` stay out of the CFG,
+because neither runs at run time.
+`--joern-cpp-control-flow` or Python `joern_cpp_control_flow=True` keeps Joern's
+CFG instead.
+[Divergences](docs/divergences.md) lists every intentional difference from
+Joern.
 
 Data flow is intraprocedural. Joern's 4,000-generated-definition limit applies
 to DDG generation; requesting reaching-definition sets still returns the solver
