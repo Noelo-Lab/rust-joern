@@ -6,6 +6,28 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++ range-for retains the range evaluation and loop exits
+
+**Introduced:** 2026-11-09, [PR #15](https://github.com/Noelo-Lab/rust-joern/pull/15).
+
+**Joern:** the range initializer is skipped in the CFG, and the body is used as
+the loop condition.
+
+**Rust Joern:** the range is evaluated once before the loop, followed by
+abstract test and advance nodes. The test can exit before the first iteration,
+`continue` goes to advance, and `break` goes to the successor. The nodes
+represent control flow without resolving iterator overloads or modeling
+implicit calls.
+
+**Why:** a compiled range-for is a loop with these edges, so a decompilation
+would otherwise differ from its source.
+
+**Affects:** the CPG, CFG, reaching definitions and DDG of C++ functions with a
+range-based `for`. The DecBench corpus contains none.
+
+**Reference behavior:** `joern_cpp_control_flow`, as for `noexcept` operands
+below.
+
 ## Block-scope C++ `static_assert` stays out of the runtime CFG
 
 **Introduced:** 2026-11-09, [PR #16](https://github.com/Noelo-Lab/rust-joern/pull/16).
