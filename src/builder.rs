@@ -673,8 +673,14 @@ impl Builder<'_> {
                 };
                 let id = self.node("CALL", span, Some(name), None);
                 self.ast(parent, id, argument);
-                self.expression(operand, id, Some(1))
-                    .append(Fragment::single(id))
+                let operand_flow = self.expression(operand, id, Some(1));
+                if self.cpp && op == "noexcept" {
+                    // The operand is still represented in the AST, but C++
+                    // does not evaluate it and its effects cannot enter the CFG.
+                    Fragment::single(id)
+                } else {
+                    operand_flow.append(Fragment::single(id))
+                }
             }
             ExprKind::Binary { .. } => self.binary_expression(expression, parent, argument),
             ExprKind::Conditional {

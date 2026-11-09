@@ -6,6 +6,18 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++ `noexcept` operands are excluded from the CFG
+
+**Introduced:** 2026-11-09.
+
+For `return noexcept(effect());`, Joern 4.0.150 places `effect()` in the CFG.
+Rust Joern keeps the operand in the AST but does not connect it to the CFG.
+C++ does not evaluate a `noexcept` operand, so an executable call would be
+incorrect. This changes CFGs and potentially the data-flow views derived from
+them. There is no compatibility option for reproducing the original edge.
+This rule covers the `noexcept` operator, not exception specifications or
+other unevaluated contexts.
+
 ## Constant-true loop heads lower like `for (;;)`
 
 **Introduced:** 2026-10-14, [PR #2](https://github.com/Noelo-Lab/rust-joern/pull/2).
