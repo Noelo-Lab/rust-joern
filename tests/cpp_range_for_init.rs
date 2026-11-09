@@ -119,3 +119,23 @@ fn range_for_accepts_expression_and_empty_init_statements() {
             && node.code == "choose ? values : other"
     }));
 }
+
+#[test]
+fn joern_cpp_control_flow_omits_the_loop() {
+    let source = "struct R { int *begin(); int *end(); }; int start(); R values();
+        void f() { for (int i = start(); auto x : values()) { } }";
+    let options = Options {
+        joern_cpp_control_flow: true,
+        ..options()
+    };
+    let result = analyze(source, "init.cpp", &options).unwrap();
+    let f = result.functions.iter().find(|f| f.name == "f").unwrap();
+    assert!(!f.cpg.nodes.iter().any(|n| n.code == "<range-for test>"));
+    assert!(!f.cpg.edges.iter().any(|e| {
+        e.kind == "CFG"
+            && f.cpg
+                .nodes
+                .iter()
+                .any(|n| n.id == e.source && n.code == "start()")
+    }));
+}

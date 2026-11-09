@@ -1,0 +1,2 @@
+# Original Joern input bytes (including whitespace) are hash-verified fixtures.
+tests/reference/joern-4.0.150/fixtures/*.cpp -whitespace

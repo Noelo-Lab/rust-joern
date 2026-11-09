@@ -1,0 +1,78 @@
+{
+  "upstream_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+  "profile": "source-only-original-pyjoern-cfg",
+  "rows": [
+    {
+      "source": "upstream-173.cpp",
+      "reference": "upstream-173.pyjoern.json",
+      "source_sha256": "c02c2f55f90ce66930fed62bafcd201f950f64c07919e0ec40d49e2ba4aaf64e",
+      "reference_sha256": "7019f0e5eea13f4ffe486dd9ca552e19e566d88b31f0591824fb60887fc68626",
+      "origin": {
+        "upstream_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+        "path": "joern-cli/frontends/c2cpg/src/test/scala/io/joern/c2cpg/passes/ast/AstCreationPassTests.scala",
+        "line": 1154,
+        "kind": "upstream_test_source_control_not_corpus"
+      }
+    },
+    {
+      "source": "upstream-176.cpp",
+      "reference": "upstream-176.pyjoern.json",
+      "source_sha256": "0e1c4611d8f494f8fd9218ea94cf773f0c2381114e3f1738b7040d20db0fc587",
+      "reference_sha256": "76a8b00c20fd84dda688aba1b9fb2bf622852f25af1b5a34cfd215a2c214c514",
+      "origin": {
+        "upstream_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+        "path": "joern-cli/frontends/c2cpg/src/test/scala/io/joern/c2cpg/passes/ast/AstCreationPassTests.scala",
+        "line": 1201,
+        "kind": "upstream_test_source_control_not_corpus"
+      }
+    },
+    {
+      "source": "upstream-198.cpp",
+      "reference": "upstream-198.pyjoern.json",
+      "source_sha256": "eca819dc2ba6c61a1df4be107c3f9a654f71d5e53b3aea2a7a85149e5c382a83",
+      "reference_sha256": "44552919487511c52276681c7b31ec8020972a94180ba1d881e55a142e65c0d0",
+      "origin": {
+        "upstream_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+        "path": "joern-cli/frontends/c2cpg/src/test/scala/io/joern/c2cpg/passes/ast/AstCreationPassTests.scala",
+        "line": 1486,
+        "kind": "upstream_test_source_control_not_corpus"
+      }
+    },
+    {
+      "source": "upstream-212.cpp",
+      "reference": "upstream-212.pyjoern.json",
+      "source_sha256": "8aba77198e2715c0a1282bb836ed0b8fd819b0aae6ae98fc363bc7353e3af973",
+      "reference_sha256": "144df62e654bb8a9673a90503b7ac123676b7d279ec587562031ef4e0550177c",
+      "origin": {
+        "upstream_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+        "path": "joern-cli/frontends/c2cpg/src/test/scala/io/joern/c2cpg/passes/ast/AstCreationPassTests.scala",
+        "line": 1808,
+        "kind": "upstream_test_source_control_not_corpus"
+      }
+    },
+    {
+      "source": "upstream-240.cpp",
+      "reference": "upstream-240.pyjoern.json",
+      "source_sha256": "3c41b221b745e12f5b8eb3c0875f10380d587e0e335cea34a1ff571310378830",
+      "reference_sha256": "1efa5d43eff687fde932b37b342ddd9c792cbd2b6467305f3285c8656e841d13",
+      "origin": {
+        "upstream_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+        "path": "joern-cli/frontends/c2cpg/src/test/scala/io/joern/c2cpg/passes/ast/CallTests.scala",
+        "line": 73,
+        "kind": "upstream_test_source_control_not_corpus"
+      }
+    },
+    {
+      "source": "upstream-243.cpp",
+      "reference": "upstream-243.pyjoern.json",
+      "source_sha256": "dc0192ca24819d403969b91f81c3021e44eb67f48cf6850cbb3b13448495fe75",
+      "reference_sha256": "b4a2510382ed7aac57abc5784f03677bdbf60d112ed31b64fe57ec36abc99c9e",
+      "origin": {
+        "upstream_commit": "958fdd3d976197a783f8ade1254b43e977648f28",
+        "path": "joern-cli/frontends/c2cpg/src/test/scala/io/joern/c2cpg/passes/ast/CallTests.scala",
+        "line": 138,
+        "kind": "upstream_test_source_control_not_corpus"
+      }
+    }
+  ]
+}

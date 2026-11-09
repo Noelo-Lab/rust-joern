@@ -39,7 +39,19 @@ pub struct Parameter {
     pub name: String,
     pub type_name: String,
     pub function_pointer: bool,
+    /// Set for a parameter of a K&R definition.
+    pub knr: Option<KnrParameter>,
     pub span: Span,
+}
+
+/// How a K&R definition declares one name of its identifier list. Joern
+/// creates a parameter for each declaration, named by its first declarator.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum KnrParameter {
+    /// The first declarator of a parameter declaration.
+    First,
+    /// A later declarator of a shared declaration, or an implicit `int`.
+    Unlisted,
 }
 
 #[derive(Clone, Debug)]
