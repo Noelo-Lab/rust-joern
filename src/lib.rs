@@ -82,6 +82,7 @@ pub fn analyze_sources(sources: &[(&str, &str)], options: &Options) -> Result<An
     }
     Ok(Analysis {
         schema_version: 1,
+        cpp_constructor_initializers: options.cpp_constructor_initializers,
         cpp_type_names: options.cpp_type_names.clone(),
         functions: units
             .iter_mut()
@@ -123,6 +124,11 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
                 .and_then(|s| s.to_str()),
             Some("i" | "ii")
         );
+    if options.cpp_constructor_initializers
+        && (!cpp || options.data_flow || options.reaching_definitions)
+    {
+        return Err("cpp_constructor_initializers requires C++ CFG-only analysis".into());
+    }
     if !options.cpp_type_names.is_empty() && !cpp {
         return Err("cpp_type_names requires C++ input".into());
     }
@@ -150,6 +156,7 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
         preprocessed,
         options.joern_cdt_failures,
         &options.cpp_type_names,
+        options.cpp_constructor_initializers,
     );
     let mut diagnostics: Vec<_> = unit
         .diagnostics
@@ -232,6 +239,7 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             inherited_bindings: Vec::new(),
             inherited_closures: Vec::new(),
             parameters: Vec::new(),
+            constructor_initializers: Vec::new(),
             body: syntax::Stmt {
                 kind: syntax::StmtKind::Sequence(
                     unit.global_expressions

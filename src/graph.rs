@@ -99,6 +99,8 @@ pub struct Diagnostic {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Analysis {
     pub schema_version: u32,
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub cpp_constructor_initializers: bool,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub cpp_type_names: Vec<String>,
     pub functions: Vec<FunctionGraph>,
@@ -113,6 +115,8 @@ pub struct Options {
     pub data_flow: bool,
     pub reaching_definitions: bool,
     pub strict: bool,
+    /// Experimental CFG-only scalar initialization, requiring a complete source class.
+    pub cpp_constructor_initializers: bool,
     /// Caller-proved, visible C++ type names for an isolated source slice.
     pub cpp_type_names: Vec<String>,
     /// Lower constant-true `while`/`for` conditions as Joern 4.0.150 does,

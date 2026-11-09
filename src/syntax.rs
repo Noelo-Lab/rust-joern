@@ -32,8 +32,18 @@ pub struct Function {
     pub inherited_bindings: Vec<(String, String)>,
     pub inherited_closures: Vec<(String, Closure)>,
     pub parameters: Vec<Parameter>,
+    pub constructor_initializers: Vec<MemberInitialization>,
     pub body: Stmt,
     pub span: Span,
+}
+
+/// A proved scalar member's explicit initialization, in declaration order.
+#[derive(Clone, Debug)]
+pub struct MemberInitialization {
+    pub member: String,
+    pub value: Expr,
+    pub span: Span,
+    pub member_span: Span,
 }
 
 #[derive(Clone, Debug)]

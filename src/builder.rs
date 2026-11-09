@@ -192,6 +192,33 @@ pub fn build(
             builder.scopes[0].insert(parameter.name.clone(), (id, parameter.type_name.clone()));
         }
     }
+    let mut initializers = Fragment::default();
+    for initialization in &function.constructor_initializers {
+        let id = builder.node(
+            "CALL",
+            &initialization.span,
+            Some("<operator>.fieldInitialization"),
+            None,
+        );
+        builder.ast(entry, id, None);
+        let target = Expr {
+            kind: ExprKind::Member {
+                base: Box::new(Expr {
+                    kind: ExprKind::Identifier("this".into()),
+                    span: initialization.member_span.clone(),
+                }),
+                name: initialization.member.clone(),
+                indirect: true,
+            },
+            span: initialization.member_span.clone(),
+        };
+        let target_flow = builder.expression(&target, id, Some(1));
+        let value_flow = builder.expression(&initialization.value, id, Some(2));
+        initializers = initializers
+            .append(target_flow)
+            .append(value_flow)
+            .append(Fragment::single(id));
+    }
     let body = if matches!(function.body.kind, StmtKind::Empty) {
         // Function declarations still have a body container in Joern's CPG.
         let block = builder.node("BLOCK", &Span::default(), None, Some(""));
@@ -207,6 +234,7 @@ pub fn build(
     }
     builder.ast(entry, exit, None);
     let mut flow = Fragment::single(entry)
+        .append(initializers)
         .append(body)
         .append(Fragment::single(exit));
     for (source, target) in &flow.jumps {

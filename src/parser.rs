@@ -16,18 +16,20 @@ pub fn parse(source: &str, cpp: bool) -> TranslationUnit {
 
 #[cfg(test)]
 pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> TranslationUnit {
-    parse_with(source, cpp, preprocessed, false, &[])
+    parse_with(source, cpp, preprocessed, false, &[], false)
 }
 
 /// `cdt_failures` reproduces CDT's failure on a parameter list or expression
 /// it cannot parse; otherwise that code is still analyzed. `type_names` are
 /// caller-proved visible C++ type names for an isolated source slice.
+/// `constructor_initializers` enables the opt-in scalar initializer profile.
 pub fn parse_with(
     source: &str,
     cpp: bool,
     preprocessed: bool,
     cdt_failures: bool,
     type_names: &[String],
+    constructor_initializers: bool,
 ) -> TranslationUnit {
     let (unit, later) = parse_unit(
         source,
@@ -35,6 +37,7 @@ pub fn parse_with(
         preprocessed,
         cdt_failures,
         type_names,
+        constructor_initializers,
         HashSet::new(),
     );
     if later.is_empty() {
@@ -42,7 +45,16 @@ pub fn parse_with(
     }
     // C binds a function before its declaration as well (`CScope`). A
     // `T *x;` that names a later one is parsed again with those bindings.
-    parse_unit(source, cpp, preprocessed, cdt_failures, type_names, later).0
+    parse_unit(
+        source,
+        cpp,
+        preprocessed,
+        cdt_failures,
+        type_names,
+        constructor_initializers,
+        later,
+    )
+    .0
 }
 
 fn parse_unit(
@@ -51,6 +63,7 @@ fn parse_unit(
     preprocessed: bool,
     cdt_failures: bool,
     type_names: &[String],
+    constructor_initializers: bool,
     later_functions: HashSet<String>,
 ) -> (TranslationUnit, HashSet<String>) {
     let (tokens, diagnostics, retained_macro_invocations) =
@@ -73,6 +86,8 @@ fn parse_unit(
         extern_c_names: HashSet::new(),
         class_scopes: HashSet::new(),
         class_fields: HashMap::new(),
+        scalar_constructor_classes: HashSet::new(),
+        constructor_initializers,
         function_fields: Vec::new(),
         function_member_cv: false,
         variables: Rc::new(HashSet::new()),
@@ -783,6 +798,8 @@ struct Parser<'a> {
     extern_c_names: HashSet<String>,
     class_scopes: HashSet<String>,
     class_fields: HashMap<String, Vec<(String, String)>>,
+    scalar_constructor_classes: HashSet<String>,
+    constructor_initializers: bool,
     function_fields: Vec<(String, String)>,
     function_member_cv: bool,
     variables: Rc<HashSet<String>>,
@@ -1272,6 +1289,12 @@ impl Parser<'_> {
                         self.class_scopes.insert(nested.clone());
                         let close = self.matching(cursor, self.limit).unwrap_or(self.limit);
                         let fields = self.collect_class_fields(cursor + 1, close);
+                        self.scalar_constructor_classes.remove(&nested);
+                        if self.constructor_initializers
+                            && self.scalar_constructor_class(start, cursor, close, &fields)
+                        {
+                            self.scalar_constructor_classes.insert(nested.clone());
+                        }
                         self.class_fields.insert(nested.clone(), fields);
                     }
                     let previous_linkage = self.extern_c;
@@ -1769,6 +1792,246 @@ impl Parser<'_> {
         fields
     }
 
+    fn scalar_constructor_class(
+        &self,
+        start: usize,
+        open: usize,
+        end: usize,
+        fields: &[(String, String)],
+    ) -> bool {
+        if (start..open).any(|i| matches!(self.text(i), ":" | "union" | "template")) {
+            return false;
+        }
+        let mut collected = Vec::new();
+        let mut at = open + 1;
+        while at < end {
+            if matches!(self.text(at), "public" | "private" | "protected")
+                && self.text(at + 1) == ":"
+            {
+                at += 2;
+                continue;
+            }
+            if self.text(at) == ";" {
+                at += 1;
+                continue;
+            }
+            let from = at;
+            while at < end && !matches!(self.text(at), ";" | "{") {
+                if matches!(self.text(at), "(" | "[") {
+                    let Some(close) = self.matching(at, end) else {
+                        return false;
+                    };
+                    at = close + 1;
+                } else {
+                    at += 1;
+                }
+            }
+            if at == end || (from..at).any(|i| self.text(i) == "virtual") {
+                return false;
+            }
+            if (from..at).any(|i| self.text(i) == "(" && self.text(i + 1) == "*") {
+                return false;
+            }
+            if self.function_header(from, at).is_some() {
+                if self.text(at) == "{" {
+                    let Some(close) = self.matching(at, end) else {
+                        return false;
+                    };
+                    at = close;
+                }
+                at += 1;
+                continue;
+            }
+            if (from..at).any(|i| matches!(self.text(i), "static" | "typedef" | "using")) {
+                if self.text(at) != ";" {
+                    return false;
+                }
+                at += 1;
+                continue;
+            }
+            if self.text(at) != ";"
+                || (from..at).any(|i| {
+                    matches!(
+                        self.text(i),
+                        "[" | "]"
+                            | "&"
+                            | "&&"
+                            | ":"
+                            | "="
+                            | "("
+                            | "struct"
+                            | "class"
+                            | "union"
+                            | "enum"
+                            | "auto"
+                    )
+                })
+            {
+                return false;
+            }
+            let base = self.specifier_end(from, at);
+            for (a, b) in self.split_ranges(base, at, ",") {
+                let (Some(name), _) = self.declarator_name(a, b) else {
+                    return false;
+                };
+                let ty = self.declarator_type(from, base, Some(name), b);
+                let scalar = ty.split_whitespace().all(|word| {
+                    matches!(
+                        word,
+                        "bool"
+                            | "char"
+                            | "signed"
+                            | "unsigned"
+                            | "short"
+                            | "int"
+                            | "long"
+                            | "float"
+                            | "double"
+                            | "const"
+                            | "volatile"
+                    )
+                });
+                // Only plain pointer declarators are admitted for nominal pointees.
+                if !scalar && !(a..name).any(|i| self.text(i) == "*") {
+                    return false;
+                }
+                collected.push((self.text(name).to_string(), ty));
+            }
+            at += 1;
+        }
+        collected == fields
+            && fields
+                .iter()
+                .map(|(name, _)| name)
+                .collect::<HashSet<_>>()
+                .len()
+                == fields.len()
+    }
+
+    fn scalar_member_initializers(
+        &mut self,
+        start: usize,
+        end: usize,
+        fields: &[(String, String)],
+        functions: &[Function],
+    ) -> Option<Vec<MemberInitialization>> {
+        let mut entries = HashMap::new();
+        for (a, b) in self.split_ranges(start, end, ",") {
+            if a + 2 >= b
+                || self.tokens[a].kind != TokenKind::Identifier
+                || self.text(a + 1) != "("
+                || self.matching(a + 1, b) != Some(b - 1)
+                || self.split_ranges(a + 2, b - 1, ",").len() != 1
+                || a + 2 == b - 1
+            {
+                return None;
+            }
+            let name = self.text(a).to_string();
+            if !fields.iter().any(|(field, _)| field == &name)
+                || entries.insert(name, (a, b)).is_some()
+            {
+                return None;
+            }
+        }
+        if entries.len() != fields.len() {
+            return None;
+        }
+        let mut plan = Vec::new();
+        for (member, expected_type) in fields {
+            let &(a, b) = entries.get(member)?;
+            let value = self.expression_range(a + 2, b - 1);
+            if !self.scalar_initialization_value(&value, expected_type, fields, functions) {
+                return None;
+            }
+            plan.push(MemberInitialization {
+                member: member.clone(),
+                value,
+                span: self.span(a, b),
+                member_span: self.span(a, a + 1),
+            });
+        }
+        Some(plan)
+    }
+
+    fn scalar_initialization_value(
+        &self,
+        value: &Expr,
+        expected_type: &str,
+        fields: &[(String, String)],
+        functions: &[Function],
+    ) -> bool {
+        let scalar_type = |ty: &str| {
+            !ty.is_empty()
+                && !ty.contains(['&', '(', '[', '<'])
+                && (ty.contains('*')
+                    || ty.split_whitespace().all(|word| {
+                        matches!(
+                            word,
+                            "bool"
+                                | "char"
+                                | "signed"
+                                | "unsigned"
+                                | "short"
+                                | "int"
+                                | "long"
+                                | "float"
+                                | "double"
+                                | "const"
+                                | "volatile"
+                        )
+                    }))
+        };
+        let compatible = |ty: &str| {
+            // Binding types do not preserve pointee cv qualifiers, so pointer
+            // conversions cannot yet be proved safe from this information.
+            scalar_type(ty) && !expected_type.contains('*') && !ty.contains('*')
+        };
+        match &value.kind {
+            ExprKind::Identifier(name) => self
+                .variable_types
+                .get(name)
+                .or_else(|| {
+                    fields
+                        .iter()
+                        .find(|(field, _)| field == name)
+                        .map(|(_, ty)| ty)
+                })
+                .is_some_and(|ty| compatible(ty)),
+            ExprKind::Literal(value) => {
+                if expected_type.contains('*') {
+                    value == "nullptr"
+                } else if scalar_type(expected_type) {
+                    let integral = !expected_type
+                        .split_whitespace()
+                        .any(|word| matches!(word, "float" | "double"));
+                    !value.is_empty() && value.bytes().all(|c| c.is_ascii_digit())
+                        || integral && matches!(value.as_str(), "true" | "false")
+                        || integral && value.starts_with('\'') && value.ends_with('\'')
+                } else {
+                    false
+                }
+            }
+            ExprKind::Bracketed(inner) => {
+                self.scalar_initialization_value(inner, expected_type, fields, functions)
+            }
+            ExprKind::Call { callee, arguments } if arguments.is_empty() => {
+                let ExprKind::Identifier(name) = &callee.kind else {
+                    return false;
+                };
+                let matches: Vec<_> = functions
+                    .iter()
+                    .filter(|f| {
+                        f.full_name.split(':').next() == Some(name.as_str())
+                            && f.parameters.is_empty()
+                            && f.implicit_this.is_none()
+                    })
+                    .collect();
+                !matches.is_empty() && matches.iter().all(|f| compatible(&f.binding_return_type))
+            }
+            _ => false,
+        }
+    }
+
     fn add_function(
         &mut self,
         start: usize,
@@ -1778,6 +2041,18 @@ impl Parser<'_> {
         definition: bool,
         functions: &mut Vec<Function>,
     ) {
+        let initializer_guard = if self.cpp
+            && self.constructor_initializers
+            && definition
+            && (header.parameters_end + 1..body_start).any(|i| self.text(i) == ":")
+        {
+            let index = self.diagnostics.len();
+            self.diagnose(header.parameters_end + 1, body_start,
+                "constructor member-initializer CFG is unsupported: complete explicit scalar-member plan required");
+            Some(index)
+        } else {
+            None
+        };
         if self.cdt_problem_declaration(start, body_start)
             || self.cdt_problem_record_header(start, body_start)
             || self.cdt_problem_return_prefix(start, &header)
@@ -2231,13 +2506,6 @@ impl Parser<'_> {
                 .insert(parameter.name.clone(), parameter.type_name.clone());
         }
         Rc::make_mut(&mut self.variables).insert(header.name.clone());
-        if definition && (header.parameters_end + 1..body_start).any(|i| self.text(i) == ":") {
-            self.diagnose(
-                header.parameters_end + 1,
-                body_start,
-                "constructor member-initializer CFG is unsupported",
-            );
-        }
         self.function_full_name.clone_from(&full_name);
         self.function_fields.clone_from(&implicit_fields);
         let mut suffix = header.parameters_end + 1;
@@ -2258,6 +2526,61 @@ impl Parser<'_> {
             Rc::make_mut(&mut self.variables).insert("this".into());
             Rc::make_mut(&mut self.variable_types).insert("this".into(), owner.clone());
         }
+        if self.constructor_initializers
+            && definition
+            && !((header.parameters_end + 1..body_start).any(|i| self.text(i) == ":"))
+            && qualified_name.rsplit_once("::").is_some_and(|(owner, _)| {
+                owner.rsplit("::").next() == Some(name.as_str())
+                    && (!self.scalar_constructor_classes.contains(owner)
+                        || !implicit_fields.is_empty())
+            })
+        {
+            self.diagnose(
+                header.parameters_end + 1,
+                body_start,
+                "implicit constructor initialization effects are unsupported",
+            );
+        }
+        let constructor_initializers = if definition {
+            if let Some(colon) =
+                (header.parameters_end + 1..body_start).find(|i| self.text(*i) == ":")
+            {
+                let owner = qualified_name.rsplit_once("::").map(|(owner, _)| owner);
+                let plan = if self.constructor_initializers
+                    && owner.is_some_and(|owner| {
+                        self.scalar_constructor_classes.contains(owner)
+                            && owner.rsplit("::").next() == Some(name.as_str())
+                    }) {
+                    self.scalar_member_initializers(
+                        colon + 1,
+                        body_start,
+                        &implicit_fields,
+                        functions,
+                    )
+                } else {
+                    None
+                };
+                if let Some(plan) = plan {
+                    if let Some(index) = initializer_guard {
+                        self.diagnostics.remove(index);
+                    }
+                    plan
+                } else {
+                    if initializer_guard.is_none() {
+                        self.diagnose(
+                            header.parameters_end + 1,
+                            body_start,
+                            "constructor member-initializer CFG is unsupported",
+                        );
+                    }
+                    Vec::new()
+                }
+            } else {
+                Vec::new()
+            }
+        } else {
+            Vec::new()
+        };
         self.function_returns
             .insert(name.clone(), return_type.clone());
         self.pos = body_start;
@@ -2348,6 +2671,7 @@ impl Parser<'_> {
             inherited_bindings: Vec::new(),
             inherited_closures: Vec::new(),
             parameters,
+            constructor_initializers,
             body,
             span,
         });
@@ -3375,6 +3699,7 @@ impl Parser<'_> {
                         inherited_bindings: Vec::new(),
                         inherited_closures: Vec::new(),
                         parameters,
+                        constructor_initializers: Vec::new(),
                         body: Stmt {
                             kind: StmtKind::Empty,
                             span: self.span(declaration_end, declaration_end),
@@ -8264,6 +8589,8 @@ impl Parser<'_> {
             using_namespaces: self.using_namespaces.clone(),
             lexical_scope: self.lexical_scope.clone(),
             class_fields: self.class_fields.clone(),
+            scalar_constructor_classes: self.scalar_constructor_classes.clone(),
+            constructor_initializers: self.constructor_initializers,
             function_fields: self.function_fields.clone(),
             function_member_cv: self.function_member_cv,
             global_expressions: Vec::new(),
@@ -8460,6 +8787,7 @@ impl Parser<'_> {
             inherited_bindings,
             inherited_closures,
             parameters,
+            constructor_initializers: Vec::new(),
             body,
             span: self.span(start, self.pos),
         });

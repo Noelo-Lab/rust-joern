@@ -293,3 +293,14 @@ original exporter. See [Original exporter failures](eval/cfg_parity.md#original-
 
 **Reference behavior:** none; comparisons report the empty original exports as
 differences.
+
+## 2026-10-24: opt-in scalar constructor initialization (local prototype)
+
+The experimental `cpp_constructor_initializers` CFG-only profile retains proved
+explicit scalar member initializations in declaration order before the body.
+Original Joern 4.0.150 can omit constructor initializer effects; an empty-body
+CFG is therefore not the parity target for this opt-in profile. Ordinary options
+remain unchanged and still diagnose unsupported initializer syntax. This has
+not changed the DecBench parser pin or metrics. See
+[the profile contract](cpp-constructor-initializers.md) for the admitted subset,
+normal-completion-only scope and checkpointed corpus qualification driver.
