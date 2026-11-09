@@ -1947,7 +1947,7 @@ fn unary_operator(operator: &str, postfix: bool) -> &str {
         "~" => "<operator>.not",
         "*" => "<operator>.indirection",
         "&" => "<operator>.addressOf",
-        "sizeof" => "<operator>.sizeOf",
+        "sizeof" | "sizeof..." => "<operator>.sizeOf",
         "typeid" => "<operator>.typeOf",
         "new" => "<operator>.new",
         "delete" | "delete[]" => "<operator>.delete",

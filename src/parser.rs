@@ -8364,6 +8364,30 @@ impl Parser<'_> {
                 self.expect("}");
                 ExprKind::ArrayInitializer(values)
             }
+            "sizeof"
+                if self.cpp
+                    && self.text(start + 1) == "..."
+                    && self.text(start + 2) == "("
+                    && self
+                        .tokens
+                        .get(start + 3)
+                        .is_some_and(|t| t.kind == TokenKind::Identifier)
+                    && self.text(start + 4) == ")" =>
+            {
+                // A pack-size operand is an unevaluated identifier, not an
+                // expression or a regular sizeof type-id. Preserve the full
+                // source span while matching CDT's sizeOf operator family.
+                self.pos = start + 5;
+                let argument = Expr {
+                    kind: ExprKind::Identifier(self.text(start + 3).to_string()),
+                    span: self.span(start + 3, start + 4),
+                };
+                ExprKind::Unary {
+                    op: "sizeof...".into(),
+                    argument: Box::new(argument),
+                    postfix: false,
+                }
+            }
             "++" | "--" | "+" | "-" | "*" | "&" | "!" | "~" | "&&" | "sizeof" | "alignof"
             | "_Alignof" | "__alignof__" | "__alignof" | "typeof" | "__typeof__" | "noexcept"
             | "delete" | "throw"
@@ -8899,6 +8923,8 @@ fn infer_value_type(
                 "*" => ty.strip_suffix('*').unwrap_or("ANY").into(),
                 "&" => format!("{ty}*"),
                 "sizeof" | "alignof" => "unsigned long".into(),
+                // C++ size_t varies with the target ABI; no target is available here.
+                "sizeof..." => "ANY".into(),
                 _ => ty,
             }
         }
