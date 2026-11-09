@@ -1418,6 +1418,11 @@ impl Parser<'_> {
         }
         let introducer =
             (start..end).find(|i| matches!(self.text(*i), "struct" | "class" | "union"))?;
+        // In C++, the class/struct token in an enum-key does not introduce a
+        // record scope. Its brace body contains enumerators, not members.
+        if self.cpp && introducer > start && self.text(introducer - 1) == "enum" {
+            return None;
+        }
         let mut after = introducer + 1;
         while let Some(next) = self.skip_attribute(after, end) {
             after = next;
