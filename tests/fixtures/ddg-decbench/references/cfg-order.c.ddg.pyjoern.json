@@ -1,0 +1,6057 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "/home/mahaloz/.virtualenvs/decbench/lib/python3.14/site-packages/pyjoern/__init__.py",
+  "oracle_file_sha256": {
+    "__init__.py": "26d7715b0fe0948ed96317e476329a7911a66377dbe2e27e2ab0bfba8482c2a7",
+    "parsing/fast_parser.py": "e23b262511b93d0593b7abb7218ff0905edf27030f7b860ab0ac376e5ab5cd28",
+    "parsing/function.py": "0f5e93b9958b50b7b2a23e977d6506611c5ee1377b176cfc5d023684035ccf8c",
+    "cfg/__init__.py": "ceba43205730f99a5714cd33fc1470224c1215179aa5a09526981fd47ac405e8",
+    "cfg/jil/lifter.py": "8132a09745fbfb49fd5b5fac69f0370ecab5f0a529466f7ca99816941161c33a",
+    "cfg/jil/statement.py": "2b674059813f0cc1978a111e5f9bf75430510436e9113435d17ae7a4ba699190",
+    "scala/FastParser.sc": "0a40011702bbedeec79e3db21d1bcdbb23e0d4530904f9f23f8dde6d0b185200"
+  },
+  "package_versions": {
+    "pyjoern": "4.0.150.4",
+    "networkx": "3.6.1",
+    "pygraphviz": "2.0",
+    "cfgutils": "1.16.0"
+  },
+  "python_version": "3.14.6 (main, Jul 13 2026, 02:48:17) [GCC 11.4.0]",
+  "parse_flags": {
+    "no_metadata": true,
+    "no_cfg": false,
+    "no_ddg": false,
+    "no_ast": true
+  },
+  "timings": {
+    "public_parse_source_seconds": 14.30849594110623,
+    "supplemental_raw_parse_seconds": 11.319213401991874
+  },
+  "timing_kind": "two_separate_isolated_file_parses_including_jvm_startup",
+  "functions": {
+    "for_order": {
+      "name": "for_order",
+      "fullname": "for_order",
+      "filename": "cfg-order.c",
+      "start_line": 1,
+      "end_line": 11,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 1,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,for_order",
+                    "source_line_number": 1,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *v",
+                  "fields": {
+                    "raw_text": "PARAM,int *v",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "*v"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int n",
+                  "fields": {
+                    "raw_text": "PARAM,int n",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 2,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "i < n",
+                  "fields": {
+                    "raw_text": [
+                      "lessThan",
+                      "i&lt;n"
+                    ],
+                    "source_line_number": 3,
+                    "type": 4,
+                    "arg1": "i",
+                    "arg2": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'i++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "i++"
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,returns;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,returns;",
+                    "source_line_number": 10
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "i = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "i=0"
+                    ],
+                    "source_line_number": 3,
+                    "src": "i",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['assignmentPlus', 's+=v[i]']>",
+                  "fields": {
+                    "raw_text": [
+                      "assignmentPlus",
+                      "s+=v[i]"
+                    ],
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v[i] < 0",
+                  "fields": {
+                    "raw_text": [
+                      "lessThan",
+                      "v[i]&lt;0"
+                    ],
+                    "source_line_number": 4,
+                    "type": 4,
+                    "arg1": "v[i]",
+                    "arg2": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v[i] == 7",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "v[i]==7"
+                    ],
+                    "source_line_number": 5,
+                    "type": 0,
+                    "arg1": "v[i]",
+                    "arg2": "7"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "s > 100",
+                  "fields": {
+                    "raw_text": [
+                      "greaterThan",
+                      "s&gt;100"
+                    ],
+                    "source_line_number": 7,
+                    "type": 2,
+                    "arg1": "s",
+                    "arg2": "100"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 8,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 1,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return s;,returns;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returns;",
+                      "returns;"
+                    ],
+                    "source_line_number": 10,
+                    "ret": "s;,returns;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 1,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,for_order",
+                    "source_line_number": 1,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *v",
+                  "fields": {
+                    "raw_text": "PARAM,int *v",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "*v"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int n",
+                  "fields": {
+                    "raw_text": "PARAM,int n",
+                    "source_line_number": 1,
+                    "type": "int",
+                    "name": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 2,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 2,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "i < n",
+                  "fields": {
+                    "raw_text": [
+                      "lessThan",
+                      "i&lt;n"
+                    ],
+                    "source_line_number": 3,
+                    "type": 4,
+                    "arg1": "i",
+                    "arg2": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'i++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "i++"
+                    ],
+                    "source_line_number": 3
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,returns;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,returns;",
+                    "source_line_number": 10
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 3,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "i = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "i=0"
+                    ],
+                    "source_line_number": 3,
+                    "src": "i",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 6,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['assignmentPlus', 's+=v[i]']>",
+                  "fields": {
+                    "raw_text": [
+                      "assignmentPlus",
+                      "s+=v[i]"
+                    ],
+                    "source_line_number": 6
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 4,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v[i] < 0",
+                  "fields": {
+                    "raw_text": [
+                      "lessThan",
+                      "v[i]&lt;0"
+                    ],
+                    "source_line_number": 4,
+                    "type": 4,
+                    "arg1": "v[i]",
+                    "arg2": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 5,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v[i] == 7",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "v[i]==7"
+                    ],
+                    "source_line_number": 5,
+                    "type": 0,
+                    "arg1": "v[i]",
+                    "arg2": "7"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 7,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "s > 100",
+                  "fields": {
+                    "raw_text": [
+                      "greaterThan",
+                      "s&gt;100"
+                    ],
+                    "source_line_number": 7,
+                    "type": 2,
+                    "arg1": "s",
+                    "arg2": "100"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 8,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 8,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 1,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 1,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 10,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return s;,returns;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returns;",
+                      "returns;"
+                    ],
+                    "source_line_number": 10,
+                    "ret": "s;,returns;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,for_order)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int *v)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,int n)<SUB>1</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.assignment,s = 0)<SUB>2</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(RETURN,return s;,return s;)<SUB>10</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.lessThan,i < n)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,i++)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(IDENTIFIER,s,return s;)<SUB>10</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.assignment,i = 0)<SUB>3</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.assignmentPlus,s += v[i])<SUB>6</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.lessThan,v[i] < 0)<SUB>4</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(<operator>.equals,v[i] == 7)<SUB>5</SUB>"
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "dot_label": "(<operator>.greaterThan,s > 100)<SUB>7</SUB>"
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "dot_label": "(<operator>.assignment,s = 0)<SUB>8</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "v"
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "label": "v"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "label": "v"
+          },
+          {
+            "source": 2,
+            "target": 12,
+            "label": "v"
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": "n"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "s = 0"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 10,
+            "label": "s"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "i"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "n"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "i < n"
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "label": "i"
+          },
+          {
+            "source": 7,
+            "target": 1,
+            "label": "i++"
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": "i"
+          },
+          {
+            "source": 8,
+            "target": 5,
+            "label": "s"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "i = 0"
+          },
+          {
+            "source": 9,
+            "target": 6,
+            "label": "i"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "v[i]"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "s += v[i]"
+          },
+          {
+            "source": 10,
+            "target": 13,
+            "label": "s"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "v[i]"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "v[i] < 0"
+          },
+          {
+            "source": 11,
+            "target": 12,
+            "label": "v[i]"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "v[i]"
+          },
+          {
+            "source": 12,
+            "target": 1,
+            "label": "v[i] == 7"
+          },
+          {
+            "source": 12,
+            "target": 10,
+            "label": "v[i]"
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": "v[i]"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "s > 100"
+          },
+          {
+            "source": 13,
+            "target": 8,
+            "label": "s"
+          },
+          {
+            "source": 13,
+            "target": 10,
+            "label": "s"
+          },
+          {
+            "source": 14,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 14,
+            "target": 1,
+            "label": "s = 0"
+          },
+          {
+            "source": 14,
+            "target": 8,
+            "label": "s"
+          },
+          {
+            "source": 14,
+            "target": 10,
+            "label": "s"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"for_order\" {  \n\"111669149697\" [label = <(METHOD,for_order)<SUB>1</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>1</SUB>> ]\n\"115964116992\" [label = <(PARAM,int *v)<SUB>1</SUB>> ]\n\"115964116993\" [label = <(PARAM,int n)<SUB>1</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>2</SUB>> ]\n\"146028888064\" [label = <(RETURN,return s;,return s;)<SUB>10</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>2</SUB>> ]\n\"30064771072\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>2</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.lessThan,i &lt; n)<SUB>3</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.postIncrement,i++)<SUB>3</SUB>> ]\n\"68719476750\" [label = <(IDENTIFIER,s,return s;)<SUB>10</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,i = 0)<SUB>3</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.lessThan,i &lt; n)<SUB>3</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.lessThan,i &lt; n)<SUB>3</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.postIncrement,i++)<SUB>3</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignmentPlus,s += v[i])<SUB>6</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,i = 0)<SUB>3</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,i = 0)<SUB>3</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.lessThan,v[i] &lt; 0)<SUB>4</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.equals,v[i] == 7)<SUB>5</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignmentPlus,s += v[i])<SUB>6</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignmentPlus,s += v[i])<SUB>6</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.greaterThan,s &gt; 100)<SUB>7</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.lessThan,v[i] &lt; 0)<SUB>4</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.lessThan,v[i] &lt; 0)<SUB>4</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.equals,v[i] == 7)<SUB>5</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.equals,v[i] == 7)<SUB>5</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.greaterThan,s &gt; 100)<SUB>7</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.greaterThan,s &gt; 100)<SUB>7</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>8</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>8</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>8</SUB>> ]\n  \"146028888064\" -> \"128849018880\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116992\" -> \"128849018880\"  [ label = \"v\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"s\"] \n  \"30064771072\" -> \"128849018880\"  [ label = \"s = 0\"] \n  \"30064771073\" -> \"128849018880\"  [ label = \"i = 0\"] \n  \"30064771074\" -> \"128849018880\"  [ label = \"i\"] \n  \"30064771074\" -> \"128849018880\"  [ label = \"n\"] \n  \"30064771074\" -> \"128849018880\"  [ label = \"i &lt; n\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"v[i]\"] \n  \"30064771076\" -> \"128849018880\"  [ label = \"v[i] &lt; 0\"] \n  \"30064771078\" -> \"128849018880\"  [ label = \"v[i]\"] \n  \"30064771078\" -> \"128849018880\"  [ label = \"v[i] == 7\"] \n  \"30064771080\" -> \"128849018880\"  [ label = \"v[i]\"] \n  \"30064771080\" -> \"128849018880\"  [ label = \"s += v[i]\"] \n  \"30064771082\" -> \"128849018880\"  [ label = \"s\"] \n  \"30064771082\" -> \"128849018880\"  [ label = \"s &gt; 100\"] \n  \"30064771083\" -> \"128849018880\"  [ label = \"s\"] \n  \"30064771083\" -> \"128849018880\"  [ label = \"s = 0\"] \n  \"30064771075\" -> \"128849018880\"  [ label = \"i++\"] \n  \"111669149697\" -> \"115964116992\" \n  \"111669149697\" -> \"115964116993\" \n  \"111669149697\" -> \"30064771072\" \n  \"68719476750\" -> \"146028888064\"  [ label = \"s\"] \n  \"30064771083\" -> \"68719476750\"  [ label = \"s\"] \n  \"30064771072\" -> \"68719476750\"  [ label = \"s\"] \n  \"30064771082\" -> \"68719476750\"  [ label = \"s\"] \n  \"111669149697\" -> \"68719476750\" \n  \"111669149697\" -> \"30064771073\" \n  \"30064771073\" -> \"30064771074\"  [ label = \"i\"] \n  \"30064771075\" -> \"30064771074\"  [ label = \"i\"] \n  \"111669149697\" -> \"30064771074\" \n  \"115964116993\" -> \"30064771074\"  [ label = \"n\"] \n  \"30064771074\" -> \"30064771075\"  [ label = \"i\"] \n  \"111669149697\" -> \"30064771075\" \n  \"115964116992\" -> \"30064771080\"  [ label = \"v\"] \n  \"30064771078\" -> \"30064771080\"  [ label = \"v[i]\"] \n  \"30064771072\" -> \"30064771080\"  [ label = \"s\"] \n  \"30064771082\" -> \"30064771080\"  [ label = \"s\"] \n  \"30064771083\" -> \"30064771080\"  [ label = \"s\"] \n  \"111669149697\" -> \"30064771080\" \n  \"115964116992\" -> \"30064771076\"  [ label = \"v\"] \n  \"30064771078\" -> \"30064771076\"  [ label = \"v[i]\"] \n  \"111669149697\" -> \"30064771076\" \n  \"115964116992\" -> \"30064771078\"  [ label = \"v\"] \n  \"30064771076\" -> \"30064771078\"  [ label = \"v[i]\"] \n  \"111669149697\" -> \"30064771078\" \n  \"30064771080\" -> \"30064771082\"  [ label = \"s\"] \n  \"111669149697\" -> \"30064771082\" \n  \"111669149697\" -> \"30064771083\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"for_order\" {  \n\"30064771072\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>2</SUB>> ]\n\"146028888064\" [label = <(RETURN,return s;,return s;)<SUB>10</SUB>> ]\n\"30064771074\" [label = <(&lt;operator&gt;.lessThan,i &lt; n)<SUB>3</SUB>> ]\n\"30064771075\" [label = <(&lt;operator&gt;.postIncrement,i++)<SUB>3</SUB>> ]\n\"30064771073\" [label = <(&lt;operator&gt;.assignment,i = 0)<SUB>3</SUB>> ]\n\"30064771080\" [label = <(&lt;operator&gt;.assignmentPlus,s += v[i])<SUB>6</SUB>> ]\n\"30064771076\" [label = <(&lt;operator&gt;.lessThan,v[i] &lt; 0)<SUB>4</SUB>> ]\n\"30064771078\" [label = <(&lt;operator&gt;.equals,v[i] == 7)<SUB>5</SUB>> ]\n\"30064771081\" [label = <(&lt;operator&gt;.indirectIndexAccess,v[i])<SUB>6</SUB>> ]\n\"30064771082\" [label = <(&lt;operator&gt;.greaterThan,s &gt; 100)<SUB>7</SUB>> ]\n\"30064771077\" [label = <(&lt;operator&gt;.indirectIndexAccess,v[i])<SUB>4</SUB>> ]\n\"30064771079\" [label = <(&lt;operator&gt;.indirectIndexAccess,v[i])<SUB>5</SUB>> ]\n\"30064771083\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>8</SUB>> ]\n\"111669149697\" [label = <(METHOD,for_order)<SUB>1</SUB>> ]\n\"128849018880\" [label = <(METHOD_RETURN,int)<SUB>1</SUB>> ]\n  \"30064771072\" -> \"30064771073\" \n  \"146028888064\" -> \"128849018880\" \n  \"30064771074\" -> \"30064771077\" \n  \"30064771074\" -> \"146028888064\" \n  \"30064771075\" -> \"30064771074\" \n  \"30064771073\" -> \"30064771074\" \n  \"30064771080\" -> \"30064771082\" \n  \"30064771076\" -> \"30064771075\" \n  \"30064771076\" -> \"30064771079\" \n  \"30064771078\" -> \"146028888064\" \n  \"30064771078\" -> \"30064771081\" \n  \"30064771081\" -> \"30064771080\" \n  \"30064771082\" -> \"30064771083\" \n  \"30064771082\" -> \"30064771075\" \n  \"30064771077\" -> \"30064771076\" \n  \"30064771079\" -> \"30064771078\" \n  \"30064771083\" -> \"30064771075\" \n  \"111669149697\" -> \"30064771072\" \n}\n"
+      ]
+    },
+    "while_order": {
+      "name": "while_order",
+      "fullname": "while_order",
+      "filename": "cfg-order.c",
+      "start_line": 12,
+      "end_line": 20,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 12,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,while_order",
+                    "source_line_number": 12,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *v",
+                  "fields": {
+                    "raw_text": "PARAM,int *v",
+                    "source_line_number": 12,
+                    "type": "int",
+                    "name": "*v"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int n",
+                  "fields": {
+                    "raw_text": "PARAM,int n",
+                    "source_line_number": 12,
+                    "type": "int",
+                    "name": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 13,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "n > 0",
+                  "fields": {
+                    "raw_text": [
+                      "greaterThan",
+                      "n&gt;0"
+                    ],
+                    "source_line_number": 14,
+                    "type": 2,
+                    "arg1": "n",
+                    "arg2": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,returns;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,returns;",
+                    "source_line_number": 19
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,if(s)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,if(s)",
+                    "source_line_number": 17
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v[n] == 3",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "v[n]==3"
+                    ],
+                    "source_line_number": 16,
+                    "type": 0,
+                    "arg1": "v[n]",
+                    "arg2": "3"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,if(n)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,if(n)",
+                    "source_line_number": 17
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 's++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "s++"
+                    ],
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 's--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "s--"
+                    ],
+                    "source_line_number": 17
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 's++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "s++"
+                    ],
+                    "source_line_number": 17
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 12,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'v[n]--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "v[n]--"
+                    ],
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return s;,returns;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returns;",
+                      "returns;"
+                    ],
+                    "source_line_number": 19,
+                    "ret": "s;,returns;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 13,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 12,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,while_order",
+                    "source_line_number": 12,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *v",
+                  "fields": {
+                    "raw_text": "PARAM,int *v",
+                    "source_line_number": 12,
+                    "type": "int",
+                    "name": "*v"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int n",
+                  "fields": {
+                    "raw_text": "PARAM,int n",
+                    "source_line_number": 12,
+                    "type": "int",
+                    "name": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 13,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 13,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 14,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "n > 0",
+                  "fields": {
+                    "raw_text": [
+                      "greaterThan",
+                      "n&gt;0"
+                    ],
+                    "source_line_number": 14,
+                    "type": 2,
+                    "arg1": "n",
+                    "arg2": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,returns;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,returns;",
+                    "source_line_number": 19
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 15,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,if(s)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,if(s)",
+                    "source_line_number": 17
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "v[n] == 3",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "v[n]==3"
+                    ],
+                    "source_line_number": 16,
+                    "type": 0,
+                    "arg1": "v[n]",
+                    "arg2": "3"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,if(n)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,if(n)",
+                    "source_line_number": 17
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 's++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "s++"
+                    ],
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 's--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "s--"
+                    ],
+                    "source_line_number": 17
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 17,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 's++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "s++"
+                    ],
+                    "source_line_number": 17
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 12,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 12,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 16,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'v[n]--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "v[n]--"
+                    ],
+                    "source_line_number": 16
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 19,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return s;,returns;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returns;",
+                      "returns;"
+                    ],
+                    "source_line_number": 19,
+                    "ret": "s;,returns;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 10,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 11,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 13,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,while_order)<SUB>12</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>12</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int *v)<SUB>12</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,int n)<SUB>12</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.assignment,s = 0)<SUB>13</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(RETURN,return s;,return s;)<SUB>19</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.greaterThan,n > 0)<SUB>14</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(IDENTIFIER,s,return s;)<SUB>19</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.postDecrement,n--)<SUB>15</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(IDENTIFIER,s,if (s))<SUB>17</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.postDecrement,v[n]--)<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.equals,v[n] == 3)<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(IDENTIFIER,n,if (n))<SUB>17</SUB>"
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,s++)<SUB>16</SUB>"
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "dot_label": "(<operator>.postDecrement,s--)<SUB>17</SUB>"
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,s++)<SUB>17</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "v"
+          },
+          {
+            "source": 2,
+            "target": 10,
+            "label": "v"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "label": "v"
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": "n"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "s = 0"
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 13,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 14,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 15,
+            "label": "s"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "n"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "n > 0"
+          },
+          {
+            "source": 6,
+            "target": 8,
+            "label": "n"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "label": "s"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "n--"
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "label": "n"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "v[n]--"
+          },
+          {
+            "source": 10,
+            "target": 11,
+            "label": "v[n]"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "v[n]"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "v[n] == 3"
+          },
+          {
+            "source": 11,
+            "target": 10,
+            "label": "v[n]"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 13,
+            "target": 1,
+            "label": "s++"
+          },
+          {
+            "source": 13,
+            "target": 7,
+            "label": "s"
+          },
+          {
+            "source": 13,
+            "target": 14,
+            "label": "s"
+          },
+          {
+            "source": 13,
+            "target": 15,
+            "label": "s"
+          },
+          {
+            "source": 14,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 14,
+            "target": 1,
+            "label": "s--"
+          },
+          {
+            "source": 14,
+            "target": 7,
+            "label": "s"
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "label": "s"
+          },
+          {
+            "source": 14,
+            "target": 15,
+            "label": "s"
+          },
+          {
+            "source": 15,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 15,
+            "target": 1,
+            "label": "s++"
+          },
+          {
+            "source": 15,
+            "target": 7,
+            "label": "s"
+          },
+          {
+            "source": 15,
+            "target": 13,
+            "label": "s"
+          },
+          {
+            "source": 15,
+            "target": 14,
+            "label": "s"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"while_order\" {  \n\"111669149698\" [label = <(METHOD,while_order)<SUB>12</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>12</SUB>> ]\n\"115964116994\" [label = <(PARAM,int *v)<SUB>12</SUB>> ]\n\"115964116995\" [label = <(PARAM,int n)<SUB>12</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>13</SUB>> ]\n\"146028888065\" [label = <(RETURN,return s;,return s;)<SUB>19</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>13</SUB>> ]\n\"30064771084\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>13</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.greaterThan,n &gt; 0)<SUB>14</SUB>> ]\n\"68719476766\" [label = <(IDENTIFIER,s,return s;)<SUB>19</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.greaterThan,n &gt; 0)<SUB>14</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.greaterThan,n &gt; 0)<SUB>14</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>15</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>15</SUB>> ]\n\"68719476761\" [label = <(IDENTIFIER,s,if (s))<SUB>17</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.postDecrement,v[n]--)<SUB>16</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.postDecrement,v[n]--)<SUB>16</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.equals,v[n] == 3)<SUB>16</SUB>> ]\n\"68719476762\" [label = <(IDENTIFIER,n,if (n))<SUB>17</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.equals,v[n] == 3)<SUB>16</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.equals,v[n] == 3)<SUB>16</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>16</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.postDecrement,s--)<SUB>17</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>16</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.postDecrement,s--)<SUB>17</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>17</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>17</SUB>> ]\n  \"146028888065\" -> \"128849018881\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116994\" -> \"128849018881\"  [ label = \"v\"] \n  \"30064771084\" -> \"128849018881\"  [ label = \"s\"] \n  \"30064771084\" -> \"128849018881\"  [ label = \"s = 0\"] \n  \"30064771085\" -> \"128849018881\"  [ label = \"n\"] \n  \"30064771085\" -> \"128849018881\"  [ label = \"n &gt; 0\"] \n  \"30064771086\" -> \"128849018881\"  [ label = \"n--\"] \n  \"30064771095\" -> \"128849018881\"  [ label = \"s\"] \n  \"30064771095\" -> \"128849018881\"  [ label = \"s++\"] \n  \"30064771093\" -> \"128849018881\"  [ label = \"s\"] \n  \"30064771093\" -> \"128849018881\"  [ label = \"s--\"] \n  \"30064771088\" -> \"128849018881\"  [ label = \"v[n]--\"] \n  \"30064771090\" -> \"128849018881\"  [ label = \"v[n]\"] \n  \"30064771090\" -> \"128849018881\"  [ label = \"v[n] == 3\"] \n  \"30064771092\" -> \"128849018881\"  [ label = \"s\"] \n  \"30064771092\" -> \"128849018881\"  [ label = \"s++\"] \n  \"111669149698\" -> \"115964116994\" \n  \"111669149698\" -> \"115964116995\" \n  \"111669149698\" -> \"30064771084\" \n  \"68719476766\" -> \"146028888065\"  [ label = \"s\"] \n  \"30064771095\" -> \"68719476766\"  [ label = \"s\"] \n  \"30064771084\" -> \"68719476766\"  [ label = \"s\"] \n  \"30064771093\" -> \"68719476766\"  [ label = \"s\"] \n  \"30064771092\" -> \"68719476766\"  [ label = \"s\"] \n  \"111669149698\" -> \"68719476766\" \n  \"115964116995\" -> \"30064771085\"  [ label = \"n\"] \n  \"30064771086\" -> \"30064771085\"  [ label = \"n\"] \n  \"111669149698\" -> \"30064771085\" \n  \"30064771085\" -> \"30064771086\"  [ label = \"n\"] \n  \"111669149698\" -> \"30064771086\" \n  \"111669149698\" -> \"68719476761\" \n  \"115964116994\" -> \"30064771088\"  [ label = \"v\"] \n  \"30064771090\" -> \"30064771088\"  [ label = \"v[n]\"] \n  \"111669149698\" -> \"68719476762\" \n  \"115964116994\" -> \"30064771090\"  [ label = \"v\"] \n  \"30064771088\" -> \"30064771090\"  [ label = \"v[n]\"] \n  \"111669149698\" -> \"30064771090\" \n  \"30064771084\" -> \"30064771092\"  [ label = \"s\"] \n  \"30064771095\" -> \"30064771092\"  [ label = \"s\"] \n  \"30064771093\" -> \"30064771092\"  [ label = \"s\"] \n  \"111669149698\" -> \"30064771092\" \n  \"30064771084\" -> \"30064771093\"  [ label = \"s\"] \n  \"30064771095\" -> \"30064771093\"  [ label = \"s\"] \n  \"30064771092\" -> \"30064771093\"  [ label = \"s\"] \n  \"111669149698\" -> \"30064771093\" \n  \"30064771084\" -> \"30064771095\"  [ label = \"s\"] \n  \"30064771093\" -> \"30064771095\"  [ label = \"s\"] \n  \"30064771092\" -> \"30064771095\"  [ label = \"s\"] \n  \"111669149698\" -> \"30064771095\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"while_order\" {  \n\"30064771084\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>13</SUB>> ]\n\"146028888065\" [label = <(RETURN,return s;,return s;)<SUB>19</SUB>> ]\n\"30064771085\" [label = <(&lt;operator&gt;.greaterThan,n &gt; 0)<SUB>14</SUB>> ]\n\"30064771086\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>15</SUB>> ]\n\"30064771087\" [label = <(&lt;operator&gt;.indirectIndexAccess,v[n])<SUB>16</SUB>> ]\n\"68719476761\" [label = <(IDENTIFIER,s,if (s))<SUB>17</SUB>> ]\n\"30064771088\" [label = <(&lt;operator&gt;.postDecrement,v[n]--)<SUB>16</SUB>> ]\n\"30064771089\" [label = <(&lt;operator&gt;.indirectIndexAccess,v[n])<SUB>16</SUB>> ]\n\"30064771090\" [label = <(&lt;operator&gt;.equals,v[n] == 3)<SUB>16</SUB>> ]\n\"68719476762\" [label = <(IDENTIFIER,n,if (n))<SUB>17</SUB>> ]\n\"30064771091\" [label = <(&lt;operator&gt;.indirectIndexAccess,v[n])<SUB>16</SUB>> ]\n\"30064771092\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>16</SUB>> ]\n\"30064771093\" [label = <(&lt;operator&gt;.postDecrement,s--)<SUB>17</SUB>> ]\n\"30064771094\" [label = <(&lt;operator&gt;.indirectIndexAccess,v[0])<SUB>17</SUB>> ]\n\"30064771095\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>17</SUB>> ]\n\"111669149698\" [label = <(METHOD,while_order)<SUB>12</SUB>> ]\n\"128849018881\" [label = <(METHOD_RETURN,int)<SUB>12</SUB>> ]\n  \"30064771084\" -> \"30064771085\" \n  \"146028888065\" -> \"128849018881\" \n  \"30064771085\" -> \"30064771086\" \n  \"30064771085\" -> \"146028888065\" \n  \"30064771086\" -> \"30064771087\" \n  \"30064771087\" -> \"68719476761\" \n  \"30064771087\" -> \"30064771089\" \n  \"68719476761\" -> \"68719476762\" \n  \"68719476761\" -> \"30064771094\" \n  \"30064771088\" -> \"30064771091\" \n  \"30064771089\" -> \"30064771088\" \n  \"30064771090\" -> \"30064771087\" \n  \"30064771090\" -> \"30064771092\" \n  \"68719476762\" -> \"30064771085\" \n  \"68719476762\" -> \"30064771093\" \n  \"30064771091\" -> \"30064771090\" \n  \"30064771092\" -> \"30064771087\" \n  \"30064771093\" -> \"30064771085\" \n  \"30064771094\" -> \"30064771085\" \n  \"30064771094\" -> \"30064771095\" \n  \"30064771095\" -> \"30064771085\" \n  \"111669149698\" -> \"30064771084\" \n}\n"
+      ]
+    },
+    "do_order": {
+      "name": "do_order",
+      "fullname": "do_order",
+      "filename": "cfg-order.c",
+      "start_line": 21,
+      "end_line": 29,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 21,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,do_order",
+                    "source_line_number": 21,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *v",
+                  "fields": {
+                    "raw_text": "PARAM,int *v",
+                    "source_line_number": 21,
+                    "type": "int",
+                    "name": "*v"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int n",
+                  "fields": {
+                    "raw_text": "PARAM,int n",
+                    "source_line_number": 21,
+                    "type": "int",
+                    "name": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 22,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 22,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 27,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['preDecrement', '--n']>",
+                  "fields": {
+                    "raw_text": [
+                      "preDecrement",
+                      "--n"
+                    ],
+                    "source_line_number": 27
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 28,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,returns;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,returns;",
+                    "source_line_number": 28
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 26,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "s == 9",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "s==9"
+                    ],
+                    "source_line_number": 26,
+                    "type": 0,
+                    "arg1": "s",
+                    "arg2": "9"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 's++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "s++"
+                    ],
+                    "source_line_number": 25
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 26,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=1"
+                    ],
+                    "source_line_number": 26,
+                    "src": "s",
+                    "dst": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,if(s)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,if(s)",
+                    "source_line_number": 25
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,if(n)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,if(n)",
+                    "source_line_number": 25
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 21,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 28,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return s;,returns;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returns;",
+                      "returns;"
+                    ],
+                    "source_line_number": 28,
+                    "ret": "s;,returns;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 21,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,do_order",
+                    "source_line_number": 21,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int *v",
+                  "fields": {
+                    "raw_text": "PARAM,int *v",
+                    "source_line_number": 21,
+                    "type": "int",
+                    "name": "*v"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int n",
+                  "fields": {
+                    "raw_text": "PARAM,int n",
+                    "source_line_number": 21,
+                    "type": "int",
+                    "name": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 22,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 22,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 27,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['preDecrement', '--n']>",
+                  "fields": {
+                    "raw_text": [
+                      "preDecrement",
+                      "--n"
+                    ],
+                    "source_line_number": 27
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 28,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,returns;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,returns;",
+                    "source_line_number": 28
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 26,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "s == 9",
+                  "fields": {
+                    "raw_text": [
+                      "equals",
+                      "s==9"
+                    ],
+                    "source_line_number": 26,
+                    "type": 0,
+                    "arg1": "s",
+                    "arg2": "9"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 's++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "s++"
+                    ],
+                    "source_line_number": 25
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 26,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 1",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=1"
+                    ],
+                    "source_line_number": 26,
+                    "src": "s",
+                    "dst": "1"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,if(s)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,if(s)",
+                    "source_line_number": 25
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 25,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,if(n)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,if(n)",
+                    "source_line_number": 25
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 21,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 21,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 28,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return s;,returns;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returns;",
+                      "returns;"
+                    ],
+                    "source_line_number": 28,
+                    "ret": "s;,returns;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 3,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 4,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 5,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 11,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,do_order)<SUB>21</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>21</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int *v)<SUB>21</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(PARAM,int n)<SUB>21</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(<operator>.assignment,s = 0)<SUB>22</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(RETURN,return s;,return s;)<SUB>28</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(<operator>.preDecrement,--n)<SUB>27</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(IDENTIFIER,s,return s;)<SUB>28</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.equals,s == 9)<SUB>26</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,s++)<SUB>25</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(<operator>.assignment,s = 1)<SUB>26</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(IDENTIFIER,s,if (s))<SUB>25</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(IDENTIFIER,n,if (n))<SUB>25</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "label": "v"
+          },
+          {
+            "source": 3,
+            "target": 6,
+            "label": "n"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "s = 0"
+          },
+          {
+            "source": 4,
+            "target": 7,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 8,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 9,
+            "label": "s"
+          },
+          {
+            "source": 5,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "n"
+          },
+          {
+            "source": 6,
+            "target": 1,
+            "label": "--n"
+          },
+          {
+            "source": 7,
+            "target": 5,
+            "label": "s"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "s == 9"
+          },
+          {
+            "source": 8,
+            "target": 7,
+            "label": "s"
+          },
+          {
+            "source": 8,
+            "target": 9,
+            "label": "s"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "s++"
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": "s"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 10,
+            "target": 1,
+            "label": "s = 1"
+          },
+          {
+            "source": 10,
+            "target": 7,
+            "label": "s"
+          },
+          {
+            "source": 10,
+            "target": 8,
+            "label": "s"
+          },
+          {
+            "source": 10,
+            "target": 9,
+            "label": "s"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"do_order\" {  \n\"111669149699\" [label = <(METHOD,do_order)<SUB>21</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>21</SUB>> ]\n\"115964116996\" [label = <(PARAM,int *v)<SUB>21</SUB>> ]\n\"115964116997\" [label = <(PARAM,int n)<SUB>21</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>22</SUB>> ]\n\"146028888066\" [label = <(RETURN,return s;,return s;)<SUB>28</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>22</SUB>> ]\n\"30064771096\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>22</SUB>> ]\n\"30064771101\" [label = <(&lt;operator&gt;.preDecrement,--n)<SUB>27</SUB>> ]\n\"68719476776\" [label = <(IDENTIFIER,s,return s;)<SUB>28</SUB>> ]\n\"30064771101\" [label = <(&lt;operator&gt;.preDecrement,--n)<SUB>27</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.equals,s == 9)<SUB>26</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>25</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.equals,s == 9)<SUB>26</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.equals,s == 9)<SUB>26</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.assignment,s = 1)<SUB>26</SUB>> ]\n\"68719476770\" [label = <(IDENTIFIER,s,if (s))<SUB>25</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>25</SUB>> ]\n\"68719476772\" [label = <(IDENTIFIER,n,if (n))<SUB>25</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.assignment,s = 1)<SUB>26</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.assignment,s = 1)<SUB>26</SUB>> ]\n  \"146028888066\" -> \"128849018882\"  [ label = \"&lt;RET&gt;\"] \n  \"115964116996\" -> \"128849018882\"  [ label = \"v\"] \n  \"30064771096\" -> \"128849018882\"  [ label = \"s\"] \n  \"30064771096\" -> \"128849018882\"  [ label = \"s = 0\"] \n  \"30064771098\" -> \"128849018882\"  [ label = \"s++\"] \n  \"30064771099\" -> \"128849018882\"  [ label = \"s\"] \n  \"30064771099\" -> \"128849018882\"  [ label = \"s == 9\"] \n  \"30064771100\" -> \"128849018882\"  [ label = \"s\"] \n  \"30064771100\" -> \"128849018882\"  [ label = \"s = 1\"] \n  \"30064771101\" -> \"128849018882\"  [ label = \"n\"] \n  \"30064771101\" -> \"128849018882\"  [ label = \"--n\"] \n  \"111669149699\" -> \"115964116996\" \n  \"111669149699\" -> \"115964116997\" \n  \"111669149699\" -> \"30064771096\" \n  \"68719476776\" -> \"146028888066\"  [ label = \"s\"] \n  \"30064771096\" -> \"68719476776\"  [ label = \"s\"] \n  \"30064771100\" -> \"68719476776\"  [ label = \"s\"] \n  \"30064771099\" -> \"68719476776\"  [ label = \"s\"] \n  \"111669149699\" -> \"68719476776\" \n  \"115964116997\" -> \"30064771101\"  [ label = \"n\"] \n  \"111669149699\" -> \"30064771101\" \n  \"30064771096\" -> \"30064771099\"  [ label = \"s\"] \n  \"30064771098\" -> \"30064771099\"  [ label = \"s\"] \n  \"30064771100\" -> \"30064771099\"  [ label = \"s\"] \n  \"111669149699\" -> \"30064771099\" \n  \"111669149699\" -> \"30064771100\" \n  \"111669149699\" -> \"68719476770\" \n  \"30064771096\" -> \"30064771098\"  [ label = \"s\"] \n  \"30064771099\" -> \"30064771098\"  [ label = \"s\"] \n  \"30064771100\" -> \"30064771098\"  [ label = \"s\"] \n  \"111669149699\" -> \"30064771098\" \n  \"111669149699\" -> \"68719476772\" \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"do_order\" {  \n\"30064771096\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>22</SUB>> ]\n\"146028888066\" [label = <(RETURN,return s;,return s;)<SUB>28</SUB>> ]\n\"30064771101\" [label = <(&lt;operator&gt;.preDecrement,--n)<SUB>27</SUB>> ]\n\"30064771097\" [label = <(&lt;operator&gt;.indirectIndexAccess,v[n])<SUB>24</SUB>> ]\n\"30064771099\" [label = <(&lt;operator&gt;.equals,s == 9)<SUB>26</SUB>> ]\n\"30064771098\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>25</SUB>> ]\n\"30064771100\" [label = <(&lt;operator&gt;.assignment,s = 1)<SUB>26</SUB>> ]\n\"68719476770\" [label = <(IDENTIFIER,s,if (s))<SUB>25</SUB>> ]\n\"68719476772\" [label = <(IDENTIFIER,n,if (n))<SUB>25</SUB>> ]\n\"111669149699\" [label = <(METHOD,do_order)<SUB>21</SUB>> ]\n\"128849018882\" [label = <(METHOD_RETURN,int)<SUB>21</SUB>> ]\n  \"30064771096\" -> \"30064771097\" \n  \"146028888066\" -> \"128849018882\" \n  \"30064771101\" -> \"30064771097\" \n  \"30064771101\" -> \"146028888066\" \n  \"30064771097\" -> \"68719476770\" \n  \"30064771097\" -> \"30064771101\" \n  \"30064771099\" -> \"30064771101\" \n  \"30064771099\" -> \"30064771100\" \n  \"30064771098\" -> \"68719476772\" \n  \"30064771100\" -> \"30064771101\" \n  \"68719476770\" -> \"30064771099\" \n  \"68719476770\" -> \"30064771098\" \n  \"68719476772\" -> \"68719476770\" \n  \"111669149699\" -> \"30064771096\" \n}\n"
+      ]
+    },
+    "unbraced_order": {
+      "name": "unbraced_order",
+      "fullname": "unbraced_order",
+      "filename": "cfg-order.c",
+      "start_line": 30,
+      "end_line": 37,
+      "public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 30,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,unbraced_order",
+                    "source_line_number": 30,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 30,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int n",
+                  "fields": {
+                    "raw_text": "PARAM,int n",
+                    "source_line_number": 30,
+                    "type": "int",
+                    "name": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 31,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,for(;n;)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,for(;n;)",
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 33,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,while(n)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,while(n)",
+                    "source_line_number": 33
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,doif(n)s--;while(s);>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,doif(n)s--;while(s);",
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "k < n",
+                  "fields": {
+                    "raw_text": [
+                      "lessThan",
+                      "k&lt;n"
+                    ],
+                    "source_line_number": 35,
+                    "type": 4,
+                    "arg1": "k",
+                    "arg2": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'k++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "k++"
+                    ],
+                    "source_line_number": 35
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,returns;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,returns;",
+                    "source_line_number": 36
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['and', 'n&amp;1']>",
+                  "fields": {
+                    "raw_text": [
+                      "and",
+                      "n&amp;1"
+                    ],
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 33,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,if(s)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,if(s)",
+                    "source_line_number": 33
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,if(n)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,if(n)",
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "k = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "k=0"
+                    ],
+                    "source_line_number": 35,
+                    "src": "k",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "j < k",
+                  "fields": {
+                    "raw_text": [
+                      "lessThan",
+                      "j&lt;k"
+                    ],
+                    "source_line_number": 35,
+                    "type": 4,
+                    "arg1": "j",
+                    "arg2": "k"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'j++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "j++"
+                    ],
+                    "source_line_number": 35
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 's++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "s++"
+                    ],
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 33,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 33
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 's--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "s--"
+                    ],
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "j = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "j=0"
+                    ],
+                    "source_line_number": 35,
+                    "src": "j",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,j,if(j)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,j,if(j)",
+                    "source_line_number": 35
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 20,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['assignmentPlus', 's+=j']>",
+                  "fields": {
+                    "raw_text": [
+                      "assignmentPlus",
+                      "s+=j"
+                    ],
+                    "source_line_number": 35
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 21,
+            "identity": {
+              "addr": 30,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 30,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 22,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return s;,returns;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returns;",
+                      "returns;"
+                    ],
+                    "source_line_number": 36,
+                    "ret": "s;,returns;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 22,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 18,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 18,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 20,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 20,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 22,
+            "target": 21,
+            "label": ""
+          }
+        ]
+      },
+      "supplemental_public": {
+        "representation": "DiGraph",
+        "invalid_block_nodes": false,
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "addr": 30,
+              "entry": true,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_START",
+                  "fields": {
+                    "raw_text": "METHOD,unbraced_order",
+                    "source_line_number": 30,
+                    "type": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "addr": 30,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Parameter",
+                  "text": "int n",
+                  "fields": {
+                    "raw_text": "PARAM,int n",
+                    "source_line_number": 30,
+                    "type": "int",
+                    "name": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "addr": 31,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "s = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "s=0"
+                    ],
+                    "source_line_number": 31,
+                    "src": "s",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,for(;n;)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,for(;n;)",
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "addr": 33,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,while(n)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,while(n)",
+                    "source_line_number": 33
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,doif(n)s--;while(s);>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,doif(n)s--;while(s);",
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "k < n",
+                  "fields": {
+                    "raw_text": [
+                      "lessThan",
+                      "k&lt;n"
+                    ],
+                    "source_line_number": 35,
+                    "type": 4,
+                    "arg1": "k",
+                    "arg2": "n"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'k++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "k++"
+                    ],
+                    "source_line_number": 35
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,returns;>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,returns;",
+                    "source_line_number": 36
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['and', 'n&amp;1']>",
+                  "fields": {
+                    "raw_text": [
+                      "and",
+                      "n&amp;1"
+                    ],
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "addr": 33,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,s,if(s)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,s,if(s)",
+                    "source_line_number": 33
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,n,if(n)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,n,if(n)",
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "k = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "k=0"
+                    ],
+                    "source_line_number": 35,
+                    "src": "k",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Compare",
+                  "text": "j < k",
+                  "fields": {
+                    "raw_text": [
+                      "lessThan",
+                      "j&lt;k"
+                    ],
+                    "source_line_number": 35,
+                    "type": 4,
+                    "arg1": "j",
+                    "arg2": "k"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 'j++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "j++"
+                    ],
+                    "source_line_number": 35
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "addr": 32,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postIncrement', 's++']>",
+                  "fields": {
+                    "raw_text": [
+                      "postIncrement",
+                      "s++"
+                    ],
+                    "source_line_number": 32
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "addr": 33,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 'n--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "n--"
+                    ],
+                    "source_line_number": 33
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "addr": 34,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['postDecrement', 's--']>",
+                  "fields": {
+                    "raw_text": [
+                      "postDecrement",
+                      "s--"
+                    ],
+                    "source_line_number": 34
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Assignment",
+                  "text": "j = 0",
+                  "fields": {
+                    "raw_text": [
+                      "assignment",
+                      "j=0"
+                    ],
+                    "source_line_number": 35,
+                    "src": "j",
+                    "dst": "0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: IDENTIFIER,j,if(j)>",
+                  "fields": {
+                    "raw_text": "IDENTIFIER,j,if(j)",
+                    "source_line_number": 35
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 20,
+            "identity": {
+              "addr": 35,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "UnsupportedStmt",
+                  "text": "<UnsupportedStmt: ['assignmentPlus', 's+=j']>",
+                  "fields": {
+                    "raw_text": [
+                      "assignmentPlus",
+                      "s+=j"
+                    ],
+                    "source_line_number": 35
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 21,
+            "identity": {
+              "addr": 30,
+              "entry": false,
+              "exit": true,
+              "statements": [
+                {
+                  "class": "Nop",
+                  "text": "FUNCTION_END",
+                  "fields": {
+                    "raw_text": "METHOD_RETURN,int",
+                    "source_line_number": 30,
+                    "type": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 22,
+            "identity": {
+              "addr": 36,
+              "entry": false,
+              "exit": false,
+              "statements": [
+                {
+                  "class": "Return",
+                  "text": "return s;,returns;",
+                  "fields": {
+                    "raw_text": [
+                      "",
+                      "returns;",
+                      "returns;"
+                    ],
+                    "source_line_number": 36,
+                    "ret": "s;,returns;"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 4,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 1,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 6,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 7,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 8,
+            "target": 22,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 9,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 12,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 13,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 14,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 15,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 16,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 17,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 18,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 18,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 20,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 20,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 22,
+            "target": 21,
+            "label": ""
+          }
+        ]
+      },
+      "dot": {
+        "representation": "directed_labeled_multigraph",
+        "nodes": [
+          {
+            "id": 0,
+            "identity": {
+              "dot_label": "(METHOD,unbraced_order)<SUB>30</SUB>"
+            }
+          },
+          {
+            "id": 1,
+            "identity": {
+              "dot_label": "(METHOD_RETURN,int)<SUB>30</SUB>"
+            }
+          },
+          {
+            "id": 2,
+            "identity": {
+              "dot_label": "(PARAM,int n)<SUB>30</SUB>"
+            }
+          },
+          {
+            "id": 3,
+            "identity": {
+              "dot_label": "(<operator>.assignment,s = 0)<SUB>31</SUB>"
+            }
+          },
+          {
+            "id": 4,
+            "identity": {
+              "dot_label": "(RETURN,return s;,return s;)<SUB>36</SUB>"
+            }
+          },
+          {
+            "id": 5,
+            "identity": {
+              "dot_label": "(IDENTIFIER,n,for (;n;))<SUB>32</SUB>"
+            }
+          },
+          {
+            "id": 6,
+            "identity": {
+              "dot_label": "(IDENTIFIER,n,while (n))<SUB>33</SUB>"
+            }
+          },
+          {
+            "id": 7,
+            "identity": {
+              "dot_label": "(IDENTIFIER,s,do if (n) s--; while (s);)<SUB>34</SUB>"
+            }
+          },
+          {
+            "id": 8,
+            "identity": {
+              "dot_label": "(<operator>.lessThan,k < n)<SUB>35</SUB>"
+            }
+          },
+          {
+            "id": 9,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,k++)<SUB>35</SUB>"
+            }
+          },
+          {
+            "id": 10,
+            "identity": {
+              "dot_label": "(IDENTIFIER,s,return s;)<SUB>36</SUB>"
+            }
+          },
+          {
+            "id": 11,
+            "identity": {
+              "dot_label": "(<operator>.and,n & 1)<SUB>32</SUB>"
+            }
+          },
+          {
+            "id": 12,
+            "identity": {
+              "dot_label": "(IDENTIFIER,s,if (s))<SUB>33</SUB>"
+            }
+          },
+          {
+            "id": 13,
+            "identity": {
+              "dot_label": "(IDENTIFIER,n,if (n))<SUB>34</SUB>"
+            }
+          },
+          {
+            "id": 14,
+            "identity": {
+              "dot_label": "(<operator>.assignment,k = 0)<SUB>35</SUB>"
+            }
+          },
+          {
+            "id": 15,
+            "identity": {
+              "dot_label": "(<operator>.lessThan,j < k)<SUB>35</SUB>"
+            }
+          },
+          {
+            "id": 16,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,j++)<SUB>35</SUB>"
+            }
+          },
+          {
+            "id": 17,
+            "identity": {
+              "dot_label": "(<operator>.postIncrement,s++)<SUB>32</SUB>"
+            }
+          },
+          {
+            "id": 18,
+            "identity": {
+              "dot_label": "(<operator>.postDecrement,n--)<SUB>33</SUB>"
+            }
+          },
+          {
+            "id": 19,
+            "identity": {
+              "dot_label": "(<operator>.postDecrement,s--)<SUB>34</SUB>"
+            }
+          },
+          {
+            "id": 20,
+            "identity": {
+              "dot_label": "(<operator>.assignment,j = 0)<SUB>35</SUB>"
+            }
+          },
+          {
+            "id": 21,
+            "identity": {
+              "dot_label": "(IDENTIFIER,j,if (j))<SUB>35</SUB>"
+            }
+          },
+          {
+            "id": 22,
+            "identity": {
+              "dot_label": "(<operator>.assignmentPlus,s += j)<SUB>35</SUB>"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 2,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 3,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 8,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 9,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 10,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 11,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 12,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 13,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 14,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 15,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 16,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 17,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 18,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 19,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 20,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 21,
+            "label": ""
+          },
+          {
+            "source": 0,
+            "target": 22,
+            "label": ""
+          },
+          {
+            "source": 2,
+            "target": 8,
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 11,
+            "label": "n"
+          },
+          {
+            "source": 2,
+            "target": 18,
+            "label": "n"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "label": "s = 0"
+          },
+          {
+            "source": 3,
+            "target": 10,
+            "label": "s"
+          },
+          {
+            "source": 3,
+            "target": 17,
+            "label": "s"
+          },
+          {
+            "source": 3,
+            "target": 19,
+            "label": "s"
+          },
+          {
+            "source": 3,
+            "target": 22,
+            "label": "s"
+          },
+          {
+            "source": 4,
+            "target": 1,
+            "label": "<RET>"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "k"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "n"
+          },
+          {
+            "source": 8,
+            "target": 1,
+            "label": "k < n"
+          },
+          {
+            "source": 8,
+            "target": 15,
+            "label": "k"
+          },
+          {
+            "source": 9,
+            "target": 1,
+            "label": "k++"
+          },
+          {
+            "source": 9,
+            "target": 8,
+            "label": "k"
+          },
+          {
+            "source": 10,
+            "target": 4,
+            "label": "s"
+          },
+          {
+            "source": 11,
+            "target": 1,
+            "label": "n & 1"
+          },
+          {
+            "source": 11,
+            "target": 8,
+            "label": "n"
+          },
+          {
+            "source": 11,
+            "target": 18,
+            "label": "n"
+          },
+          {
+            "source": 14,
+            "target": 1,
+            "label": "k = 0"
+          },
+          {
+            "source": 14,
+            "target": 8,
+            "label": "k"
+          },
+          {
+            "source": 15,
+            "target": 1,
+            "label": "j"
+          },
+          {
+            "source": 15,
+            "target": 1,
+            "label": "j < k"
+          },
+          {
+            "source": 15,
+            "target": 9,
+            "label": "k"
+          },
+          {
+            "source": 15,
+            "target": 16,
+            "label": "j"
+          },
+          {
+            "source": 15,
+            "target": 22,
+            "label": "j"
+          },
+          {
+            "source": 16,
+            "target": 1,
+            "label": "j++"
+          },
+          {
+            "source": 16,
+            "target": 15,
+            "label": "j"
+          },
+          {
+            "source": 17,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 17,
+            "target": 1,
+            "label": "s++"
+          },
+          {
+            "source": 17,
+            "target": 10,
+            "label": "s"
+          },
+          {
+            "source": 17,
+            "target": 19,
+            "label": "s"
+          },
+          {
+            "source": 17,
+            "target": 22,
+            "label": "s"
+          },
+          {
+            "source": 18,
+            "target": 1,
+            "label": "n--"
+          },
+          {
+            "source": 18,
+            "target": 8,
+            "label": "n"
+          },
+          {
+            "source": 19,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 19,
+            "target": 1,
+            "label": "s--"
+          },
+          {
+            "source": 19,
+            "target": 10,
+            "label": "s"
+          },
+          {
+            "source": 19,
+            "target": 22,
+            "label": "s"
+          },
+          {
+            "source": 20,
+            "target": 1,
+            "label": "j = 0"
+          },
+          {
+            "source": 20,
+            "target": 15,
+            "label": "j"
+          },
+          {
+            "source": 22,
+            "target": 1,
+            "label": "s"
+          },
+          {
+            "source": 22,
+            "target": 1,
+            "label": "s += j"
+          },
+          {
+            "source": 22,
+            "target": 10,
+            "label": "s"
+          }
+        ]
+      },
+      "ddg_dot": [
+        "digraph \"unbraced_order\" {  \n\"111669149700\" [label = <(METHOD,unbraced_order)<SUB>30</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>30</SUB>> ]\n\"115964116998\" [label = <(PARAM,int n)<SUB>30</SUB>> ]\n\"30064771102\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>31</SUB>> ]\n\"146028888067\" [label = <(RETURN,return s;,return s;)<SUB>36</SUB>> ]\n\"30064771102\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>31</SUB>> ]\n\"30064771102\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>31</SUB>> ]\n\"68719476778\" [label = <(IDENTIFIER,n,for (;n;))<SUB>32</SUB>> ]\n\"68719476781\" [label = <(IDENTIFIER,n,while (n))<SUB>33</SUB>> ]\n\"68719476786\" [label = <(IDENTIFIER,s,do if (n) s--; while (s);)<SUB>34</SUB>> ]\n\"30064771108\" [label = <(&lt;operator&gt;.lessThan,k &lt; n)<SUB>35</SUB>> ]\n\"30064771109\" [label = <(&lt;operator&gt;.postIncrement,k++)<SUB>35</SUB>> ]\n\"68719476798\" [label = <(IDENTIFIER,s,return s;)<SUB>36</SUB>> ]\n\"30064771103\" [label = <(&lt;operator&gt;.and,n &amp; 1)<SUB>32</SUB>> ]\n\"68719476782\" [label = <(IDENTIFIER,s,if (s))<SUB>33</SUB>> ]\n\"68719476784\" [label = <(IDENTIFIER,n,if (n))<SUB>34</SUB>> ]\n\"30064771107\" [label = <(&lt;operator&gt;.assignment,k = 0)<SUB>35</SUB>> ]\n\"30064771108\" [label = <(&lt;operator&gt;.lessThan,k &lt; n)<SUB>35</SUB>> ]\n\"30064771108\" [label = <(&lt;operator&gt;.lessThan,k &lt; n)<SUB>35</SUB>> ]\n\"30064771109\" [label = <(&lt;operator&gt;.postIncrement,k++)<SUB>35</SUB>> ]\n\"30064771111\" [label = <(&lt;operator&gt;.lessThan,j &lt; k)<SUB>35</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.postIncrement,j++)<SUB>35</SUB>> ]\n\"30064771103\" [label = <(&lt;operator&gt;.and,n &amp; 1)<SUB>32</SUB>> ]\n\"30064771103\" [label = <(&lt;operator&gt;.and,n &amp; 1)<SUB>32</SUB>> ]\n\"30064771104\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>32</SUB>> ]\n\"30064771105\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>33</SUB>> ]\n\"30064771106\" [label = <(&lt;operator&gt;.postDecrement,s--)<SUB>34</SUB>> ]\n\"30064771107\" [label = <(&lt;operator&gt;.assignment,k = 0)<SUB>35</SUB>> ]\n\"30064771107\" [label = <(&lt;operator&gt;.assignment,k = 0)<SUB>35</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,j = 0)<SUB>35</SUB>> ]\n\"30064771111\" [label = <(&lt;operator&gt;.lessThan,j &lt; k)<SUB>35</SUB>> ]\n\"30064771111\" [label = <(&lt;operator&gt;.lessThan,j &lt; k)<SUB>35</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.postIncrement,j++)<SUB>35</SUB>> ]\n\"68719476795\" [label = <(IDENTIFIER,j,if (j))<SUB>35</SUB>> ]\n\"30064771104\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>32</SUB>> ]\n\"30064771105\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>33</SUB>> ]\n\"30064771106\" [label = <(&lt;operator&gt;.postDecrement,s--)<SUB>34</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,j = 0)<SUB>35</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,j = 0)<SUB>35</SUB>> ]\n\"30064771113\" [label = <(&lt;operator&gt;.assignmentPlus,s += j)<SUB>35</SUB>> ]\n\"30064771113\" [label = <(&lt;operator&gt;.assignmentPlus,s += j)<SUB>35</SUB>> ]\n\"30064771113\" [label = <(&lt;operator&gt;.assignmentPlus,s += j)<SUB>35</SUB>> ]\n  \"146028888067\" -> \"128849018883\"  [ label = \"&lt;RET&gt;\"] \n  \"30064771102\" -> \"128849018883\"  [ label = \"s\"] \n  \"30064771102\" -> \"128849018883\"  [ label = \"s = 0\"] \n  \"30064771106\" -> \"128849018883\"  [ label = \"s\"] \n  \"30064771106\" -> \"128849018883\"  [ label = \"s--\"] \n  \"30064771107\" -> \"128849018883\"  [ label = \"k = 0\"] \n  \"30064771108\" -> \"128849018883\"  [ label = \"k\"] \n  \"30064771108\" -> \"128849018883\"  [ label = \"n\"] \n  \"30064771108\" -> \"128849018883\"  [ label = \"k &lt; n\"] \n  \"30064771110\" -> \"128849018883\"  [ label = \"j = 0\"] \n  \"30064771111\" -> \"128849018883\"  [ label = \"j\"] \n  \"30064771111\" -> \"128849018883\"  [ label = \"j &lt; k\"] \n  \"30064771109\" -> \"128849018883\"  [ label = \"k++\"] \n  \"30064771113\" -> \"128849018883\"  [ label = \"s\"] \n  \"30064771113\" -> \"128849018883\"  [ label = \"s += j\"] \n  \"30064771112\" -> \"128849018883\"  [ label = \"j++\"] \n  \"30064771105\" -> \"128849018883\"  [ label = \"n--\"] \n  \"30064771103\" -> \"128849018883\"  [ label = \"n &amp; 1\"] \n  \"30064771104\" -> \"128849018883\"  [ label = \"s\"] \n  \"30064771104\" -> \"128849018883\"  [ label = \"s++\"] \n  \"111669149700\" -> \"115964116998\" \n  \"111669149700\" -> \"30064771102\" \n  \"68719476798\" -> \"146028888067\"  [ label = \"s\"] \n  \"111669149700\" -> \"68719476778\" \n  \"111669149700\" -> \"68719476781\" \n  \"111669149700\" -> \"68719476786\" \n  \"30064771102\" -> \"68719476798\"  [ label = \"s\"] \n  \"30064771104\" -> \"68719476798\"  [ label = \"s\"] \n  \"30064771113\" -> \"68719476798\"  [ label = \"s\"] \n  \"30064771106\" -> \"68719476798\"  [ label = \"s\"] \n  \"111669149700\" -> \"68719476798\" \n  \"111669149700\" -> \"68719476782\" \n  \"111669149700\" -> \"68719476784\" \n  \"111669149700\" -> \"30064771107\" \n  \"30064771107\" -> \"30064771108\"  [ label = \"k\"] \n  \"30064771109\" -> \"30064771108\"  [ label = \"k\"] \n  \"111669149700\" -> \"30064771108\" \n  \"115964116998\" -> \"30064771108\"  [ label = \"n\"] \n  \"30064771105\" -> \"30064771108\"  [ label = \"n\"] \n  \"30064771103\" -> \"30064771108\"  [ label = \"n\"] \n  \"30064771111\" -> \"30064771109\"  [ label = \"k\"] \n  \"111669149700\" -> \"30064771109\" \n  \"115964116998\" -> \"30064771103\"  [ label = \"n\"] \n  \"111669149700\" -> \"30064771103\" \n  \"111669149700\" -> \"30064771110\" \n  \"30064771110\" -> \"30064771111\"  [ label = \"j\"] \n  \"30064771112\" -> \"30064771111\"  [ label = \"j\"] \n  \"111669149700\" -> \"30064771111\" \n  \"30064771108\" -> \"30064771111\"  [ label = \"k\"] \n  \"30064771111\" -> \"30064771112\"  [ label = \"j\"] \n  \"111669149700\" -> \"30064771112\" \n  \"111669149700\" -> \"68719476795\" \n  \"30064771102\" -> \"30064771104\"  [ label = \"s\"] \n  \"111669149700\" -> \"30064771104\" \n  \"115964116998\" -> \"30064771105\"  [ label = \"n\"] \n  \"30064771103\" -> \"30064771105\"  [ label = \"n\"] \n  \"111669149700\" -> \"30064771105\" \n  \"30064771102\" -> \"30064771106\"  [ label = \"s\"] \n  \"30064771104\" -> \"30064771106\"  [ label = \"s\"] \n  \"111669149700\" -> \"30064771106\" \n  \"30064771111\" -> \"30064771113\"  [ label = \"j\"] \n  \"111669149700\" -> \"30064771113\" \n  \"30064771102\" -> \"30064771113\"  [ label = \"s\"] \n  \"30064771106\" -> \"30064771113\"  [ label = \"s\"] \n  \"30064771104\" -> \"30064771113\"  [ label = \"s\"] \n}\n"
+      ],
+      "cfg_dot": [
+        "digraph \"unbraced_order\" {  \n\"30064771102\" [label = <(&lt;operator&gt;.assignment,s = 0)<SUB>31</SUB>> ]\n\"146028888067\" [label = <(RETURN,return s;,return s;)<SUB>36</SUB>> ]\n\"68719476778\" [label = <(IDENTIFIER,n,for (;n;))<SUB>32</SUB>> ]\n\"68719476781\" [label = <(IDENTIFIER,n,while (n))<SUB>33</SUB>> ]\n\"68719476786\" [label = <(IDENTIFIER,s,do if (n) s--; while (s);)<SUB>34</SUB>> ]\n\"30064771108\" [label = <(&lt;operator&gt;.lessThan,k &lt; n)<SUB>35</SUB>> ]\n\"30064771109\" [label = <(&lt;operator&gt;.postIncrement,k++)<SUB>35</SUB>> ]\n\"30064771103\" [label = <(&lt;operator&gt;.and,n &amp; 1)<SUB>32</SUB>> ]\n\"68719476782\" [label = <(IDENTIFIER,s,if (s))<SUB>33</SUB>> ]\n\"68719476784\" [label = <(IDENTIFIER,n,if (n))<SUB>34</SUB>> ]\n\"30064771107\" [label = <(&lt;operator&gt;.assignment,k = 0)<SUB>35</SUB>> ]\n\"30064771111\" [label = <(&lt;operator&gt;.lessThan,j &lt; k)<SUB>35</SUB>> ]\n\"30064771112\" [label = <(&lt;operator&gt;.postIncrement,j++)<SUB>35</SUB>> ]\n\"30064771104\" [label = <(&lt;operator&gt;.postIncrement,s++)<SUB>32</SUB>> ]\n\"30064771105\" [label = <(&lt;operator&gt;.postDecrement,n--)<SUB>33</SUB>> ]\n\"30064771106\" [label = <(&lt;operator&gt;.postDecrement,s--)<SUB>34</SUB>> ]\n\"30064771110\" [label = <(&lt;operator&gt;.assignment,j = 0)<SUB>35</SUB>> ]\n\"68719476795\" [label = <(IDENTIFIER,j,if (j))<SUB>35</SUB>> ]\n\"30064771113\" [label = <(&lt;operator&gt;.assignmentPlus,s += j)<SUB>35</SUB>> ]\n\"111669149700\" [label = <(METHOD,unbraced_order)<SUB>30</SUB>> ]\n\"128849018883\" [label = <(METHOD_RETURN,int)<SUB>30</SUB>> ]\n  \"30064771102\" -> \"68719476778\" \n  \"146028888067\" -> \"128849018883\" \n  \"68719476778\" -> \"68719476781\" \n  \"68719476778\" -> \"30064771103\" \n  \"68719476781\" -> \"68719476782\" \n  \"68719476781\" -> \"68719476784\" \n  \"68719476786\" -> \"68719476784\" \n  \"68719476786\" -> \"30064771107\" \n  \"30064771108\" -> \"30064771110\" \n  \"30064771108\" -> \"146028888067\" \n  \"30064771109\" -> \"30064771108\" \n  \"30064771103\" -> \"68719476778\" \n  \"30064771103\" -> \"30064771104\" \n  \"68719476782\" -> \"68719476781\" \n  \"68719476782\" -> \"30064771105\" \n  \"68719476784\" -> \"68719476786\" \n  \"68719476784\" -> \"30064771106\" \n  \"30064771107\" -> \"30064771108\" \n  \"30064771111\" -> \"68719476795\" \n  \"30064771111\" -> \"30064771109\" \n  \"30064771112\" -> \"30064771111\" \n  \"30064771104\" -> \"68719476778\" \n  \"30064771105\" -> \"68719476781\" \n  \"30064771106\" -> \"68719476786\" \n  \"30064771110\" -> \"30064771111\" \n  \"68719476795\" -> \"30064771113\" \n  \"68719476795\" -> \"30064771112\" \n  \"30064771113\" -> \"30064771112\" \n  \"111669149700\" -> \"30064771102\" \n}\n"
+      ]
+    }
+  },
+  "source_sha256": "6e2bc6018ae1149017f2a88cb8f2cd2cf9743eb888237424dfd24d823bc729ed",
+  "prepared_sha256": "6e2bc6018ae1149017f2a88cb8f2cd2cf9743eb888237424dfd24d823bc729ed",
+  "language": "c",
+  "input_kind": "file",
+  "source": "/tmp/claude-1000/-home-mahaloz-github-rust-joern/ba78dd4d-6784-4ac2-81ab-a8a9d0f79e81/scratchpad/wt-recov/tests/fixtures/ddg-decbench/cfg-order.c",
+  "capture_worker_sha256": "544aaf7609ab89e1f1d11d339b6fd6f8c0d64c47f097113b32ca66b2470745bd",
+  "captured_at": "2026-11-09T04:55:37.768804+00:00",
+  "preparation": {
+    "strip_system_headers": false,
+    "sanitize_decompiled": false,
+    "decbench": null
+  }
+}
