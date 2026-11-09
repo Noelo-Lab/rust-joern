@@ -95,3 +95,24 @@ fn range_for_without_a_backedge_does_not_create_an_orphan_advance() {
             .any(|n| n.code == "<range-for advance>")
     );
 }
+
+#[test]
+fn joern_cpp_control_flow_keeps_the_body_as_the_condition() {
+    let source = "int get(); void f() { for (int x : get()) { if (x) break; } }";
+    let options = Options {
+        language: Some("cpp".into()),
+        joern_cpp_control_flow: true,
+        ..Options::default()
+    };
+    let result = analyze(source, "range.cpp", &options).unwrap();
+    let f = result.functions.iter().find(|f| f.name == "f").unwrap();
+    let flows = |code: &str| {
+        let id = f.cpg.nodes.iter().find(|n| n.code == code).unwrap().id;
+        f.cpg
+            .edges
+            .iter()
+            .any(|e| e.kind == "CFG" && (e.source == id || e.target == id))
+    };
+    assert!(!flows("get()"), "Joern never evaluates the range");
+    assert!(!f.cpg.nodes.iter().any(|n| n.code == "<range-for test>"));
+}
