@@ -15,7 +15,7 @@ This is a behavior-preserving port/refactor, not a new C++ quality claim.
 
 | Part | Treatment |
 | --- | --- |
-| Binary match: 34 CDT operations and fallback | All branches parsed/checked; 31 have Rust lexical bindings; GNU max/min and ellipses remain unsupported by the parser |
+| Binary match: 34 CDT operations and fallback | All branches parsed/checked; 32 have Rust lexical bindings; GNU max/min remain unsupported by the parser |
 | Unary match: 13 CDT operations and fallback | All branches parsed/checked; 12 have Rust lexical bindings; parenthesized ASTs retain their existing separate owner |
 | Schema operator strings | Exported from the original JVM, never inferred from constant names; some assignment operators use the plural `<operators>` prefix |
 | CDT operation to Rust token | Explicit reviewed lexical adapter in the generator; not claimed to be translated CDT parsing |
