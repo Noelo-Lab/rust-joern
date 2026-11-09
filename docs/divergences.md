@@ -8,7 +8,7 @@ belong in regression fixtures, not here.
 
 ## C++20 range-for init-statements execute before the range
 
-**Introduced:** 2026-11-09.
+**Introduced:** 2026-11-09, [PR #18](https://github.com/Noelo-Lab/rust-joern/pull/18).
 
 Joern 4.0.150 omits a range-for with an init-statement on the reduced
 `for (int i = start(); const auto& x : values)` control. Rust Joern retains
