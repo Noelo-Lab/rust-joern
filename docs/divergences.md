@@ -6,6 +6,27 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++ `noexcept` operands are excluded from the CFG
+
+**Introduced:** 2026-11-09, [PR #13](https://github.com/Noelo-Lab/rust-joern/pull/13).
+
+**Joern:** for `return noexcept(effect());`, `effect()` is in the CFG.
+
+**Rust Joern:** the operand stays in the AST and is not connected to the CFG.
+This covers the `noexcept` operator, not exception specifications or other
+unevaluated contexts.
+
+**Why:** C++ does not evaluate a `noexcept` operand, so a compiled binary
+contains no such call. A decompilation would otherwise differ from its source.
+
+**Affects:** the CFG, reaching definitions and DDG of C++ functions containing
+the operator. The DecBench corpus contains none.
+
+**Reference behavior:** `joern_cpp_control_flow` in `Options` and Python, or
+`--joern-cpp-control-flow` on the CLI. `compare_pyjoern.py`,
+`compare_native_corpus.py`, `compare_ddg_pyjoern.py`, `ddg_corpus.py` and
+`replay_ddg_projection.py` request it. DecBench and its shim use the default.
+
 ## Code that CDT fails to parse is still analyzed
 
 **Recorded:** 2026-11-09, [PR #19](https://github.com/Noelo-Lab/rust-joern/pull/19), which added the option that restores Joern's

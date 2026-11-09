@@ -49,7 +49,7 @@ JVM_OPTIONS = "-XX:ActiveProcessorCount=2 -XX:TieredStopAtLevel=1"
 # intentionally differs. Parsing stays permissive: every function is compared,
 # and inputs with error diagnostics, which strict parsing rejects, are counted.
 DECBENCH_OPTIONS = {"preprocessed": True}
-JOERN_OPTIONS = ("joern_loop_conditions", "joern_knr_parameters", "joern_cdt_failures")
+JOERN_OPTIONS = ("joern_loop_conditions", "joern_knr_parameters", "joern_cdt_failures", "joern_cpp_control_flow")
 REFERENCE_OPTIONS = {**DECBENCH_OPTIONS, **dict.fromkeys(JOERN_OPTIONS, True)}
 
 # The unchanged `pyjoern.parse_source` runs once. Its FastParser output and the

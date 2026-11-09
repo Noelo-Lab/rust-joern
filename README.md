@@ -91,6 +91,10 @@ Decompiler output that CDT fails to parse is still analyzed. Joern has no method
 for a definition whose parameter list CDT rejects, such as r2dec's
 `signed int64_t` parameters, and no nodes for `*0x40004000 = x;`.
 `--joern-cdt-failures` or Python `joern_cdt_failures=True` restores that.
+
+C++ `noexcept` operands stay out of the CFG, because C++ does not evaluate them.
+`--joern-cpp-control-flow` or Python `joern_cpp_control_flow=True` keeps Joern's
+CFG instead.
 [Divergences](docs/divergences.md) lists every intentional difference from
 Joern.
 

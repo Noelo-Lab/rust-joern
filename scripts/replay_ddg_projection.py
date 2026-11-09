@@ -121,7 +121,8 @@ def analyze(native: ctypes.CDLL, source: Path, language: str) -> dict:
     data = source.read_bytes()
     # DecBench's prepared-input mode, with Joern's behavior where the default differs.
     options = {"language": language, "data_flow": True, "preprocessed": True,
-               "joern_loop_conditions": True, "joern_knr_parameters": True, "joern_cdt_failures": True}
+               "joern_loop_conditions": True, "joern_knr_parameters": True, "joern_cdt_failures": True,
+               "joern_cpp_control_flow": True}
     return result(native, native.rust_joern_analyze(ctypes.create_string_buffer(data), len(data),
                                                     os.fspath(source).encode(), json.dumps(options).encode()))
 

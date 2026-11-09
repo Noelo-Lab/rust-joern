@@ -87,8 +87,8 @@ the relevant checks and stating the scope actually measured.
   [divergences.md](divergences.md) in the change that makes it, with its date,
   PR, rationale, affected graphs and any option restoring Joern's behavior.
   Direct comparisons with original references request those options,
-  `joern_loop_conditions`, `joern_knr_parameters` and `joern_cdt_failures`;
-  DecBench and its shim use the defaults.
+  `joern_loop_conditions`, `joern_knr_parameters`, `joern_cdt_failures` and
+  `joern_cpp_control_flow`; DecBench and its shim use the defaults.
 - Keep raw reaching-definition edges, labeled DDG projection, and public
   lifted DDG views distinct. Joern's 4,000-generated-definition cutoff applies
   to DDG generation; explicit reaching-definition requests still return solver

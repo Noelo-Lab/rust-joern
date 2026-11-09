@@ -91,6 +91,7 @@ struct Builder<'a> {
     diagnostics: Vec<Diagnostic>,
     try_depth: usize,
     joern_loop_conditions: bool,
+    joern_cpp_control_flow: bool,
 }
 
 pub fn build(
@@ -133,6 +134,7 @@ pub fn build(
         diagnostics: Vec::new(),
         try_depth: 0,
         joern_loop_conditions: options.joern_loop_conditions,
+        joern_cpp_control_flow: options.joern_cpp_control_flow,
     };
     let entry = builder.node("METHOD", &function.span, Some(&function.name), None);
     let exit = builder.node("METHOD_RETURN", &function.span, None, Some("RET"));
@@ -715,8 +717,14 @@ impl Builder<'_> {
                 };
                 let id = self.node("CALL", span, Some(name), None);
                 self.ast(parent, id, argument);
-                self.expression(operand, id, Some(1))
-                    .append(Fragment::single(id))
+                let operand_flow = self.expression(operand, id, Some(1));
+                if self.cpp && op == "noexcept" && !self.joern_cpp_control_flow {
+                    // The operand is still represented in the AST, but C++
+                    // does not evaluate it and its effects cannot enter the CFG.
+                    Fragment::single(id)
+                } else {
+                    operand_flow.append(Fragment::single(id))
+                }
             }
             ExprKind::Binary { .. } => self.binary_expression(expression, parent, argument),
             ExprKind::Conditional {

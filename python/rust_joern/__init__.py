@@ -526,6 +526,7 @@ def parse_code(
     joern_loop_conditions: bool = False,
     joern_knr_parameters: bool = False,
     joern_cdt_failures: bool = False,
+    joern_cpp_control_flow: bool = False,
 ) -> Analysis:
     """Analyze source bytes in memory; data-flow analysis is optional.
 
@@ -537,16 +538,19 @@ def parse_code(
     definition's identifier list is a parameter unless ``joern_knr_parameters``
     keeps Joern's one parameter per declaration. A parameter list or expression
     that CDT fails to parse is still analyzed unless ``joern_cdt_failures``
-    drops the definition or the expression's nodes as Joern does.
+    drops the definition or the expression's nodes as Joern does. C++
+    ``noexcept`` operands, block-scope ``static_assert`` and range-based ``for``
+    follow C++ evaluation unless ``joern_cpp_control_flow`` keeps Joern's CFG.
     """
     return Analysis(_analyze(source, filename, language, data_flow, reaching_definitions, strict,
                              preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions,
-                             joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures))
+                             joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
+                             joern_cpp_control_flow=joern_cpp_control_flow))
 
 
 def _analyze(source, filename, language=None, data_flow=False, reaching_definitions=False, strict=False,
              preprocessed=False, joern_loop_conditions=False, joern_knr_parameters=False,
-             joern_cdt_failures=False) -> dict:
+             joern_cdt_failures=False, joern_cpp_control_flow=False) -> dict:
     source_bytes = source.encode("utf-8") if isinstance(source, str) else source
     filename_bytes = os.fspath(filename).encode("utf-8")
     if b"\0" in filename_bytes:
@@ -555,7 +559,7 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
         "language": language, "preprocessed": preprocessed, "data_flow": data_flow or reaching_definitions,
         "reaching_definitions": reaching_definitions, "strict": strict,
         "joern_loop_conditions": joern_loop_conditions, "joern_knr_parameters": joern_knr_parameters,
-        "joern_cdt_failures": joern_cdt_failures,
+        "joern_cdt_failures": joern_cdt_failures, "joern_cpp_control_flow": joern_cpp_control_flow,
     }).encode("utf-8")
     native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
     buffer = ctypes.create_string_buffer(source_bytes)
@@ -565,7 +569,7 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
 
 def _analyze_many(sources, language=None, data_flow=False, reaching_definitions=False, strict=False,
                   preprocessed=False, joern_loop_conditions=False, joern_knr_parameters=False,
-                  joern_cdt_failures=False) -> dict:
+                  joern_cdt_failures=False, joern_cpp_control_flow=False) -> dict:
     """Analyze `(source, filename)` pairs with shared internal callee context."""
     prepared = []
     for source, filename in sources:
@@ -580,7 +584,7 @@ def _analyze_many(sources, language=None, data_flow=False, reaching_definitions=
         "language": language, "preprocessed": preprocessed, "data_flow": data_flow or reaching_definitions,
         "reaching_definitions": reaching_definitions, "strict": strict,
         "joern_loop_conditions": joern_loop_conditions, "joern_knr_parameters": joern_knr_parameters,
-        "joern_cdt_failures": joern_cdt_failures,
+        "joern_cdt_failures": joern_cdt_failures, "joern_cpp_control_flow": joern_cpp_control_flow,
     }).encode("utf-8")
     native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
     analyze_many = getattr(native, "rust_joern_analyze_many", None)
@@ -639,6 +643,7 @@ def parse_source(
     joern_loop_conditions: bool = False,
     joern_knr_parameters: bool = False,
     joern_cdt_failures: bool = False,
+    joern_cpp_control_flow: bool = False,
 ) -> dict[str, Function] | dict[tuple[str, str], Function]:
     """PyJoern-compatible file entry point used by DecBench.
 
@@ -665,12 +670,14 @@ def parse_source(
         analysis = _analyze_many(sources, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
                                  strict=strict, preprocessed=preprocessed,
                                  joern_loop_conditions=joern_loop_conditions,
-                                 joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures)
+                                 joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
+                                 joern_cpp_control_flow=joern_cpp_control_flow)
     else:
         source, filename = sources[0]
         analysis = _analyze(source, filename, data_flow=not no_ddg, reaching_definitions=reaching_definitions,
                             strict=strict, preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions,
-                            joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures)
+                            joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
+                            joern_cpp_control_flow=joern_cpp_control_flow)
     result = {}
     # FastParser's per-(FULL_NAME, FILE) toMap exports the last method,
     # once for each original occurrence. Keep all native methods in Analysis.
