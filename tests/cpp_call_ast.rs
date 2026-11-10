@@ -90,6 +90,37 @@ fn unresolved_member_shares_one_receiver_ast_and_evaluation() {
 }
 
 #[test]
+fn braced_temporary_statement_preserves_receiver_and_evaluation() {
+    let analysis = parse(
+        "struct Box { int value; void write(); }; int tick(); void after(); \
+         void f() { Box{tick()}.write(); after(); }",
+    );
+    let f = method(&analysis, "f");
+    let tick = call(f, "tick");
+    let temporary = call(f, "Box");
+    let write = call(f, "write");
+    assert_eq!(edge(f, write, "ARGUMENT", Some("0")), Some(temporary));
+    assert!(reaches(f, tick, temporary, None));
+    assert!(reaches(f, temporary, write, None));
+    assert!(reaches(f, write, call(f, "after"), None));
+}
+
+#[test]
+fn braced_temporary_statement_does_not_treat_a_shadowing_object_as_a_type() {
+    let result = analyze(
+        "struct Box { int value; void write(); }; void f(int Box) { Box{}.write(); }",
+        "calls.cpp",
+        &Options {
+            language: Some("cpp".into()),
+            strict: true,
+            preprocessed: true,
+            ..Options::default()
+        },
+    );
+    assert!(result.is_err());
+}
+
+#[test]
 fn resolved_nonvirtual_base_is_not_implicitly_promoted_to_receiver() {
     let analysis = parse("struct Box { int method(int); }; int f(Box* p) { return p->method(1); }");
     let f = method(&analysis, "f");
