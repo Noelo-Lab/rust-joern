@@ -5279,6 +5279,12 @@ impl Parser<'_> {
             let after = self
                 .cpp_expression_name_end(start, end, false)
                 .unwrap_or(start + 1);
+            if self.text(after) == "{"
+                && after < end
+                && self.braced_type_name(&self.raw(start, after))
+            {
+                return false;
+            }
             if after > start + 1
                 && matches!(
                     self.text(after),
@@ -8225,6 +8231,12 @@ impl Parser<'_> {
             .map(|name| name.end)
     }
 
+    fn braced_type_name(&self, name: &str) -> bool {
+        self.explicit_types.contains(name)
+            && !self.variable_types.contains_key(name)
+            && (!self.supplied_type_names.contains(name) || !self.variables.contains(name))
+    }
+
     fn cpp_expression_name(
         &self,
         start: usize,
@@ -8318,8 +8330,7 @@ impl Parser<'_> {
             if self.cpp
                 && minimum <= 15
                 && op == "{"
-                && matches!(&left.kind, ExprKind::Identifier(name) if self.explicit_types.contains(name)
-                        && (!self.supplied_type_names.contains(name) || !self.variables.contains(name)))
+                && matches!(&left.kind, ExprKind::Identifier(name) if self.braced_type_name(name))
             {
                 let initializer = self.prefix();
                 left = Expr {
