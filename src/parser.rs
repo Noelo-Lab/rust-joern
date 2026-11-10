@@ -5886,12 +5886,51 @@ impl Parser<'_> {
                 let body = Box::new(self.statement());
                 let mut catches = Vec::new();
                 while self.eat("catch") {
-                    if self.at("(") {
-                        self.pos = self
-                            .matching(self.pos, self.limit)
-                            .map_or(self.pos + 1, |n| n + 1);
-                    }
-                    catches.push(self.statement());
+                    let parameter = if self.at("(") {
+                        let start = self.pos + 1;
+                        if let Some(end) = self.matching(self.pos, self.limit) {
+                            self.pos = end + 1;
+                            if matches!(self.peek(), "{" | "<%") && self.text(start) != "..." {
+                                let mut parameters = self.parameters(start, end);
+                                if parameters.len() == 1 {
+                                    parameters
+                                        .pop()
+                                        .filter(|parameter| !parameter.name.is_empty())
+                                } else {
+                                    None
+                                }
+                            } else {
+                                None
+                            }
+                        } else {
+                            self.pos = start;
+                            None
+                        }
+                    } else {
+                        None
+                    };
+                    let catch_body = if let Some(parameter) = &parameter {
+                        let variables = self.variables.clone();
+                        let types = self.variable_types.clone();
+                        let closures = self.variable_closures.clone();
+                        Rc::make_mut(&mut self.variables).insert(parameter.name.clone());
+                        Rc::make_mut(&mut self.variable_types)
+                            .insert(parameter.name.clone(), parameter.type_name.clone());
+                        if self.variable_closures.contains_key(&parameter.name) {
+                            Rc::make_mut(&mut self.variable_closures).remove(&parameter.name);
+                        }
+                        let body = self.statement();
+                        self.variables = variables;
+                        self.variable_types = types;
+                        self.variable_closures = closures;
+                        body
+                    } else {
+                        self.statement()
+                    };
+                    catches.push(CatchHandler {
+                        parameter,
+                        body: catch_body,
+                    });
                 }
                 StmtKind::Try { body, catches }
             }
@@ -9676,13 +9715,13 @@ fn infer_return_types(
                 returns,
             );
             for catch in catches {
-                infer_return_types(
-                    catch,
-                    &mut types.clone(),
-                    &mut closures.clone(),
-                    functions,
-                    returns,
-                );
+                let mut types = types.clone();
+                let mut closures = closures.clone();
+                if let Some(parameter) = &catch.parameter {
+                    types.insert(parameter.name.clone(), parameter.type_name.clone());
+                    closures.remove(&parameter.name);
+                }
+                infer_return_types(&catch.body, &mut types, &mut closures, functions, returns);
             }
         }
         _ => (),
@@ -10025,8 +10064,11 @@ fn generated_statement(statement: &mut Stmt, source: &str, span: &Span) {
         StmtKind::Label { statement, .. } => generated_statement(statement, source, span),
         StmtKind::Try { body, catches } => {
             generated_statement(body, source, span);
-            for statement in catches {
-                generated_statement(statement, source, span);
+            for catch in catches {
+                if let Some(parameter) = &mut catch.parameter {
+                    parameter.span = span.clone();
+                }
+                generated_statement(&mut catch.body, source, span);
             }
         }
         StmtKind::Unknown(expressions) => {
