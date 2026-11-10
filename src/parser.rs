@@ -5275,10 +5275,15 @@ impl Parser<'_> {
             // than grouped object declarators, including after named locals.
             return false;
         }
-        if self.cpp {
-            let after = self
-                .cpp_expression_name_end(start, end, false)
-                .unwrap_or(start + 1);
+        if self.cpp
+            && let Some(after) = self.cpp_expression_name_end(start, end, false)
+        {
+            // A shift after the expression name cannot start a declarator.
+            // Apply this before consulting inferred type spellings, which may
+            // also name a namespace qualifier or a shadowed ordinary object.
+            if after < end && matches!(self.text(after), "<<" | ">>") {
+                return false;
+            }
             if after > start + 1
                 && matches!(
                     self.text(after),
