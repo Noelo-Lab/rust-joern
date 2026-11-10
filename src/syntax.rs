@@ -180,6 +180,12 @@ pub struct Stmt {
 }
 
 #[derive(Clone, Debug)]
+pub struct CatchHandler {
+    pub parameter: Option<Parameter>,
+    pub body: Stmt,
+}
+
+#[derive(Clone, Debug)]
 pub enum StmtKind {
     Block(Vec<Stmt>),
     /// Several sibling AST statements produced by one CDT recovery construct.
@@ -231,7 +237,7 @@ pub enum StmtKind {
     Return(Option<Expr>),
     Try {
         body: Box<Stmt>,
-        catches: Vec<Stmt>,
+        catches: Vec<CatchHandler>,
     },
     Throw(Option<Expr>),
     Empty,

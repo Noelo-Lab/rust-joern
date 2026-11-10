@@ -2032,8 +2032,24 @@ impl Builder<'_> {
                 let mut fringe = try_flow.fringe.clone();
                 let entry = try_flow.entry;
                 for catch in catches {
-                    let catch_id = self.control(catch, id, "CATCH");
-                    let catch_flow = self.statement(catch, catch_id, false);
+                    let catch_id = self.control(&catch.body, id, "CATCH");
+                    self.scopes.push(HashMap::new());
+                    if let Some(parameter) = &catch.parameter {
+                        // Catch binding is lexical. The compatibility CFG
+                        // still does not model exception dispatch.
+                        let code = format!("{} {}", parameter.type_name, parameter.name);
+                        let local =
+                            self.node("LOCAL", &parameter.span, Some(&parameter.name), Some(&code));
+                        self.graph.nodes[local as usize].type_name =
+                            Some(parameter.type_name.clone());
+                        self.ast(catch_id, local, None);
+                        self.scopes
+                            .last_mut()
+                            .unwrap()
+                            .insert(parameter.name.clone(), (local, parameter.type_name.clone()));
+                    }
+                    let catch_flow = self.statement(&catch.body, catch_id, false);
+                    self.scopes.pop();
                     if let Some(target) = catch_flow.entry {
                         links.extend(try_flow.fringe.iter().map(|&source| [source, target]));
                     }
