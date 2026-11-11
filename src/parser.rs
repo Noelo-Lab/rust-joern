@@ -5556,7 +5556,7 @@ impl Parser<'_> {
             }
             "if" => {
                 self.pos += 1;
-                self.eat("constexpr");
+                let is_constexpr = self.eat("constexpr") && self.cpp;
                 if !self.at("(") {
                     // CDT recovers a missing if-condition across the next
                     // complete statement, without turning it into a condition.
@@ -5628,6 +5628,7 @@ impl Parser<'_> {
                     StmtKind::Problem
                 } else {
                     StmtKind::If {
+                        is_constexpr,
                         condition,
                         consequence,
                         alternative,
@@ -9977,6 +9978,7 @@ fn generated_statement(statement: &mut Stmt, source: &str, span: &Span) {
             condition,
             consequence,
             alternative,
+            ..
         } => {
             generated_expression(condition, source, span);
             generated_statement(consequence, source, span);

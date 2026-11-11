@@ -132,8 +132,8 @@ pub struct Options {
     /// parse, after which Joern 4.0.150 has no method for the definition or
     /// no nodes for the expression. By default that code is still analyzed.
     pub joern_cdt_failures: bool,
-    /// Lower C++ `noexcept` operands, block-scope `static_assert` and
-    /// range-based `for` as Joern 4.0.150 does, for original-reference parity.
+    /// Lower C++ `noexcept` operands, block-scope `static_assert`, range-based
+    /// `for` and `if constexpr` as Joern 4.0.150 does for reference parity.
     /// By default they follow C++ evaluation.
     pub joern_cpp_control_flow: bool,
 }

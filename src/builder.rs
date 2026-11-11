@@ -11,6 +11,19 @@ use crate::{
 use std::borrow::Cow;
 use std::collections::{HashMap, HashSet};
 
+fn literal_truth(condition: &Expr) -> Option<bool> {
+    match &condition.kind {
+        ExprKind::Identifier(value) if value == "true" => Some(true),
+        ExprKind::Identifier(value) if value == "false" => Some(false),
+        ExprKind::Literal(value) => match value.as_str() {
+            "true" => Some(true),
+            "false" => Some(false),
+            value => integer_truth(value),
+        },
+        _ => None,
+    }
+}
+
 #[derive(Default)]
 struct Fragment {
     entry: Option<NodeId>,
@@ -1420,11 +1433,7 @@ impl Builder<'_> {
         if self.joern_loop_conditions {
             return false;
         }
-        match &condition.kind {
-            ExprKind::Identifier(value) => value == "true",
-            ExprKind::Literal(value) => value == "true" || integer_truth(value) == Some(true),
-            _ => false,
-        }
+        literal_truth(condition) == Some(true)
     }
     /// Joern 4.0.150 selects FOR children by `order`, rather than CONDITION
     /// edges. `slots` holds the initializer and each nonempty condition or
@@ -1496,6 +1505,18 @@ impl Builder<'_> {
         let flow = self.statement(statement, block, false);
         self.scopes.pop();
         flow
+    }
+    fn if_branch(&mut self, statement: &Stmt, parent: NodeId, discarded: bool) -> Fragment {
+        let diagnostic_count = self.diagnostics.len();
+        let flow = self.branch(statement, parent);
+        if discarded {
+            // The parsed subtree remains in the CPG. Its unresolved executable
+            // effects and labels cannot participate in this method's CFG.
+            self.diagnostics.truncate(diagnostic_count);
+            Fragment::default()
+        } else {
+            flow
+        }
     }
     fn declarations(
         &mut self,
@@ -1755,14 +1776,27 @@ impl Builder<'_> {
                 .into_iter()
                 .fold(Fragment::default(), Fragment::append),
             StmtKind::If {
+                is_constexpr,
                 condition,
                 consequence,
                 alternative,
             } => {
+                let selected = if *is_constexpr && !self.joern_cpp_control_flow {
+                    let selected = literal_truth(condition);
+                    if selected.is_none() {
+                        self.unsupported(
+                            &condition.span,
+                            "if constexpr condition requires compile-time evaluation",
+                        );
+                    }
+                    selected
+                } else {
+                    None
+                };
                 let id = self.control(statement, parent, "IF");
                 self.scopes.push(HashMap::new());
                 let condition = self.condition(condition, id, true);
-                let yes = self.branch(consequence, id);
+                let yes = self.if_branch(consequence, id, selected == Some(false));
                 let no = alternative
                     .as_ref()
                     .map(|alternative| {
@@ -1773,9 +1807,13 @@ impl Builder<'_> {
                             Some("else"),
                         );
                         self.ast(id, else_id, None);
-                        self.branch(alternative, else_id)
+                        self.if_branch(alternative, else_id, selected == Some(true))
                     })
                     .unwrap_or_default();
+                if let Some(take_yes) = selected {
+                    self.scopes.pop();
+                    return if take_yes { yes } else { no };
+                }
                 let entry = condition.entry;
                 let mut fringe = if yes.entry.is_some() {
                     yes.fringe.clone()
