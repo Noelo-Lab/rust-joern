@@ -355,3 +355,61 @@ fn operator_template_names_do_not_hide_invalid_runtime_arguments() {
         }
     }
 }
+
+#[test]
+fn template_qualified_type_names_preserve_declarations_and_for_flow() {
+    let analysis = parse(
+        "namespace demo {
+            template<class T> struct Outer {
+                template<class U> struct Inner { using Iterator = U*; };
+            };
+         }
+         template<class T> struct Vec { using Iterator = T*; };
+         struct State { int* begin(); int* end(); };
+         void body(int);
+         int done();
+         int f(State* state) {
+             Vec<int>::Iterator last = state->end();
+             for (::demo::Outer<int>::Inner<int>::Iterator i = state->begin(); i != last; ++i) {
+                 body(*i);
+             }
+             return done();
+         }",
+    );
+    let f = function(&analysis);
+    for name in ["last", "i"] {
+        assert!(
+            f.cpg
+                .nodes
+                .iter()
+                .any(|node| { node.kind == "LOCAL" && node.name.as_deref() == Some(name) }),
+            "missing declaration of {name}"
+        );
+    }
+    let condition = call(f, "<operator>.notEquals");
+    let body = call(f, "body");
+    let increment = call(f, "<operator>.preIncrement");
+    assert!(path(f, call(f, "end"), call(f, "begin")));
+    assert!(path(f, call(f, "begin"), condition));
+    assert!(path(f, condition, body));
+    assert!(path(f, body, increment));
+    assert!(path(f, increment, condition));
+    assert!(path(f, condition, call(f, "done")));
+}
+
+#[test]
+fn parenthesized_template_qualified_callee_stays_an_expression() {
+    let analysis = parse(
+        "template<class T> struct Box { static int value(); };
+         int f() { return (Box<int>::value)(); }",
+    );
+    let f = function(&analysis);
+    let invoked = call(f, "<operator>()");
+    let ret = f
+        .cpg
+        .nodes
+        .iter()
+        .find(|node| node.kind == "RETURN")
+        .unwrap();
+    assert!(path(f, invoked, ret.id));
+}
