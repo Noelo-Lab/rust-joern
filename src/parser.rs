@@ -4254,6 +4254,29 @@ impl Parser<'_> {
         i
     }
 
+    fn declaration_specifier_end(&self, start: usize, end: usize) -> usize {
+        let base_end = self.specifier_end(start, end);
+        if !self.cpp || !self.in_function_body || base_end == start || base_end >= end {
+            return base_end;
+        }
+        // The ordinary specifier scan stops after the first template-id.
+        // Finish its qualified suffix only in declarations, where a name
+        // like Box<int>::value cannot be mistaken for a cast type.
+        let suffix_start = match (self.text(base_end - 1), self.text(base_end)) {
+            (">" | ">>", "::") => base_end,
+            ("::", _) => base_end - 1,
+            _ => return base_end,
+        };
+        let Some(name) = self.cpp_name(suffix_start, end, false, true) else {
+            return base_end;
+        };
+        let mut cursor = name.end;
+        while cursor < end && qualifier(self.text(cursor)) {
+            cursor += 1;
+        }
+        cursor
+    }
+
     fn declarator_name(&self, start: usize, end: usize) -> (Option<usize>, usize) {
         let mut i = start;
         while i < end {
@@ -4630,7 +4653,7 @@ impl Parser<'_> {
         if self.declaration_shape_problem(start, end) {
             return Vec::new();
         }
-        let base_end = self.specifier_end(start, end);
+        let base_end = self.declaration_specifier_end(start, end);
         let is_typedef = (start..base_end).any(|i| self.text(i) == "typedef");
         let (_, first_suffix) = self.declarator_name(base_end, end);
         // An ambiguous grouped object declaration does not establish a type
@@ -5011,7 +5034,7 @@ impl Parser<'_> {
     }
 
     fn declaration_shape_problem(&self, start: usize, end: usize) -> bool {
-        let base_end = self.specifier_end(start, end);
+        let base_end = self.declaration_specifier_end(start, end);
         for i in start..base_end {
             if matches!(self.text(i), "struct" | "union" | "class" | "enum") {
                 let mut tag = i + 1;
@@ -5221,11 +5244,12 @@ impl Parser<'_> {
         if t == "__extension__" {
             return self.looks_declaration(start + 1, end);
         }
-        if self.cpp {
-            let base_end = self.specifier_end(start, end);
-            if self.text(base_end) == "(" && self.matching(base_end, end) == Some(base_end + 1) {
-                return false;
-            }
+        let cpp_specifier_end = self.cpp.then(|| self.declaration_specifier_end(start, end));
+        if let Some(base_end) = cpp_specifier_end
+            && self.text(base_end) == "("
+            && self.matching(base_end, end) == Some(base_end + 1)
+        {
+            return false;
         }
         if start < end
             && self.tokens[start].kind == TokenKind::Identifier
@@ -5358,14 +5382,17 @@ impl Parser<'_> {
         {
             return true;
         }
-        if start < end && self.tokens[start].kind == TokenKind::Identifier {
-            let mut i = start + 1;
-            while i + 1 < end && self.text(i) == "::" {
-                i += 2;
-            }
-            if self.cpp && self.text(i) == "<" {
-                i = self.angle_close(i, end).map_or(i, |n| n + 1);
-            }
+        if start < end
+            && (self.tokens[start].kind == TokenKind::Identifier
+                || (self.cpp && self.in_function_body && t == "::"))
+        {
+            let i = cpp_specifier_end.unwrap_or_else(|| {
+                let mut i = start + 1;
+                while i + 1 < end && self.text(i) == "::" {
+                    i += 2;
+                }
+                i
+            });
             let mut pointer = i + 1;
             while let Some(after) = self.skip_attribute(pointer, end) {
                 pointer = after;
@@ -6183,7 +6210,7 @@ impl Parser<'_> {
                     StmtKind::Problem
                 } else if self.looks_declaration(self.pos, end)
                     || (attributes_end > self.pos && {
-                        let base_end = self.specifier_end(self.pos, end);
+                        let base_end = self.declaration_specifier_end(self.pos, end);
                         let (name, suffix) = self.declarator_name(base_end, end);
                         self.text(base_end) == "("
                             && suffix == end
@@ -6215,7 +6242,9 @@ impl Parser<'_> {
                     };
                     let mut recovered_declarator = false;
                     let mut suffixes = Vec::new();
-                    for (a, b) in self.split_ranges(self.specifier_end(start, end), end, ",") {
+                    for (a, b) in
+                        self.split_ranges(self.declaration_specifier_end(start, end), end, ",")
+                    {
                         let (_, mut after) = self.declarator_name(a, b);
                         while let Some(next) = self.skip_attribute(after, b) {
                             after = next;
@@ -6588,7 +6617,7 @@ impl Parser<'_> {
             && self
                 .function_header(start, declaration_end)
                 .is_some_and(|header| {
-                    let base_end = self.specifier_end(start, declaration_end);
+                    let base_end = self.declaration_specifier_end(start, declaration_end);
                     base_end < header.name_start
                         && (base_end..header.name_start).all(|i| {
                             matches!(self.text(i), "*" | "&" | "&&") || qualifier(self.text(i))
@@ -6597,7 +6626,7 @@ impl Parser<'_> {
         let condition_declaration = self.cpp
             && (recovered_prototype
                 || (self.looks_declaration(start, declaration_end) && {
-                    let base_end = self.specifier_end(start, declaration_end);
+                    let base_end = self.declaration_specifier_end(start, declaration_end);
                     let (_, after_name) = self.declarator_name(base_end, declaration_end);
                     matches!(self.text(after_name), "=" | "{")
                 }));
@@ -6731,7 +6760,7 @@ impl Parser<'_> {
                 || self.unpaired_expression_colon(a, b).is_some()
                 || self.star_literal_problem(a, b)
                 || if declaration {
-                    let base = self.specifier_end(a, b);
+                    let base = self.declaration_specifier_end(a, b);
                     let (_, after) = self.declarator_name(base, b);
                     self.declaration_shape_problem(a, b)
                         || self.declaration_expression_problem(a, b)
@@ -8082,7 +8111,7 @@ impl Parser<'_> {
         if self.cpp && self.unpaired_expression_colon(start, end).is_some() {
             return true;
         }
-        let base_end = self.specifier_end(start, end);
+        let base_end = self.declaration_specifier_end(start, end);
         for (a, b) in self.split_ranges(base_end, end, ",") {
             let (_, mut i) = self.declarator_name(a, b);
             while i < b {
@@ -8231,6 +8260,16 @@ impl Parser<'_> {
         end: usize,
         member: bool,
     ) -> Option<CppExpressionName> {
+        self.cpp_name(start, end, member, false)
+    }
+
+    fn cpp_name(
+        &self,
+        start: usize,
+        end: usize,
+        member: bool,
+        type_context: bool,
+    ) -> Option<CppExpressionName> {
         if !self.cpp {
             return None;
         }
@@ -8249,6 +8288,9 @@ impl Parser<'_> {
             }
             let component = cursor;
             if self.text(cursor) == "operator" {
+                if type_context {
+                    return None;
+                }
                 cursor += 1;
                 match self.text(cursor) {
                     "[" if self.text(cursor + 1) == "]" => cursor += 2,
@@ -8274,12 +8316,13 @@ impl Parser<'_> {
             } else {
                 cursor += 1;
                 if self.text(cursor) == "<"
-                    && (member
+                    && (type_context
+                        || member
                         || component > start
                         || !self.variables.contains(self.text(component))
                         || self.function_returns.contains_key(self.text(component)))
                     && let Some(close) = self.angle_close(cursor, end)
-                    && matches!(self.text(close + 1), "::" | "(")
+                    && (type_context || matches!(self.text(close + 1), "::" | "("))
                 {
                     cursor = close + 1;
                 }
