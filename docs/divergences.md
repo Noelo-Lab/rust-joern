@@ -279,7 +279,7 @@ reports these loops as differences, and DecBench's GED cache needs a new
 
 ## Literal `if constexpr` conditions select one CFG branch
 
-**Introduced** 2026-11-11, `codex/cpp-constexpr-if-cfg`.
+**Introduced** 2026-11-11, [PR #26](https://github.com/Noelo-Lab/rust-joern/pull/26).
 
 **Joern:** 4.0.150 emits both successors for the literal `if constexpr` cases
 in the comparison fixture.
