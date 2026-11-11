@@ -160,9 +160,6 @@ fn literal_and_pointer_conversions_require_proven_compatibility() {
         "struct A { int x; A(): x(\"abc\") {} };",
         "struct A { int x; A(int* p): x(p) {} };",
         "struct A { int* x; A(const int* p): x(p) {} };",
-        // A valid pointer copy is also rejected until pointee qualifiers are
-        // preserved well enough to distinguish it from the case above.
-        "struct A { int* x; A(int* p): x(p) {} };",
     ] {
         assert!(
             analyze(source, "invalid.cpp", &options(true)).is_err(),
@@ -177,6 +174,77 @@ fn literal_and_pointer_conversions_require_proven_compatibility() {
     ] {
         assert!(
             analyze(source, "valid.cpp", &options(true)).is_ok(),
+            "{source}"
+        );
+    }
+}
+
+#[test]
+fn matching_plain_pointer_parameters_initialize_in_member_order() {
+    let analysis = analyze(
+        "struct Payload { int value; };
+         class Owner {
+             bool ready;
+             const Payload* payload;
+         public:
+             Owner(const Payload* payload): payload(payload), ready(true) {}
+         };",
+        "pointer-copy.cpp",
+        &options(true),
+    )
+    .unwrap();
+    let method = analysis
+        .functions
+        .iter()
+        .find(|function| function.name == "Owner")
+        .unwrap();
+    let initializers: Vec<_> = method
+        .cpg
+        .nodes
+        .iter()
+        .filter(|node| node.name.as_deref() == Some("<operator>.fieldInitialization"))
+        .collect();
+    assert_eq!(
+        initializers
+            .iter()
+            .map(|node| node.code.as_str())
+            .collect::<Vec<_>>(),
+        ["ready(true)", "payload(payload)"]
+    );
+    let rhs = method
+        .cpg
+        .edges
+        .iter()
+        .find(|edge| {
+            edge.kind == "ARGUMENT"
+                && edge.source == initializers[1].id
+                && edge.label.as_deref() == Some("2")
+        })
+        .unwrap()
+        .target;
+    assert_eq!(method.cpg.nodes[rhs as usize].kind, "IDENTIFIER");
+    assert!(method.cpg.edges.iter().any(|edge| {
+        edge.kind == "REF"
+            && edge.source == rhs
+            && method.cpg.nodes[edge.target as usize].kind == "METHOD_PARAMETER_IN"
+    }));
+}
+
+#[test]
+fn pointer_copies_reject_unproved_types_and_declarators() {
+    for source in [
+        "struct A { int* x; A(volatile int* p): x(p) {} };",
+        "struct A { int* x; A(int* volatile p): x(p) {} };",
+        "struct A { int* x; A(int p[2]): x(p) {} };",
+        "struct A { int** x; A(int** p): x(p) {} };",
+        "struct A { int* x; A(int* p = nullptr): x(p) {} };",
+        "struct A { int* x; A(int* p); }; A::A(int* p): x(p) {}",
+        "struct A { using T = int; T* x; A(T* p): x(p) {} };",
+        "struct A { int* x; int* y; A(int* p): x(p), y(x) {} };",
+        "struct A { Unknown* x; A(Unknown* p): x(p) {} };",
+    ] {
+        assert!(
+            analyze(source, "unproved.cpp", &options(true)).is_err(),
             "{source}"
         );
     }

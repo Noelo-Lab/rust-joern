@@ -86,7 +86,7 @@ fn parse_unit(
         extern_c_names: HashSet::new(),
         class_scopes: HashSet::new(),
         class_fields: HashMap::new(),
-        scalar_constructor_classes: HashSet::new(),
+        scalar_constructor_classes: HashMap::new(),
         constructor_initializers,
         function_fields: Vec::new(),
         function_member_cv: false,
@@ -798,7 +798,7 @@ struct Parser<'a> {
     extern_c_names: HashSet<String>,
     class_scopes: HashSet<String>,
     class_fields: HashMap<String, Vec<(String, String)>>,
-    scalar_constructor_classes: HashSet<String>,
+    scalar_constructor_classes: HashMap<String, HashMap<String, String>>,
     constructor_initializers: bool,
     function_fields: Vec<(String, String)>,
     function_member_cv: bool,
@@ -1291,9 +1291,11 @@ impl Parser<'_> {
                         let fields = self.collect_class_fields(cursor + 1, close);
                         self.scalar_constructor_classes.remove(&nested);
                         if self.constructor_initializers
-                            && self.scalar_constructor_class(start, cursor, close, &fields)
+                            && let Some(pointer_types) =
+                                self.scalar_constructor_class(start, cursor, close, &fields)
                         {
-                            self.scalar_constructor_classes.insert(nested.clone());
+                            self.scalar_constructor_classes
+                                .insert(nested.clone(), pointer_types);
                         }
                         self.class_fields.insert(nested.clone(), fields);
                     }
@@ -1798,11 +1800,13 @@ impl Parser<'_> {
         open: usize,
         end: usize,
         fields: &[(String, String)],
-    ) -> bool {
+    ) -> Option<HashMap<String, String>> {
         if (start..open).any(|i| matches!(self.text(i), ":" | "union" | "template")) {
-            return false;
+            return None;
         }
         let mut collected = Vec::new();
+        let mut pointer_types = HashMap::new();
+        let mut class_type_alias = false;
         let mut at = open + 1;
         while at < end {
             if matches!(self.text(at), "public" | "private" | "protected")
@@ -1818,33 +1822,31 @@ impl Parser<'_> {
             let from = at;
             while at < end && !matches!(self.text(at), ";" | "{") {
                 if matches!(self.text(at), "(" | "[") {
-                    let Some(close) = self.matching(at, end) else {
-                        return false;
-                    };
+                    let close = self.matching(at, end)?;
                     at = close + 1;
                 } else {
                     at += 1;
                 }
             }
             if at == end || (from..at).any(|i| self.text(i) == "virtual") {
-                return false;
+                return None;
             }
             if (from..at).any(|i| self.text(i) == "(" && self.text(i + 1) == "*") {
-                return false;
+                return None;
             }
             if self.function_header(from, at).is_some() {
                 if self.text(at) == "{" {
-                    let Some(close) = self.matching(at, end) else {
-                        return false;
-                    };
+                    let close = self.matching(at, end)?;
                     at = close;
                 }
                 at += 1;
                 continue;
             }
-            if (from..at).any(|i| matches!(self.text(i), "static" | "typedef" | "using")) {
+            let type_alias = (from..at).any(|i| matches!(self.text(i), "typedef" | "using"));
+            class_type_alias |= type_alias;
+            if type_alias || (from..at).any(|i| self.text(i) == "static") {
                 if self.text(at) != ";" {
-                    return false;
+                    return None;
                 }
                 at += 1;
                 continue;
@@ -1867,12 +1869,12 @@ impl Parser<'_> {
                     )
                 })
             {
-                return false;
+                return None;
             }
             let base = self.specifier_end(from, at);
             for (a, b) in self.split_ranges(base, at, ",") {
-                let (Some(name), _) = self.declarator_name(a, b) else {
-                    return false;
+                let (Some(name), suffix) = self.declarator_name(a, b) else {
+                    return None;
                 };
                 let ty = self.declarator_type(from, base, Some(name), b);
                 let scalar = ty.split_whitespace().all(|word| {
@@ -1893,19 +1895,91 @@ impl Parser<'_> {
                 });
                 // Only plain pointer declarators are admitted for nominal pointees.
                 if !scalar && !(a..name).any(|i| self.text(i) == "*") {
-                    return false;
+                    return None;
+                }
+                if suffix == b
+                    && let Some(spelling) = self.plain_pointer_spelling(from, base, a, name)
+                {
+                    pointer_types.insert(self.text(name).to_string(), spelling);
                 }
                 collected.push((self.text(name).to_string(), ty));
             }
             at += 1;
         }
-        collected == fields
-            && fields
-                .iter()
-                .map(|(name, _)| name)
-                .collect::<HashSet<_>>()
-                .len()
-                == fields.len()
+        let field_names: HashSet<_> = fields.iter().map(|(name, _)| name.as_str()).collect();
+        if collected != fields || field_names.len() != fields.len() {
+            return None;
+        }
+        // The field and parameter spellings must resolve in the same class
+        // scope. Leave class-local aliases and shadowed type names unproved.
+        if class_type_alias {
+            pointer_types.clear();
+        } else {
+            pointer_types.retain(|_, spelling| {
+                !spelling
+                    .split_ascii_whitespace()
+                    .any(|word| field_names.contains(word))
+            });
+        }
+        Some(pointer_types)
+    }
+
+    fn plain_pointer_spelling(
+        &self,
+        start: usize,
+        base: usize,
+        declarator: usize,
+        name: usize,
+    ) -> Option<String> {
+        // Keep pointee cv qualifiers exactly. A single plain '*' cannot
+        // involve array adjustment, pointer-to-member types or a volatile
+        // pointer read. Check the complete token ranges before comparing.
+        if self.text(declarator) != "*"
+            || name != declarator + 1
+            || (start..base)
+                .chain(declarator..=name)
+                .any(|i| self.tokens[i].macro_recovery || self.tokens[i].macro_expansion)
+        {
+            return None;
+        }
+        let words: Vec<_> = (start..base).map(|i| self.text(i)).collect();
+        let mut pointee = words
+            .iter()
+            .copied()
+            .filter(|word| !matches!(*word, "const" | "volatile"));
+        let first = pointee.next()?;
+        if pointee.next().is_some()
+            || (!self.type_word(first)
+                && (!self.explicit_types.contains(first)
+                    || self.supplied_type_names.contains(first)))
+            || matches!(first, "auto" | "__auto_type")
+        {
+            return None;
+        }
+        Some(words.join(" "))
+    }
+
+    fn plain_pointer_parameters(&self, start: usize, end: usize) -> HashMap<String, String> {
+        let mut spellings = HashMap::new();
+        let mut names = HashSet::new();
+        for (start, end) in self.split_ranges(start, end, ",") {
+            let base = self.specifier_end(start, end);
+            if let (Some(name), after) = self.declarator_name(base, end) {
+                let name_text = self.text(name);
+                if !names.insert(name_text) {
+                    return HashMap::new();
+                }
+                if after == end
+                    && let Some(spelling) = self.plain_pointer_spelling(start, base, base, name)
+                    && !spelling
+                        .split_ascii_whitespace()
+                        .any(|word| names.contains(word))
+                {
+                    spellings.insert(name_text.to_string(), spelling);
+                }
+            }
+        }
+        spellings
     }
 
     fn scalar_member_initializers(
@@ -1914,6 +1988,8 @@ impl Parser<'_> {
         end: usize,
         fields: &[(String, String)],
         functions: &[Function],
+        pointer_members: &HashMap<String, String>,
+        pointer_parameters: &HashMap<String, String>,
     ) -> Option<Vec<MemberInitialization>> {
         let mut entries = HashMap::new();
         for (a, b) in self.split_ranges(start, end, ",") {
@@ -1940,7 +2016,14 @@ impl Parser<'_> {
         for (member, expected_type) in fields {
             let &(a, b) = entries.get(member)?;
             let value = self.expression_range(a + 2, b - 1);
-            if !self.scalar_initialization_value(&value, expected_type, fields, functions) {
+            if !self.scalar_initialization_value(
+                &value,
+                expected_type,
+                fields,
+                functions,
+                pointer_members.get(member).map(String::as_str),
+                pointer_parameters,
+            ) {
                 return None;
             }
             plan.push(MemberInitialization {
@@ -1959,6 +2042,8 @@ impl Parser<'_> {
         expected_type: &str,
         fields: &[(String, String)],
         functions: &[Function],
+        member_pointer_spelling: Option<&str>,
+        pointer_parameters: &HashMap<String, String>,
     ) -> bool {
         let scalar_type = |ty: &str| {
             !ty.is_empty()
@@ -1987,6 +2072,12 @@ impl Parser<'_> {
             scalar_type(ty) && !expected_type.contains('*') && !ty.contains('*')
         };
         match &value.kind {
+            ExprKind::Identifier(name) if expected_type.contains('*') => member_pointer_spelling
+                .is_some_and(|spelling| {
+                    pointer_parameters
+                        .get(name)
+                        .is_some_and(|ty| ty == spelling)
+                }),
             ExprKind::Identifier(name) => self
                 .variable_types
                 .get(name)
@@ -2011,9 +2102,14 @@ impl Parser<'_> {
                     false
                 }
             }
-            ExprKind::Bracketed(inner) => {
-                self.scalar_initialization_value(inner, expected_type, fields, functions)
-            }
+            ExprKind::Bracketed(inner) => self.scalar_initialization_value(
+                inner,
+                expected_type,
+                fields,
+                functions,
+                member_pointer_spelling,
+                pointer_parameters,
+            ),
             ExprKind::Call { callee, arguments } if arguments.is_empty() => {
                 let ExprKind::Identifier(name) = &callee.kind else {
                     return false;
@@ -2531,7 +2627,7 @@ impl Parser<'_> {
             && !((header.parameters_end + 1..body_start).any(|i| self.text(i) == ":"))
             && qualified_name.rsplit_once("::").is_some_and(|(owner, _)| {
                 owner.rsplit("::").next() == Some(name.as_str())
-                    && (!self.scalar_constructor_classes.contains(owner)
+                    && (!self.scalar_constructor_classes.contains_key(owner)
                         || !implicit_fields.is_empty())
             })
         {
@@ -2547,15 +2643,30 @@ impl Parser<'_> {
             {
                 let owner = qualified_name.rsplit_once("::").map(|(owner, _)| owner);
                 let plan = if self.constructor_initializers
-                    && owner.is_some_and(|owner| {
-                        self.scalar_constructor_classes.contains(owner)
-                            && owner.rsplit("::").next() == Some(name.as_str())
-                    }) {
+                    && let Some(owner) =
+                        owner.filter(|owner| owner.rsplit("::").next() == Some(name.as_str()))
+                    && let Some(pointer_members) =
+                        self.scalar_constructor_classes.get(owner).cloned()
+                {
+                    let pointer_parameters = if self.record_depth > 0
+                        && owner == prefix
+                        && !header.name.contains("::")
+                        && !pointer_members.is_empty()
+                    {
+                        self.plain_pointer_parameters(
+                            header.parameters_start,
+                            header.parameters_end,
+                        )
+                    } else {
+                        HashMap::new()
+                    };
                     self.scalar_member_initializers(
                         colon + 1,
                         body_start,
                         &implicit_fields,
                         functions,
+                        &pointer_members,
+                        &pointer_parameters,
                     )
                 } else {
                     None

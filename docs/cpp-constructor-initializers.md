@@ -14,14 +14,16 @@ initializers and non-scalar subobjects. A type name supplied through
 A list of type names does not provide this proof. Unknown, duplicated or omitted
 members and constructor definitions without class context remain errors.
 
-The initial RHS subset is deliberately small: known scalar/pointer identifiers,
-plain decimal/boolean/string/character literals for non-pointer fields, bracketed forms, and
-previously declared global zero-argument functions returning scalar/pointer
-values. Pointer RHS types must agree with the member type apart from cv spelling;
-unknown derived/base adjustments are refused. Unknown calls, object conversions,
-user-defined literals and general
-operator/argument sequencing remain unsupported. These bounds prevent inventing
-implicit conversion effects from unknown expression types.
+The RHS subset includes known scalar identifiers, decimal, boolean and character
+literals, bracketed forms, and previously declared global zero-argument
+functions returning scalar values. A pointer initializer can use `nullptr` or
+copy a named parameter in an inline constructor. The parameter and member
+must have the same simple pointee spelling including cv qualifiers and one
+plain pointer declarator. This evidence comes from the original declaration
+tokens. Pointer conversions, pointer-member reads and out-of-class pointer
+copies require additional evidence. Unknown calls, object conversions,
+user-defined literals and general operator/argument sequencing remain
+unsupported.
 
 The syntax layer builds a typed `MemberInitialization` plan in member declaration
 order, independently of initializer-list spelling. The builder emits distinct
