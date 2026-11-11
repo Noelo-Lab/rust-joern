@@ -8,7 +8,7 @@ belong in regression fixtures, not here.
 
 ## MSVC inline warning and pack pragmas
 
-Recorded 2026-11-11 in the MSVC pragma operator change.
+Recorded 2026-11-11 in [PR #27](https://github.com/Noelo-Lab/rust-joern/pull/27).
 
 Joern 4.0.150 exports only the final `return 5;` in the CFG of a
 Windows-target compiler control where an inline `__pragma(warning(...))`
