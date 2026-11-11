@@ -304,3 +304,9 @@ remain unchanged and still diagnose unsupported initializer syntax. This has
 not changed the DecBench parser pin or metrics. See
 [the profile contract](cpp-constructor-initializers.md) for the admitted subset,
 normal-completion-only scope and checkpointed corpus qualification driver.
+
+On 2026-11-11, the follow-up to [PR #5](https://github.com/Noelo-Lab/rust-joern/pull/5)
+extends that profile to a direct copy from a matching plain-pointer parameter
+in an inline constructor. The original declaration tokens supply the pointee
+type and qualifiers. The CFG places the field write in declaration order.
+Use the default option to reproduce the original initializer behavior.
