@@ -95,6 +95,8 @@ for a definition whose parameter list CDT rejects, such as r2dec's
 C++ `noexcept` operands and block-scope `static_assert` stay out of the CFG,
 because neither runs at run time.
 A range-based `for` is lowered as a loop that evaluates its range once.
+A literal `if constexpr` keeps only the selected branch in the CFG. Conditions
+that require compile-time evaluation report an error diagnostic.
 `--joern-cpp-control-flow` or Python `joern_cpp_control_flow=True` keeps Joern's
 CFG instead.
 [Divergences](docs/divergences.md) lists every intentional difference from

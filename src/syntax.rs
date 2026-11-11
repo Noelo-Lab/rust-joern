@@ -192,6 +192,7 @@ pub enum StmtKind {
         full_name: String,
     },
     If {
+        is_constexpr: bool,
         condition: Expr,
         consequence: Box<Stmt>,
         alternative: Option<Box<Stmt>>,

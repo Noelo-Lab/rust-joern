@@ -277,6 +277,29 @@ request it. DecBench and its shim use the default, so `compare_decbench.py`
 reports these loops as differences, and DecBench's GED cache needs a new
 `cache_version`.
 
+## Literal `if constexpr` conditions select one CFG branch
+
+**Introduced** 2026-11-11, [PR #26](https://github.com/Noelo-Lab/rust-joern/pull/26).
+
+**Joern:** 4.0.150 emits both successors for the literal `if constexpr` cases
+in the comparison fixture.
+
+**Rust Joern:** a boolean or recognized integer literal selects the executed
+branch. The condition and discarded statements retain their AST nodes. An
+unresolved condition reports an error diagnostic and keeps the structural CFG
+available in non-strict mode. Init-statements and conditions that require
+name lookup, constant evaluation, or template instantiation are unresolved.
+
+**Why:** C++17 discards the unselected substatement at compile time. A generic
+conditional graph cannot stand for an instantiated function. See the
+[C++ draft's if statement](https://eel.is/c++draft/stmt.if).
+
+**Affects:** raw and normalized CFGs and their data-flow projections. Ordinary
+`if` statements keep their existing CFGs.
+
+**Reference behavior:** use `joern_cpp_control_flow` or
+`--joern-cpp-control-flow` to retain both branches and Joern's CFG.
+
 ## Original exporter stack overflows are not reproduced
 
 **Recorded:** 2026-10-09 CFG parity evaluation.
