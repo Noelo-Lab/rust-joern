@@ -6,6 +6,23 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## MSVC inline warning and pack pragmas
+
+Recorded 2026-11-11 in the MSVC pragma operator change.
+
+Joern 4.0.150 exports only the final `return 5;` in the CFG of a
+Windows-target compiler control where an inline `__pragma(warning(...))`
+precedes `if (x) return 3;`. Clang retains the conditional and both returns.
+
+Rust Joern treats supported unquoted `warning` and `pack` invocations as
+preprocessing trivia, preserving original source positions. This keeps
+directives out of the executable CPG and preserves the adjacent CFG and
+data flow. The parser models the surrounding syntax and does not evaluate
+compiler warning policy or record packing. Unsupported forms produce a
+diagnostic.
+
+There is no option to restore Joern's dropped branch.
+
 ## Invalid explicit-destructor call diagnostics
 
 **Recorded:** 2026-10-28, follow-up to PR #3; no DecBench pin update.
