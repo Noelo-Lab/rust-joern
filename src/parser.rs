@@ -6856,6 +6856,25 @@ impl Parser<'_> {
         expression
     }
 
+    /// End of the placement list in `new (args) T`. A binary operator
+    /// after the closing parenthesis does not begin an allocated type.
+    fn cpp_new_placement_end(&self, start: usize, end: usize) -> Option<usize> {
+        if !self.cpp
+            || self.text(start) != "new"
+            || self.text(start + 1) != "("
+            || self.text(start.saturating_sub(1)) == "operator"
+        {
+            return None;
+        }
+        let close = self.matching(start + 1, end)?;
+        let next = close + 1;
+        (close > start + 2
+            && next < end
+            && (self.tokens[next].kind == TokenKind::Identifier || self.text(next) == "::")
+            && alternative_operator(self.text(next)) == self.text(next))
+        .then_some(close)
+    }
+
     fn detached_identifier_suffix(&self, start: usize, end: usize) -> Option<usize> {
         let mut cursor = start;
         while cursor < end {
@@ -6885,6 +6904,10 @@ impl Parser<'_> {
         if self.text(end.saturating_sub(1)) == ")" {
             let mut cursor = start;
             while cursor < end {
+                if let Some(close) = self.cpp_new_placement_end(cursor, end) {
+                    cursor = close + 2;
+                    continue;
+                }
                 if cursor > start
                     && self.tokens[cursor].kind == TokenKind::Identifier
                     && matches!(self.text(cursor - 1), ")" | "]")
@@ -7890,8 +7913,12 @@ impl Parser<'_> {
                 return true;
             }
         }
+        let mut placement_types = Vec::new();
         let mut i = start;
         while i < end {
+            if let Some(close) = self.cpp_new_placement_end(i, end) {
+                placement_types.push(close + 1);
+            }
             if self.text(i) == "," && matches!(self.text(i.saturating_sub(1)), "(" | "[") {
                 // A comma needs a left operand. CDT replaces its complete
                 // containing condition rather than retaining partial calls.
@@ -8008,6 +8035,7 @@ impl Parser<'_> {
                 && self.tokens[i].kind == TokenKind::Identifier
                 && matches!(self.text(i - 1), ")" | "]")
                 && !self.cast_group_ends_at(start, i - 1, end)
+                && !placement_types.contains(&i)
                 && (!self.cpp || alternative_operator(self.text(i)) == self.text(i))
             {
                 // An absent operator inside an argument or grouped operand
@@ -9066,11 +9094,30 @@ impl Parser<'_> {
             }
             "new" if self.cpp => {
                 self.pos += 1;
+                let mut placement = Vec::new();
+                if let Some(close) = self.cpp_new_placement_end(start, self.limit) {
+                    self.pos += 1;
+                    while self.pos < close {
+                        placement.push(self.expression(1));
+                        if !self.eat(",") {
+                            break;
+                        }
+                        if self.pos == close {
+                            self.diagnose(close, close, "missing placement new argument");
+                            break;
+                        }
+                    }
+                    self.expect(")");
+                }
                 let type_start = self.pos;
-                self.pos = self.specifier_end(self.pos, self.limit);
+                let specifier_start =
+                    type_start + usize::from(!placement.is_empty() && self.at("::"));
+                self.pos = self.specifier_end(specifier_start, self.limit);
                 let type_end = self.pos;
                 while self.eat("*") {}
-                let type_name = self.clean_type(type_start, type_end).replace("::", ".");
+                let type_name = self
+                    .clean_type(specifier_start, type_end)
+                    .replace("::", ".");
                 let mut arguments = vec![Expr {
                     kind: ExprKind::TypeSpecifier {
                         code: self.raw(type_start, type_end),
@@ -9082,6 +9129,7 @@ impl Parser<'_> {
                     arguments.push(self.expression(0));
                     self.expect("]");
                 }
+                arguments.append(&mut placement);
                 if self.eat("(") {
                     while self.pos < self.limit && !self.at(")") {
                         arguments.push(self.expression(1));
