@@ -355,3 +355,63 @@ fn operator_template_names_do_not_hide_invalid_runtime_arguments() {
         }
     }
 }
+
+#[test]
+fn member_comparison_does_not_consume_the_following_operator_definition() {
+    let a = parse(
+        "struct Node { const int *value; bool operator<(const Node&) const; bool operator>(const Node&) const; };\n\
+         bool Node::operator<(const Node& other) const { return (value < other.value); }\n\
+         bool Node::operator>(const Node& other) const { return (value > other.value); }",
+    );
+    for (line, op, code) in [
+        (2, "<operator>.lessThan", "return (value < other.value);"),
+        (3, "<operator>.greaterThan", "return (value > other.value);"),
+    ] {
+        let method = a.functions.iter().find(|f| f.start_line == line).unwrap();
+        let comparison = call(method, op);
+        let returned = method
+            .cpg
+            .nodes
+            .iter()
+            .find(|node| node.kind == "RETURN" && node.code == code)
+            .unwrap();
+        assert!(path(method, comparison, returned.id));
+    }
+}
+
+#[test]
+fn template_call_keeps_comparisons_and_nested_closers_inside_the_name() {
+    let a = parse(
+        "namespace demo { template<bool B> struct Flag {}; template<class T> int get(int); }\n\
+         int f() { return demo::get<demo::Flag<(2 > 1)>>(0); }",
+    );
+    let f = function(&a);
+    let template = f
+        .cpg
+        .nodes
+        .iter()
+        .find(|node| node.kind == "CALL" && node.code == "demo::get<demo::Flag<(2 > 1)>>(0)")
+        .unwrap();
+    let returned = f
+        .cpg
+        .nodes
+        .iter()
+        .find(|node| node.kind == "RETURN")
+        .unwrap();
+    assert!(path(f, template.id, returned.id));
+    assert!(!f.cpg.nodes.iter().any(|node| matches!(
+        node.name.as_deref(),
+        Some("<operator>.lessThan" | "<operator>.greaterThan" | "<operator>.arithmeticShiftRight")
+    )));
+}
+
+#[test]
+fn single_angle_before_a_shift_remains_a_comparison() {
+    let a = parse(
+        "struct Node { int value; }; int f(Node n, int x, int y) { return n.value < x >> (y); }",
+    );
+    let f = function(&a);
+    let shifted = call(f, "<operator>.arithmeticShiftRight");
+    let compared = call(f, "<operator>.lessThan");
+    assert!(path(f, shifted, compared));
+}
