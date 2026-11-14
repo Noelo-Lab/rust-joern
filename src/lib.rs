@@ -150,14 +150,7 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             return Err(format!("invalid C++ context type name: {name:?}"));
         }
     }
-    let unit = parser::parse_with(
-        source,
-        cpp,
-        preprocessed,
-        options.joern_cdt_failures,
-        &options.cpp_type_names,
-        options.cpp_constructor_initializers,
-    );
+    let unit = parser::parse_with(source, cpp, preprocessed, options);
     let mut diagnostics: Vec<_> = unit
         .diagnostics
         .iter()
