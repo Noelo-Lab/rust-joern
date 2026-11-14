@@ -2563,6 +2563,15 @@ impl Parser<'_> {
             })
             .flatten();
         self.asm_problem_recovery = false;
+        let consteval_scope = self.cpp
+            && original_body_end.is_some_and(|end| {
+                self.raw(body_start, end + 1).contains("consteval")
+                    && (body_start + 1..end).any(|at| self.is_consteval_if(at))
+            });
+        let consteval_scope = consteval_scope.then(|| {
+            self.consteval_alias_undo.push(HashMap::new());
+            (self.imports.clone(), self.using_namespaces.len())
+        });
         let body = if definition {
             self.statement()
         } else {
@@ -2580,6 +2589,12 @@ impl Parser<'_> {
             // The balanced source body still delimits recovery of later methods.
             leaked = self.asm_tail_declarations(end, body_end);
             self.pos = body_end + 1;
+        }
+        if let Some((imports, namespace_count)) = consteval_scope {
+            let aliases = self.consteval_alias_undo.pop().unwrap();
+            self.restore_aliases(aliases);
+            self.imports = imports;
+            self.using_namespaces.truncate(namespace_count);
         }
         self.variables = old_variables;
         self.variable_types = old_variable_types;
@@ -5547,11 +5562,7 @@ impl Parser<'_> {
                 }
                 return self.statement();
             }
-            "if" if self.cpp
-                && (self.text(start + 1) == "consteval"
-                    || (matches!(self.text(start + 1), "!" | "not")
-                        && self.text(start + 2) == "consteval")) =>
-            {
+            "if" if self.cpp && self.is_consteval_if(start) => {
                 return self.consteval_if_statement(start);
             }
             "if" => {
@@ -6424,6 +6435,13 @@ impl Parser<'_> {
             kind,
             span: self.span(start, self.pos),
         }
+    }
+
+    fn is_consteval_if(&self, start: usize) -> bool {
+        self.text(start) == "if"
+            && (self.text(start + 1) == "consteval"
+                || (matches!(self.text(start + 1), "!" | "not")
+                    && self.text(start + 2) == "consteval"))
     }
 
     fn consteval_if_statement(&mut self, start: usize) -> Stmt {

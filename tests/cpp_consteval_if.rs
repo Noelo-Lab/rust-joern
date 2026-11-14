@@ -104,10 +104,12 @@ fn compatibility_omits_both_arms_and_recovers_the_successor() {
 }
 
 #[test]
-fn local_runtime_alias_does_not_change_later_function_identity() {
+fn local_aliases_do_not_change_later_function_identity() {
     let source = "using Element = int;
         void run() {
             if !consteval { using Element = long; Element storage = 0; }
+            using Element = long long;
+            Element later = 0;
         }
         Element convert(Element x) { return x; }";
     let analysis = analyze(source, "scope.cpp", &options()).unwrap();
