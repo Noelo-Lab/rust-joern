@@ -85,6 +85,7 @@ fn parse_unit(
         extern_c: false,
         extern_c_names: HashSet::new(),
         class_scopes: HashSet::new(),
+        primary_class_templates: HashMap::new(),
         class_fields: HashMap::new(),
         scalar_constructor_classes: HashSet::new(),
         constructor_initializers,
@@ -797,6 +798,7 @@ struct Parser<'a> {
     extern_c: bool,
     extern_c_names: HashSet<String>,
     class_scopes: HashSet<String>,
+    primary_class_templates: HashMap<String, usize>,
     class_fields: HashMap<String, Vec<(String, String)>>,
     scalar_constructor_classes: HashSet<String>,
     constructor_initializers: bool,
@@ -1287,6 +1289,11 @@ impl Parser<'_> {
                     };
                     if self.cpp && class.is_some() && !nested.is_empty() {
                         self.class_scopes.insert(nested.clone());
+                        if let Some((_, parameters)) = self.simple_type_template_head(start, cursor)
+                        {
+                            self.primary_class_templates
+                                .insert(nested.clone(), parameters.len());
+                        }
                         let close = self.matching(cursor, self.limit).unwrap_or(self.limit);
                         let fields = self.collect_class_fields(cursor + 1, close);
                         self.scalar_constructor_classes.remove(&nested);
@@ -1616,11 +1623,20 @@ impl Parser<'_> {
             if name_start > start && self.text(name_start - 1) == "~" {
                 name_start -= 1;
             }
-            while name_start >= start + 2
-                && self.text(name_start - 1) == "::"
-                && self.tokens[name_start - 2].kind == TokenKind::Identifier
-            {
-                name_start -= 2;
+            let mut owner_arguments = None;
+            while name_start >= start + 2 && self.text(name_start - 1) == "::" {
+                let component_end = name_start - 1;
+                if self.tokens[component_end - 1].kind == TokenKind::Identifier {
+                    name_start -= 2;
+                } else if owner_arguments.is_none()
+                    && let Some((open, count)) =
+                        self.primary_template_owner_arguments(start, component_end)
+                {
+                    owner_arguments = Some((open..component_end, count));
+                    name_start = open - 1;
+                } else {
+                    break;
+                }
             }
             if (start..name_start).any(|n| self.text(n) == "=" || self.text(n) == ":") {
                 i = close + 1;
@@ -1661,8 +1677,22 @@ impl Parser<'_> {
                 name_end = i;
             }
             let name = (name_start..name_end)
+                .filter(|n| {
+                    !owner_arguments
+                        .as_ref()
+                        .is_some_and(|(args, _)| args.contains(n))
+                })
                 .map(|n| self.text(n))
                 .collect::<String>();
+            if let Some((_, count)) = owner_arguments
+                && self
+                    .resolve_class_name(name.rsplit_once("::")?.0)
+                    .and_then(|owner| self.primary_class_templates.get(&owner))
+                    != Some(&count)
+            {
+                i = close + 1;
+                continue;
+            }
             return Some(Header {
                 name,
                 name_start,
@@ -1674,6 +1704,48 @@ impl Parser<'_> {
             });
         }
         None
+    }
+
+    /// The owner's injected class name may repeat the primary template's
+    /// type parameters, as in `template<class T> int Box<T>::size()`.
+    /// Keep specialization arguments distinct by leaving them out of this path.
+    fn primary_template_owner_arguments(&self, start: usize, end: usize) -> Option<(usize, usize)> {
+        if self.text(end - 1) != ">" {
+            return None;
+        }
+        let (head_close, parameters) = self.simple_type_template_head(start, end)?;
+        let open = (head_close + 2..end - 1)
+            .rev()
+            .find(|&i| self.text(i) == "<")?;
+        if self.tokens[open - 1].kind != TokenKind::Identifier {
+            return None;
+        }
+        let arguments = self.split_ranges(open + 1, end - 1, ",");
+        (parameters.len() == arguments.len()
+            && parameters
+                .iter()
+                .zip(arguments)
+                .all(|(&(a, _), (x, y))| y == x + 1 && self.text(a + 1) == self.text(x)))
+        .then_some((open, parameters.len()))
+    }
+
+    fn simple_type_template_head(
+        &self,
+        start: usize,
+        end: usize,
+    ) -> Option<(usize, Vec<(usize, usize)>)> {
+        if !self.cpp || self.text(start) != "template" || self.text(start + 1) != "<" {
+            return None;
+        }
+        let close = self.angle_close(start + 1, end)?;
+        let parameters = self.split_ranges(start + 2, close, ",");
+        (!parameters.is_empty()
+            && parameters.iter().all(|&(a, b)| {
+                b == a + 2
+                    && matches!(self.text(a), "class" | "typename")
+                    && self.tokens[a + 1].kind == TokenKind::Identifier
+            }))
+        .then_some((close, parameters))
     }
 
     fn grouped_function_header(&self, start: usize, end: usize) -> Option<Header> {
@@ -8574,6 +8646,7 @@ impl Parser<'_> {
             extern_c: self.extern_c,
             extern_c_names: self.extern_c_names.clone(),
             class_scopes: self.class_scopes.clone(),
+            primary_class_templates: self.primary_class_templates.clone(),
             asm_problem_recovery: false,
             in_function_body: self.in_function_body,
             function_declarations: Vec::new(),
