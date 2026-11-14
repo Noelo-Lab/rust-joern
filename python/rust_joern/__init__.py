@@ -523,6 +523,7 @@ def parse_code(
     data_flow: bool = False,
     reaching_definitions: bool = False,
     strict: bool = False,
+    diagnostic_spans: bool = False,
     joern_loop_conditions: bool = False,
     joern_knr_parameters: bool = False,
     joern_cdt_failures: bool = False,
@@ -534,8 +535,12 @@ def parse_code(
 
     Reaching definitions imply the data-flow pass. CPG, CFG, DDG, diagnostics,
     and optional reaching definitions are retained in ``Analysis.raw`` and can
-    be exported with ``Analysis.to_json()``. Constant-true ``while``/``for``
-    conditions lower like ``for (;;)`` unless ``joern_loop_conditions`` keeps
+    be exported with ``Analysis.to_json()``. With ``diagnostic_spans=True``,
+    diagnostics include available half-open byte ranges in the UTF-8 input
+    supplied to this call. An empty range is a point. Diagnostics without a
+    known location omit the range. Strict parsing still raises on any error.
+    Constant-true ``while``/``for`` conditions lower like ``for (;;)`` unless
+    ``joern_loop_conditions`` keeps
     Joern 4.0.150's condition node and exit edge. Every name in a K&R
     definition's identifier list is a parameter unless ``joern_knr_parameters``
     keeps Joern's one parameter per declaration. A parameter list or expression
@@ -553,7 +558,10 @@ def parse_code(
                                  preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions,
                                  joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
                                  joern_cpp_control_flow=joern_cpp_control_flow, cpp_type_names=cpp_type_names,
-                                 cpp_constructor_initializers=cpp_constructor_initializers))
+                                 cpp_constructor_initializers=cpp_constructor_initializers,
+                                 diagnostic_spans=diagnostic_spans))
+    if diagnostic_spans and analysis.raw.get("diagnostic_spans") is not True:
+        raise RuntimeError("Native Rust Joern did not acknowledge diagnostic_spans; rebuild the library")
     if cpp_type_names and analysis.raw.get("cpp_type_names") != list(cpp_type_names):
         raise RuntimeError("Native Rust Joern did not acknowledge cpp_type_names; rebuild the library")
     if cpp_constructor_initializers and analysis.raw.get("cpp_constructor_initializers") is not True:
@@ -564,7 +572,7 @@ def parse_code(
 def _analyze(source, filename, language=None, data_flow=False, reaching_definitions=False, strict=False,
              preprocessed=False, joern_loop_conditions=False, joern_knr_parameters=False,
              joern_cdt_failures=False, joern_cpp_control_flow=False, cpp_type_names=(),
-             cpp_constructor_initializers=False) -> dict:
+             cpp_constructor_initializers=False, diagnostic_spans=False) -> dict:
     if not isinstance(cpp_type_names, (tuple, list)) or not all(isinstance(name, str) for name in cpp_type_names):
         raise TypeError("cpp_type_names must be a tuple or list of strings")
     source_bytes = source.encode("utf-8") if isinstance(source, str) else source
@@ -578,6 +586,7 @@ def _analyze(source, filename, language=None, data_flow=False, reaching_definiti
         "joern_cdt_failures": joern_cdt_failures, "joern_cpp_control_flow": joern_cpp_control_flow,
         "cpp_type_names": cpp_type_names,
         "cpp_constructor_initializers": cpp_constructor_initializers,
+        "diagnostic_spans": diagnostic_spans,
     }).encode("utf-8")
     native = _library(os.environ.get("RUST_JOERN_LIBRARY"))
     buffer = ctypes.create_string_buffer(source_bytes)

@@ -97,6 +97,7 @@ struct Builder<'a> {
     method_full_name: &'a str,
     method_scope: String,
     diagnostics: Vec<Diagnostic>,
+    diagnostic_spans: bool,
     try_depth: usize,
     joern_loop_conditions: bool,
     joern_cpp_control_flow: bool,
@@ -141,6 +142,7 @@ pub fn build(
                 .unwrap_or_default()
         },
         diagnostics: Vec::new(),
+        diagnostic_spans: options.diagnostic_spans,
         try_depth: 0,
         joern_loop_conditions: options.joern_loop_conditions,
         joern_cpp_control_flow: options.joern_cpp_control_flow,
@@ -578,6 +580,12 @@ impl Builder<'_> {
             column: span.column,
             severity: "error".into(),
             message: message.into(),
+            span: self
+                .diagnostic_spans
+                .then_some(crate::graph::DiagnosticSpan {
+                    start_byte: span.start,
+                    end_byte: span.end,
+                }),
         });
     }
     fn control(&mut self, statement: &Stmt, parent: NodeId, name: &str) -> NodeId {
