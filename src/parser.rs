@@ -6468,7 +6468,9 @@ impl Parser<'_> {
             self.consteval_alias_undo.push(HashMap::new());
             let imports = self.imports.clone();
             let namespace_count = self.using_namespaces.len();
+            let outer_recovery = self.asm_problem_recovery;
             let statement = self.statement();
+            self.asm_problem_recovery = outer_recovery;
             let aliases = self.consteval_alias_undo.pop().unwrap();
             self.restore_aliases(aliases);
             self.imports = imports;
