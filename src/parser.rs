@@ -1131,6 +1131,11 @@ impl Parser<'_> {
             } else {
                 self.function_header_in(start, cursor, file_scope)
             };
+            if let Some(body) = header.as_ref().and_then(|header| {
+                self.constructor_body_after_initializers(header, prefix, cursor, self.limit)
+            }) {
+                cursor = body;
+            }
             // CDT accepts K&R definitions. Their parameter declarations contain
             // semicolons before the function body, unlike ordinary prototypes.
             if self.text(cursor) == ";"
@@ -1288,10 +1293,10 @@ impl Parser<'_> {
                     if self.cpp && class.is_some() && !nested.is_empty() {
                         self.class_scopes.insert(nested.clone());
                         let close = self.matching(cursor, self.limit).unwrap_or(self.limit);
-                        let fields = self.collect_class_fields(cursor + 1, close);
+                        let fields = self.collect_class_fields(&nested, cursor + 1, close);
                         self.scalar_constructor_classes.remove(&nested);
                         if self.constructor_initializers
-                            && self.scalar_constructor_class(start, cursor, close, &fields)
+                            && self.scalar_constructor_class(&nested, start, cursor, close, &fields)
                         {
                             self.scalar_constructor_classes.insert(nested.clone());
                         }
@@ -1738,7 +1743,61 @@ impl Parser<'_> {
         Some(header)
     }
 
-    fn collect_class_fields(&self, start: usize, end: usize) -> Vec<(String, String)> {
+    /// A top-level brace can belong to a member initializer rather than to
+    /// the compound statement. Only move past a complete initializer list.
+    fn constructor_body_after_initializers(
+        &self,
+        header: &Header,
+        scope: &str,
+        first_brace: usize,
+        limit: usize,
+    ) -> Option<usize> {
+        if !self.cpp || self.text(first_brace) != "{" {
+            return None;
+        }
+        let mut cursor = self.initializer_list_colon(header.parameters_end + 1, first_brace)?;
+        let is_constructor = match header.name.rsplit_once("::") {
+            Some((owner, name)) => self
+                .resolve_class_name(owner)
+                .is_some_and(|owner| owner.rsplit("::").next() == Some(name)),
+            None => {
+                self.class_scopes.contains(scope) && scope.rsplit("::").next() == Some(&header.name)
+            }
+        };
+        if !is_constructor {
+            return None;
+        }
+        loop {
+            let id = cursor + 1;
+            if id >= limit || self.tokens[id].kind != TokenKind::Identifier {
+                return None;
+            }
+            if !matches!(self.text(id + 1), "(" | "{") {
+                return None;
+            }
+            cursor = self.matching(id + 1, limit)? + 1;
+            match self.text(cursor) {
+                "{" => return (cursor < limit && cursor > first_brace).then_some(cursor),
+                "," => (),
+                _ => return None,
+            }
+        }
+    }
+
+    fn initializer_list_colon(&self, start: usize, end: usize) -> Option<usize> {
+        let mut cursor = start;
+        while cursor < end {
+            match self.text(cursor) {
+                ":" => return Some(cursor),
+                "(" | "[" => cursor = self.matching(cursor, end)? + 1,
+                "?" => return None,
+                _ => cursor += 1,
+            }
+        }
+        None
+    }
+
+    fn collect_class_fields(&self, scope: &str, start: usize, end: usize) -> Vec<(String, String)> {
         let mut fields = Vec::new();
         let mut at = start;
         while at < end {
@@ -1759,7 +1818,14 @@ impl Parser<'_> {
             if at >= end {
                 break;
             }
-            let method = self.function_header(from, at).is_some();
+            let header = self.function_header(from, at);
+            if let Some(body) = header
+                .as_ref()
+                .and_then(|header| self.constructor_body_after_initializers(header, scope, at, end))
+            {
+                at = body;
+            }
+            let method = header.is_some();
             if self.text(at) == "{" {
                 at = self.matching(at, end).map_or(end, |close| close + 1);
                 if method {
@@ -1794,6 +1860,7 @@ impl Parser<'_> {
 
     fn scalar_constructor_class(
         &self,
+        scope: &str,
         start: usize,
         open: usize,
         end: usize,
@@ -1832,8 +1899,13 @@ impl Parser<'_> {
             if (from..at).any(|i| self.text(i) == "(" && self.text(i + 1) == "*") {
                 return false;
             }
-            if self.function_header(from, at).is_some() {
+            if let Some(header) = self.function_header(from, at) {
                 if self.text(at) == "{" {
+                    if let Some(body) =
+                        self.constructor_body_after_initializers(&header, scope, at, end)
+                    {
+                        at = body;
+                    }
                     let Some(close) = self.matching(at, end) else {
                         return false;
                     };
@@ -1919,7 +1991,7 @@ impl Parser<'_> {
         for (a, b) in self.split_ranges(start, end, ",") {
             if a + 2 >= b
                 || self.tokens[a].kind != TokenKind::Identifier
-                || self.text(a + 1) != "("
+                || !matches!(self.text(a + 1), "(" | "{")
                 || self.matching(a + 1, b) != Some(b - 1)
                 || self.split_ranges(a + 2, b - 1, ",").len() != 1
                 || a + 2 == b - 1
@@ -1940,7 +2012,24 @@ impl Parser<'_> {
         for (member, expected_type) in fields {
             let &(a, b) = entries.get(member)?;
             let value = self.expression_range(a + 2, b - 1);
-            if !self.scalar_initialization_value(&value, expected_type, fields, functions) {
+            let supported = if self.text(a + 1) == "{" {
+                // List initialization rejects narrowing. Admit only literals
+                // whose destination and representability are established.
+                match (&value.kind, expected_type.as_str()) {
+                    (ExprKind::Literal(text), "int") => {
+                        // C++ guarantees at least a 16-bit int.
+                        (text == "0" || !text.starts_with('0'))
+                            && text.bytes().all(|byte| byte.is_ascii_digit())
+                            && text.parse::<i16>().is_ok()
+                    }
+                    (ExprKind::Literal(text), "bool") => matches!(text.as_str(), "true" | "false"),
+                    (ExprKind::Literal(text), ty) if ty.contains('*') => text == "nullptr",
+                    _ => false,
+                }
+            } else {
+                self.scalar_initialization_value(&value, expected_type, fields, functions)
+            };
+            if !supported {
                 return None;
             }
             plan.push(MemberInitialization {
@@ -2041,11 +2130,10 @@ impl Parser<'_> {
         definition: bool,
         functions: &mut Vec<Function>,
     ) {
-        let initializer_guard = if self.cpp
-            && self.constructor_initializers
-            && definition
-            && (header.parameters_end + 1..body_start).any(|i| self.text(i) == ":")
-        {
+        let initializer_colon = (self.cpp && definition)
+            .then(|| self.initializer_list_colon(header.parameters_end + 1, body_start))
+            .flatten();
+        let initializer_guard = if initializer_colon.is_some() && self.constructor_initializers {
             let index = self.diagnostics.len();
             self.diagnose(header.parameters_end + 1, body_start,
                 "constructor member-initializer CFG is unsupported: complete explicit scalar-member plan required");
@@ -2528,7 +2616,7 @@ impl Parser<'_> {
         }
         if self.constructor_initializers
             && definition
-            && !((header.parameters_end + 1..body_start).any(|i| self.text(i) == ":"))
+            && initializer_colon.is_none()
             && qualified_name.rsplit_once("::").is_some_and(|(owner, _)| {
                 owner.rsplit("::").next() == Some(name.as_str())
                     && (!self.scalar_constructor_classes.contains(owner)
@@ -2542,9 +2630,7 @@ impl Parser<'_> {
             );
         }
         let constructor_initializers = if definition {
-            if let Some(colon) =
-                (header.parameters_end + 1..body_start).find(|i| self.text(*i) == ":")
-            {
+            if let Some(colon) = initializer_colon {
                 let owner = qualified_name.rsplit_once("::").map(|(owner, _)| owner);
                 let plan = if self.constructor_initializers
                     && owner.is_some_and(|owner| {

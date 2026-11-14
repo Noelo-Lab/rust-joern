@@ -6,6 +6,17 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## Braced scalar constructor initializers
+
+**Recorded:** 2026-11-14, follow-up to [PR #5](https://github.com/Noelo-Lab/rust-joern/pull/5).
+
+Joern 4.0.150 recovers the constructor body in the checked C++11 example.
+The existing opt-in `cpp_constructor_initializers` profile additionally emits
+normal-completion field writes for a proved single braced literal. Initialization
+follows field declaration order, even when the initializer list is reordered.
+Disabling the profile suppresses these extra nodes. Strict parsing with the
+profile disabled still diagnoses unmodeled initializer effects.
+
 ## Invalid explicit-destructor call diagnostics
 
 **Recorded:** 2026-10-28, follow-up to PR #3; no DecBench pin update.
