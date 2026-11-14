@@ -8297,6 +8297,32 @@ impl Parser<'_> {
         }
     }
 
+    fn braced_type_name(&self, name: &str, start: usize) -> bool {
+        if self.explicit_types.contains(name) {
+            return !self.supplied_type_names.contains(name) || !self.variables.contains(name);
+        }
+        if self.supplied_type_names.is_empty() || !name.contains("::") {
+            return false;
+        }
+        // Compare the supplied type with its identifier tokens. Keep the
+        // original spelling on the expression for graph code and source spans.
+        let first = start + usize::from(self.text(start) == "::");
+        let components = &self.tokens[first..self.pos];
+        if components.iter().enumerate().any(|(index, token)| {
+            if index % 2 == 0 {
+                token.kind != TokenKind::Identifier
+            } else {
+                self.text(first + index) != "::"
+            }
+        }) {
+            return false;
+        }
+        let canonical = (start..self.pos)
+            .map(|index| self.text(index))
+            .collect::<String>();
+        self.supplied_type_names.contains(&canonical) && !self.variables.contains(&canonical)
+    }
+
     fn expression(&mut self, minimum: u8) -> Expr {
         let mut start = self.pos;
         // CDT's scanner expands `__extension__` to nothing: no node starts there.
@@ -8318,8 +8344,7 @@ impl Parser<'_> {
             if self.cpp
                 && minimum <= 15
                 && op == "{"
-                && matches!(&left.kind, ExprKind::Identifier(name) if self.explicit_types.contains(name)
-                        && (!self.supplied_type_names.contains(name) || !self.variables.contains(name)))
+                && matches!(&left.kind, ExprKind::Identifier(name) if self.braced_type_name(name, start))
             {
                 let initializer = self.prefix();
                 left = Expr {
