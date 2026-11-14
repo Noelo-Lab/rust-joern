@@ -34,6 +34,43 @@ fn value_binding_does_not_become_a_supplied_type() {
 }
 
 #[test]
+fn qualified_type_context_matches_tokens_across_trivia() {
+    let options = Options {
+        language: Some("cpp".into()),
+        strict: true,
+        cpp_type_names: vec!["demo::Options".into(), "::demo::Global".into()],
+        ..Options::default()
+    };
+    for name in [
+        "demo :: Options",
+        "demo/* comment */:: Options",
+        ":: demo :: Global",
+    ] {
+        let source =
+            format!("int f(int flag){{ if (flag) return consume({name}{{tick()}}); return 0; }}");
+        let analysis = analyze(&source, "input.cpp", &options).unwrap();
+        let method = analysis
+            .functions
+            .iter()
+            .find(|method| method.name == "f")
+            .unwrap();
+        let calls: Vec<_> = method
+            .cpg
+            .nodes
+            .iter()
+            .filter(|node| node.kind == "CALL")
+            .map(|node| node.code.as_str())
+            .collect();
+        assert!(calls.contains(&"tick()"));
+        assert!(calls.contains(&format!("{name}{{tick()}}").as_str()));
+    }
+    for name in ["other :: Options", ":: demo :: Options", "demo :: Global"] {
+        let source = format!("int f(){{ return consume({name}{{}}); }}");
+        assert!(analyze(&source, "input.cpp", &options).is_err(), "{name}");
+    }
+}
+
+#[test]
 fn context_requires_cpp_and_identifier_shaped_names() {
     for name in ["", "A<B>", "A::", "int*", "A; int x"] {
         let options = Options {
