@@ -196,6 +196,8 @@ pub enum StmtKind {
         consequence: Box<Stmt>,
         alternative: Option<Box<Stmt>>,
     },
+    /// The arm selected in a non-constant evaluation of a C++ consteval if.
+    ConstevalIf(Option<Box<Stmt>>),
     While {
         condition: Expr,
         body: Box<Stmt>,

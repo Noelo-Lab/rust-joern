@@ -6,6 +6,20 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++23 consteval if retains the runtime arm
+
+**Introduced:** 2026-11-14.
+
+Joern 4.0.150 drops both arms in the checked `if consteval` control.
+Rust Joern keeps the compound statement selected outside constant evaluation.
+The first arm runs for `if !consteval`; the `else` arm runs for `if consteval`,
+with fallthrough when it is absent. The compile-time arm and the test itself
+produce no runtime nodes. This is runtime CFG extraction, with no constant
+interpreter or analysis of the skipped arm.
+
+This affects the CPG, CFG, reaching definitions and DDG of the selected arm.
+The `joern_cpp_control_flow` option omits both arms for reference comparisons.
+
 ## Invalid explicit-destructor call diagnostics
 
 **Recorded:** 2026-10-28, follow-up to PR #3; no DecBench pin update.

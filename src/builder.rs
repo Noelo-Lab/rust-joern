@@ -1798,6 +1798,8 @@ impl Builder<'_> {
                 self.scopes.pop();
                 flow
             }
+            StmtKind::ConstevalIf(Some(body)) => self.statement(body, parent, false),
+            StmtKind::ConstevalIf(None) => Fragment::default(),
             StmtKind::While { condition, body } => {
                 let id = self.control(statement, parent, "WHILE");
                 self.scopes.push(HashMap::new());

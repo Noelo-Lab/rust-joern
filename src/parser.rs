@@ -3,6 +3,7 @@
 use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 
+use crate::graph::Options;
 use crate::lexer::{
     RetainedMacroInvocation, Token, TokenKind, lex_preprocessed,
     lex_preprocessed_with_macros_for_language,
@@ -16,54 +17,29 @@ pub fn parse(source: &str, cpp: bool) -> TranslationUnit {
 
 #[cfg(test)]
 pub fn parse_preprocessed(source: &str, cpp: bool, preprocessed: bool) -> TranslationUnit {
-    parse_with(source, cpp, preprocessed, false, &[], false)
+    parse_with(source, cpp, preprocessed, &Options::default())
 }
 
-/// `cdt_failures` reproduces CDT's failure on a parameter list or expression
-/// it cannot parse; otherwise that code is still analyzed. `type_names` are
-/// caller-proved visible C++ type names for an isolated source slice.
-/// `constructor_initializers` enables the opt-in scalar initializer profile.
 pub fn parse_with(
     source: &str,
     cpp: bool,
     preprocessed: bool,
-    cdt_failures: bool,
-    type_names: &[String],
-    constructor_initializers: bool,
+    options: &Options,
 ) -> TranslationUnit {
-    let (unit, later) = parse_unit(
-        source,
-        cpp,
-        preprocessed,
-        cdt_failures,
-        type_names,
-        constructor_initializers,
-        HashSet::new(),
-    );
+    let (unit, later) = parse_unit(source, cpp, preprocessed, options, HashSet::new());
     if later.is_empty() {
         return unit;
     }
     // C binds a function before its declaration as well (`CScope`). A
     // `T *x;` that names a later one is parsed again with those bindings.
-    parse_unit(
-        source,
-        cpp,
-        preprocessed,
-        cdt_failures,
-        type_names,
-        constructor_initializers,
-        later,
-    )
-    .0
+    parse_unit(source, cpp, preprocessed, options, later).0
 }
 
 fn parse_unit(
     source: &str,
     cpp: bool,
     preprocessed: bool,
-    cdt_failures: bool,
-    type_names: &[String],
-    constructor_initializers: bool,
+    options: &Options,
     later_functions: HashSet<String>,
 ) -> (TranslationUnit, HashSet<String>) {
     let (tokens, diagnostics, retained_macro_invocations) =
@@ -75,11 +51,13 @@ fn parse_unit(
         pos: 0,
         limit,
         cpp,
-        cdt_failures,
+        cdt_failures: options.joern_cdt_failures,
+        joern_cpp_control_flow: options.joern_cpp_control_flow,
+        consteval_alias_undo: Vec::new(),
         diagnostics,
-        types: type_names.iter().cloned().collect(),
-        explicit_types: type_names.iter().cloned().collect(),
-        supplied_type_names: type_names.iter().cloned().collect(),
+        types: options.cpp_type_names.iter().cloned().collect(),
+        explicit_types: options.cpp_type_names.iter().cloned().collect(),
+        supplied_type_names: options.cpp_type_names.iter().cloned().collect(),
         type_aliases: HashMap::new(),
         class_alias_undo: Vec::new(),
         extern_c: false,
@@ -87,7 +65,7 @@ fn parse_unit(
         class_scopes: HashSet::new(),
         class_fields: HashMap::new(),
         scalar_constructor_classes: HashSet::new(),
-        constructor_initializers,
+        constructor_initializers: options.cpp_constructor_initializers,
         function_fields: Vec::new(),
         function_member_cv: false,
         variables: Rc::new(HashSet::new()),
@@ -788,6 +766,8 @@ struct Parser<'a> {
     cpp: bool,
     /// Whether code that CDT fails to parse is dropped as Joern drops it.
     cdt_failures: bool,
+    joern_cpp_control_flow: bool,
+    consteval_alias_undo: Vec<HashMap<String, AliasUndo>>,
     diagnostics: Vec<ParseDiagnostic>,
     types: HashSet<String>,
     explicit_types: HashSet<String>,
@@ -1314,19 +1294,8 @@ impl Parser<'_> {
                         self.variables = variables;
                     }
                     if self.cpp && class.is_some() {
-                        for (name, undo) in self.class_alias_undo.pop().unwrap() {
-                            if let Some(alias) = undo.alias {
-                                self.type_aliases.insert(name.clone(), alias);
-                            } else {
-                                self.type_aliases.remove(&name);
-                            }
-                            if !undo.was_type {
-                                self.types.remove(&name);
-                            }
-                            if !undo.was_explicit {
-                                self.explicit_types.remove(&name);
-                            }
-                        }
+                        let aliases = self.class_alias_undo.pop().unwrap();
+                        self.restore_aliases(aliases);
                     }
                     self.expect("}");
                     // Names after an anonymous record, including typedef aliases.
@@ -3810,12 +3779,32 @@ impl Parser<'_> {
     }
 
     fn remember_class_alias(&mut self, name: &str) {
-        if let Some(undo) = self.class_alias_undo.last_mut() {
+        if let Some(undo) = self
+            .consteval_alias_undo
+            .last_mut()
+            .or_else(|| self.class_alias_undo.last_mut())
+        {
             undo.entry(name.to_string()).or_insert_with(|| AliasUndo {
                 alias: self.type_aliases.get(name).cloned(),
                 was_type: self.types.contains(name),
                 was_explicit: self.explicit_types.contains(name),
             });
+        }
+    }
+
+    fn restore_aliases(&mut self, aliases: HashMap<String, AliasUndo>) {
+        for (name, undo) in aliases {
+            if let Some(alias) = undo.alias {
+                self.type_aliases.insert(name.clone(), alias);
+            } else {
+                self.type_aliases.remove(&name);
+            }
+            if !undo.was_type {
+                self.types.remove(&name);
+            }
+            if !undo.was_explicit {
+                self.explicit_types.remove(&name);
+            }
         }
     }
 
@@ -3828,8 +3817,12 @@ impl Parser<'_> {
                     .get(i + 1)
                     .is_some_and(|t| t.kind == TokenKind::Identifier)
             {
-                self.types.insert(self.text(i + 1).to_string());
-                self.explicit_types.insert(self.text(i + 1).to_string());
+                let name = self.text(i + 1).to_string();
+                if !self.consteval_alias_undo.is_empty() {
+                    self.remember_class_alias(&name);
+                }
+                self.types.insert(name.clone());
+                self.explicit_types.insert(name);
             }
         }
         if self.text(start) == "using" && self.text(start + 2) == "=" {
@@ -5554,6 +5547,13 @@ impl Parser<'_> {
                 }
                 return self.statement();
             }
+            "if" if self.cpp
+                && (self.text(start + 1) == "consteval"
+                    || (matches!(self.text(start + 1), "!" | "not")
+                        && self.text(start + 2) == "consteval")) =>
+            {
+                return self.consteval_if_statement(start);
+            }
             "if" => {
                 self.pos += 1;
                 self.eat("constexpr");
@@ -6424,6 +6424,70 @@ impl Parser<'_> {
             kind,
             span: self.span(start, self.pos),
         }
+    }
+
+    fn consteval_if_statement(&mut self, start: usize) -> Stmt {
+        let negated = self.text(start + 1) != "consteval";
+        let first = start + 2 + usize::from(negated);
+        let arms = (|| {
+            let first_end = self.compound_statement_end(first)?;
+            let (second, end) = if self.text(first_end) == "else" {
+                let second = first_end + 1;
+                let second_end = self.compound_statement_end(second)?;
+                (Some((second, second_end)), second_end)
+            } else {
+                (None, first_end)
+            };
+            Some((
+                if negated {
+                    Some((first, first_end))
+                } else {
+                    second
+                },
+                end,
+            ))
+        })();
+        let Some((runtime, end)) = arms else {
+            self.pos = self.problem_statement_end(first);
+            self.diagnose(
+                start,
+                self.pos,
+                "consteval if requires complete compound statements",
+            );
+            return self.problem_statement(start, false);
+        };
+        if self.joern_cpp_control_flow {
+            self.pos = self.problem_statement_end(first).min(end);
+            return self.problem_statement(start, false);
+        }
+        let body = runtime.map(|(arm_start, arm_end)| {
+            self.pos = arm_start;
+            let previous_limit = std::mem::replace(&mut self.limit, arm_end);
+            // Isolate type evidence created by the newly recovered compound.
+            // This also prevents local aliases from changing later methods.
+            self.consteval_alias_undo.push(HashMap::new());
+            let imports = self.imports.clone();
+            let namespace_count = self.using_namespaces.len();
+            let statement = self.statement();
+            let aliases = self.consteval_alias_undo.pop().unwrap();
+            self.restore_aliases(aliases);
+            self.imports = imports;
+            self.using_namespaces.truncate(namespace_count);
+            self.limit = previous_limit;
+            Box::new(statement)
+        });
+        self.pos = end;
+        Stmt {
+            kind: StmtKind::ConstevalIf(body),
+            span: self.span(start, end),
+        }
+    }
+
+    fn compound_statement_end(&self, start: usize) -> Option<usize> {
+        if !matches!(self.text(start), "{" | "<%") {
+            return None;
+        }
+        Some(self.matching(start, self.limit)? + 1)
     }
 
     fn statement_end(&self, start: usize) -> usize {
@@ -8563,6 +8627,8 @@ impl Parser<'_> {
             limit,
             cpp: self.cpp,
             cdt_failures: self.cdt_failures,
+            joern_cpp_control_flow: self.joern_cpp_control_flow,
+            consteval_alias_undo: Vec::new(),
             diagnostics,
             types: self.types.clone(),
             explicit_types: self.explicit_types.clone(),
@@ -9425,7 +9491,11 @@ impl Parser<'_> {
                     "struct" | "class" | "union" | "enum" | "typeof" | "__typeof__" | "decltype"
                 )
             {
-                self.types.insert(self.text(i).to_string());
+                let name = self.text(i).to_string();
+                if !self.consteval_alias_undo.is_empty() {
+                    self.remember_class_alias(&name);
+                }
+                self.types.insert(name);
                 break;
             }
             i += 1;
@@ -9655,6 +9725,7 @@ fn infer_return_types(
         }
         StmtKind::While { body, .. }
         | StmtKind::DoWhile { body, .. }
+        | StmtKind::ConstevalIf(Some(body))
         | StmtKind::Switch { body, .. }
         | StmtKind::For { body, .. }
         | StmtKind::RangeFor { body, .. }
@@ -10022,7 +10093,9 @@ fn generated_statement(statement: &mut Stmt, source: &str, span: &Span) {
                 generated_expression(expression, source, span);
             }
         }
-        StmtKind::Label { statement, .. } => generated_statement(statement, source, span),
+        StmtKind::Label { statement, .. } | StmtKind::ConstevalIf(Some(statement)) => {
+            generated_statement(statement, source, span)
+        }
         StmtKind::Try { body, catches } => {
             generated_statement(body, source, span);
             for statement in catches {
