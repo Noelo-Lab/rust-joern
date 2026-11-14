@@ -82,7 +82,11 @@ fn incomplete_or_non_scalar_plans_fail_closed() {
         "struct A { int x:2; A(): x(1) {} };",
         "struct A { int x[2]; A(): x(1) {} };",
         "struct A { int x; virtual void f(); A(): x(1) {} };",
-        "struct A { int x; A(): x{1} {} };",
+        "struct A { int x; A(double d): x{d} {} };",
+        "struct A { bool x; A(): x{2} {} };",
+        "struct A { int x; A(): x{09} {} };",
+        "struct A { int x; A(): x{1, 2} {} };",
+        "struct A { int x; A(): x{} {} };",
         "struct A { int x; A(): x() {} };",
         "A::A(): x(1) {}",
         "struct A { int x; A(): x(unknown()) {} };",
@@ -97,6 +101,99 @@ fn incomplete_or_non_scalar_plans_fail_closed() {
             "{source}"
         );
     }
+}
+
+#[test]
+fn braced_initializers_keep_the_body_and_declaration_order() {
+    let source = "int first(); void body(); namespace demo {
+        struct A { int x; int y; bool ready; int* p; A(); };
+        A::A() : p{nullptr}, ready{true}, y{42}, x(first()) { body(); }
+        int after() { return 1; }
+    }";
+    assert!(analyze(source, "braces.cpp", &options(false)).is_err());
+    let analysis = analyze(source, "braces.cpp", &options(true)).unwrap();
+    let method = analysis
+        .functions
+        .iter()
+        .find(|f| f.name == "A" && f.start_line == 3)
+        .unwrap();
+    let nodes = &method.cpg.nodes;
+    let inits: Vec<_> = nodes
+        .iter()
+        .filter(|n| n.name.as_deref() == Some("<operator>.fieldInitialization"))
+        .collect();
+    assert_eq!(
+        inits.iter().map(|n| n.code.as_str()).collect::<Vec<_>>(),
+        ["x(first())", "y{42}", "ready{true}", "p{nullptr}"]
+    );
+    let only_call = |name| {
+        let nodes: Vec<_> = nodes
+            .iter()
+            .filter(|n| n.name.as_deref() == Some(name))
+            .collect();
+        assert_eq!(nodes.len(), 1);
+        nodes[0].id
+    };
+    let order = [
+        only_call("first"),
+        inits[0].id,
+        inits[1].id,
+        inits[2].id,
+        inits[3].id,
+        only_call("body"),
+    ];
+    for pair in order.windows(2) {
+        let mut reached = std::collections::HashSet::new();
+        let mut pending = vec![pair[0]];
+        while let Some(node) = pending.pop() {
+            if reached.insert(node) {
+                pending.extend(
+                    method
+                        .cpg
+                        .edges
+                        .iter()
+                        .filter(|edge| edge.kind == "CFG" && edge.source == node)
+                        .map(|edge| edge.target),
+                );
+            }
+        }
+        assert!(reached.contains(&pair[1]), "missing CFG path {pair:?}");
+    }
+    assert!(analysis.functions.iter().any(|f| f.name == "after"));
+}
+
+#[test]
+fn inline_braces_after_noexcept_condition_keep_the_body() {
+    let source = "void body(); struct A {
+        int x; A() noexcept(true ? true : false) : x{1} { body(); }
+    };";
+    let analysis = analyze(source, "inline.cpp", &options(true)).unwrap();
+    let method = analysis.functions.iter().find(|f| f.name == "A").unwrap();
+    assert!(method.cpg.nodes.iter().any(|n| n.code == "x{1}"));
+    let mut permissive = options(false);
+    permissive.strict = false;
+    let analysis = analyze(source, "inline.cpp", &permissive).unwrap();
+    assert!(
+        analysis
+            .diagnostics
+            .iter()
+            .any(|d| d.message.contains("member-initializer CFG is unsupported"))
+    );
+    let method = analysis.functions.iter().find(|f| f.name == "A").unwrap();
+    assert!(
+        method
+            .cpg
+            .nodes
+            .iter()
+            .any(|n| n.name.as_deref() == Some("body"))
+    );
+    assert!(
+        method
+            .cpg
+            .nodes
+            .iter()
+            .all(|n| n.name.as_deref() != Some("<operator>.fieldInitialization"))
+    );
 }
 
 #[test]

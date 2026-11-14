@@ -8,10 +8,14 @@ requests with this profile fail rather than applying unqualified operator rules.
 
 The complete class declaration must occur in the parsed source. The parser
 proves an ordered list of scalar or plain-pointer fields and requires exactly
-one explicit parenthesized initializer expression for every field. It rejects
+one explicit initializer expression for every field. Parenthesized expressions
+and a bounded single-literal braced form are supported. The braced form accepts
+`int` decimal values from zero to 32767, `bool` literals, and `nullptr` for plain
+pointers. It rejects empty lists, multiple expressions, and conversions that
+could narrow. The profile also rejects
 bases, unions, virtual members, references, arrays, bitfields, default member
-initializers and non-scalar subobjects. A type name supplied through
-A list of type names does not provide this proof. Unknown, duplicated or omitted
+initializers and non-scalar subobjects. A list of type names does not provide
+this proof. Unknown, duplicated or omitted
 members and constructor definitions without class context remain errors.
 
 The initial RHS subset is deliberately small: known scalar/pointer identifiers,
