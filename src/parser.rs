@@ -1272,13 +1272,33 @@ impl Parser<'_> {
                                 .get(*i)
                                 .is_some_and(|t| t.kind == TokenKind::Identifier)
                         })
-                        .map(|i| self.text(i).to_string())
+                        .map(|i| {
+                            let mut end = i + 1;
+                            if self.cpp && class.is_some() {
+                                while self.text(end) == "::"
+                                    && end + 1 < cursor
+                                    && self.tokens[end + 1].kind == TokenKind::Identifier
+                                {
+                                    end += 2;
+                                }
+                            }
+                            (i..end).map(|index| self.text(index)).collect::<String>()
+                        })
                         .unwrap_or_default();
                     if self.cpp && class.is_some() && !name.is_empty() {
                         self.types.insert(name.clone());
                         self.explicit_types.insert(name.clone());
                     }
-                    let nested = if name.is_empty() {
+                    let qualified_owner = (self.cpp && class.is_some())
+                        .then(|| {
+                            let (owner, member) = name.rsplit_once("::")?;
+                            self.resolve_class_name(owner)
+                                .map(|owner| format!("{owner}::{member}"))
+                        })
+                        .flatten();
+                    let nested = if let Some(owner) = qualified_owner {
+                        owner
+                    } else if name.is_empty() {
                         prefix.to_string()
                     } else if prefix.is_empty() {
                         name
@@ -1508,6 +1528,13 @@ impl Parser<'_> {
         }
         if after < end && self.tokens[after].kind == TokenKind::Identifier {
             after += 1;
+            while self.cpp
+                && self.text(after) == "::"
+                && after + 1 < end
+                && self.tokens[after + 1].kind == TokenKind::Identifier
+            {
+                after += 2;
+            }
         }
         while after < end {
             if let Some(next) = self.skip_attribute(after, end) {
