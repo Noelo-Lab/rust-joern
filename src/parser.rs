@@ -8225,6 +8225,37 @@ impl Parser<'_> {
             .map(|name| name.end)
     }
 
+    fn terminal_template_arguments(&self, open: usize, close: usize, end: usize) -> bool {
+        // A terminal '>' has no right operand. Use this evidence only within
+        // a complete expression range and keep nested groups inside it.
+        if close + 1 != end || !matches!(self.text(end), ";" | ")" | "]" | "," | "}") {
+            return false;
+        }
+        let mut cursor = open + 1;
+        let mut depth = 1;
+        while cursor <= close {
+            match self.text(cursor) {
+                "(" | "[" | "<:" | "{" | "<%" => {
+                    let Some(group_end) = self.matching(cursor, close) else {
+                        return false;
+                    };
+                    cursor = group_end + 1;
+                    continue;
+                }
+                ")" | "]" | ":>" | "}" | "%>" | ";" => return false,
+                "<" => depth += 1,
+                ">" => depth -= 1,
+                ">>" => depth -= 2,
+                _ => {}
+            }
+            if depth <= 0 {
+                return cursor == close && depth == 0;
+            }
+            cursor += 1;
+        }
+        false
+    }
+
     fn cpp_expression_name(
         &self,
         start: usize,
@@ -8279,7 +8310,10 @@ impl Parser<'_> {
                         || !self.variables.contains(self.text(component))
                         || self.function_returns.contains_key(self.text(component)))
                     && let Some(close) = self.angle_close(cursor, end)
-                    && matches!(self.text(close + 1), "::" | "(")
+                    && (matches!(self.text(close + 1), "::" | "(")
+                        || (component > start
+                            && self.text(component - 1) == "::"
+                            && self.terminal_template_arguments(cursor, close, end)))
                 {
                     cursor = close + 1;
                 }

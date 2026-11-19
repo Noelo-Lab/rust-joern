@@ -112,6 +112,33 @@ fn nested_template_ids_and_global_scope_keep_callee_and_operands() {
 }
 
 #[test]
+fn variable_template_bound_keeps_the_loop_comparison_and_back_edge() {
+    let analysis = parse(
+        "namespace demo { template<class T, int N> constexpr int bound = N; }
+         void tick(int);
+         template<class T> int f() {
+             for (int i = 0; i < demo::bound<T, 4>; ++i) tick(i);
+             return 0;
+         }",
+    );
+    let f = function(&analysis);
+    let comparison = call(f, "<operator>.lessThan");
+    let body = call(f, "tick");
+    let increment = call(f, "<operator>.preIncrement");
+    assert_eq!(argument_code(f, comparison, 1), "i");
+    assert_eq!(argument_code(f, comparison, 2), "demo::bound<T, 4>");
+    assert!(path(f, comparison, body));
+    assert!(path(f, body, increment));
+    assert!(path(f, increment, comparison));
+    assert!(
+        f.cpg
+            .nodes
+            .iter()
+            .all(|node| node.name.as_deref() != Some("<operator>.greaterThan"))
+    );
+}
+
+#[test]
 fn explicitly_qualified_subscript_keeps_receiver_and_argument_effects() {
     let a = parse(
         "namespace demo { struct Box { int operator[](int); }; } demo::Box &receiver(); int tick(); int f() { return receiver().demo::Box::operator[](tick()); }",
