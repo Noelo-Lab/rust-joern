@@ -7158,7 +7158,13 @@ impl Parser<'_> {
             .then(|| vec![("", 0usize)]);
         while i < end {
             if let Some(after) = self.lambda_end(i, end) {
-                i = after;
+                // An empty argument list can follow the lambda's body.
+                // Leave other parentheses subject to the normal scan.
+                i = if after + 1 < end && self.text(after) == "(" && self.text(after + 1) == ")" {
+                    after + 2
+                } else {
+                    after
+                };
                 continue;
             }
             // An operator-function-id (and its template arguments) is one
@@ -7585,6 +7591,20 @@ impl Parser<'_> {
         while i < end {
             if let Some(after) = self.lambda_end(i, end) {
                 i = after;
+                if i < end && self.text(i) == "(" {
+                    let Some(close) = self.matching(i, end) else {
+                        return true;
+                    };
+                    if close > i + 1
+                        && self
+                            .split_ranges(i + 1, close, ",")
+                            .into_iter()
+                            .any(|(a, b)| self.call_argument_problem(a, b))
+                    {
+                        return true;
+                    }
+                    i = close + 1;
+                }
                 continue;
             }
             if self.cpp

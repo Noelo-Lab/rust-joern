@@ -181,7 +181,10 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
         })
         .collect();
     let mut methods: HashMap<String, Vec<&syntax::Function>> = HashMap::new();
-    for function in &unit.functions {
+    // Closures bind through the lambda expression or local variable. Their
+    // full names contain the enclosing method's signature, so splitting them
+    // at ':' would add a false overload under the enclosing method's name.
+    for function in unit.functions.iter().filter(|function| !function.lambda) {
         methods
             .entry(function.full_name.split(':').next().unwrap().to_owned())
             .or_default()

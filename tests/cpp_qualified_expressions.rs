@@ -112,6 +112,59 @@ fn nested_template_ids_and_global_scope_keep_callee_and_operands() {
 }
 
 #[test]
+fn immediate_lambda_call_remains_a_comparison_operand() {
+    for (lambda, input) in [
+        ("[n] { return n; }()", None),
+        ("[n](int x) { return n + x; }(n)", Some("n")),
+    ] {
+        let analysis = parse(&format!("int f(int n) {{ return n > {lambda}; }}"));
+        let f = function(&analysis);
+        let comparison = call(f, "<operator>.greaterThan");
+        let invoke = call(f, "<operator>()");
+        assert_eq!(argument_code(f, comparison, 2), lambda);
+        if let Some(input) = input {
+            assert_eq!(argument_code(f, invoke, 1), input);
+        }
+        assert!(path(f, invoke, comparison));
+        assert!(
+            analysis
+                .functions
+                .iter()
+                .any(|method| method.name.starts_with("<lambda>"))
+        );
+    }
+}
+
+#[test]
+fn enclosing_function_remains_bindable_after_lambda_recovery() {
+    let analysis = parse(
+        "int source() { return [] { return 1; }(); }
+         int f() { auto p = source; return p(); }",
+    );
+    assert!(
+        analysis
+            .functions
+            .iter()
+            .any(|method| method.name.starts_with("<lambda>"))
+    );
+    assert!(function(&analysis).cpg.nodes.iter().any(|node| {
+        node.kind == "METHOD_REF" && node.method_full_name.as_deref() == Some("source:int()")
+    }));
+}
+
+#[test]
+fn malformed_immediate_lambda_arguments_keep_problem_recovery() {
+    let analysis = parse("int f(int n) { return n > [n](int i) { return n + i; }(n+); }");
+    assert!(
+        function(&analysis)
+            .cpg
+            .nodes
+            .iter()
+            .all(|node| node.kind != "CALL")
+    );
+}
+
+#[test]
 fn explicitly_qualified_subscript_keeps_receiver_and_argument_effects() {
     let a = parse(
         "namespace demo { struct Box { int operator[](int); }; } demo::Box &receiver(); int tick(); int f() { return receiver().demo::Box::operator[](tick()); }",
