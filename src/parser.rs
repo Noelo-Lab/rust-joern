@@ -90,7 +90,7 @@ fn parse_unit(
         constructor_initializers,
         function_fields: Vec::new(),
         function_member_cv: false,
-        variables: Rc::new(HashSet::new()),
+        variables: VariableNames::default(),
         variable_types: Rc::new(HashMap::new()),
         variable_closures: Rc::new(HashMap::new()),
         function_returns: HashMap::new(),
@@ -802,7 +802,7 @@ struct Parser<'a> {
     constructor_initializers: bool,
     function_fields: Vec<(String, String)>,
     function_member_cv: bool,
-    variables: Rc<HashSet<String>>,
+    variables: VariableNames,
     variable_types: Rc<HashMap<String, String>>,
     variable_closures: Rc<HashMap<String, Closure>>,
     function_returns: HashMap<String, String>,
@@ -832,6 +832,48 @@ struct Parser<'a> {
     lambda_ast_parent: String,
     retained_macro_invocations: Vec<RetainedMacroInvocation>,
     retained_macro_call_ends: HashSet<usize>,
+}
+
+/// The parser only adds visible names and rolls back additions on scope exit.
+/// Sharing the set is reserved for a separate macro-expansion parser.
+#[derive(Default)]
+struct VariableNames {
+    names: Rc<HashSet<Rc<str>>>,
+    insertions: Vec<Rc<str>>,
+}
+
+impl VariableNames {
+    fn contains(&self, name: &str) -> bool {
+        self.names.contains(name)
+    }
+
+    fn insert(&mut self, name: &str) {
+        if !self.contains(name) {
+            let name: Rc<str> = name.into();
+            Rc::make_mut(&mut self.names).insert(Rc::clone(&name));
+            self.insertions.push(name);
+        }
+    }
+
+    fn checkpoint(&self) -> usize {
+        self.insertions.len()
+    }
+
+    fn restore(&mut self, checkpoint: usize) {
+        if checkpoint < self.insertions.len() {
+            let names = Rc::make_mut(&mut self.names);
+            for name in self.insertions.drain(checkpoint..) {
+                names.remove(&name);
+            }
+        }
+    }
+
+    fn fork(&self) -> Self {
+        Self {
+            names: Rc::clone(&self.names),
+            insertions: Vec::new(),
+        }
+    }
 }
 
 struct Header {
@@ -1238,7 +1280,7 @@ impl Parser<'_> {
                                 if self.function_header(a, b).is_some() {
                                     // Still a function binding to CDT.
                                     let name = self.text(name).to_string();
-                                    Rc::make_mut(&mut self.variables).insert(name);
+                                    self.variables.insert(&name);
                                 } else {
                                     self.bind_object(name, prefix);
                                 }
@@ -1298,7 +1340,7 @@ impl Parser<'_> {
                         self.class_fields.insert(nested.clone(), fields);
                     }
                     let previous_linkage = self.extern_c;
-                    let outer_variables = class.map(|_| self.variables.clone());
+                    let variable_scope = class.map(|_| self.variables.checkpoint());
                     if self.cpp && class.is_some() {
                         self.class_alias_undo.push(HashMap::new());
                     }
@@ -1310,8 +1352,8 @@ impl Parser<'_> {
                     self.translation_scope(&nested, functions, true);
                     self.record_depth -= usize::from(class.is_some());
                     self.extern_c = previous_linkage;
-                    if let Some(variables) = outer_variables {
-                        self.variables = variables;
+                    if let Some(scope) = variable_scope {
+                        self.variables.restore(scope);
                     }
                     if self.cpp && class.is_some() {
                         for (name, undo) in self.class_alias_undo.pop().unwrap() {
@@ -1412,7 +1454,7 @@ impl Parser<'_> {
             }
             self.object_bindings.insert(name.clone());
         }
-        Rc::make_mut(&mut self.variables).insert(name);
+        self.variables.insert(&name);
     }
 
     fn record_retained_macro_call(&mut self, callee: &Expr, _arguments: &[Expr]) {
@@ -2282,7 +2324,7 @@ impl Parser<'_> {
             )
             .unwrap_or(return_type)
         };
-        let old_variables = self.variables.clone();
+        let variable_scope = self.variables.checkpoint();
         let old_variable_types = self.variable_types.clone();
         let old_variable_closures = self.variable_closures.clone();
         let old_function_full_name = self.function_full_name.clone();
@@ -2501,11 +2543,11 @@ impl Parser<'_> {
             name.clone()
         };
         for parameter in &parameters {
-            Rc::make_mut(&mut self.variables).insert(parameter.name.clone());
+            self.variables.insert(&parameter.name);
             Rc::make_mut(&mut self.variable_types)
                 .insert(parameter.name.clone(), parameter.type_name.clone());
         }
-        Rc::make_mut(&mut self.variables).insert(header.name.clone());
+        self.variables.insert(&header.name);
         self.function_full_name.clone_from(&full_name);
         self.function_fields.clone_from(&implicit_fields);
         let mut suffix = header.parameters_end + 1;
@@ -2523,7 +2565,7 @@ impl Parser<'_> {
         }
         self.function_member_cv = member_cv_qualified;
         if let Some(owner) = &implicit_this {
-            Rc::make_mut(&mut self.variables).insert("this".into());
+            self.variables.insert("this");
             Rc::make_mut(&mut self.variable_types).insert("this".into(), owner.clone());
         }
         if self.constructor_initializers
@@ -2612,7 +2654,7 @@ impl Parser<'_> {
             leaked = self.asm_tail_declarations(end, body_end);
             self.pos = body_end + 1;
         }
-        self.variables = old_variables;
+        self.variables.restore(variable_scope);
         self.variable_types = old_variable_types;
         self.variable_closures = old_variable_closures;
         self.function_full_name = old_function_full_name;
@@ -2621,7 +2663,7 @@ impl Parser<'_> {
         self.in_function_body = old_body_context;
         self.current_method = old_method;
         self.lambda_ast_parent = old_ast_parent;
-        Rc::make_mut(&mut self.variables).insert(header.name.clone());
+        self.variables.insert(&header.name);
         for name in leaked {
             self.bind_object(name, prefix);
         }
@@ -3302,7 +3344,7 @@ impl Parser<'_> {
                     // reached this far.
                     Some(name) if renamed > named && after == name + 1 => {
                         let name = self.text(name).to_string();
-                        Rc::make_mut(&mut self.variables).insert(name.clone());
+                        self.variables.insert(&name);
                         vec![Declaration {
                             type_name: joern_clean_type(
                                 &(start..after - 1)
@@ -3681,7 +3723,7 @@ impl Parser<'_> {
                         })
                         .collect();
                     let name = self.text(start).to_string();
-                    Rc::make_mut(&mut self.variables).insert(name.clone());
+                    self.variables.insert(&name);
                     self.function_declarations.push(Function {
                         full_name: name.clone(),
                         name,
@@ -4668,7 +4710,7 @@ impl Parser<'_> {
                 if let Some(name) = name {
                     let type_name = self.declarator_type(start, base_end, Some(name), b);
                     let name = self.text(name).to_string();
-                    Rc::make_mut(&mut self.variables).insert(name.clone());
+                    self.variables.insert(&name);
                     Rc::make_mut(&mut self.variable_types).insert(name.clone(), type_name.clone());
                     return vec![Declaration {
                         name,
@@ -4759,7 +4801,7 @@ impl Parser<'_> {
             });
             let type_name = self.declarator_type(start, base_end, Some(name_index), b);
             if !is_typedef {
-                Rc::make_mut(&mut self.variables).insert(name.clone());
+                self.variables.insert(&name);
                 Rc::make_mut(&mut self.variable_types).insert(name.clone(), type_name.clone());
                 if let Some(closure) = initializer
                     .as_ref()
@@ -5515,7 +5557,7 @@ impl Parser<'_> {
         let kind = match self.peek() {
             "{" | "<%" => {
                 self.pos += 1;
-                let old_variables = self.variables.clone();
+                let variable_scope = self.variables.checkpoint();
                 let old_variable_types = self.variable_types.clone();
                 let old_variable_closures = self.variable_closures.clone();
                 let mut statements = Vec::new();
@@ -5530,7 +5572,7 @@ impl Parser<'_> {
                 if !self.eat("}") && self.pos < self.limit {
                     self.expect("%>");
                 }
-                self.variables = old_variables;
+                self.variables.restore(variable_scope);
                 self.variable_types = old_variable_types;
                 self.variable_closures = old_variable_closures;
                 StmtKind::Block(statements)
@@ -6662,7 +6704,7 @@ impl Parser<'_> {
             {
                 let saved_scope = (clauses.len() == 2).then(|| {
                     (
-                        self.variables.clone(),
+                        self.variables.checkpoint(),
                         self.variable_types.clone(),
                         self.variable_closures.clone(),
                     )
@@ -6698,8 +6740,8 @@ impl Parser<'_> {
                 self.pos = end;
                 self.expect(")");
                 let body = Box::new(self.statement());
-                if let Some((variables, types, closures)) = saved_scope {
-                    self.variables = variables;
+                if let Some((variable_scope, types, closures)) = saved_scope {
+                    self.variables.restore(variable_scope);
                     self.variable_types = types;
                     self.variable_closures = closures;
                 }
@@ -8569,7 +8611,7 @@ impl Parser<'_> {
             supplied_type_names: self.supplied_type_names.clone(),
             type_aliases: self.type_aliases.clone(),
             class_alias_undo: Vec::new(),
-            variables: self.variables.clone(),
+            variables: self.variables.fork(),
             imports: self.imports.clone(),
             extern_c: self.extern_c,
             extern_c_names: self.extern_c_names.clone(),
@@ -8725,15 +8767,15 @@ impl Parser<'_> {
                 span: self.span(start, self.pos),
             };
         }
-        let old_variables = self.variables.clone();
+        let variable_scope = self.variables.checkpoint();
         for parameter in &parameters {
-            Rc::make_mut(&mut self.variables).insert(parameter.name.clone());
+            self.variables.insert(&parameter.name);
         }
         let parent = self.current_method.clone();
         let old_method = std::mem::replace(&mut self.current_method, full_name.clone());
         let body = self.statement();
         self.current_method = old_method;
-        self.variables = old_variables;
+        self.variables.restore(variable_scope);
         let return_type = declared_return.unwrap_or_else(|| "ANY".into());
         let signature = format!(
             "{}({})",
@@ -11989,6 +12031,34 @@ mod declaration_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn variable_name_checkpoints_restore_nested_scopes_and_isolate_macro_parsers() {
+        let mut names = VariableNames::default();
+        names.insert("global");
+        let outer = names.checkpoint();
+        names.insert("local");
+        let inner = names.checkpoint();
+        names.insert("global");
+        names.insert("local");
+        names.insert("nested");
+        let mut expansion = names.fork();
+        expansion.insert("macro_local");
+
+        names.restore(inner);
+        assert!(names.contains("global"));
+        assert!(names.contains("local"));
+        assert!(!names.contains("nested"));
+        assert!(!names.contains("macro_local"));
+        assert!(expansion.contains("nested"));
+        expansion.restore(0);
+        assert!(expansion.contains("nested"));
+        assert!(!expansion.contains("macro_local"));
+
+        names.restore(outer);
+        assert!(names.contains("global"));
+        assert!(!names.contains("local"));
+    }
 
     #[test]
     fn named_pointer_and_reference_ambiguities_follow_cdt_bindings() {
