@@ -20,6 +20,9 @@ pub struct Function {
     pub implicit_this: Option<String>,
     /// Generated lambda and GNU nested bodies retain their lexical parent.
     pub lambda_parent: Option<String>,
+    /// Token offset of the containing specialization within this parsed unit.
+    /// The public CDT-style method name omits specialization arguments.
+    pub class_specialization: Option<usize>,
     pub implicit_fields: Vec<(String, String)>,
     pub member_cv_qualified: bool,
     /// CDT stores a lambda method separately from the enclosing method AST.

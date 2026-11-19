@@ -96,6 +96,7 @@ struct Builder<'a> {
     lambda: bool,
     method_full_name: &'a str,
     method_scope: String,
+    class_specialization: Option<usize>,
     diagnostics: Vec<Diagnostic>,
     try_depth: usize,
     joern_loop_conditions: bool,
@@ -128,6 +129,7 @@ pub fn build(
         member_cv_qualified: function.member_cv_qualified,
         lambda: function.lambda,
         method_full_name: &function.full_name,
+        class_specialization: function.class_specialization,
         method_scope: if function.extern_c {
             String::new()
         } else {
@@ -415,9 +417,11 @@ impl Builder<'_> {
             let Some(methods) = self.methods.get(key) else {
                 continue;
             };
+            let specialization = self.specialization_for_lookup(key);
             let candidates: Vec<_> = methods
                 .iter()
                 .copied()
+                .filter(|method| method.class_specialization == specialization)
                 .filter(|method| {
                     signature.is_none_or(|signature| {
                         method
@@ -427,6 +431,13 @@ impl Builder<'_> {
                     })
                 })
                 .collect();
+            if candidates.is_empty()
+                && methods
+                    .iter()
+                    .all(|m| m.class_specialization != specialization)
+            {
+                continue;
+            }
             let first = candidates.first()?;
             if candidates.iter().all(|method| {
                 method.full_name == first.full_name && method.return_type == first.return_type
@@ -1237,6 +1248,11 @@ impl Builder<'_> {
             _ => false,
         }
     }
+    fn specialization_for_lookup(&self, key: &str) -> Option<usize> {
+        key.rsplit_once('.')
+            .filter(|(owner, _)| *owner == self.method_scope)
+            .and(self.class_specialization)
+    }
     fn resolve_call(&self, callee: &Expr, arguments: &[Expr]) -> Option<&Function> {
         let mut keys = Vec::new();
         match &callee.kind {
@@ -1264,10 +1280,12 @@ impl Builder<'_> {
             let Some(methods) = self.methods.get(&key) else {
                 continue;
             };
+            let specialization = self.specialization_for_lookup(&key);
             let mut identities = HashSet::new();
             let candidates: Vec<_> = methods
                 .iter()
                 .copied()
+                .filter(|method| method.class_specialization == specialization)
                 .filter(|method| {
                     let variadic = method.parameters.last().is_some_and(|p| {
                         p.type_name == "..." || self.code(&p.span).trim() == "..."

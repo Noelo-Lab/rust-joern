@@ -230,6 +230,7 @@ fn build_source(source: &str, filename: &str, options: &Options) -> Result<Built
             signature: "void()".into(),
             extern_c: false,
             lambda_parent: None,
+            class_specialization: None,
             implicit_this: None,
             implicit_fields: Vec::new(),
             member_cv_qualified: false,

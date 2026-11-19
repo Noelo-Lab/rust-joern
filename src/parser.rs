@@ -111,6 +111,7 @@ fn parse_unit(
         current_method: String::new(),
         lambda_counter: 0,
         defined_cpp_methods: HashSet::new(),
+        class_specialization: None,
         lambda_ast_parent: String::new(),
         retained_macro_invocations,
         retained_macro_call_ends: HashSet::new(),
@@ -828,7 +829,8 @@ struct Parser<'a> {
     macro_expansion: bool,
     current_method: String,
     lambda_counter: usize,
-    defined_cpp_methods: HashSet<String>,
+    defined_cpp_methods: HashSet<(Option<usize>, String)>,
+    class_specialization: Option<usize>,
     lambda_ast_parent: String,
     retained_macro_invocations: Vec<RetainedMacroInvocation>,
     retained_macro_call_ends: HashSet<usize>,
@@ -1126,7 +1128,14 @@ impl Parser<'_> {
             // By default such a declaration stays a problem.
             let file_scope =
                 self.cdt_failures && !self.cpp && self.record_depth == 0 && prefix.is_empty();
-            let header = if is_typedef {
+            // Specialization arguments can contain expressions that resemble
+            // declarators. Recognize the record head before looking for a method.
+            let specialization =
+                (self.cpp && self.text(start) == "template" && self.text(cursor) == "{")
+                    .then(|| self.record_definition(start, cursor))
+                    .flatten()
+                    .filter(|(_, specialized)| *specialized);
+            let header = if is_typedef || specialization.is_some() {
                 None
             } else {
                 self.function_header_in(start, cursor, file_scope)
@@ -1251,7 +1260,8 @@ impl Parser<'_> {
                 self.add_function(start, cursor, header, prefix, true, functions);
             } else {
                 let namespace = (start..cursor).find(|i| self.cpp && self.text(*i) == "namespace");
-                let class = self.record_definition(start, cursor);
+                let record = specialization.or_else(|| self.record_definition(start, cursor));
+                let class = record.map(|(introducer, _)| introducer);
                 let linkage = self.text(start) == "extern"
                     && self
                         .tokens
@@ -1275,6 +1285,9 @@ impl Parser<'_> {
                         .map(|i| self.text(i).to_string())
                         .unwrap_or_default();
                     if self.cpp && class.is_some() && !name.is_empty() {
+                        if self.class_specialization.is_some() {
+                            self.remember_class_alias(&name);
+                        }
                         self.types.insert(name.clone());
                         self.explicit_types.insert(name.clone());
                     }
@@ -1285,17 +1298,25 @@ impl Parser<'_> {
                     } else {
                         format!("{prefix}::{name}")
                     };
+                    let outer_specialization = self.class_specialization;
+                    if specialization.is_some() {
+                        self.class_specialization = Some(start);
+                    }
+                    let mut restore_class = None;
                     if self.cpp && class.is_some() && !nested.is_empty() {
-                        self.class_scopes.insert(nested.clone());
+                        let new_scope = self.class_scopes.insert(nested.clone());
                         let close = self.matching(cursor, self.limit).unwrap_or(self.limit);
                         let fields = self.collect_class_fields(cursor + 1, close);
-                        self.scalar_constructor_classes.remove(&nested);
+                        let outer_scalar = self.scalar_constructor_classes.remove(&nested);
                         if self.constructor_initializers
                             && self.scalar_constructor_class(start, cursor, close, &fields)
                         {
                             self.scalar_constructor_classes.insert(nested.clone());
                         }
-                        self.class_fields.insert(nested.clone(), fields);
+                        let outer_fields = self.class_fields.insert(nested.clone(), fields);
+                        if self.class_specialization.is_some() {
+                            restore_class = Some((new_scope, outer_scalar, outer_fields));
+                        }
                     }
                     let previous_linkage = self.extern_c;
                     let outer_variables = class.map(|_| self.variables.clone());
@@ -1310,6 +1331,24 @@ impl Parser<'_> {
                     self.translation_scope(&nested, functions, true);
                     self.record_depth -= usize::from(class.is_some());
                     self.extern_c = previous_linkage;
+                    self.class_specialization = outer_specialization;
+                    // A specialization uses the same projected class name as
+                    // the primary template, but owns a different member scope.
+                    if let Some((new_scope, outer_scalar, outer_fields)) = restore_class {
+                        if new_scope {
+                            self.class_scopes.remove(&nested);
+                        }
+                        if outer_scalar {
+                            self.scalar_constructor_classes.insert(nested.clone());
+                        } else {
+                            self.scalar_constructor_classes.remove(&nested);
+                        }
+                        if let Some(fields) = outer_fields {
+                            self.class_fields.insert(nested.clone(), fields);
+                        } else {
+                            self.class_fields.remove(&nested);
+                        }
+                    }
                     if let Some(variables) = outer_variables {
                         self.variables = variables;
                     }
@@ -1485,29 +1524,31 @@ impl Parser<'_> {
         None
     }
 
-    fn record_definition(&self, start: usize, end: usize) -> Option<usize> {
+    fn record_definition(&self, start: usize, end: usize) -> Option<(usize, bool)> {
         // A template parameter's `class` is not the record introducer, and
         // its default argument is not an object initializer.
-        let mut start = start;
-        while self.cpp && self.text(start) == "template" && self.text(start + 1) == "<" {
-            start = self.angle_close(start + 1, end)? + 1;
-        }
-        if (start..end).any(|i| self.text(i) == "=") {
-            return None;
+        let mut head = start;
+        while self.cpp && self.text(head) == "template" && self.text(head + 1) == "<" {
+            head = self.angle_close(head + 1, end)? + 1;
         }
         let introducer =
-            (start..end).find(|i| matches!(self.text(*i), "struct" | "class" | "union"))?;
+            (head..end).find(|i| matches!(self.text(*i), "struct" | "class" | "union"))?;
         // In C++, the class/struct token in an enum-key does not introduce a
         // record scope. Its brace body contains enumerators, not members.
-        if self.cpp && introducer > start && self.text(introducer - 1) == "enum" {
+        if self.cpp && introducer > head && self.text(introducer - 1) == "enum" {
             return None;
         }
         let mut after = introducer + 1;
         while let Some(next) = self.skip_attribute(after, end) {
             after = next;
         }
+        let mut specialized = false;
         if after < end && self.tokens[after].kind == TokenKind::Identifier {
             after += 1;
+            if head > start && introducer == head && self.text(after) == "<" {
+                after = self.record_specialization_close(after, end)? + 1;
+                specialized = true;
+            }
         }
         while after < end {
             if let Some(next) = self.skip_attribute(after, end) {
@@ -1518,7 +1559,30 @@ impl Parser<'_> {
                 break;
             }
         }
-        (after == end || self.text(after) == ":").then_some(introducer)
+        let check_start = if specialized { after } else { head };
+        ((after == end || self.text(after) == ":")
+            && !(check_start..end).any(|i| self.text(i) == "="))
+        .then_some((introducer, specialized))
+    }
+
+    fn record_specialization_close(&self, open: usize, end: usize) -> Option<usize> {
+        let mut depth = 1;
+        let mut cursor = open + 1;
+        while cursor < end {
+            match self.text(cursor) {
+                "<" => depth += 1,
+                ">" => depth -= 1,
+                ">>" => depth -= 2,
+                "(" | "[" | "{" => cursor = self.matching(cursor, end)?,
+                ")" | "]" | "}" | ";" => return None,
+                _ => {}
+            }
+            if depth <= 0 {
+                return (depth == 0).then_some(cursor);
+            }
+            cursor += 1;
+        }
+        None
     }
 
     fn function_header(&self, start: usize, end: usize) -> Option<Header> {
@@ -2457,9 +2521,12 @@ impl Parser<'_> {
                     cursor += 1;
                 }
             }
-            !self.defined_cpp_methods.insert(format!(
-                "{qualified_name}:{}:{qualifiers}",
-                binding_signature.as_deref().unwrap_or_default()
+            !self.defined_cpp_methods.insert((
+                self.class_specialization,
+                format!(
+                    "{qualified_name}:{}:{qualifiers}",
+                    binding_signature.as_deref().unwrap_or_default()
+                ),
             ))
         } else {
             false
@@ -2663,6 +2730,7 @@ impl Parser<'_> {
             implicit_this,
             extern_c,
             lambda_parent: None,
+            class_specialization: self.class_specialization,
             implicit_fields,
             member_cv_qualified,
             lambda: false,
@@ -3691,6 +3759,7 @@ impl Parser<'_> {
                         extern_c: false,
                         implicit_this: None,
                         lambda_parent: None,
+                        class_specialization: None,
                         implicit_fields: Vec::new(),
                         member_cv_qualified: false,
                         lambda: false,
@@ -8600,6 +8669,7 @@ impl Parser<'_> {
             current_method: self.current_method.clone(),
             lambda_counter: self.lambda_counter,
             defined_cpp_methods: self.defined_cpp_methods.clone(),
+            class_specialization: self.class_specialization,
             lambda_ast_parent: self.lambda_ast_parent.clone(),
             retained_macro_invocations: Vec::new(),
             retained_macro_call_ends: HashSet::new(),
@@ -8778,6 +8848,7 @@ impl Parser<'_> {
             signature,
             extern_c: false,
             lambda_parent: Some(parent),
+            class_specialization: self.class_specialization,
             implicit_this: None,
             implicit_fields: self.function_fields.clone(),
             member_cv_qualified: self.function_member_cv,
