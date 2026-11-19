@@ -241,6 +241,31 @@ mod expression_port_tests {
     use super::*;
 
     #[test]
+    fn qualified_template_ids_preserve_following_cpp_bodies() {
+        let source = "namespace n { struct A {}; }
+            template<class T> struct W {};
+            template<class T> T make(int) { return {}; }
+            struct C {
+                const W<::n::A>* first() const {
+                    return make<const W<::n::A>*>(0);
+                }
+                int second() const { return 2; }
+            };
+            int after(int x) { if (x) return 1; return 0; }";
+        for cdt_failures in [false, true] {
+            let unit = parse_with(source, true, true, cdt_failures, &[], false);
+            assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+            let names: Vec<_> = unit.functions.iter().map(|f| f.name.as_str()).collect();
+            assert_eq!(names, ["make", "first", "second", "after"]);
+            assert!(
+                unit.functions
+                    .iter()
+                    .all(|f| matches!(f.body.kind, StmtKind::Block(_)))
+            );
+        }
+    }
+
+    #[test]
     fn consecutive_casts_keep_the_prefix_increment_operand() {
         for cpp in [false, true] {
             let unit = parse(
@@ -8225,6 +8250,32 @@ impl Parser<'_> {
             .map(|name| name.end)
     }
 
+    fn expression_template_close(&self, start: usize, end: usize) -> Option<usize> {
+        // A speculative template-id cannot reach a '>' beyond the current
+        // expression. Balanced groups can contain their own operators.
+        let mut depth = 1;
+        let mut cursor = start + 1;
+        while cursor < end {
+            match self.text(cursor) {
+                "(" | "[" | "<:" | "{" | "<%" => {
+                    cursor = self.matching(cursor, end)? + 1;
+                    continue;
+                }
+                ")" | "]" | ":>" | "}" | "%>" | ";" => return None,
+                "<" => depth += 1,
+                ">" => depth -= 1,
+                ">>" if depth >= 2 => depth -= 2,
+                ">>" => return None,
+                _ => {}
+            }
+            if depth == 0 {
+                return Some(cursor);
+            }
+            cursor += 1;
+        }
+        None
+    }
+
     fn cpp_expression_name(
         &self,
         start: usize,
@@ -8266,7 +8317,7 @@ impl Parser<'_> {
                     _ => return None,
                 }
                 if self.text(cursor) == "<"
-                    && let Some(close) = self.angle_close(cursor, end)
+                    && let Some(close) = self.expression_template_close(cursor, end)
                     && self.text(close + 1) == "("
                 {
                     cursor = close + 1;
@@ -8278,7 +8329,7 @@ impl Parser<'_> {
                         || component > start
                         || !self.variables.contains(self.text(component))
                         || self.function_returns.contains_key(self.text(component)))
-                    && let Some(close) = self.angle_close(cursor, end)
+                    && let Some(close) = self.expression_template_close(cursor, end)
                     && matches!(self.text(close + 1), "::" | "(")
                 {
                     cursor = close + 1;
