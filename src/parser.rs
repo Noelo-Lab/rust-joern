@@ -7156,6 +7156,7 @@ impl Parser<'_> {
         let mut delimiters = (start..end)
             .any(|token| self.text(token) == ":")
             .then(|| vec![("", 0usize)]);
+        let mut template_logical_or = None;
         while i < end {
             if let Some(after) = self.lambda_end(i, end) {
                 i = after;
@@ -7177,6 +7178,18 @@ impl Parser<'_> {
                         0
                     };
                 continue;
+            }
+            if self.cpp
+                && self.text(i) == "::"
+                && self.text(i + 2) == "<"
+                && template_logical_or.is_none_or(|after| after <= i)
+                && let Some(after) = self.cpp_expression_name_end(i, end, false)
+                && matches!(self.text(after - 1), ">" | ">>")
+                && alternative_operator(self.text(after)) == "||"
+            {
+                // The template closer is part of the left operand. It is
+                // not a comparison operator missing its right operand.
+                template_logical_or = Some(after);
             }
             if matches!(self.text(i), "@" | "#" | "##")
                 || (!self.cpp
@@ -7241,6 +7254,7 @@ impl Parser<'_> {
             };
             let infix_only = binary_precedence(operator).is_some()
                 && !matches!(operator, "," | "+" | "-" | "*" | "&" | "&&" | "...")
+                && template_logical_or != Some(i)
                 && !(self.cpp && matches!(operator, ">" | ">>"));
             if (operator == "?" || infix_only)
                 && (i == start
@@ -8279,7 +8293,10 @@ impl Parser<'_> {
                         || !self.variables.contains(self.text(component))
                         || self.function_returns.contains_key(self.text(component)))
                     && let Some(close) = self.angle_close(cursor, end)
-                    && matches!(self.text(close + 1), "::" | "(")
+                    && (matches!(self.text(close + 1), "::" | "(")
+                        || (component > start
+                            && self.text(component - 1) == "::"
+                            && self.logical_template_operand(start, cursor, close, end)))
                 {
                     cursor = close + 1;
                 }
@@ -8295,6 +8312,47 @@ impl Parser<'_> {
                 cursor += 1;
             }
         }
+    }
+
+    fn logical_template_operand(
+        &self,
+        start: usize,
+        open: usize,
+        close: usize,
+        end: usize,
+    ) -> bool {
+        let next = alternative_operator(self.text(close + 1));
+        let left = close + 1 < end && matches!(next, "&&" | "||");
+        // A right operand can end at a delimiter inside the parser's
+        // current range, for example at the semicolon of a return.
+        let right = start > 0
+            && matches!(alternative_operator(self.text(start - 1)), "&&" | "||")
+            && matches!(next, ";" | ")" | "]" | ":>" | "," | "}");
+        if !left && !right {
+            return false;
+        }
+        let mut cursor = open + 1;
+        let mut depth = 1;
+        while cursor <= close {
+            match self.text(cursor) {
+                "(" | "[" | "<:" | "{" | "<%" => {
+                    let Some(group_end) = self.matching(cursor, close) else {
+                        return false;
+                    };
+                    cursor = group_end;
+                }
+                ")" | "]" | ":>" | "}" | "%>" | ";" => return false,
+                "<" => depth += 1,
+                ">" => depth -= 1,
+                ">>" => depth -= 2,
+                _ => {}
+            }
+            if depth <= 0 {
+                return cursor == close && depth == 0;
+            }
+            cursor += 1;
+        }
+        false
     }
 
     fn expression(&mut self, minimum: u8) -> Expr {
