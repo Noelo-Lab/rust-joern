@@ -7851,6 +7851,47 @@ impl Parser<'_> {
             .flatten()
     }
 
+    fn cpp_qualified_pointer_template_argument(
+        &self,
+        start: usize,
+        star: usize,
+        end: usize,
+    ) -> bool {
+        if !self.cpp || self.text(star) != "*" || self.text(star + 1) != "," {
+            return false;
+        }
+        // A trailing star before a comma can end a type-id in a qualified
+        // template owner. The expression parser must also recognize the
+        // complete qualified callee within the same expression range.
+        for open in (start + 1..star).rev() {
+            if self.text(open) != "<" || self.tokens[open - 1].kind != TokenKind::Identifier {
+                continue;
+            }
+            let Some(close) = self.angle_close(open, end) else {
+                continue;
+            };
+            if close <= star + 1 || self.text(close + 1) != "::" {
+                continue;
+            }
+            let owner = open - 1 - usize::from(open >= start + 2 && self.text(open - 2) == "::");
+            if !self
+                .cpp_expression_name_end(owner, end, false)
+                .is_some_and(|after| after > close + 2 && after < end && self.text(after) == "(")
+            {
+                continue;
+            }
+            return self
+                .split_ranges(open + 1, close, ",")
+                .into_iter()
+                .any(|(a, b)| {
+                    b == star + 1
+                        && !self.variables.contains(self.text(a))
+                        && self.is_type_range(a, b)
+                });
+        }
+        false
+    }
+
     fn call_argument_problem(&self, mut start: usize, mut end: usize) -> bool {
         let mut statement_expression = false;
         while self.text(start) == "(" && self.matching(start, end) == Some(end.saturating_sub(1)) {
@@ -7924,6 +7965,7 @@ impl Parser<'_> {
                     | "||"
                     | "^"
             ) && (i + 1 == end || matches!(self.text(i + 1), "," | ")" | "]"))
+                && !self.cpp_qualified_pointer_template_argument(start, i, end)
             {
                 return true;
             }

@@ -355,3 +355,32 @@ fn operator_template_names_do_not_hide_invalid_runtime_arguments() {
         }
     }
 }
+
+#[test]
+fn pointer_type_argument_before_comma_keeps_qualified_call_and_return() {
+    let analysis = parse(
+        "template<class T, class U> struct Box { static int get(T); };
+        template<class T> T* tick(T*);
+        template<class T, class U> int f(T* value) {
+            return Box<const T*, U>::get(tick(value));
+        }",
+    );
+    let f = function(&analysis);
+    let get = call(f, "get");
+    assert_eq!(argument_code(f, get, 1), "tick(value)");
+    assert!(path(f, call(f, "tick"), get));
+    assert!(f.cpg.nodes.iter().any(|n| n.kind == "RETURN"));
+}
+
+#[test]
+fn missing_operand_in_qualified_call_argument_stays_a_problem() {
+    let analysis = parse(
+        "template<class T, class U> struct Box { static int get(int, int); };
+        int f(int value) {
+            return Box<const int*, int>::get(value *, 2);
+        }",
+    );
+    let f = function(&analysis);
+    assert!(f.cpg.nodes.iter().all(|n| n.kind != "RETURN"));
+    assert!(f.cpg.nodes.iter().all(|n| n.name.as_deref() != Some("get")));
+}
