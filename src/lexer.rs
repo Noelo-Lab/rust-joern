@@ -350,10 +350,19 @@ pub(crate) fn lex_preprocessed_with_macros_for_language(
                         "||", "<=", ">=", "==", "!=", "+=", "-=", "*=", "/=", "%=", "&=", "|=",
                         "^=", "<<", ">>", "::", "##", "<:", ":>", "<%", "%>", "%:",
                     ];
-                    at += OPERATORS
-                        .iter()
-                        .find(|op| source[start..].starts_with(**op))
-                        .map_or(1, |op| op.len());
+                    let tail = &source[start..];
+                    at += if cpp
+                        && tail.starts_with("<::")
+                        && !matches!(bytes.get(start + 3), Some(b':' | b'>'))
+                    {
+                        // C++ [lex.pptoken] gives this '<' its own token.
+                        1
+                    } else {
+                        OPERATORS
+                            .iter()
+                            .find(|op| tail.starts_with(**op))
+                            .map_or(1, |op| op.len())
+                    };
                 }
             }
         }
@@ -995,6 +1004,32 @@ fn identifier_byte(byte: u8) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn cpp_qualified_template_arguments_keep_the_less_token() {
+        let source = "W<::n::A> <::> <::: <::";
+        let spellings = |cpp| {
+            let (tokens, diagnostics, _) =
+                lex_preprocessed_with_macros_for_language(source, true, cpp);
+            assert!(diagnostics.is_empty(), "{diagnostics:?}");
+            tokens
+                .into_iter()
+                .map(|token| &source[token.span.start..token.span.end])
+                .collect::<Vec<_>>()
+        };
+        assert_eq!(
+            spellings(true),
+            [
+                "W", "<", "::", "n", "::", "A", ">", "<:", ":>", "<:", "::", "<", "::"
+            ]
+        );
+        assert_eq!(
+            spellings(false),
+            [
+                "W", "<:", ":", "n", "::", "A", ">", "<:", ":>", "<:", "::", "<:", ":"
+            ]
+        );
+    }
 
     #[test]
     fn keeps_lines_and_literal_contents() {
