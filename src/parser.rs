@@ -2626,14 +2626,17 @@ impl Parser<'_> {
             self.bind_object(name, prefix);
         }
         // Leading identifiers that CDT skipped are a separate problem node.
-        let mut span = self.span(
-            if recovered_return_type {
-                return_start
-            } else {
-                start
-            },
-            end,
-        );
+        let span_start = if recovered_return_type {
+            return_start
+        } else if self.cpp && definition && self.text(start) == "template" {
+            // CDT wraps the definition in template declarations. Joern
+            // builds the method from the enclosed definition.
+            self.template_definition_start(start, header.name_start)
+                .unwrap_or(start)
+        } else {
+            start
+        };
+        let mut span = self.span(span_start, end);
         if !definition {
             // A declared method takes the position of its declarator, which
             // starts at the pointer operators or group before its name.
@@ -2675,6 +2678,32 @@ impl Parser<'_> {
             body,
             span,
         });
+    }
+
+    fn template_definition_start(&self, mut start: usize, name_start: usize) -> Option<usize> {
+        while self.text(start) == "template" {
+            if self.text(start + 1) != "<" {
+                return None;
+            }
+            let mut depth = 1;
+            let mut cursor = start + 2;
+            while cursor < name_start && depth > 0 {
+                match self.text(cursor) {
+                    "(" | "[" | "<:" | "{" | "<%" => cursor = self.matching(cursor, name_start)?,
+                    ")" | "]" | ":>" | "}" | "%>" | ";" => return None,
+                    "<" => depth += 1,
+                    ">" => depth -= 1,
+                    ">>" => depth -= 2,
+                    _ => {}
+                }
+                cursor += 1;
+            }
+            if depth != 0 {
+                return None;
+            }
+            start = cursor;
+        }
+        Some(start)
     }
 
     fn return_specifier_start(&self, start: usize, name_start: usize) -> (usize, bool) {
