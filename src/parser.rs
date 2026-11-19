@@ -4241,6 +4241,11 @@ impl Parser<'_> {
             if !has_type && (self.tokens[i].kind == TokenKind::Identifier || t == "::") {
                 has_type = true;
                 i += 1;
+                // Leading :: qualifies the first type component itself.
+                if self.cpp && t == "::" && i < end && self.tokens[i].kind == TokenKind::Identifier
+                {
+                    i += 1;
+                }
                 while i + 1 < end && self.text(i) == "::" {
                     i += 2;
                 }
