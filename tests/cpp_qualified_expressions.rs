@@ -112,6 +112,37 @@ fn nested_template_ids_and_global_scope_keep_callee_and_operands() {
 }
 
 #[test]
+fn qualified_variable_template_subscript_keeps_the_index_evaluation() {
+    let analysis = parse(
+        "namespace demo { template<class T, int N> constexpr int values[] = {N, N + 1}; }
+         int tick(); int sink(int);
+         template<class T> int f() { return sink(demo::values<T, 0>[tick()]); }
+         int after() { return 1; }",
+    );
+    let f = function(&analysis);
+    let index = call(f, "<operator>.indirectIndexAccess");
+    let sink = call(f, "sink");
+    assert_eq!(argument_code(f, index, 1), "demo::values<T, 0>");
+    assert_eq!(argument_code(f, index, 2), "tick()");
+    assert_eq!(argument_code(f, sink, 1), "demo::values<T, 0>[tick()]");
+    assert!(path(f, call(f, "tick"), index));
+    assert!(path(f, index, sink));
+    assert_eq!(f.end_line, 3);
+    assert!(
+        analysis
+            .functions
+            .iter()
+            .any(|f| f.name == "after" && f.start_line == 4)
+    );
+    assert!(
+        analysis
+            .functions
+            .iter()
+            .all(|f| !f.name.starts_with("<lambda>"))
+    );
+}
+
+#[test]
 fn explicitly_qualified_subscript_keeps_receiver_and_argument_effects() {
     let a = parse(
         "namespace demo { struct Box { int operator[](int); }; } demo::Box &receiver(); int tick(); int f() { return receiver().demo::Box::operator[](tick()); }",

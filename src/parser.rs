@@ -8225,6 +8225,41 @@ impl Parser<'_> {
             .map(|name| name.end)
     }
 
+    fn template_subscript_follows(&self, open: usize, close: usize, end: usize) -> bool {
+        let bracket = close + 1;
+        if bracket >= end || self.text(bracket) != "[" {
+            return false;
+        }
+        let Some(index_end) = self.matching(bracket, end).filter(|&i| i > bracket + 1) else {
+            return false;
+        };
+        let next = alternative_operator(self.text(index_end + 1));
+        // A lambda capture can follow the comparison operator '>'. Only
+        // accept continuations that rule out a lambda declarator or body.
+        if !(matches!(
+            next,
+            "" | ")" | "]" | ":>" | "," | ";" | "." | "++" | "--" | "?" | ":"
+        ) || next == "[" && self.text(index_end + 2) != "["
+            || next != "<" && binary_precedence(next).is_some())
+        {
+            return false;
+        }
+        let mut cursor = open + 1;
+        while cursor < close {
+            match self.text(cursor) {
+                "(" | "[" | "<:" | "{" | "<%" => {
+                    let Some(end) = self.matching(cursor, close) else {
+                        return false;
+                    };
+                    cursor = end + 1;
+                }
+                ")" | "]" | ":>" | "}" | "%>" | ";" => return false,
+                _ => cursor += 1,
+            }
+        }
+        true
+    }
+
     fn cpp_expression_name(
         &self,
         start: usize,
@@ -8279,7 +8314,10 @@ impl Parser<'_> {
                         || !self.variables.contains(self.text(component))
                         || self.function_returns.contains_key(self.text(component)))
                     && let Some(close) = self.angle_close(cursor, end)
-                    && matches!(self.text(close + 1), "::" | "(")
+                    && (matches!(self.text(close + 1), "::" | "(")
+                        || (component > start
+                            && self.text(component - 1) == "::"
+                            && self.template_subscript_follows(cursor, close, end)))
                 {
                     cursor = close + 1;
                 }
