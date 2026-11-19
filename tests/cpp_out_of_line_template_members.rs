@@ -1,6 +1,32 @@
 use rust_joern::{analyze, graph::Options};
 
 #[test]
+fn unproved_primary_template_owner_retains_normal_recovery() {
+    let source = r#"
+int tick(int);
+template<class T, class U = int>
+struct Defaulted { int method(int n); };
+template<class T, class U>
+int Defaulted<T, U>::method(int n) {
+    while (n > 0) n = tick(n);
+    return n;
+}
+int following(int n) { return tick(n); }
+"#;
+    let analysis = analyze(
+        source,
+        "template-member.cpp",
+        &Options {
+            strict: true,
+            preprocessed: true,
+            ..Options::default()
+        },
+    )
+    .unwrap();
+    assert!(analysis.functions.iter().any(|f| f.name == "following"));
+}
+
+#[test]
 fn primary_template_member_definition_retains_its_body_and_owner() {
     let source = "namespace demo {
         int tick(int);

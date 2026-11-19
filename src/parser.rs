@@ -1632,10 +1632,27 @@ impl Parser<'_> {
                     && let Some((open, count)) =
                         self.primary_template_owner_arguments(start, component_end)
                 {
-                    owner_arguments = Some((open..component_end, count));
+                    owner_arguments = Some((open..component_end, count, name_start));
                     name_start = open - 1;
                 } else {
                     break;
+                }
+            }
+            let mut primary_template_name = None;
+            if let Some((arguments, count, fallback)) = owner_arguments {
+                let qualified = (name_start..name_end)
+                    .filter(|i| !arguments.contains(i))
+                    .map(|i| self.text(i))
+                    .collect::<String>();
+                if qualified
+                    .rsplit_once("::")
+                    .and_then(|(owner, _)| self.resolve_class_name(owner))
+                    .and_then(|owner| self.primary_class_templates.get(&owner))
+                    == Some(&count)
+                {
+                    primary_template_name = Some(qualified);
+                } else {
+                    name_start = fallback;
                 }
             }
             if (start..name_start).any(|n| self.text(n) == "=" || self.text(n) == ":") {
@@ -1676,23 +1693,8 @@ impl Parser<'_> {
             if name_start >= name_end {
                 name_end = i;
             }
-            let name = (name_start..name_end)
-                .filter(|n| {
-                    !owner_arguments
-                        .as_ref()
-                        .is_some_and(|(args, _)| args.contains(n))
-                })
-                .map(|n| self.text(n))
-                .collect::<String>();
-            if let Some((_, count)) = owner_arguments
-                && self
-                    .resolve_class_name(name.rsplit_once("::")?.0)
-                    .and_then(|owner| self.primary_class_templates.get(&owner))
-                    != Some(&count)
-            {
-                i = close + 1;
-                continue;
-            }
+            let name = primary_template_name
+                .unwrap_or_else(|| (name_start..name_end).map(|i| self.text(i)).collect());
             return Some(Header {
                 name,
                 name_start,
