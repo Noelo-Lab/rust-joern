@@ -185,6 +185,87 @@ fn template_parameter_class_and_defaults_do_not_hide_real_record_body() {
 }
 
 #[test]
+fn template_defaults_keep_member_definitions_and_following_scope() {
+    let analysis = parse(
+        "namespace demo {
+struct Printer {
+    template<class T, class N = typename T::size_type>
+    int print(N n) { if (n) return 1; return 0; }
+    int following(int x) { return x + 1; }
+};
+}
+int after(int x) { return x - 1; }",
+    );
+    assert_eq!(analysis.functions.len(), 3);
+    for (name, qualified, start, end) in [
+        ("print", "demo.Printer.print:int(", 3, 4),
+        ("following", "demo.Printer.following:int(", 5, 5),
+        ("after", "after:int(", 8, 8),
+    ] {
+        let f = analysis.functions.iter().find(|f| f.name == name).unwrap();
+        assert!(f.fullname.starts_with(qualified), "{}", f.fullname);
+        assert_eq!((f.start_line, f.end_line), (start, end));
+        assert!(f.cpg.nodes.iter().any(|node| node.kind == "RETURN"));
+    }
+}
+
+#[test]
+fn template_default_operators_stay_inside_the_head() {
+    let analysis = parse(
+        "template<int N = (8 >> 1)> int f(int x) { return x + N; }
+         template<class T = int> T object = f<T{}>(0);",
+    );
+    assert_eq!(analysis.functions.len(), 1);
+    let f = function(&analysis);
+    assert_eq!(f.return_type, "int");
+    let addition = call(f, "<operator>.addition");
+    assert_eq!(argument_code(f, addition, 2), "N");
+}
+
+#[test]
+fn template_body_recovery_keeps_following_definition() {
+    let source = r#"struct View { int size() const; };
+namespace detail {
+template<class T, int> constexpr int values[] = {1};
+bool equal(int);
+template<class T = int>
+int run(View value, int p) {
+    {
+        for (int first = 0; first < value.size(); ++first) {
+            if (detail::equal(detail::values<T, 0>[0])) {
+                (void) detail::values<T, 0>[0];
+            }
+        }
+    }
+    return 0;
+}
+}
+int after() { return 1; }"#;
+    let analysis = analyze(
+        source,
+        "recovery.cpp",
+        &Options {
+            language: Some("cpp".into()),
+            preprocessed: true,
+            ..Options::default()
+        },
+    )
+    .unwrap();
+    // This case still has unsupported dependent array subscripting. The
+    // diagnostic must survive, and recovery must preserve the later method.
+    assert!(!analysis.diagnostics.is_empty());
+    let run = analysis.functions.iter().find(|f| f.name == "run").unwrap();
+    assert_eq!((run.start_line, run.end_line), (5, 15));
+    let after = analysis
+        .functions
+        .iter()
+        .find(|f| f.name == "after")
+        .unwrap();
+    assert_eq!((after.start_line, after.end_line), (17, 17));
+    assert!(after.cpg.nodes.iter().any(|node| node.kind == "RETURN"));
+}
+
+#[test]
 fn invalid_qualified_names_keep_existing_strict_errors() {
     for source in [
         "int f(int x) { return ::0x1234::call(x); }",

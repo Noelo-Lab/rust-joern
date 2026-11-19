@@ -1488,10 +1488,7 @@ impl Parser<'_> {
     fn record_definition(&self, start: usize, end: usize) -> Option<usize> {
         // A template parameter's `class` is not the record introducer, and
         // its default argument is not an object initializer.
-        let mut start = start;
-        while self.cpp && self.text(start) == "template" && self.text(start + 1) == "<" {
-            start = self.angle_close(start + 1, end)? + 1;
-        }
+        let start = self.after_template_heads(start, end)?;
         if (start..end).any(|i| self.text(i) == "=") {
             return None;
         }
@@ -1521,12 +1518,41 @@ impl Parser<'_> {
         (after == end || self.text(after) == ":").then_some(introducer)
     }
 
+    fn after_template_heads(&self, mut start: usize, end: usize) -> Option<usize> {
+        while self.cpp && self.text(start) == "template" && self.text(start + 1) == "<" {
+            let mut cursor = start + 2;
+            let mut depth = 1;
+            while cursor < end && depth > 0 {
+                match self.text(cursor) {
+                    "(" | "[" | "<:" | "{" | "<%" => {
+                        cursor = self.matching(cursor, end)? + 1;
+                        continue;
+                    }
+                    ")" | "]" | ":>" | "}" | "%>" | ";" => return None,
+                    "<" => depth += 1,
+                    ">" => depth -= 1,
+                    ">>" => depth -= 2,
+                    _ => {}
+                }
+                cursor += 1;
+            }
+            if depth != 0 {
+                return None;
+            }
+            start = cursor;
+        }
+        Some(start)
+    }
+
     fn function_header(&self, start: usize, end: usize) -> Option<Header> {
         self.function_header_in(start, end, false)
     }
 
     /// `c_file_scope` marks the start of a C declaration at file scope.
     fn function_header_in(&self, start: usize, end: usize, c_file_scope: bool) -> Option<Header> {
+        // Defaults in a template head are outside the declarator. In
+        // particular, their '=' does not start an object initializer.
+        let start = self.after_template_heads(start, end)?;
         if matches!(self.text(start), "static_assert" | "_Static_assert")
             || (self.cpp && self.text(start) == "using")
         {
@@ -2594,6 +2620,15 @@ impl Parser<'_> {
             })
             .flatten();
         self.asm_problem_recovery = false;
+        let outer_limit = self.limit;
+        // Recovery inside a template body must stop at its closing brace.
+        // Later definitions still belong to the enclosing declaration scope.
+        if self.cpp
+            && self.text(start) == "template"
+            && let Some(close) = original_body_end
+        {
+            self.limit = close + 1;
+        }
         let body = if definition {
             self.statement()
         } else {
@@ -2602,6 +2637,7 @@ impl Parser<'_> {
                 span: self.span(body_start, body_start),
             }
         };
+        self.limit = outer_limit;
         let end = if definition { self.pos } else { body_start + 1 };
         let mut leaked = Vec::new();
         if self.asm_problem_recovery
@@ -2679,7 +2715,11 @@ impl Parser<'_> {
 
     fn return_specifier_start(&self, start: usize, name_start: usize) -> (usize, bool) {
         let mut cursor = start;
-        if self.text(cursor) == "template"
+        if self.cpp {
+            cursor = self
+                .after_template_heads(start, name_start)
+                .unwrap_or(start);
+        } else if self.text(cursor) == "template"
             && self.text(cursor + 1) == "<"
             && let Some(close) = self.angle_close(cursor + 1, name_start)
         {
