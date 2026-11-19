@@ -696,22 +696,29 @@ def parse_source(
                             strict=strict, preprocessed=preprocessed, joern_loop_conditions=joern_loop_conditions,
                             joern_knr_parameters=joern_knr_parameters, joern_cdt_failures=joern_cdt_failures,
                             joern_cpp_control_flow=joern_cpp_control_flow)
-    result = {}
     # FastParser's per-(FULL_NAME, FILE) toMap exports the last method,
     # once for each original occurrence. Keep all native methods in Analysis.
-    exported = {
-        (raw["fullname"], raw["filename"]): Function(
-            raw, no_metadata=no_metadata, no_cfg=no_cfg, no_ddg=no_ddg, no_ast=no_ast,
-        ) for raw in analysis["functions"]
+    functions = analysis["functions"]
+    exported = {(raw["fullname"], raw["filename"]): raw for raw in functions}
+    filenames = {filename: str(Path(filename)) for filename in {raw["filename"] for raw in functions}}
+    selected = {}
+    for occurrence in functions:
+        raw = exported[(occurrence["fullname"], occurrence["filename"])]
+        name = raw["name"]
+        if not name or name.startswith(blacklist):
+            continue
+        key = (name, filenames[raw["filename"]])
+        if not no_cfg:
+            # The native CFG has one row per block ID. Lifting it to a
+            # NetworkX graph preserves this count, including isolated blocks.
+            blocks = len(raw["cfg"]["nodes"])
+            previous = selected.get(key)
+            if not blocks or (previous is not None and blocks < len(previous["cfg"]["nodes"])):
+                continue
+        selected[key] = raw
+    if not path.is_dir():
+        selected = {name: raw for (name, _), raw in selected.items()}
+    return {
+        key: Function(raw, no_metadata=no_metadata, no_cfg=no_cfg, no_ddg=no_ddg, no_ast=no_ast)
+        for key, raw in selected.items()
     }
-    for raw in analysis["functions"]:
-        function = exported[(raw["fullname"], raw["filename"])]
-        if (function.name.startswith(blacklist) or not function.name or not function.filename
-                or (not no_cfg and not function.cfg)):
-            continue
-        key = (function.name, str(function.filename))
-        previous = result.get(key)
-        if previous is not None and previous.cfg is not None and function.cfg is not None and len(function.cfg) < len(previous.cfg):
-            continue
-        result[key] = function
-    return result if path.is_dir() else {name: function for (name, _), function in result.items()}
