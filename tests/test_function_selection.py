@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 import rust_joern
 
@@ -75,6 +76,13 @@ class FunctionSelectionTests(unittest.TestCase):
 
     def test_cpp_triplets_keep_distinct_resolved_group(self):
         self.check_probe("duplicate_triplets.cpp")
+
+    def test_only_exported_functions_have_their_cfg_lifted(self):
+        source = FIXTURES / "duplicate_triplets.cpp"
+        with patch.object(rust_joern.Function, "_cfg", wraps=rust_joern.Function._cfg) as lift:
+            functions = rust_joern.parse_source(source, no_ddg=True, strict=True)
+        self.assertTrue(functions)
+        self.assertEqual(lift.call_count, len(functions))
 
 
 if __name__ == "__main__":
