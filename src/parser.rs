@@ -1205,7 +1205,14 @@ impl Parser<'_> {
                         self.pos = cursor + 1;
                         continue;
                     }
-                    if let Some(header) = header.filter(|h| h.name_start < base_end) {
+                    let template_prototype = self.cpp
+                        && self.record_depth == 0
+                        && self.text(start) == "template"
+                        && self.text(start + 1) == "<";
+                    if let Some(header) = header.filter(|h| {
+                        h.name_start < base_end
+                            || template_prototype && h.parameters_end + 1 == cursor
+                    }) {
                         // A C++ constructor has no return decl-specifier;
                         // specifier recovery may consume its class-name token.
                         self.add_function(start, cursor, header, prefix, false, functions);
@@ -1521,6 +1528,41 @@ impl Parser<'_> {
         (after == end || self.text(after) == ":").then_some(introducer)
     }
 
+    fn explicit_specialization_head(&self, start: usize) -> bool {
+        self.cpp
+            && self.text(start) == "template"
+            && self.text(start + 1) == "<"
+            && self.text(start + 2) == ">"
+    }
+
+    fn specialized_function_name(&self, start: usize, open: usize) -> Option<usize> {
+        if !self.explicit_specialization_head(start) || self.record_depth != 0 {
+            return None;
+        }
+        let mut depth = 0;
+        for cursor in (start + 3..open).rev() {
+            match self.text(cursor) {
+                ">" => depth += 1,
+                ">>" => depth += 2,
+                "<" if depth > 0 => {
+                    depth -= 1;
+                    if depth == 0 {
+                        let name = cursor - 1;
+                        return (name > start + 3
+                            && self.tokens[name].kind == TokenKind::Identifier
+                            && !matches!(self.text(name - 1), "::" | "operator")
+                            && !self.type_word(self.text(name))
+                            && !qualifier(self.text(name)))
+                        .then_some(name);
+                    }
+                }
+                "(" | ")" | "[" | "]" | "{" | "}" | ";" => return None,
+                _ => {}
+            }
+        }
+        None
+    }
+
     fn function_header(&self, start: usize, end: usize) -> Option<Header> {
         self.function_header_in(start, end, false)
     }
@@ -1590,7 +1632,13 @@ impl Parser<'_> {
             }
             let mut name_end = i;
             let mut name_start = i - 1;
-            if name_start > start && self.text(name_start - 1) == "operator" {
+            if matches!(self.text(name_start), ">" | ">>")
+                && let Some(name) = self.specialized_function_name(start, i)
+            {
+                name_start = name;
+                // CDT gives explicit specializations the primary short name.
+                name_end = name + 1;
+            } else if name_start > start && self.text(name_start - 1) == "operator" {
                 name_start -= 1;
             } else if matches!(self.text(name_start), ")" | "]")
                 && name_start > start
@@ -2438,7 +2486,13 @@ impl Parser<'_> {
                 self.binding_type(&return_binding_type)
             )
         });
-        let duplicate_binding = if definition && self.cpp && !header.name.contains("::") {
+        let explicit_specialization =
+            self.explicit_specialization_head(start) && self.text(header.name_start + 1) == "<";
+        // Different explicit template arguments can have the same function
+        // signature. Keep both written bodies under CDT's exported name.
+        let check_duplicate =
+            definition && self.cpp && !header.name.contains("::") && !explicit_specialization;
+        let duplicate_binding = if check_duplicate {
             let mut qualifiers = String::new();
             let mut cursor = header.parameters_end + 1;
             while cursor < body_start {
