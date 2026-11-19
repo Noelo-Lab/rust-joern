@@ -57,6 +57,46 @@ pub fn parse_with(
     .0
 }
 
+/// Index only balanced groups. A mismatched closer invalidates all open
+/// groups, but balanced groups before or after it keep their own matches.
+fn delimiter_ends(source: &str, tokens: &[Token]) -> Vec<usize> {
+    let mut ends = vec![usize::MAX; tokens.len()];
+    let mut openings = Vec::new();
+    let source = source.as_bytes();
+    for (i, token) in tokens.iter().enumerate() {
+        if token.kind != TokenKind::Punctuation {
+            continue;
+        }
+        let text = &source[token.span.start..token.span.end];
+        let closing = match text {
+            b"(" => {
+                openings.push((i, b')'));
+                continue;
+            }
+            b"[" | b"<:" => {
+                openings.push((i, b']'));
+                continue;
+            }
+            b"{" | b"<%" => {
+                openings.push((i, b'}'));
+                continue;
+            }
+            b")" => b')',
+            b"]" | b":>" => b']',
+            b"}" | b"%>" => b'}',
+            _ => continue,
+        };
+        if let Some((open, expected)) = openings.pop()
+            && expected == closing
+        {
+            ends[open] = i;
+        } else {
+            openings.clear();
+        }
+    }
+    ends
+}
+
 fn parse_unit(
     source: &str,
     cpp: bool,
@@ -71,6 +111,7 @@ fn parse_unit(
     let limit = tokens.len();
     let mut parser = Parser {
         source,
+        delimiter_ends: delimiter_ends(source, &tokens),
         tokens,
         pos: 0,
         limit,
@@ -783,6 +824,7 @@ struct AliasUndo {
 struct Parser<'a> {
     source: &'a str,
     tokens: Vec<Token>,
+    delimiter_ends: Vec<usize>,
     pos: usize,
     limit: usize,
     cpp: bool,
@@ -939,36 +981,10 @@ impl Parser<'_> {
     }
 
     fn matching(&self, start: usize, limit: usize) -> Option<usize> {
-        let close = match self.text(start) {
-            "(" => ")",
-            "[" | "<:" => "]",
-            "{" | "<%" => "}",
-            _ => return None,
-        };
-        let mut stack = vec![close];
-        for i in start + 1..limit {
-            match self.text(i) {
-                "(" => stack.push(")"),
-                "[" | "<:" => stack.push("]"),
-                "{" | "<%" => stack.push("}"),
-                ")" | "]" | "}" | ":>" | "%>" => {
-                    let t = match self.text(i) {
-                        ":>" => "]",
-                        "%>" => "}",
-                        other => other,
-                    };
-                    if stack.last() != Some(&t) {
-                        return None;
-                    }
-                    stack.pop();
-                    if stack.is_empty() {
-                        return Some(i);
-                    }
-                }
-                _ => {}
-            }
-        }
-        None
+        self.delimiter_ends
+            .get(start)
+            .copied()
+            .filter(|&end| end < limit)
     }
 
     fn brace_end(&self, start: usize, limit: usize) -> Option<usize> {
@@ -7101,10 +7117,15 @@ impl Parser<'_> {
         }
         let old_limit = self.limit;
         self.limit = tokens.len();
+        let previous_ends = std::mem::replace(
+            &mut self.delimiter_ends,
+            delimiter_ends(self.source, &tokens),
+        );
         let previous_tokens = std::mem::replace(&mut self.tokens, tokens);
         self.pos = 0;
         let statement = self.statement();
         self.tokens = previous_tokens;
+        self.delimiter_ends = previous_ends;
         self.limit = old_limit;
         self.pos = after;
         statement
@@ -8558,6 +8579,7 @@ impl Parser<'_> {
         let limit = tokens.len();
         let mut parser = Parser {
             source: replacement,
+            delimiter_ends: delimiter_ends(replacement, &tokens),
             tokens,
             pos: 0,
             limit,
@@ -11989,6 +12011,20 @@ mod declaration_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn delimiter_index_keeps_only_balanced_groups() {
+        let source = "( [ ( ) } ) <% <: :> %> [ ( ] )";
+        let (tokens, _) = lex_preprocessed(source, true);
+        let missing = usize::MAX;
+        assert_eq!(
+            delimiter_ends(source, &tokens),
+            [
+                missing, missing, 3, missing, missing, missing, 9, 8, missing, missing, missing,
+                missing, missing, missing
+            ]
+        );
+    }
 
     #[test]
     fn named_pointer_and_reference_ambiguities_follow_cdt_bindings() {
