@@ -1534,6 +1534,9 @@ impl Parser<'_> {
 
     /// `c_file_scope` marks the start of a C declaration at file scope.
     fn function_header_in(&self, start: usize, end: usize, c_file_scope: bool) -> Option<Header> {
+        // The owner check below reads the declaration's own template head,
+        // even if the declarator scan starts after it.
+        let declaration_start = start;
         if matches!(self.text(start), "static_assert" | "_Static_assert")
             || (self.cpp && self.text(start) == "using")
         {
@@ -1630,7 +1633,7 @@ impl Parser<'_> {
                     name_start -= 2;
                 } else if owner_arguments.is_none()
                     && let Some((open, count)) =
-                        self.primary_template_owner_arguments(start, component_end)
+                        self.primary_template_owner_arguments(declaration_start, component_end)
                 {
                     owner_arguments = Some((open..component_end, count, name_start));
                     name_start = open - 1;
