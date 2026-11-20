@@ -6,6 +6,40 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++ names in decompiled C are still analyzed
+
+**Recorded:** 2026-11-21, [PR #53](https://github.com/Noelo-Lab/rust-joern/pull/53),
+approved by the DecBench maintainer as output Joern cannot produce.
+
+**Joern:** decompilers print C++ names into the C they emit for C++ binaries.
+CDT's C parser fails on a template-id definition such as
+`char * EmitCopy<true>(char *op) { ... }`, on a definition whose own name is
+qualified (`void snappy::Sink::~Sink(...)`), on `class ns::Record { ... }`, and
+on a call `operator new[](n)`. The definitions have no method; the declaration
+`operator delete(p);` becomes a local prototype named `delete`, and
+`return operator new(n);` has no nodes.
+
+**Rust Joern:** in C input, such a definition keeps its method, named as
+Joern's C++ frontend names it: the last name component without template
+arguments (`EmitCopy`, `~Sink`). The record is a record definition, and
+`operator new`, `operator new[]`, `operator delete` and `operator delete[]`
+followed by `(` are ordinary named calls. A `::` in a return or parameter type
+remains a problem declaration, as before.
+
+**Why:** C++ is parsed only from the original source. Decompiled output is
+pseudo-C that uses `this`, `new` and `delete` as identifiers, so it stays in C
+mode with recovery. On the C output of angr, Ghidra, Kuna and Fission for three
+local C++ projects at three optimization levels, strict parsing accepted 10 of
+36 files before this change and all 36 after, with 11,185 methods instead of
+10,753.
+
+**Affects:** which methods exist in decompiled C containing these forms, and
+their CPG, CFG, reaching definitions and DDG. All 177 C fixtures give
+byte-identical output in the default, compatibility-strict and DDG profiles.
+
+**Reference behavior:** `joern_cdt_failures` in `Options` and Python, or
+`--joern-cdt-failures` on the CLI.
+
 ## Invalid explicit-destructor call diagnostics
 
 **Recorded:** 2026-10-28, follow-up to PR #3; no DecBench pin update.

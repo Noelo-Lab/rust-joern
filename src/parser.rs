@@ -57,6 +57,40 @@ pub fn parse_with(
     .0
 }
 
+/// Decompiled C++ calls `operator new[](n)` in C output, where `operator` is
+/// no keyword and CDT fails. By default such a name followed by `(` becomes
+/// one identifier, so the call is an ordinary named call.
+fn fuse_c_operator_function_names(source: &str, tokens: Vec<Token>) -> Vec<Token> {
+    let text = |token: Option<&Token>| token.map_or("", |t| &source[t.span.start..t.span.end]);
+    let mut fused = Vec::with_capacity(tokens.len());
+    let mut i = 0;
+    while i < tokens.len() {
+        let mut last = i + 1;
+        if text(tokens.get(i)) == "operator"
+            && matches!(text(tokens.get(last)), "new" | "delete")
+            && !tokens[i..=last]
+                .iter()
+                .any(|t| t.macro_expansion || t.macro_recovery)
+        {
+            if text(tokens.get(last + 1)) == "[" && text(tokens.get(last + 2)) == "]" {
+                last += 2;
+            }
+            if text(tokens.get(last + 1)) == "(" {
+                let mut token = tokens[i].clone();
+                token.kind = TokenKind::Identifier;
+                token.span.end = tokens[last].span.end;
+                token.span.end_line = tokens[last].span.end_line;
+                fused.push(token);
+                i = last + 1;
+                continue;
+            }
+        }
+        fused.push(tokens[i].clone());
+        i += 1;
+    }
+    fused
+}
+
 fn parse_unit(
     source: &str,
     cpp: bool,
@@ -66,8 +100,11 @@ fn parse_unit(
     constructor_initializers: bool,
     later_functions: HashSet<String>,
 ) -> (TranslationUnit, HashSet<String>) {
-    let (tokens, diagnostics, retained_macro_invocations) =
+    let (mut tokens, diagnostics, retained_macro_invocations) =
         lex_preprocessed_with_macros_for_language(source, preprocessed, cpp);
+    if !cpp && !cdt_failures && retained_macro_invocations.is_empty() {
+        tokens = fuse_c_operator_function_names(source, tokens);
+    }
     let limit = tokens.len();
     let mut parser = Parser {
         source,
@@ -1508,6 +1545,15 @@ impl Parser<'_> {
         }
         if after < end && self.tokens[after].kind == TokenKind::Identifier {
             after += 1;
+            // Decompiled C++ declares `class ns::Record { ... }` in C output.
+            while !self.cpp
+                && !self.cdt_failures
+                && after + 1 < end
+                && self.text(after) == "::"
+                && self.tokens[after + 1].kind == TokenKind::Identifier
+            {
+                after += 2;
+            }
         }
         while after < end {
             if let Some(next) = self.skip_attribute(after, end) {
@@ -1606,6 +1652,11 @@ impl Parser<'_> {
                 && self.text(name_start - 3) == "operator"
             {
                 name_start -= 3;
+            } else if let Some(open) = self.c_template_declarator(start, name_start, end) {
+                // Decompiled C++ names an instantiation `F<A>(...)`. As in
+                // Joern's C++ frontend, the function is named `F`.
+                name_end = open;
+                name_start = open - 1;
             } else if self.tokens[name_start].kind != TokenKind::Identifier
                 || self.type_word(self.text(name_start))
                 || qualifier(self.text(name_start))
@@ -1672,6 +1723,45 @@ impl Parser<'_> {
                 shared: None,
                 outer_parameters: None,
             });
+        }
+        None
+    }
+
+    /// The `<` of a template-id declarator such as `EmitCopy<true>(...)` in a
+    /// file-scope C definition, which only decompiled C++ produces. CDT has no
+    /// method for it, so `joern_cdt_failures` keeps it a problem.
+    fn c_template_declarator(&self, start: usize, close: usize, end: usize) -> Option<usize> {
+        if self.cpp
+            || self.cdt_failures
+            || self.in_function_body
+            || self.record_depth != 0
+            || self.text(end) != "{"
+            || !matches!(self.text(close), ">" | ">>")
+        {
+            return None;
+        }
+        let (mut angles, mut groups) = (0usize, 0usize);
+        let mut at = close + 1;
+        while at > start {
+            at -= 1;
+            match self.text(at) {
+                ">" => angles += 1,
+                ">>" => angles += 2,
+                "<" if groups == 0 => {
+                    angles = angles.checked_sub(1)?;
+                    if angles == 0 {
+                        let name = at.checked_sub(1).filter(|&name| name >= start)?;
+                        return (self.tokens[name].kind == TokenKind::Identifier
+                            && !self.type_word(self.text(name))
+                            && !qualifier(self.text(name)))
+                        .then_some(at);
+                    }
+                }
+                ")" | "]" => groups += 1,
+                "(" | "[" => groups = groups.checked_sub(1)?,
+                ";" | "{" | "}" | "=" => return None,
+                _ => {}
+            }
         }
         None
     }
@@ -2053,8 +2143,11 @@ impl Parser<'_> {
         } else {
             None
         };
-        if self.cdt_problem_declaration(start, body_start)
-            || self.cdt_problem_record_header(start, body_start)
+        if self.cdt_problem_declaration(
+            start,
+            body_start,
+            header.name_start..header.parameters_start - 1,
+        ) || self.cdt_problem_record_header(start, body_start)
             || self.cdt_problem_return_prefix(start, &header)
             || self.cdt_problem_parameters(&header)
             || (self.cdt_failures
@@ -3460,7 +3553,14 @@ impl Parser<'_> {
         None
     }
 
-    fn cdt_problem_declaration(&self, start: usize, end: usize) -> bool {
+    /// `declarator_name` spans the function's own name. Decompiled C++ spells
+    /// it `ns::F<A>`; by default only a `::` outside it stays a C problem.
+    fn cdt_problem_declaration(
+        &self,
+        start: usize,
+        end: usize,
+        declarator_name: std::ops::Range<usize>,
+    ) -> bool {
         if (start..end).any(|i| self.tokens[i].macro_recovery) {
             return true;
         }
@@ -3493,7 +3593,9 @@ impl Parser<'_> {
                         && self.tokens[specifier_start].span.line == self.tokens[i + 1].span.line
                 })
                 || self.text(i) == "@"
-                || (!self.cpp && self.text(i) == "::")
+                || (!self.cpp
+                    && self.text(i) == "::"
+                    && (self.cdt_failures || !declarator_name.contains(&i)))
                 || (!self.cpp && self.text(i) == "[" && self.text(i + 1) == "[")
                 || (matches!(self.text(i), "__attribute__" | "__attribute")
                     && self.text(i + 1) == "("
