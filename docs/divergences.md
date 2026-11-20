@@ -8,8 +8,8 @@ belong in regression fixtures, not here.
 
 ## C++ names in decompiled C are still analyzed
 
-**Recorded:** 2026-11-21, approved by the DecBench maintainer as output Joern
-cannot produce.
+**Recorded:** 2026-11-21, [PR #53](https://github.com/Noelo-Lab/rust-joern/pull/53),
+approved by the DecBench maintainer as output Joern cannot produce.
 
 **Joern:** decompilers print C++ names into the C they emit for C++ binaries.
 CDT's C parser fails on a template-id definition such as
