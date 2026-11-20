@@ -8,7 +8,8 @@ belong in regression fixtures, not here.
 
 ## C++ definitions without a Joern method keep their bodies
 
-**Recorded:** 2026-11-20, approved by the DecBench maintainer. Earlier C++
+**Recorded:** 2026-11-20, [PR #51](https://github.com/Noelo-Lab/rust-joern/pull/51),
+approved by the DecBench maintainer. Earlier C++
 parser changes already produce it; open C++ recovery changes extend it.
 
 **Joern:** in some preprocessed C++ translation units that GCC accepts, Joern
