@@ -6,6 +6,11 @@ the returned analysis; the Python wrapper rejects an older library that ignores
 it. It is not enabled by the DecBench shim. Data-flow/reaching-definition
 requests with this profile fail rather than applying unqualified operator rules.
 
+Without the profile, a member-initializer list follows Joern 4.0.150: the CFG
+starts at the constructor body and has no node for an initializer, so strict
+parsing accepts the constructor. The frozen original references in
+`tests/fixtures/cpp-member-initializers` cover parenthesized initializers.
+
 The complete class declaration must occur in the parsed source. The parser
 proves an ordered list of scalar or plain-pointer fields and requires exactly
 one explicit parenthesized initializer expression for every field. It rejects

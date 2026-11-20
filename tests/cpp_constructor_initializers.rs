@@ -16,7 +16,14 @@ fn initialization_follows_declarations_and_preserves_rhs_and_body_calls() {
     let source = "int first(); int second(); void body(); struct A {
         int x; int y; A() : y(second()), x(first()) { body(); }
     };";
-    assert!(analyze(source, "order.cpp", &options(false)).is_err());
+    // Without the profile, Joern's body-only CFG has no initialization nodes.
+    let joern = analyze(source, "order.cpp", &options(false)).unwrap();
+    assert!(joern.functions.iter().all(|f| {
+        f.cpg
+            .nodes
+            .iter()
+            .all(|n| n.name.as_deref() != Some("<operator>.fieldInitialization"))
+    }));
     let result = analyze(source, "order.cpp", &options(true)).unwrap();
     let method = result.functions.iter().find(|f| f.name == "A").unwrap();
     let calls: Vec<_> = method
@@ -66,6 +73,38 @@ fn initialization_follows_declarations_and_preserves_rhs_and_body_calls() {
         .map(|e| e.target)
         .collect();
     assert!(!first_init_successors.contains(&id("first")));
+}
+
+#[test]
+fn default_profile_matches_joern_and_starts_at_the_body() {
+    // Joern 4.0.150 has no CFG node for a member initializer. Strict parsing
+    // keeps the constructor and its body instead of rejecting the input.
+    for source in [
+        "int g(int); int h(); struct A { int x; int y; A(): x(g(1)) { h(); } };",
+        "int g(int); int h(); struct B { B(int); }; struct A : B { int& x; A(int& v): B(g(v)), x(v) { h(); } };",
+        "int g(int); int h(); struct A { int x; A(); }; A::A(): x(g(2)) { h(); }",
+    ] {
+        let analysis = analyze(source, "default.cpp", &options(false))
+            .unwrap_or_else(|error| panic!("{source}: {error}"));
+        let constructor = analysis
+            .functions
+            .iter()
+            .find(|function| function.name == "A" && function.start_line == function.end_line)
+            .unwrap_or_else(|| panic!("{source}: no constructor"));
+        let calls: Vec<_> = constructor
+            .cpg
+            .nodes
+            .iter()
+            .filter(|node| node.kind == "CALL")
+            .filter_map(|node| node.name.as_deref())
+            .collect();
+        assert!(calls.contains(&"h"), "{source}: {calls:?}");
+        assert!(!calls.contains(&"g"), "{source}: {calls:?}");
+        assert!(
+            !calls.contains(&"<operator>.fieldInitialization"),
+            "{source}: {calls:?}"
+        );
+    }
 }
 
 #[test]
