@@ -63,7 +63,7 @@ Directed CFG/entry-exit/degeneracy comparisons use isolated unchanged original
 PyJoern captures. Nonempty/effectful list initialization is not newly qualified.
 
 The local prototype leaves the DecBench pin, profile and all default scores
-unchanged. Constructor member-initializer diagnostics remain unsupported. A
+unchanged. Member initializers are outside this context's scope. A
 production source-context extractor and its ambiguity/visibility rules need
 separate review; source context is not automatically inferred by this API.
 

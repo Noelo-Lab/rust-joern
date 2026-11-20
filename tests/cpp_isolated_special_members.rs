@@ -76,13 +76,25 @@ fn ordinary_qualified_omitted_return_is_not_a_constructor() {
 }
 
 #[test]
-fn recovery_does_not_qualify_unknown_initialization_effects() {
-    assert!(
-        analyze(
-            "demo::Record::Record(int value) : field(value) {}",
-            "slice.cpp",
-            &options()
-        )
-        .is_err()
-    );
+fn recovery_keeps_the_body_without_initialization_effects() {
+    // Joern 4.0.150 exports this slice as a constructor whose CFG starts at
+    // the body; the initializer has no node of its own.
+    let analysis = analyze(
+        "demo::Record::Record(int value) : field(value) { effect(); }",
+        "slice.cpp",
+        &options(),
+    )
+    .unwrap();
+    let [method] = analysis.functions.as_slice() else {
+        panic!("expected one constructor, got {:?}", analysis.functions);
+    };
+    assert_eq!(method.name, "Record");
+    let calls: Vec<_> = method
+        .cpg
+        .nodes
+        .iter()
+        .filter(|n| n.kind == "CALL")
+        .filter_map(|n| n.name.as_deref())
+        .collect();
+    assert_eq!(calls, ["effect"]);
 }

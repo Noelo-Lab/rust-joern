@@ -2566,13 +2566,9 @@ impl Parser<'_> {
                     }
                     plan
                 } else {
-                    if initializer_guard.is_none() {
-                        self.diagnose(
-                            header.parameters_end + 1,
-                            body_start,
-                            "constructor member-initializer CFG is unsupported",
-                        );
-                    }
+                    // Joern's CFG starts at the body and has no node for a
+                    // member initializer. Only the opt-in profile, whose guard
+                    // diagnostic is still pending here, requires a plan.
                     Vec::new()
                 }
             } else {
