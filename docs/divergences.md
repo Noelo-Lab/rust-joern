@@ -6,6 +6,34 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++ definitions without a Joern method keep their bodies
+
+**Recorded:** 2026-11-20, approved by the DecBench maintainer. Earlier C++
+parser changes already produce it; open C++ recovery changes extend it.
+
+**Joern:** in some preprocessed C++ translation units that GCC accepts, Joern
+exports no method for a definition, so it has no CFG. Examples include the
+`wabt` `BinaryReader` constructor with a member initializer list,
+`tinyrenderer`'s out-of-line `Model::nverts`, functions using lambdas or
+structured bindings, and explicit specializations in `ggml`.
+
+**Rust Joern:** the definition keeps its method, body, CFG and DDG.
+
+**Why:** the source compiles, so its body is recoverable. The maintainer
+approved emitting graphs that Joern cannot produce. Parity is measured on the
+functions for which Joern exports a body.
+
+**Affects:** which methods exist in preprocessed C++ sources, and their CPG,
+CFG, reaching definitions and DDG. The 2026-11-19 frozen replay of 74 C++
+translation units requests 3,354 functions; Joern exports no method for 783 of
+them. Upstream main exports a body CFG for 358 of those 783, and a local
+composition of the open C++ recovery changes for 551. Joern's 280 degenerate
+graphs in the same replay are not affected by this entry.
+
+**Reference behavior:** no option removes these methods. `compare_pyjoern.py`
+reports them as `extra` rows. Comparisons with original references count only
+functions for which Joern exports a body CFG.
+
 ## Invalid explicit-destructor call diagnostics
 
 **Recorded:** 2026-10-28, follow-up to PR #3; no DecBench pin update.
