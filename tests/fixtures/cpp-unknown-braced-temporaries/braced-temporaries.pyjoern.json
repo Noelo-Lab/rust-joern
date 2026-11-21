@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 47.27973879198544,
+  "functions": {
+    "micros": {
+      "name": "micros",
+      "start_line": 1,
+      "end_line": 7,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "entry": [
+          1
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "3.0:\ndt = 0\n",
+          "1": "1.0:\nFUNCTION_START\ndt < 0\n",
+          "2": "4.4:\n<UnsupportedStmt: FIELD_IDENTIFIER,duration_cast,duration_cast>\n<UnsupportedStmt: ['fieldAccess', 'chrono::duration_cast']>\n<UnsupportedStmt: FIELD_IDENTIFIER,microseconds,microseconds>\n<UnsupportedStmt: ['fieldAccess', 'chrono::microseconds']>\nchrono::duration_cast < chrono::microseconds\n<UnsupportedStmt: ['arrayInitializer', '{dt}']>\n<UnsupportedStmt: std::chrono::steady_clock::duration,std::chrono::steady_clock::duration{dt}>\n<UnsupportedStmt: >\n<UnsupportedStmt: >\n<UnsupportedStmt: >\n<UnsupportedStmt: >\nreturn chrono::duration_cast&lt;chrono::microsecon...,returnchrono::duration_cast&lt;chrono::microsecon...\nFUNCTION_END\n"
+        }
+      }
+    },
+    "wrap": {
+      "name": "wrap",
+      "start_line": 9,
+      "end_line": 15,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "entry": [
+          1
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "11.1:\n<UnsupportedStmt: ['postDecrement', 'n--']>\nn-- > 0\n",
+          "1": "9.0:\nFUNCTION_START\ntotal = 0\n",
+          "2": "13.2:\n<UnsupportedStmt: ['arrayInitializer', '{total}']>\n<UnsupportedStmt: ns::box,ns::box{total}>\nholder = ns::box{total}\nreturn total;,returntotal;\nFUNCTION_END\n",
+          "3": "12.3:\n<UnsupportedStmt: ['arrayInitializer', '{v', 'n}']>\n<UnsupportedStmt: sample,sample{v,n}>\nmeasure()\n<UnsupportedStmt: ['assignmentPlus', 'total+=measure(sample{v', 'n})']>\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "43c6d61ec4f1921eae9ca73dc25fb07cf233d626bbe51b1d646281f83090d8e5",
+  "prepared_sha256": "43c6d61ec4f1921eae9ca73dc25fb07cf233d626bbe51b1d646281f83090d8e5"
+}

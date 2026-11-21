@@ -8318,8 +8318,13 @@ impl Parser<'_> {
             if self.cpp
                 && minimum <= 15
                 && op == "{"
-                && matches!(&left.kind, ExprKind::Identifier(name) if self.explicit_types.contains(name)
+                && matches!(&left.kind, ExprKind::Identifier(name) if (self.explicit_types.contains(name)
                         && (!self.supplied_type_names.contains(name) || !self.variables.contains(name)))
+                        // Header-stripped sources lack many type declarations.
+                        // Inside an expression, or when qualified, `T{...}`
+                        // can only be a braced temporary.
+                        || (!self.variables.contains(name) && (minimum >= 1 || name.contains("::"))))
+                && self.matching(self.pos, self.limit).is_some()
             {
                 let initializer = self.prefix();
                 left = Expr {

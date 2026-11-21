@@ -12,6 +12,10 @@ bindings still shadow a name in a braced-construction expression. The context
 carries no aliases, widths, fields, constructors, bases or function prototypes.
 No CLI option or default DecBench policy is changed.
 
+Without context, `T{...}` inside an expression, or with a qualified `T`, is
+read as a braced temporary as Joern 4.0.150 reads it. The context still
+decides an unqualified `T{...}` that begins a statement.
+
 ## Caller contract
 
 - Derive names from the exact preprocessed TU and the definition's visible
