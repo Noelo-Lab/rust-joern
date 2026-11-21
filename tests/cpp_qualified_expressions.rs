@@ -112,6 +112,52 @@ fn nested_template_ids_and_global_scope_keep_callee_and_operands() {
 }
 
 #[test]
+fn explicit_function_specializations_keep_each_written_body() {
+    let analysis = parse(
+        "namespace demo {
+int tick(int);
+template<int N> int convert(int value);
+template<> int convert<4>(int value) { if (value) return tick(value); return 4; }
+template<> int convert<8>(int value) { return tick(value + 8); }
+}
+int after(int value) { return value + 1; }",
+    );
+    let convert: Vec<_> = analysis
+        .functions
+        .iter()
+        .filter(|f| f.name == "convert")
+        .collect();
+    assert_eq!(convert.len(), 2);
+    for f in &convert {
+        assert_eq!(f.fullname, "demo.convert:int(int)");
+        assert_eq!(f.return_type, "int");
+        call(f, "tick");
+    }
+    assert_eq!((convert[0].start_line, convert[0].end_line), (4, 4));
+    assert_eq!((convert[1].start_line, convert[1].end_line), (5, 5));
+    assert!(convert[0].cfg.nodes.len() > convert[1].cfg.nodes.len());
+    assert!(
+        analysis
+            .functions
+            .iter()
+            .any(|f| f.name == "after" && f.start_line == 7)
+    );
+}
+
+#[test]
+fn explicit_specialization_with_nested_template_arguments_keeps_its_return() {
+    let analysis = parse(
+        "template<class T> struct Box {};
+         template<class T> int f(int x);
+         template<> int f<Box<int>>(int x) { return x + 1; }",
+    );
+    let f = function(&analysis);
+    assert_eq!(f.fullname, "f:int(int)");
+    assert_eq!((f.start_line, f.end_line), (3, 3));
+    call(f, "<operator>.addition");
+}
+
+#[test]
 fn explicitly_qualified_subscript_keeps_receiver_and_argument_effects() {
     let a = parse(
         "namespace demo { struct Box { int operator[](int); }; } demo::Box &receiver(); int tick(); int f() { return receiver().demo::Box::operator[](tick()); }",
@@ -354,4 +400,27 @@ fn operator_template_names_do_not_hide_invalid_runtime_arguments() {
             );
         }
     }
+}
+
+#[test]
+fn explicit_member_template_specializations_keep_bodies() {
+    // Joern 4.0.150 exports `C::StringTo<double>` as the method `StringTo`.
+    let source = "int tick(int);\nstruct C {\n  template <class T> T StringTo(const char *b, int n) const;\n};\ntemplate<>\ndouble C::StringTo<double>(const char *b, int n) const {\n  while (n > 0) n = tick(n);\n  return n;\n}\n";
+    let analysis = rust_joern::analyze(
+        source,
+        "member.cpp",
+        &rust_joern::graph::Options {
+            language: Some("cpp".into()),
+            preprocessed: true,
+            strict: true,
+            ..Default::default()
+        },
+    )
+    .unwrap();
+    let method = analysis
+        .functions
+        .iter()
+        .find(|f| f.name == "StringTo" && f.start_line < f.end_line)
+        .expect("specialized member body");
+    assert!(method.cfg.edges.len() >= 3);
 }
