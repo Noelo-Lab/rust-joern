@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 44.52759679220617,
+  "functions": {
+    "table": {
+      "name": "table",
+      "start_line": 5,
+      "end_line": 7,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "5.0:\nFUNCTION_START\n<UnsupportedStmt: UNKNOWN,short,short>\nf(seq)\n<UnsupportedStmt: ['cast', 'static_cast&lt;short&gt;(f(seq))']>\n<UnsupportedStmt: ['arrayInitializer', '{static_cast&lt;short&gt;(f(seq))...}']>\n<UnsupportedStmt: std::array&lt;short,sizeof...seq&gt;,std::array&lt;short,sizeof...(seq)&gt;{static_cast&lt;s...>\nreturn std::array&lt;short,sizeof...(seq)&gt;{static...,returnstd::array&lt;short,sizeof...(seq)&gt;{static...\nFUNCTION_END\n"
+        }
+      }
+    },
+    "mask": {
+      "name": "mask",
+      "start_line": 10,
+      "end_line": 12,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "10.0:\nFUNCTION_START\nreturn {static_cast&lt;char&gt;((offset+indexes)%...,return{static_cast&lt;char&gt;((offset+indexes)%...\nFUNCTION_END\n"
+        }
+      }
+    },
+    "forward": {
+      "name": "forward",
+      "start_line": 15,
+      "end_line": 20,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [
+          3
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "17.0:\nn > 0\n",
+          "1": "18.1:\nh(values...)\nn = h(values...)\n",
+          "2": "15.0:\nFUNCTION_START\nf(values)\n<UnsupportedStmt: ['arrayInitializer', '{f(values)...}']>\nall[] = {f(values)...}\n",
+          "3": "19.2:\n<UnsupportedStmt: ['indirectIndexAccess', 'all[0]']>\n<UnsupportedStmt: ['addition', 'n+all[0]']>\nreturn n+all[0];,returnn+all[0];\nFUNCTION_END\n"
+        }
+      }
+    },
+    "f": {
+      "name": "f",
+      "start_line": 1,
+      "end_line": 1,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "1.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "h": {
+      "name": "h",
+      "start_line": 2,
+      "end_line": 2,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "2.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "0a6be1c018ceb44935426f06b3f37957d0c57ccdc847f2a95f9aea68a0ea8013",
+  "prepared_sha256": "0a6be1c018ceb44935426f06b3f37957d0c57ccdc847f2a95f9aea68a0ea8013"
+}
