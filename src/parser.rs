@@ -9425,6 +9425,11 @@ impl Parser<'_> {
                     "struct" | "class" | "union" | "enum" | "typeof" | "__typeof__" | "decltype"
                 )
             {
+                // In `ns::T x`, `ns` names a scope, not a type: as a type it
+                // would turn a later `ns::object << value;` into a declaration.
+                if self.cpp && self.text(i + 1) == "::" {
+                    break;
+                }
                 self.types.insert(self.text(i).to_string());
                 break;
             }
