@@ -1550,7 +1550,10 @@ impl Parser<'_> {
                         let name = cursor - 1;
                         return (name > start + 3
                             && self.tokens[name].kind == TokenKind::Identifier
-                            && !matches!(self.text(name - 1), "::" | "operator")
+                            && self.text(name - 1) != "operator"
+                            // `C::F<A>` specializes a member of class `C`.
+                            && (self.text(name - 1) != "::"
+                                || self.tokens[name - 2].kind == TokenKind::Identifier)
                             && !self.type_word(self.text(name))
                             && !qualifier(self.text(name)))
                         .then_some(name);

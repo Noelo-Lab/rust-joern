@@ -401,3 +401,26 @@ fn operator_template_names_do_not_hide_invalid_runtime_arguments() {
         }
     }
 }
+
+#[test]
+fn explicit_member_template_specializations_keep_bodies() {
+    // Joern 4.0.150 exports `C::StringTo<double>` as the method `StringTo`.
+    let source = "int tick(int);\nstruct C {\n  template <class T> T StringTo(const char *b, int n) const;\n};\ntemplate<>\ndouble C::StringTo<double>(const char *b, int n) const {\n  while (n > 0) n = tick(n);\n  return n;\n}\n";
+    let analysis = rust_joern::analyze(
+        source,
+        "member.cpp",
+        &rust_joern::graph::Options {
+            language: Some("cpp".into()),
+            preprocessed: true,
+            strict: true,
+            ..Default::default()
+        },
+    )
+    .unwrap();
+    let method = analysis
+        .functions
+        .iter()
+        .find(|f| f.name == "StringTo" && f.start_line < f.end_line)
+        .expect("specialized member body");
+    assert!(method.cfg.edges.len() >= 3);
+}
