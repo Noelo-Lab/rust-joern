@@ -8474,6 +8474,16 @@ impl Parser<'_> {
                 };
                 continue;
             }
+            // A C++ pack expansion `f(seq)...` ends its element; it has no
+            // right operand, unlike the GNU range `a ... b`.
+            if self.cpp
+                && op == "..."
+                && matches!(self.text(self.pos + 1), "}" | "," | ")" | ">" | ">>" | ";")
+            {
+                self.pos += 1;
+                left.span = self.span(start, self.pos);
+                continue;
+            }
             let Some((precedence, right_associative)) = binary_precedence(&op) else {
                 break;
             };
