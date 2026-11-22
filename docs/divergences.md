@@ -6,6 +6,30 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## Placement new operand evaluation
+
+**Recorded:** 2026-11-12, standalone placement-new parser change.
+
+**Joern:** 4.0.150 exports both operands in a scalar placement-new expression
+and visits the constructor initializer before the placement operand in its CFG.
+
+**Rust Joern:** the placement list in `new (args) T` is retained within the
+existing `<operator>.new` graph expression. The graph visits placement
+operands before constructor initializer operands. The type argument remains
+structural. The parser does not resolve allocation overloads or model hidden
+constructor or exception-cleanup calls.
+
+**Why:** the C++ new-expression evaluates placement operands before
+initializer operands. Windows ARM64 Clang IR for the control evaluates
+`location()` before `value()`; the original Joern CFG reverses those two calls.
+
+**Affects:** CPG arguments and CFG order for this form, and their dependent DDG.
+The independent parenthesized allocated type-id form retains its previous
+handling.
+
+**Reference behavior:** no option changes the argument order of the retained
+placement-new expression. DecBench's backend pin remains unchanged.
+
 ## Invalid explicit-destructor call diagnostics
 
 **Recorded:** 2026-10-28, follow-up to PR #3; no DecBench pin update.

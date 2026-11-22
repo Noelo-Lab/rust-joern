@@ -355,3 +355,54 @@ fn operator_template_names_do_not_hide_invalid_runtime_arguments() {
         }
     }
 }
+
+#[test]
+fn placement_new_preserves_operands_in_all_expression_positions() {
+    let context = "namespace demo { struct Object { Object(int); }; } void *location(); int value(); void consume(demo::Object *);";
+    for body in [
+        "new (location()) demo::Object(value());",
+        "return new (location()) demo::Object(value());",
+        "consume(new (location()) demo::Object(value()));",
+        "object = new (location()) demo::Object(value());",
+    ] {
+        let analysis = parse(&format!(
+            "{context} demo::Object *f(demo::Object *object) {{ {body} }}"
+        ));
+        let f = function(&analysis);
+        let allocation = call(f, "<operator>.new");
+        assert_eq!(argument_code(f, allocation, 1), "demo::Object");
+        assert_eq!(argument_code(f, allocation, 2), "location()");
+        assert_eq!(argument_code(f, allocation, 3), "value()");
+        assert!(path(f, call(f, "location"), call(f, "value")));
+        assert!(path(f, call(f, "value"), allocation));
+        if body.starts_with("return") {
+            let returned = f.cpg.nodes.iter().find(|n| n.kind == "RETURN").unwrap();
+            assert!(path(f, allocation, returned.id));
+        }
+    }
+}
+
+#[test]
+fn placement_new_as_unbraced_body_keeps_the_control_statement() {
+    let context = "struct Item { Item(int); }; void after();";
+    for statement in [
+        "if (count) new (items + count) Item(count);",
+        "while (count--) new (items + count) Item(count);",
+        "for (int i = 0; i < count; i++) new (items + i) Item(i);",
+    ] {
+        let analysis = parse(&format!(
+            "{context} void f(Item *items, int count) {{ {statement} after(); }}"
+        ));
+        let f = function(&analysis);
+        let allocation = call(f, "<operator>.new");
+        let after = call(f, "after");
+        assert!(f.cpg.nodes.iter().any(|n| n.kind == "CONTROL_STRUCTURE"));
+        assert!(path(f, allocation, after), "{statement}");
+        assert!(
+            !f.cpg
+                .nodes
+                .iter()
+                .any(|n| n.code == "Item(count)" || n.code == "Item(i)")
+        );
+    }
+}
