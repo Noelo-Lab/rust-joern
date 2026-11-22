@@ -7417,6 +7417,7 @@ impl Parser<'_> {
                     | "noexcept"
             )
             || self.skip_attribute(start, self.limit).is_some()
+            || self.cpp_new_placement_end(start, self.limit).is_some()
         {
             return None;
         }

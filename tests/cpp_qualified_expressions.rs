@@ -381,3 +381,28 @@ fn placement_new_preserves_operands_in_all_expression_positions() {
         }
     }
 }
+
+#[test]
+fn placement_new_as_unbraced_body_keeps_the_control_statement() {
+    let context = "struct Item { Item(int); }; void after();";
+    for statement in [
+        "if (count) new (items + count) Item(count);",
+        "while (count--) new (items + count) Item(count);",
+        "for (int i = 0; i < count; i++) new (items + i) Item(i);",
+    ] {
+        let analysis = parse(&format!(
+            "{context} void f(Item *items, int count) {{ {statement} after(); }}"
+        ));
+        let f = function(&analysis);
+        let allocation = call(f, "<operator>.new");
+        let after = call(f, "after");
+        assert!(f.cpg.nodes.iter().any(|n| n.kind == "CONTROL_STRUCTURE"));
+        assert!(path(f, allocation, after), "{statement}");
+        assert!(
+            !f.cpg
+                .nodes
+                .iter()
+                .any(|n| n.code == "Item(count)" || n.code == "Item(i)")
+        );
+    }
+}
