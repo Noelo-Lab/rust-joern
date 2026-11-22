@@ -5227,6 +5227,18 @@ impl Parser<'_> {
                 return false;
             }
         }
+        if self.cpp
+            && start < end
+            && self.tokens[start].kind == TokenKind::Identifier
+            && self.text(start + 1) == "("
+            && self
+                .matching(start + 1, end)
+                .is_some_and(|close| matches!(self.text(close + 1), "." | "->"))
+        {
+            // No declarator is followed by member access: `T(x).f()` uses a
+            // temporary or a call result.
+            return false;
+        }
         if start < end
             && self.tokens[start].kind == TokenKind::Identifier
             && self.text(start + 1) == "("
