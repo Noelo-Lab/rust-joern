@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 11.572822750007617,
+  "functions": {
+    "operator": {
+      "name": "operator",
+      "start_line": 1,
+      "end_line": 6,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "5.0:\nreturn n;,returnn;\n",
+          "1": "4.1:\n<UnsupportedStmt: ['subtraction', 'n-1']>\nreturn n-1;,returnn-1;\n",
+          "2": "1.0:\nFUNCTION_START\nn > 0\n"
+        }
+      }
+    },
+    "apply": {
+      "name": "apply",
+      "start_line": 8,
+      "end_line": 15,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "12.0:\n<UnsupportedStmt: IDENTIFIER,total,while(total)>\n",
+          "1": "14.0:\nreturn total;,returntotal;\nFUNCTION_END\n",
+          "2": "13.1:\noperator(total)\ntotal = operator(total)\n",
+          "3": "8.0:\nFUNCTION_START\noperator(n)\ntotal = operator(n)\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "8f67e1b0e6f37324e9723ba61b6e112a302209e08db16c67485b7eef237cef56",
+  "prepared_sha256": "8f67e1b0e6f37324e9723ba61b6e112a302209e08db16c67485b7eef237cef56"
+}

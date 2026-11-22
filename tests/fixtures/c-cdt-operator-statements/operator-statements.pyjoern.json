@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 16.446861707998323,
+  "functions": {
+    "reserve": {
+      "name": "reserve",
+      "start_line": 8,
+      "end_line": 18,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "entry": [
+          1,
+          2
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "16.0:\nfail()\nreturn 0;,return0;\n",
+          "1": "8.0:\nFUNCTION_START\ncount > 0\n",
+          "2": "12.2:\nFUNCTION_START\nblock = operator\n<UnsupportedStmt: ['multiplication', 'count*8']>\nnew(count*8)\nrecord(block)\nreturn block;,returnblock;\n"
+        }
+      }
+    },
+    "refill": {
+      "name": "refill",
+      "start_line": 20,
+      "end_line": 29,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "20.0:\nFUNCTION_START\n<UnsupportedStmt: ['logicalNot', '!ready']>\nprepare()\n<UnsupportedStmt: UNKNOWN,long*,long*>\nFUNCTION_START\n<UnsupportedStmt: ['cast', '(long*)operator']>\nbuffer = (long*)operator\nnew(64)\nconsume(buffer)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "pick": {
+      "name": "pick",
+      "start_line": 31,
+      "end_line": 36,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "31.0:\nFUNCTION_START\nfinish(slot)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "choose": {
+      "name": "choose",
+      "start_line": 38,
+      "end_line": 43,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "38.0:\nFUNCTION_START\nfinish(value)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "closed": {
+      "name": "closed",
+      "start_line": 45,
+      "end_line": 51,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "edges": [
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            4,
+            0
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "50.0:\nfinish(value)\n",
+          "1": "48.2:\nfirst()\n",
+          "2": "48.3:\nsecond()\n",
+          "3": "45.0:\nFUNCTION_START\n",
+          "4": "48.1:\nflag ? f : l\nvalue = flag?first():second()\n<UnsupportedStmt: IDENTIFIER,value,if(value)>\n"
+        }
+      }
+    },
+    "operator": {
+      "name": "operator",
+      "start_line": 1,
+      "end_line": 1,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "1.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "da784aaaccd2646308a74a359ec65a1d8eb90bb80ef52e9ba24ef7bba4471ab0",
+  "prepared_sha256": "da784aaaccd2646308a74a359ec65a1d8eb90bb80ef52e9ba24ef7bba4471ab0"
+}

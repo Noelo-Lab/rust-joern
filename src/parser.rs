@@ -1584,22 +1584,30 @@ impl Parser<'_> {
                 i = close + 1;
                 continue;
             }
-            if self.text(i - 1) == "operator" && close == i + 1 && self.text(close + 1) == "(" {
+            // CDT's C parser has no operator-function-ids: `operator` is a name.
+            let operator_ids = self.cpp || !self.cdt_failures;
+            if operator_ids
+                && self.text(i - 1) == "operator"
+                && close == i + 1
+                && self.text(close + 1) == "("
+            {
                 i = close + 1;
                 continue;
             }
             let mut name_end = i;
             let mut name_start = i - 1;
-            if name_start > start && self.text(name_start - 1) == "operator" {
+            if operator_ids && name_start > start && self.text(name_start - 1) == "operator" {
                 name_start -= 1;
-            } else if matches!(self.text(name_start), ")" | "]")
+            } else if operator_ids
+                && matches!(self.text(name_start), ")" | "]")
                 && name_start > start
                 && matches!(self.text(name_start - 1), "(" | "[")
                 && name_start >= 2
                 && self.text(name_start - 2) == "operator"
             {
                 name_start -= 2;
-            } else if self.text(name_start) == "]"
+            } else if operator_ids
+                && self.text(name_start) == "]"
                 && name_start >= start + 3
                 && self.text(name_start - 1) == "["
                 && matches!(self.text(name_start - 2), "new" | "delete")
@@ -1654,7 +1662,7 @@ impl Parser<'_> {
                 continue;
             }
             // Handle operator names without spaces; ordinary qualified names use ::.
-            if name_start > start && self.text(name_start - 1) == "operator" {
+            if operator_ids && name_start > start && self.text(name_start - 1) == "operator" {
                 name_start -= 1;
             }
             if name_start >= name_end {
@@ -6325,6 +6333,7 @@ impl Parser<'_> {
                         second,
                     ])
                 } else {
+                    let diagnostics = self.diagnostics.len();
                     let expression = self.expression(0);
                     if matches!(self.peek(), ")" | "]")
                         && (self.pos..end).all(|i| matches!(self.text(i), ")" | "]"))
@@ -6380,7 +6389,22 @@ impl Parser<'_> {
                         && self.text(self.pos + 1) == "("
                         && matches!(&expression.kind, ExprKind::Binary { op, .. } if op == "=")
                     {
-                        StmtKind::Expression(expression)
+                        if self.cdt_failures {
+                            // CDT's missing semicolon also fails an enclosing
+                            // label or control statement.
+                            StmtKind::Sequence(vec![
+                                Stmt {
+                                    kind: StmtKind::Problem,
+                                    span: expression.span.clone(),
+                                },
+                                Stmt {
+                                    span: expression.span.clone(),
+                                    kind: StmtKind::Expression(expression),
+                                },
+                            ])
+                        } else {
+                            StmtKind::Expression(expression)
+                        }
                     } else if self.pos + 2 == end
                         && self.tokens[self.pos].kind == TokenKind::Identifier
                         && self.tokens[self.pos + 1].kind == TokenKind::Identifier
@@ -6401,6 +6425,17 @@ impl Parser<'_> {
                         && self.tokens[start + 2].kind == TokenKind::Identifier
                     {
                         StmtKind::Declaration(self.declarations_range(start, self.pos))
+                    } else if !self.at(";")
+                        && !matches!(self.peek(), "}" | "")
+                        && self.cdt_failures
+                        && self.unclosed_conditional(start, self.pos)
+                    {
+                        // CDT cannot complete the conditional: the whole
+                        // statement is a problem, recovered without an error.
+                        self.diagnostics.truncate(diagnostics);
+                        self.pos = end;
+                        self.finish_statement(start);
+                        StmtKind::Problem
                     } else if !self.at(";") && !matches!(self.peek(), "}" | "") {
                         let mut expressions = vec![expression];
                         self.diagnose(start, end, "unsupported expression statement syntax");
@@ -7108,6 +7143,27 @@ impl Parser<'_> {
         self.limit = old_limit;
         self.pos = after;
         statement
+    }
+
+    /// Whether `start..end` has a `?` outside groups with no `:` after it.
+    fn unclosed_conditional(&self, start: usize, end: usize) -> bool {
+        let mut open = 0usize;
+        let mut i = start;
+        while i < end {
+            match self.text(i) {
+                "(" | "[" | "{" | "<%" | "<:" => {
+                    if let Some(close) = self.matching(i, end) {
+                        i = close + 1;
+                        continue;
+                    }
+                }
+                "?" => open += 1,
+                ":" => open = open.saturating_sub(1),
+                _ => {}
+            }
+            i += 1;
+        }
+        open > 0
     }
 
     fn unpaired_expression_colon(&self, start: usize, end: usize) -> Option<usize> {
@@ -10832,6 +10888,47 @@ mod declaration_tests {
         }
         let unit = parse("int operator(int n) { return n; }", false);
         assert_eq!(unit.functions[0].name, "operator");
+    }
+
+    #[test]
+    fn cdt_c_operator_is_an_ordinary_name() {
+        let cdt = |source| parse_with(source, false, true, true, &[], false);
+        let source = "unsigned int operator()(unsigned long *a, unsigned long b) { return b; }";
+        assert_eq!(parse(source, false).functions[0].name, "operator()");
+        let unit = cdt(source);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        assert_eq!(unit.functions[0].name, "operator");
+        assert!(!matches!(unit.functions[0].body.kind, StmtKind::Block(_)));
+        let unit = cdt("int operator(int n) { return n; }");
+        assert_eq!(unit.functions[0].name, "operator");
+        assert!(matches!(unit.functions[0].body.kind, StmtKind::Block(_)));
+    }
+
+    #[test]
+    fn cdt_c_operator_statements_are_problems() {
+        let source = "void f(int c) { long *p; p = c ? (long *)operator new() : 0; L: p = operator new(8); }";
+        let unit = parse(source, false);
+        assert!(!unit.diagnostics.is_empty());
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(matches!(body[1].kind, StmtKind::Unknown(_)));
+        let StmtKind::Label { statement, .. } = &body[2].kind else {
+            panic!()
+        };
+        assert!(matches!(statement.kind, StmtKind::Expression(_)));
+        // CDT fails the unclosed conditional, and the assignment lacking its
+        // semicolon before `new(` drops the enclosing label.
+        let unit = parse_with(source, false, true, true, &[], false);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+            panic!()
+        };
+        assert!(matches!(body[1].kind, StmtKind::Problem));
+        assert!(matches!(
+            &body[2].kind,
+            StmtKind::Sequence(parts) if matches!(parts[0].kind, StmtKind::Problem)
+        ));
     }
 
     #[test]
