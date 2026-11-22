@@ -230,3 +230,17 @@ fn unsupported_known_owner_lookup_is_not_a_proven_problem_binding() {
         assert!(f.cpg.nodes[id as usize].method_full_name.is_none());
     }
 }
+
+#[test]
+fn member_body_sees_fields_declared_later_in_the_class() {
+    // A member body is a complete-class context, so `g(n);` is a call even
+    // when both `g` and the field `n` are declared after it.
+    let analysis = parse(
+        "struct S { void f() { if (k) { g(n); h(); } } void g(int); void h(); int n; int k; };",
+    );
+    let f = method(&analysis, "f");
+    assert!(f.cpg.nodes.iter().all(|n| n.kind != "LOCAL"));
+    let argument = edge(f, call(f, "g"), "ARGUMENT", Some("1")).unwrap();
+    let node = f.cpg.nodes.iter().find(|n| n.id == argument).unwrap();
+    assert_eq!(node.code, "this->n");
+}
