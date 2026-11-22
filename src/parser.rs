@@ -4185,6 +4185,63 @@ impl Parser<'_> {
         None
     }
 
+    /// `name(args)` at `a..b` whose argument list cannot be a parameter list.
+    fn cpp_direct_initializer(&self, a: usize, b: usize) -> bool {
+        self.tokens
+            .get(a)
+            .is_some_and(|t| t.kind == TokenKind::Identifier)
+            && self.text(a + 1) == "("
+            && self
+                .matching(a + 1, b)
+                .is_some_and(|close| self.cpp_initializer_arguments(a + 2, close))
+    }
+
+    /// Whether a C++ declarator's parenthesized list holds an expression
+    /// that no parameter declaration can spell.
+    fn cpp_initializer_arguments(&self, start: usize, end: usize) -> bool {
+        self.cpp
+            && self
+                .split_ranges(start, end, ",")
+                .into_iter()
+                .any(|(a, b)| a < b && self.cpp_expression_argument(a, b))
+    }
+
+    /// A literal, an expression-only leading token, a known non-type name,
+    /// a call of a non-type, or a top-level operator.
+    fn cpp_expression_argument(&self, a: usize, b: usize) -> bool {
+        const OPERATORS: [&str; 15] = [
+            "?", "==", "!=", "<=", ">=", "||", "&&", "->", ".", "+", "-", "/", "%", "|", "^",
+        ];
+        let first = self.text(a);
+        if self.tokens[a].kind == TokenKind::Literal
+            || matches!(first, "!" | "~" | "-" | "+" | "(" | "this" | "nullptr")
+        {
+            return true;
+        }
+        if self.tokens[a].kind == TokenKind::Identifier
+            && !self.type_word(first)
+            && !qualifier(first)
+            && !self.explicit_types.contains(first)
+            && !self.types.contains(first)
+            && (self.variables.contains(first)
+                || self.object_bindings.contains(first)
+                || self.function_returns.contains_key(first)
+                // `f()` calls a function unless `f` names a type.
+                || (self.text(a + 1) == "(" && self.resolve_class_name(first).is_none()))
+        {
+            return true;
+        }
+        let mut depth = 0usize;
+        (a..b).any(|i| {
+            match self.text(i) {
+                "(" | "[" | "{" | "<" => depth += 1,
+                ")" | "]" | "}" | ">" => depth = depth.saturating_sub(1),
+                _ => {}
+            }
+            depth == 0 && OPERATORS.contains(&alternative_operator(self.text(i)))
+        })
+    }
+
     fn specifier_end(&self, start: usize, end: usize) -> usize {
         let mut i = start;
         let mut has_type = false;
@@ -4643,7 +4700,12 @@ impl Parser<'_> {
             && let Some(&(a, b)) = ranges.first()
         {
             let (name, suffix) = self.declarator_name(a, b);
-            let header = self.function_header(a, b);
+            // `S s(c ? x : y);` cannot declare a function: CDT reads an
+            // object with a direct initializer when an argument is no
+            // parameter declaration.
+            let header = self
+                .function_header(a, b)
+                .filter(|_| !self.cpp_direct_initializer(a, b));
             let function_pointer = self.text(a) == "("
                 && self.text(suffix) == "("
                 && (a..suffix).any(|i| matches!(self.text(i), "*" | "&" | "&&"));
@@ -4730,7 +4792,11 @@ impl Parser<'_> {
                     "(" => {
                         let close = self.matching(i, b).unwrap_or(b.saturating_sub(1));
                         // C++ direct initialization; a pointer declarator's suffix is a type.
-                        if self.cpp && a == name_index && self.function_header(a, b).is_none() {
+                        if self.cpp
+                            && a == name_index
+                            && (self.function_header(a, b).is_none()
+                                || self.cpp_direct_initializer(a, b))
+                        {
                             initializer_start = Some(i + 1);
                         }
                         i = close + 1;
