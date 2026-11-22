@@ -1,5 +1,6 @@
 //! The C/C++ syntax used by the CDT-to-CPG conversion, without a parser runtime.
 //! Unsupported executable syntax is reported, rather than silently dropping its CFG.
+use std::cell::Cell;
 use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 
@@ -85,6 +86,8 @@ fn parse_unit(
         extern_c: false,
         extern_c_names: HashSet::new(),
         class_scopes: HashSet::new(),
+        template_classes: HashSet::new(),
+        distinct_dependent_types: Cell::new(false),
         class_fields: HashMap::new(),
         scalar_constructor_classes: HashSet::new(),
         constructor_initializers,
@@ -797,6 +800,12 @@ struct Parser<'a> {
     extern_c: bool,
     extern_c_names: HashSet<String>,
     class_scopes: HashSet<String>,
+    /// Class templates. Inside them CDT types the injected class name as
+    /// dependent, which Joern exports as `ANY`.
+    template_classes: HashSet<String>,
+    /// Keep dependent type spellings while comparing CDT bindings: Joern
+    /// prints `ANY` for each of them, but CDT still tells them apart.
+    distinct_dependent_types: Cell<bool>,
     class_fields: HashMap<String, Vec<(String, String)>>,
     scalar_constructor_classes: HashSet<String>,
     constructor_initializers: bool,
@@ -1287,6 +1296,9 @@ impl Parser<'_> {
                     };
                     if self.cpp && class.is_some() && !nested.is_empty() {
                         self.class_scopes.insert(nested.clone());
+                        if self.text(start) == "template" {
+                            self.template_classes.insert(nested.clone());
+                        }
                         let close = self.matching(cursor, self.limit).unwrap_or(self.limit);
                         let fields = self.collect_class_fields(cursor + 1, close);
                         self.scalar_constructor_classes.remove(&nested);
@@ -2424,21 +2436,25 @@ impl Parser<'_> {
                     .map(|(owner, _)| owner.replace("::", "."))
             })
             .flatten();
-        let binding_signature = self.cpp.then(|| {
-            let parameter_types = self
+        let binding_of = |parser: &Self| {
+            let parameter_types = parser
                 .split_ranges(header.parameters_start, header.parameters_end, ",")
                 .into_iter()
                 .filter(|(a, b)| a < b)
-                .map(|(a, b)| self.binding_parameter_type(a, b))
+                .map(|(a, b)| parser.binding_parameter_type(a, b))
                 .filter(|t| t != "void" && t != "...")
                 .collect::<Vec<_>>()
                 .join(",");
             format!(
                 "{}({parameter_types})",
-                self.binding_type(&return_binding_type)
+                parser.binding_type(&return_binding_type)
             )
-        });
+        };
+        let binding_signature = self.cpp.then(|| binding_of(self));
         let duplicate_binding = if definition && self.cpp && !header.name.contains("::") {
+            self.distinct_dependent_types.set(true);
+            let identity_signature = binding_of(self);
+            self.distinct_dependent_types.set(false);
             let mut qualifiers = String::new();
             let mut cursor = header.parameters_end + 1;
             while cursor < body_start {
@@ -2458,8 +2474,7 @@ impl Parser<'_> {
                 }
             }
             !self.defined_cpp_methods.insert(format!(
-                "{qualified_name}:{}:{qualifiers}",
-                binding_signature.as_deref().unwrap_or_default()
+                "{qualified_name}:{identity_signature}:{qualifiers}"
             ))
         } else {
             false
@@ -4029,7 +4044,7 @@ impl Parser<'_> {
     fn binding_type(&self, raw_type: &str) -> String {
         let mut raw = raw_type.trim().to_string();
         for _ in 0..16 {
-            let split = raw.find(['*', '&', '[', '(']).unwrap_or(raw.len());
+            let split = declarator_split(&raw);
             let base = raw[..split].trim();
             let Some(alias) = self.type_aliases.get(base) else {
                 break;
@@ -4040,14 +4055,46 @@ impl Parser<'_> {
             }
             raw = replaced;
         }
-        let split = raw.find(['*', '&', '[', '(']).unwrap_or(raw.len());
+        let split = declarator_split(&raw);
         let mut base = raw[..split].trim().to_string();
         for keyword in ["struct ", "class ", "union ", "enum ", "const "] {
             if let Some(rest) = base.strip_prefix(keyword) {
                 base = rest.to_string();
             }
         }
-        let class_type = self.cpp.then(|| self.resolve_class_name(&base)).flatten();
+        let dependent_any = !self.distinct_dependent_types.get();
+        let mut template_id = false;
+        if self.cpp
+            && dependent_any
+            && let Some(open) = base.find('<')
+        {
+            // CDT types a template-id with a dependent or unknown argument as
+            // a problem, which Joern exports as `ANY`. Otherwise it prints the
+            // resolved arguments without spaces.
+            let name = base[..open].trim();
+            let known_name = name.contains("::")
+                || self.resolve_class_name(name).is_some()
+                || self.explicit_types.contains(name);
+            let Some((arguments, rest)) = known_name
+                .then(|| self.template_arguments(&base[open..]))
+                .flatten()
+            else {
+                return "ANY".into();
+            };
+            let name = self.resolve_class_name(name).unwrap_or_else(|| name.into());
+            base = format!("{name}<{arguments}>{rest}");
+            template_id = true;
+        }
+        let class_type = (self.cpp && !template_id)
+            .then(|| self.resolve_class_name(&base))
+            .flatten();
+        if let Some(qualified) = &class_type
+            && dependent_any
+            && self.template_classes.contains(qualified)
+        {
+            // A class template's own name is its dependent injected type.
+            return "ANY".into();
+        }
         if let Some(qualified) = &class_type {
             base.clone_from(qualified);
         }
@@ -4062,7 +4109,8 @@ impl Parser<'_> {
             "unsigned long long" => "unsigned long long int".into(),
             _ => base,
         };
-        if !base.split_whitespace().all(|word| self.type_word(word))
+        if !template_id
+            && !base.split_whitespace().all(|word| self.type_word(word))
             && !self.explicit_types.contains(&base)
             && !self.class_scopes.contains(&base)
             && !base.contains("::")
@@ -4083,6 +4131,53 @@ impl Parser<'_> {
             result = format!("{base} {}", raw[split..].trim());
         }
         result.replace("::", ".")
+    }
+
+    /// The binding spellings of the arguments in the template argument list
+    /// that `list` starts with, and the text after it; `None` when an
+    /// argument is dependent or unknown. Literal arguments keep their spelling.
+    fn template_arguments<'s>(&self, list: &'s str) -> Option<(String, &'s str)> {
+        let mut depth = 0usize;
+        let mut argument = String::new();
+        let mut arguments = Vec::new();
+        let mut rest = "";
+        for (index, c) in list.char_indices() {
+            match c {
+                '<' | '(' | '[' => {
+                    if depth > 0 {
+                        argument.push(c);
+                    }
+                    depth += 1;
+                }
+                '>' | ')' | ']' => {
+                    depth = depth.saturating_sub(1);
+                    if depth == 0 {
+                        arguments.push(std::mem::take(&mut argument));
+                        rest = &list[index + 1..];
+                        break;
+                    }
+                    argument.push(c);
+                }
+                ',' if depth == 1 => arguments.push(std::mem::take(&mut argument)),
+                _ if depth > 0 => argument.push(c),
+                _ => {}
+            }
+        }
+        let arguments = arguments
+            .iter()
+            .map(|argument| {
+                let argument = argument.trim();
+                let argument = argument.strip_prefix("typename ").unwrap_or(argument);
+                if argument.starts_with(|c: char| c.is_ascii_digit() || c == '-')
+                    || matches!(argument, "true" | "false")
+                {
+                    return Some(argument.replace(' ', ""));
+                }
+                let binding = self.binding_type(argument);
+                (!argument.is_empty() && binding != "ANY").then(|| binding.replace(' ', ""))
+            })
+            .collect::<Option<Vec<_>>>()?;
+        Some((arguments.join(","), rest))
     }
 
     fn resolve_class_name(&self, name: &str) -> Option<String> {
@@ -8574,6 +8669,8 @@ impl Parser<'_> {
             extern_c: self.extern_c,
             extern_c_names: self.extern_c_names.clone(),
             class_scopes: self.class_scopes.clone(),
+            template_classes: self.template_classes.clone(),
+            distinct_dependent_types: Cell::new(false),
             asm_problem_recovery: false,
             in_function_body: self.in_function_body,
             function_declarations: Vec::new(),
@@ -10429,6 +10526,21 @@ fn alternative_operator(op: &str) -> &str {
         "not_eq" => "!=",
         other => other,
     }
+}
+
+/// End of a declared type's base: the first pointer, reference, array or
+/// function declarator outside template arguments.
+fn declarator_split(raw: &str) -> usize {
+    let mut depth = 0usize;
+    for (index, c) in raw.char_indices() {
+        match c {
+            '<' => depth += 1,
+            '>' => depth = depth.saturating_sub(1),
+            '*' | '&' | '[' | '(' if depth == 0 => return index,
+            _ => {}
+        }
+    }
+    raw.len()
 }
 
 #[cfg(test)]

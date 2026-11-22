@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 23.532938750009635,
+  "functions": {
+    "same": {
+      "name": "same",
+      "start_line": 13,
+      "end_line": 13,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "13.6:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,at,at>\n<UnsupportedStmt: ['indirectFieldAccess', 'this-&gt;at']>\n<UnsupportedStmt: FIELD_IDENTIFIER,at,at>\n<UnsupportedStmt: ['fieldAccess', 'other.at']>\nat == other.at\nreturn at==other.at;,returnat==other.at;\nFUNCTION_END\n"
+        }
+      }
+    },
+    "Buffer": {
+      "name": "Buffer",
+      "start_line": 32,
+      "end_line": 37,
+      "cfg": {
+        "nodes": [
+          0,
+          1
+        ],
+        "edges": [
+          [
+            1,
+            0
+          ]
+        ],
+        "entry": [
+          1
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "35.2:\n<UnsupportedStmt: FIELD_IDENTIFIER,length,length>\n<UnsupportedStmt: ['fieldAccess', 'sizes.length']>\ncount = sizes.length\n",
+          "1": "32.0:\nFUNCTION_START\ncount = extra\n<UnsupportedStmt: FIELD_IDENTIFIER,length,length>\n<UnsupportedStmt: ['fieldAccess', 'sizes.length']>\nsizes.length > extra\n"
+        }
+      }
+    },
+    "=": {
+      "name": "=",
+      "start_line": 44,
+      "end_line": 47,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "44.0:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,count,count>\n<UnsupportedStmt: ['fieldAccess', 'other.count']>\ncount = other.count\n<UnsupportedStmt: ['indirection', '*this']>\nreturn *this;,return*this;\nFUNCTION_END\n"
+        }
+      }
+    },
+    "total": {
+      "name": "total",
+      "start_line": 48,
+      "end_line": 50,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "48.0:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,count,count>\n<UnsupportedStmt: ['fieldAccess', 'other.count']>\n<UnsupportedStmt: ['addition', 'other.count+count']>\n<UnsupportedStmt: FIELD_IDENTIFIER,at,at>\n<UnsupportedStmt: ['fieldAccess', 'at.at']>\n<UnsupportedStmt: ['addition', 'other.count+count+at.at']>\nreturn other.count+count+at.at;,returnother.count+count+at.at;\nFUNCTION_END\n"
+        }
+      }
+    },
+    "self": {
+      "name": "self",
+      "start_line": 51,
+      "end_line": 51,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "51.1:\nFUNCTION_START\nreturn this;,returnthis;\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "bae76c7298609087ca69aaf914626a6d89124b5099ce926cc0b8df258f828ff4",
+  "prepared_sha256": "bae76c7298609087ca69aaf914626a6d89124b5099ce926cc0b8df258f828ff4"
+}
