@@ -7213,10 +7213,14 @@ impl Parser<'_> {
             }
             if text == "(" && self.text(i + 1) == ")" {
                 let previous = i.checked_sub(1).map(|index| self.text(index));
+                // A C++ template-id can name a type: `T<int>()` is a temporary.
                 let callable = i > start
                     && (self.tokens[i - 1].kind == TokenKind::Identifier
                         || self.numeric_callee(i - 1)
-                        || matches!(previous, Some(")" | "]")))
+                        || matches!(previous, Some(")" | "]"))
+                        || (self.cpp
+                            && matches!(previous, Some(">" | ">>"))
+                            && self.template_id_end(start, i)))
                     && !matches!(
                         previous,
                         Some(
@@ -7756,7 +7760,11 @@ impl Parser<'_> {
                 && (i == start
                     || (self.tokens[i - 1].kind != TokenKind::Identifier
                         && !self.numeric_callee(i - 1)
-                        && !matches!(self.text(i - 1), ")" | "]")))
+                        && !matches!(self.text(i - 1), ")" | "]")
+                        // `T<int>(...)` constructs a temporary of a template-id.
+                        && !(self.cpp
+                            && matches!(self.text(i - 1), ">" | ">>")
+                            && self.template_id_end(start, i))))
             {
                 let type_id = self.is_type_range(i + 1, close);
                 if (!type_id && self.call_argument_problem(i, close + 1))

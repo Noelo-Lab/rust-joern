@@ -176,6 +176,28 @@ fn comparisons_with_bound_identifiers_are_not_template_calls() {
 }
 
 #[test]
+fn template_id_temporaries_are_constructed_and_called() {
+    for (temporary, body) in [
+        ("less_equal<int>", "return std::less_equal<int>()(x, 1);"),
+        (
+            "less<std::pair<int,int>>",
+            "return std::less<std::pair<int,int>>()(x, 1);",
+        ),
+        (
+            "less_equal<int>",
+            "if (x && std::less_equal<int>()(x, 1)) return 1; return 0;",
+        ),
+    ] {
+        let a = parse(&format!("int f(int x) {{ {body} }}"));
+        let f = function(&a);
+        assert!(
+            path(f, call(f, temporary), call(f, "<operator>()")),
+            "{body}"
+        );
+    }
+}
+
+#[test]
 fn template_parameter_class_and_defaults_do_not_hide_real_record_body() {
     let a = parse(
         "template<class T = int> struct Box { static int get(int x) { return x; } }; int f(int x) { return Box<int>::get(x); }",

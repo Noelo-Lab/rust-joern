@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 20.44407533299818,
+  "functions": {
+    "ordered_return": {
+      "name": "ordered_return",
+      "start_line": 1,
+      "end_line": 3,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "1.0:\nFUNCTION_START\n<UnsupportedStmt: less_equal&lt;int&gt;,std::less_equal&lt;int&gt;()>\n<UnsupportedStmt: &lt;operator&gt;(),std::less_equal&lt;int&gt;()(lo,hi)>\nreturn std::less_equal&lt;int&gt;()(lo,hi);,returnstd::less_equal&lt;int&gt;()(lo,hi);\nFUNCTION_END\n"
+        }
+      }
+    },
+    "pointer_window": {
+      "name": "pointer_window",
+      "start_line": 5,
+      "end_line": 11,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            0
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "7.0:\nspan&gt;0&amp;&amp;std::less_equal&lt;constvoid*&gt;()(bas... && \n",
+          "1": "8.0:\ninside = 1\n",
+          "2": "10.0:\nreturn inside;,returninside;\nFUNCTION_END\n",
+          "3": "5.0:\nFUNCTION_START\ninside = 0\nspan > 0\n",
+          "4": "7.3:\n<UnsupportedStmt: less_equal&lt;constvoid*&gt;,std::less_equal&lt;constvoid*&gt;()>\n<UnsupportedStmt: ['addition', 'base+span']>\n<UnsupportedStmt: &lt;operator&gt;(),std::less_equal&lt;constvoid*&gt;()(base+span,mark)>\n"
+        }
+      }
+    },
+    "disjoint": {
+      "name": "disjoint",
+      "start_line": 13,
+      "end_line": 21,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            7,
+            0
+          ]
+        ],
+        "entry": [
+          6
+        ],
+        "exit": [
+          4
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "16.1:\n<UnsupportedStmt: ['logicalNot', '!apart']>\n",
+          "1": "16.0:\n!apart&amp;&amp;n&gt;0 && \n",
+          "2": "16.2:\nn > 0\n",
+          "3": "None.0:\n<UnsupportedStmt: >\n<UnsupportedStmt: >\napart = std::less_equal&lt;constvoid*&gt;()(a+n,...\n",
+          "4": "20.1:\napart ? a : p\nreturn apart?1:0;,returnapart?1:0;\nFUNCTION_END\n",
+          "5": "15.1:\n<UnsupportedStmt: less_equal&lt;constvoid*&gt;,std::less_equal&lt;constvoid*&gt;()>\n<UnsupportedStmt: ['addition', 'b+n']>\n<UnsupportedStmt: &lt;operator&gt;(),std::less_equal&lt;constvoid*&gt;()(b+n,a)>\n",
+          "6": "13.0:\nFUNCTION_START\n<UnsupportedStmt: less_equal&lt;constvoid*&gt;,std::less_equal&lt;constvoid*&gt;()>\n<UnsupportedStmt: ['addition', 'a+n']>\n<UnsupportedStmt: &lt;operator&gt;(),std::less_equal&lt;constvoid*&gt;()(a+n,b)>\n",
+          "7": "17.1:\n<UnsupportedStmt: ['division', 'n/2']>\nn = n/2\n<UnsupportedStmt: greater&lt;std::pair&lt;int,int&gt;&gt;,std::greater&lt;std::pair&lt;int,int&gt;&gt;()>\n<UnsupportedStmt: ['arrayInitializer', '{1', '2}']>\n<UnsupportedStmt: UNKNOWN,int,int>\n<UnsupportedStmt: ['cast', 'static_cast&lt;int&gt;(n)']>\n<UnsupportedStmt: ['arrayInitializer', '{1', 'static_cast&lt;int&gt;(n)}']>\n<UnsupportedStmt: &lt;operator&gt;(),std::greater&lt;std::pair&lt;int,int&gt;&gt;()({1,2},{1,...>\napart = std::greater&lt;std::pair&lt;int,int&gt;&gt;()({1,...\n"
+        }
+      }
+    },
+    "comparison_control": {
+      "name": "comparison_control",
+      "start_line": 23,
+      "end_line": 29,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "26.0:\nr = a\n",
+          "1": "28.4:\na < b\n<UnsupportedStmt: ['addition', 'r+(a&lt;b)']>\nb > (c)\n<UnsupportedStmt: ['addition', 'r+(a&lt;b)+(b&gt;(c))']>\nreturn r+(a&lt;b)+(b&gt;(c));,returnr+(a&lt;b)+(b&gt;(c));\nFUNCTION_END\n",
+          "2": "23.0:\nFUNCTION_START\nr = 0\na < b\na&lt;b > (c)\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "e6a4aa644ce0af82fc081720fb200eee7b16761d0ca841724eace49e980d8c73",
+  "prepared_sha256": "e6a4aa644ce0af82fc081720fb200eee7b16761d0ca841724eace49e980d8c73"
+}
