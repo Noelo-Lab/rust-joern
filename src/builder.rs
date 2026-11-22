@@ -1615,6 +1615,11 @@ impl Builder<'_> {
                 .iter()
                 .flat_map(|statement| self.statement_parts(statement, parent))
                 .collect(),
+            // A C `ns::f(x);` statement: no node, see `bare_label_problem`.
+            StmtKind::Label {
+                statement: following,
+                ..
+            } if matches!(following.kind, StmtKind::Problem) => Vec::new(),
             StmtKind::Label {
                 name,
                 statement: following,
@@ -1809,6 +1814,7 @@ impl Builder<'_> {
                     self.scopes.pop();
                     return flow;
                 }
+                let label_body = bare_label_problem(body);
                 let mut parts = self.statement_parts(body, id).into_iter();
                 let body = parts.next().unwrap_or_default();
                 let alternative = parts.next().unwrap_or_default();
@@ -1817,6 +1823,15 @@ impl Builder<'_> {
                 fringe.extend(&body.breaks);
                 fringe.extend(&alternative.fringe);
                 let mut links = Vec::new();
+                if let Some(target) = entry
+                    && label_body
+                    && body.entry.is_none()
+                    && alternative.entry.is_none()
+                {
+                    // c2cpg's CFG for a label is not empty, so the condition
+                    // loops on itself; an empty `{}` or a problem does not.
+                    links.extend(condition.fringe.iter().map(|&source| [source, target]));
+                }
                 if let Some(target) = body.entry {
                     links.extend(condition.fringe.iter().map(|&source| [source, target]));
                 }
@@ -2202,6 +2217,18 @@ fn member_pointer_expression(expression: &Expr) -> bool {
         | ExprKind::Generated {
             expression: inner, ..
         } => member_pointer_expression(inner),
+        _ => false,
+    }
+}
+
+/// Whether a statement is, or a compound statement holds, a C label whose
+/// statement CDT could not parse, as in `ns::f(x);`.
+fn bare_label_problem(statement: &Stmt) -> bool {
+    match &statement.kind {
+        StmtKind::Label { statement, .. } => matches!(statement.kind, StmtKind::Problem),
+        StmtKind::Block(statements) | StmtKind::Sequence(statements) => {
+            statements.iter().any(bare_label_problem)
+        }
         _ => false,
     }
 }
