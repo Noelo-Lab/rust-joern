@@ -8,7 +8,7 @@ belong in regression fixtures, not here.
 
 ## C++ `while` and `switch` with a declaration condition keep their CFG
 
-**Introduced:** 2026-11-23.
+**Recorded:** 2026-11-23, [PR #62](https://github.com/Noelo-Lab/rust-joern/pull/62).
 
 **Joern:** a `while` or `switch` whose condition declares a variable, such as
 `while (int q = g())` or `switch (int p = g())`, has no CFG at all, body
