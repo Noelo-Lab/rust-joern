@@ -8,7 +8,7 @@ belong in regression fixtures, not here.
 
 ## Unknown template-id declarations stay declarations
 
-**Recorded:** 2026-11-23, PR pending, which added the Joern behavior under
+**Recorded:** 2026-11-23, [PR #68](https://github.com/Noelo-Lab/rust-joern/pull/68), which added the Joern behavior under
 `joern_cdt_failures`.
 
 **Joern:** when neither the template name nor its single argument names a type,
