@@ -355,3 +355,39 @@ fn operator_template_names_do_not_hide_invalid_runtime_arguments() {
         }
     }
 }
+
+// Without headers CDT binds neither `std::vector` nor `std::string` and reads
+// `(std::vector < std::string) > lines`. The default keeps the declaration.
+#[test]
+fn unknown_template_declaration_is_a_comparison_only_under_cdt_failures() {
+    let source = "void f(std::vector<std::string> other) {
+        std::vector<std::string> lines; std::vector<std::string> copy = other; }";
+    for cdt_failures in [false, true] {
+        let analysis = analyze(
+            source,
+            "unknown.cpp",
+            &Options {
+                language: Some("cpp".into()),
+                strict: true,
+                preprocessed: true,
+                joern_cdt_failures: cdt_failures,
+                ..Options::default()
+            },
+        )
+        .unwrap();
+        let f = function(&analysis);
+        let count = |kind: &str, name: &str| {
+            f.cpg
+                .nodes
+                .iter()
+                .filter(|n| n.kind == kind && n.name.as_deref() == Some(name))
+                .count()
+        };
+        let (locals, comparisons) = if cdt_failures { (0, 2) } else { (1, 0) };
+        assert_eq!(count("LOCAL", "lines"), locals);
+        assert_eq!(count("LOCAL", "copy"), locals);
+        assert_eq!(count("CALL", "<operator>.lessThan"), comparisons);
+        assert_eq!(count("CALL", "<operator>.greaterThan"), comparisons);
+        assert_eq!(count("CALL", "<operator>.assignment"), 1);
+    }
+}

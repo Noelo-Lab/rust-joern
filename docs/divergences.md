@@ -6,6 +6,29 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## Unknown template-id declarations stay declarations
+
+**Recorded:** 2026-11-23, PR pending, which added the Joern behavior under
+`joern_cdt_failures`.
+
+**Joern:** when neither the template name nor its single argument names a type,
+as in `std::vector<std::string> lines;` after header stripping, CDT reads the
+comparison `(std::vector < std::string) > lines`. With `= value` the statement
+is an assignment to that comparison. A known class template, a type-keyword or
+pointer argument, two arguments or a keyword-led name stay declarations.
+
+**Rust Joern:** the statement declares a local of that type, with its
+initializer as an assignment.
+
+**Why:** the source declares a variable, and a compiled binary contains no such
+comparison. The comparison nodes can also open an extra basic block, as before
+the loop in ninja's `StatusPrinter::PrintStatus`.
+
+**Affects:** the CPG, CFG, reaching definitions and DDG of C++ function bodies
+with such declarations, typically after header stripping.
+
+**Reference behavior:** `joern_cdt_failures`, as for the CDT failures below.
+
 ## Invalid explicit-destructor call diagnostics
 
 **Recorded:** 2026-10-28, follow-up to PR #3; no DecBench pin update.
