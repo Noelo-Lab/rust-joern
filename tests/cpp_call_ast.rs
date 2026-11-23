@@ -230,3 +230,25 @@ fn unsupported_known_owner_lookup_is_not_a_proven_problem_binding() {
         assert!(f.cpg.nodes[id as usize].method_full_name.is_none());
     }
 }
+
+#[test]
+fn temporary_member_access_is_a_call_not_a_grouped_declaration() {
+    let local = |f: &FunctionGraph| {
+        f.cpg
+            .nodes
+            .iter()
+            .any(|n| n.kind == "LOCAL" && n.name.as_deref() == Some("x"))
+    };
+    for source in [
+        "struct T { explicit T(int); void get(int*) const; }; void f(int x, int y) { T(x).get(&y); }",
+        "struct T { explicit T(int); T* operator->(); int get(); }; void f(int x) { T(x)->get(); }",
+    ] {
+        let analysis = parse(source);
+        let f = method(&analysis, "f");
+        call(f, "get");
+        assert!(!local(f), "{source}");
+    }
+    // A grouped declarator without member access still declares its name.
+    let analysis = parse("struct T { T(); }; void f() { T (x); }");
+    assert!(local(method(&analysis, "f")));
+}

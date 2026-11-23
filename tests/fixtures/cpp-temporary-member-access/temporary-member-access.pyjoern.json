@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 8.39184949999617,
+  "functions": {
+    "dot_member": {
+      "name": "dot_member",
+      "start_line": 9,
+      "end_line": 17,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "14.0:\nlow = mode\n",
+          "1": "16.1:\n<UnsupportedStmt: ['addition', 'low+high']>\nreturn low+high;,returnlow+high;\nFUNCTION_END\n",
+          "2": "12.1:\nGauge(level)\n<UnsupportedStmt: ['addressOf', '&amp;low']>\n<UnsupportedStmt: ['addressOf', '&amp;high']>\n<UnsupportedStmt: store,Gauge(level).store(&amp;low,&amp;high)>\n",
+          "3": "9.0:\nFUNCTION_START\nlow = 0\nhigh = 0\nmode == 1\n"
+        }
+      }
+    },
+    "arrow_member": {
+      "name": "arrow_member",
+      "start_line": 19,
+      "end_line": 27,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "24.0:\ntotal = 1\n",
+          "1": "26.0:\nreturn total;,returntotal;\nFUNCTION_END\n",
+          "2": "22.1:\nGauge(level)\n<UnsupportedStmt: peek,Gauge(level)-&gt;peek(total)>\n",
+          "3": "19.0:\nFUNCTION_START\ntotal = mode\nmode > 2\n"
+        }
+      }
+    },
+    "grouped_declaration": {
+      "name": "grouped_declaration",
+      "start_line": 29,
+      "end_line": 35,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2
+        ],
+        "edges": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "entry": [
+          2
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "34.0:\nreturn 0;,return0;\n",
+          "1": "32.1:\n<UnsupportedStmt: peek,gauge.peek(mode)>\nreturn gauge.peek(mode);,returngauge.peek(mode);\n",
+          "2": "29.0:\nFUNCTION_START\nmode != 0\n"
+        }
+      }
+    },
+    "store": {
+      "name": "store",
+      "start_line": 4,
+      "end_line": 4,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "4.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "operator ->": {
+      "name": "operator ->",
+      "start_line": 6,
+      "end_line": 6,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "6.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "peek": {
+      "name": "peek",
+      "start_line": 5,
+      "end_line": 5,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "5.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "Gauge": {
+      "name": "Gauge",
+      "start_line": 2,
+      "end_line": 2,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "2.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "f458b8f9cfc3eac94f2e37ecdc37d3f4a1691cef25dbeda1ada6b1012ef38ea4",
+  "prepared_sha256": "f458b8f9cfc3eac94f2e37ecdc37d3f4a1691cef25dbeda1ada6b1012ef38ea4"
+}
