@@ -6,6 +6,26 @@ graphs it affects and how to restore the reference behavior. Add an entry, newes
 first, in the change that introduces a divergence. Fixes that restore parity
 belong in regression fixtures, not here.
 
+## C++ `while` and `switch` with a declaration condition keep their CFG
+
+**Recorded:** 2026-11-23, [PR #62](https://github.com/Noelo-Lab/rust-joern/pull/62).
+
+**Joern:** a `while` or `switch` whose condition declares a variable, such as
+`while (int q = g())` or `switch (int p = g())`, has no CFG at all, body
+included. `if (int p = g())` keeps its CFG.
+
+**Rust Joern:** the condition is evaluated as a declaration, and the loop or
+switch is lowered like one with an expression condition.
+
+**Why:** dropping the statement loses all of its body. ninja's
+`GuessParallelism` is one such function.
+
+**Affects:** the CFG, reaching definitions and DDG of C++ functions with such a
+`while` or `switch`.
+
+**Reference behavior:** `joern_cpp_control_flow`, as for `noexcept` operands
+below.
+
 ## Invalid explicit-destructor call diagnostics
 
 **Recorded:** 2026-10-28, follow-up to PR #3; no DecBench pin update.

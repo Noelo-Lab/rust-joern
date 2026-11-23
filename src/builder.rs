@@ -1798,6 +1798,14 @@ impl Builder<'_> {
                 self.scopes.pop();
                 flow
             }
+            // c2cpg 4.0.150 converts a while or switch whose condition is a
+            // declaration to no CFG at all, body included.
+            StmtKind::While { condition, .. } | StmtKind::Switch { condition, .. }
+                if self.joern_cpp_control_flow
+                    && matches!(condition.kind, ExprKind::Statement(_)) =>
+            {
+                Fragment::default()
+            }
             StmtKind::While { condition, body } => {
                 let id = self.control(statement, parent, "WHILE");
                 self.scopes.push(HashMap::new());
