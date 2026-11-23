@@ -6181,6 +6181,45 @@ impl Parser<'_> {
                     }
                     self.finish_statement(start);
                     StmtKind::Problem
+                } else if let Some((open, close)) =
+                    self.cdt_unknown_template_comparison(self.pos, end)
+                {
+                    // CDT cannot bind `N<A> x;` when neither `N` nor `A` names a
+                    // type, and reads the comparison `(N < A) > x` instead.
+                    let name = self.expression_range(self.pos, open);
+                    let argument = self.expression_range(open + 1, close);
+                    let assignment = (close + 2..end).find(|&i| self.text(i) == "=");
+                    let object = self.expression_range(close + 1, assignment.unwrap_or(end));
+                    let less = Expr {
+                        span: self.span(self.pos, close),
+                        kind: ExprKind::Binary {
+                            op: "<".into(),
+                            left: Box::new(name),
+                            right: Box::new(argument),
+                        },
+                    };
+                    let mut expression = Expr {
+                        span: self.span(self.pos, assignment.unwrap_or(end)),
+                        kind: ExprKind::Binary {
+                            op: ">".into(),
+                            left: Box::new(less),
+                            right: Box::new(object),
+                        },
+                    };
+                    if let Some(at) = assignment {
+                        let value = self.expression_range(at + 1, end);
+                        expression = Expr {
+                            span: self.span(start, end),
+                            kind: ExprKind::Binary {
+                                op: "=".into(),
+                                left: Box::new(expression),
+                                right: Box::new(value),
+                            },
+                        };
+                    }
+                    self.pos = end;
+                    self.finish_statement(start);
+                    StmtKind::Expression(expression)
                 } else if self.looks_declaration(self.pos, end)
                     || (attributes_end > self.pos && {
                         let base_end = self.specifier_end(self.pos, end);
@@ -6510,6 +6549,57 @@ impl Parser<'_> {
             })
             .flatten()
         })
+    }
+
+    /// Under `joern_cdt_failures`, `N<A> x;` (or `= value`) whose template
+    /// name and single argument are both unknown names: the `<` and `>`.
+    fn cdt_unknown_template_comparison(&self, start: usize, end: usize) -> Option<(usize, usize)> {
+        if !self.cpp || !self.cdt_failures || !self.in_function_body {
+            return None;
+        }
+        let qualified_name = |from: usize| {
+            let mut at = from + usize::from(self.text(from) == "::");
+            self.tokens
+                .get(at)
+                .filter(|t| t.kind == TokenKind::Identifier)?;
+            at += 1;
+            while self.text(at) == "::" && self.tokens.get(at + 1)?.kind == TokenKind::Identifier {
+                at += 2;
+            }
+            Some(at)
+        };
+        let unknown = |from: usize, to: usize| {
+            let name = self.raw(from, to);
+            (from..to).all(|i| {
+                !self.type_word(self.text(i))
+                    && !qualifier(self.text(i))
+                    && !matches!(
+                        self.text(i),
+                        "struct"
+                            | "class"
+                            | "union"
+                            | "enum"
+                            | "typename"
+                            | "template"
+                            | "operator"
+                    )
+            }) && self.resolve_class_name(&name).is_none()
+                && !self.types.contains(&name)
+                && !self.explicit_types.contains(&name)
+                && !self.variables.contains(self.text(from))
+        };
+        let open = qualified_name(start)?;
+        if self.text(open) != "<" || !unknown(start, open) {
+            return None;
+        }
+        let close = qualified_name(open + 1)?;
+        if self.text(close) != ">" || !unknown(open + 1, close) {
+            return None;
+        }
+        let object = close + 1;
+        (self.tokens.get(object)?.kind == TokenKind::Identifier
+            && (object + 1 == end || self.text(object + 1) == "="))
+            .then_some((open, close))
     }
 
     fn unclosed_conditional_literal(&self, start: usize, end: usize) -> bool {

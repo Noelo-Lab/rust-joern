@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 21.80967449999298,
+  "functions": {
+    "unknown_qualified": {
+      "name": "unknown_qualified",
+      "start_line": 6,
+      "end_line": 13,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            0
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "9.0:\nn > 0\n",
+          "1": "10.0:\n<UnsupportedStmt: ['postDecrement', 'n--']>\n",
+          "2": "12.0:\nreturn n;,returnn;\nFUNCTION_END\n",
+          "3": "6.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,n,if(n)>\n",
+          "4": "8.4:\n<UnsupportedStmt: FIELD_IDENTIFIER,vector,vector>\n<UnsupportedStmt: ['fieldAccess', 'std::vector']>\n<UnsupportedStmt: FIELD_IDENTIFIER,string,string>\n<UnsupportedStmt: ['fieldAccess', 'std::string']>\nstd::vector < std::string\nstd::vector&lt;std::string > lines\n"
+        }
+      }
+    },
+    "unknown_unqualified": {
+      "name": "unknown_unqualified",
+      "start_line": 15,
+      "end_line": 22,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        "entry": [
+          4
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "18.0:\nn > 0\n",
+          "1": "19.0:\n<UnsupportedStmt: ['postDecrement', 'n--']>\n",
+          "2": "21.0:\nreturn n;,returnn;\nFUNCTION_END\n",
+          "3": "17.1:\nvector < string\nvector&lt;string > names\n",
+          "4": "15.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,n,if(n)>\n"
+        }
+      }
+    },
+    "unknown_initialized": {
+      "name": "unknown_initialized",
+      "start_line": 24,
+      "end_line": 31,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            0
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "27.0:\nn > 0\n",
+          "1": "28.0:\n<UnsupportedStmt: ['postDecrement', 'n--']>\n",
+          "2": "30.0:\nreturn n;,returnn;\nFUNCTION_END\n",
+          "3": "24.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,n,if(n)>\n",
+          "4": "26.5:\n<UnsupportedStmt: FIELD_IDENTIFIER,vector,vector>\n<UnsupportedStmt: ['fieldAccess', 'std::vector']>\n<UnsupportedStmt: FIELD_IDENTIFIER,string,string>\n<UnsupportedStmt: ['fieldAccess', 'std::string']>\nstd::vector < std::string\nstd::vector&lt;std::string > copy\nstd::vector&lt;std::string&gt;copy = source\n"
+        }
+      }
+    },
+    "known_template": {
+      "name": "known_template",
+      "start_line": 33,
+      "end_line": 40,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "36.0:\nn > 0\n",
+          "1": "37.0:\n<UnsupportedStmt: ['postDecrement', 'n--']>\n",
+          "2": "39.0:\nreturn n;,returnn;\nFUNCTION_END\n",
+          "3": "33.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,n,if(n)>\n"
+        }
+      }
+    },
+    "keyword_argument": {
+      "name": "keyword_argument",
+      "start_line": 42,
+      "end_line": 49,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "45.0:\nn > 0\n",
+          "1": "46.0:\n<UnsupportedStmt: ['postDecrement', 'n--']>\n",
+          "2": "48.0:\nreturn n;,returnn;\nFUNCTION_END\n",
+          "3": "42.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,n,if(n)>\n"
+        }
+      }
+    },
+    "pointer_argument": {
+      "name": "pointer_argument",
+      "start_line": 51,
+      "end_line": 58,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "54.0:\nn > 0\n",
+          "1": "55.0:\n<UnsupportedStmt: ['postDecrement', 'n--']>\n",
+          "2": "57.0:\nreturn n;,returnn;\nFUNCTION_END\n",
+          "3": "51.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,n,if(n)>\n"
+        }
+      }
+    },
+    "two_arguments": {
+      "name": "two_arguments",
+      "start_line": 60,
+      "end_line": 67,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          2
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "63.0:\nn > 0\n",
+          "1": "64.0:\n<UnsupportedStmt: ['postDecrement', 'n--']>\n",
+          "2": "66.0:\nreturn n;,returnn;\nFUNCTION_END\n",
+          "3": "60.0:\nFUNCTION_START\n<UnsupportedStmt: IDENTIFIER,n,if(n)>\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "bb3620b934a19505889c14056ef808bb88dfc1eb2cf40d94300ebf401edc7463",
+  "prepared_sha256": "bb3620b934a19505889c14056ef808bb88dfc1eb2cf40d94300ebf401edc7463"
+}
