@@ -230,3 +230,38 @@ fn unsupported_known_owner_lookup_is_not_a_proven_problem_binding() {
         assert!(f.cpg.nodes[id as usize].method_full_name.is_none());
     }
 }
+
+// CDT reads a direct initializer when an argument cannot be a parameter
+// declaration; Joern lowers it to a call on the declared object.
+#[test]
+fn direct_initializer_expression_is_not_a_local_prototype() {
+    for (argument, operator) in [
+        ("c ? p : q", Some("<operator>.conditional")),
+        ("(p == q) ? p : nullptr", Some("<operator>.conditional")),
+        ("make()", Some("make")),
+        ("p->next", Some("<operator>.indirectFieldAccess")),
+        ("7", None),
+    ] {
+        let source = format!(
+            "struct M {{ M* next; }}; struct S {{ S(M*); S(int); }}; M* make();
+            void f(M* p, M* q, bool c) {{ S s({argument}); }}"
+        );
+        let analysis = parse(&source);
+        assert!(
+            analysis.functions.iter().all(|f| f.name != "s"),
+            "{argument}"
+        );
+        let f = method(&analysis, "f");
+        let id = call(f, "<operator>.assignment");
+        assert_eq!(f.cpg.nodes[id as usize].code, format!("s({argument})"));
+        if let Some(operator) = operator {
+            let argument = edge(f, id, "ARGUMENT", Some("2")).unwrap();
+            assert_eq!(
+                f.cpg.nodes[argument as usize].name.as_deref(),
+                Some(operator)
+            );
+        }
+    }
+    let analysis = parse("struct M; struct S; void f() { S s(M* p); }");
+    assert!(analysis.functions.iter().any(|f| f.fullname == "s:S(M*)"));
+}

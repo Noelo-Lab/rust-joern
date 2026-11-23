@@ -1,0 +1,325 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 9.766934500003117,
+  "functions": {
+    "variable": {
+      "name": "variable",
+      "start_line": 12,
+      "end_line": 12,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "12.1:\nFUNCTION_START\nbox(p)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "conditional": {
+      "name": "conditional",
+      "start_line": 13,
+      "end_line": 13,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "13.2:\nFUNCTION_START\nc ? c : ?\nbox(c?p:spare)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "compared": {
+      "name": "compared",
+      "start_line": 14,
+      "end_line": 14,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "14.3:\nFUNCTION_START\np == spare\n(p==spare) ? ( : p\nbox((p==spare)?p:nullptr)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "called": {
+      "name": "called",
+      "start_line": 15,
+      "end_line": 15,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "15.2:\nFUNCTION_START\nmake()\nbox(make())\nFUNCTION_END\n"
+        }
+      }
+    },
+    "mixed": {
+      "name": "mixed",
+      "start_line": 16,
+      "end_line": 16,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "16.2:\nFUNCTION_START\nmake()\nbox()\nFUNCTION_END\n"
+        }
+      }
+    },
+    "literal": {
+      "name": "literal",
+      "start_line": 17,
+      "end_line": 17,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "17.1:\nFUNCTION_START\nbox(7)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "negated": {
+      "name": "negated",
+      "start_line": 18,
+      "end_line": 18,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "18.2:\nFUNCTION_START\n-n - \nbox(-n)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "sum": {
+      "name": "sum",
+      "start_line": 19,
+      "end_line": 19,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "19.2:\nFUNCTION_START\n<UnsupportedStmt: ['addition', 'n+1']>\nbox(n+1)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "member": {
+      "name": "member",
+      "start_line": 20,
+      "end_line": 20,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "20.3:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,item,item>\n<UnsupportedStmt: ['indirectFieldAccess', 'other-&gt;item']>\nbox(other-&gt;item)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "null_pointer": {
+      "name": "null_pointer",
+      "start_line": 21,
+      "end_line": 21,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "21.1:\nFUNCTION_START\nbox(nullptr)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "own": {
+      "name": "own",
+      "start_line": 27,
+      "end_line": 27,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "27.3:\nFUNCTION_START\n<UnsupportedStmt: FIELD_IDENTIFIER,item,item>\n<UnsupportedStmt: ['indirectFieldAccess', 'this-&gt;item']>\nbox(this-&gt;item)\nFUNCTION_END\n"
+        }
+      }
+    },
+    "prototype": {
+      "name": "prototype",
+      "start_line": 30,
+      "end_line": 30,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "30.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "Box": {
+      "name": "Box",
+      "start_line": 4,
+      "end_line": 4,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "4.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "make": {
+      "name": "make",
+      "start_line": 9,
+      "end_line": 9,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "9.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "made": {
+      "name": "made",
+      "start_line": 30,
+      "end_line": 30,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "30.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "8d1b9e6d953200227a5caacf3115844d68c53b5e7c6a5a84d3b51efeda3750a9",
+  "prepared_sha256": "8d1b9e6d953200227a5caacf3115844d68c53b5e7c6a5a84d3b51efeda3750a9"
+}
