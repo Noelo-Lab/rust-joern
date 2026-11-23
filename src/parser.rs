@@ -104,6 +104,7 @@ fn parse_unit(
         using_namespaces: Vec::new(),
         lexical_scope: String::new(),
         asm_problem_recovery: false,
+        compound_item: false,
         in_function_body: false,
         function_declarations: Vec::new(),
         global_expressions: Vec::new(),
@@ -822,6 +823,8 @@ struct Parser<'a> {
     using_namespaces: Vec<String>,
     lexical_scope: String,
     asm_problem_recovery: bool,
+    /// The next statement is an item of a compound statement.
+    compound_item: bool,
     in_function_body: bool,
     function_declarations: Vec<Function>,
     global_expressions: Vec<Expr>,
@@ -5458,6 +5461,7 @@ impl Parser<'_> {
     }
 
     fn statement(&mut self) -> Stmt {
+        let compound_item = std::mem::replace(&mut self.compound_item, false);
         let start = self.pos;
         let empty_initializer = self.text(start + 2) == "=" && self.text(start + 3) == ";";
         if !self.cpp
@@ -5521,6 +5525,7 @@ impl Parser<'_> {
                 let mut statements = Vec::new();
                 while self.pos < self.limit && !matches!(self.peek(), "}" | "%>") {
                     let before = self.pos;
+                    self.compound_item = true;
                     statements.push(self.statement());
                     if self.pos == before {
                         self.diagnose(before, before + 1, "cannot recover statement");
@@ -5948,6 +5953,28 @@ impl Parser<'_> {
                 })
             }
             "" => StmtKind::Empty,
+            _ if !self.cpp
+                && compound_item
+                && self.tokens[self.pos].kind == TokenKind::Identifier
+                && self.text(self.pos + 1) == "::"
+                && !matches!(self.text(self.pos + 2), "}" | "%>" | "") =>
+            {
+                // CDT's C scanner reads `::` as two colons: `ns::f(x);` is the
+                // label `ns`, whose statement CDT cannot parse. Joern emits
+                // no node for it, but a loop around it still closes.
+                let name = self.peek().to_string();
+                let end = self.statement_end(self.pos);
+                let span = self.span(self.pos, end);
+                self.pos = end;
+                self.finish_statement(start);
+                StmtKind::Label {
+                    name,
+                    statement: Box::new(Stmt {
+                        kind: StmtKind::Problem,
+                        span,
+                    }),
+                }
+            }
             _ if self.tokens[self.pos].kind == TokenKind::Identifier
                 && self.text(self.pos + 1) == ":" =>
             {
@@ -6293,7 +6320,22 @@ impl Parser<'_> {
                     let expression = self.expression_range(self.pos, colon);
                     self.pos = end;
                     self.finish_statement(start);
-                    StmtKind::Expression(expression)
+                    if self.text(colon) == "::" {
+                        // The statement lacks its semicolon before the second
+                        // colon, which also fails an enclosing control statement.
+                        StmtKind::Sequence(vec![
+                            Stmt {
+                                kind: StmtKind::Problem,
+                                span: expression.span.clone(),
+                            },
+                            Stmt {
+                                span: expression.span.clone(),
+                                kind: StmtKind::Expression(expression),
+                            },
+                        ])
+                    } else {
+                        StmtKind::Expression(expression)
+                    }
                 } else if let Some(suffix) = self.stray_postfix_operator(self.pos, end) {
                     let expression = self.expression_range(self.pos, suffix);
                     self.pos = end;
@@ -7110,8 +7152,29 @@ impl Parser<'_> {
         statement
     }
 
+    /// Whether `start..end` ends with a complete operand: a name, literal,
+    /// subscript or call, but not a cast that still lacks its operand.
+    fn c_operand_ends_at(&self, start: usize, end: usize) -> bool {
+        let last = end - 1;
+        match self.text(last) {
+            "]" => true,
+            ")" => (start..last)
+                .rev()
+                .find(|&open| self.text(open) == "(" && self.matching(open, end) == Some(last))
+                .is_some_and(|open| !self.is_type_range(open + 1, last)),
+            _ => matches!(
+                self.tokens[last].kind,
+                TokenKind::Identifier | TokenKind::Literal
+            ),
+        }
+    }
+
     fn unpaired_expression_colon(&self, start: usize, end: usize) -> Option<usize> {
-        if !(start..end).any(|i| self.text(i) == ":") {
+        // CDT's C scanner reads `::` as two colons. Its expression ends at
+        // the first one after a complete operand, unless that one follows a
+        // leading label name.
+        let c_scope = !self.cpp && self.cdt_failures;
+        if !(start..end).any(|i| self.text(i) == ":" || (c_scope && self.text(i) == "::")) {
             return None;
         }
         let mut conditionals = 0usize;
@@ -7125,6 +7188,13 @@ impl Parser<'_> {
                     }
                 }
                 "?" => conditionals += 1,
+                "::" if c_scope
+                    && conditionals == 0
+                    && i > start + 1
+                    && self.c_operand_ends_at(start, i) =>
+                {
+                    return Some(i);
+                }
                 ":" if conditionals == 0 => return Some(i),
                 ":" => conditionals -= 1,
                 _ => {}
@@ -8575,6 +8645,7 @@ impl Parser<'_> {
             extern_c_names: self.extern_c_names.clone(),
             class_scopes: self.class_scopes.clone(),
             asm_problem_recovery: false,
+            compound_item: false,
             in_function_body: self.in_function_body,
             function_declarations: Vec::new(),
             variable_types: self.variable_types.clone(),
@@ -12359,5 +12430,42 @@ mod tests {
         );
         assert!(!unit.diagnostics.is_empty());
         assert_eq!(unit.functions.len(), 1);
+    }
+
+    #[test]
+    fn c_scope_colons_follow_cdt_c_scanner() {
+        let source = "void f(int n) { int r; r = (int)ns::step(n); while (k()) { ns::step(n); } }";
+        let statements = |unit: &TranslationUnit| {
+            let StmtKind::Block(body) = &unit.functions[0].body.kind else {
+                panic!()
+            };
+            body.clone()
+        };
+        let unit = parse_with(source, false, true, true, &[], false);
+        assert!(unit.diagnostics.is_empty(), "{:?}", unit.diagnostics);
+        let body = statements(&unit);
+        // `r = (int)ns` lacks its semicolon before the second colon.
+        let StmtKind::Sequence(parts) = &body[1].kind else {
+            panic!("{:?}", body[1])
+        };
+        assert!(matches!(parts[0].kind, StmtKind::Problem));
+        assert!(matches!(&parts[1].kind,
+            StmtKind::Expression(Expr { kind: ExprKind::Binary { op, .. }, .. }) if op == "="));
+        // A compound item `ns::step(n);` is the label `ns` with a problem.
+        let StmtKind::While {
+            body: loop_body, ..
+        } = &body[2].kind
+        else {
+            panic!("{:?}", body[2])
+        };
+        let StmtKind::Block(items) = &loop_body.kind else {
+            panic!()
+        };
+        assert!(matches!(&items[0].kind, StmtKind::Label { name, statement }
+            if name == "ns" && matches!(statement.kind, StmtKind::Problem)));
+        // C++ reads `::` as a scope operator.
+        let unit = parse_with(source, true, true, true, &[], false);
+        let body = statements(&unit);
+        assert!(matches!(&body[1].kind, StmtKind::Expression(_)));
     }
 }
