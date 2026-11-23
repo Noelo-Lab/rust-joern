@@ -56,3 +56,40 @@ fn class_only_alias_does_not_leak_to_enclosing_scope() {
         assert_eq!(f.fullname, "f:ANY(ANY)", "{declaration}");
     }
 }
+
+#[test]
+fn class_template_dependent_types_bind_as_any() {
+    // CDT types the injected class name and template-ids with a dependent
+    // argument as dependent; Joern prints them as `ANY`, so the copy, move
+    // and `Span<T>` constructors share one full name.
+    let source = "template <class E> struct Span { E *first; };
+template <class T> struct Buffer {
+    Buffer(const Buffer &o) { n = o.n; }
+    Buffer(Buffer &&o) { n = o.n; }
+    Buffer(Span<T> s) { n = 0; }
+    Buffer(Span<int> s, int x) { n = x; }
+    int total(const Buffer<int> &o) const { return o.n; }
+    Buffer *self() { return this; }
+    int n;
+};
+struct Plain { Plain(const Plain &o) { n = o.n; } int n; };";
+    let analysis = analyze(source, "template.cpp", &options()).unwrap();
+    let names: Vec<_> = analysis
+        .functions
+        .iter()
+        .map(|f| f.fullname.as_str())
+        .filter(|name| !name.ends_with("<global>"))
+        .collect();
+    assert_eq!(
+        names,
+        [
+            "Buffer.Buffer:ANY(ANY)",
+            "Buffer.Buffer:ANY(ANY)",
+            "Buffer.Buffer:ANY(ANY)",
+            "Buffer.Buffer:ANY(Span<int>,int)",
+            "Buffer.total:int(Buffer<int> &)",
+            "Buffer.self:ANY()",
+            "Plain.Plain:ANY(Plain &)",
+        ]
+    );
+}
