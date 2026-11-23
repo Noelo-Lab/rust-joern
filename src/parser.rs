@@ -2506,6 +2506,11 @@ impl Parser<'_> {
                 .insert(parameter.name.clone(), parameter.type_name.clone());
         }
         Rc::make_mut(&mut self.variables).insert(header.name.clone());
+        // A member body is a complete-class context: CDT resolves fields
+        // declared after it, so `g(field);` stays a call, not a declaration.
+        for (field, _) in &implicit_fields {
+            Rc::make_mut(&mut self.variables).insert(field.clone());
+        }
         self.function_full_name.clone_from(&full_name);
         self.function_fields.clone_from(&implicit_fields);
         let mut suffix = header.parameters_end + 1;
