@@ -84,6 +84,10 @@ struct Builder<'a> {
     cpp: bool,
     graph: PropertyGraph,
     scopes: Vec<HashMap<String, (NodeId, String)>>,
+    /// Names declared in enclosing `for` initializers. c2cpg pops their scope
+    /// before the condition, but CDT still resolves them there, so they are
+    /// never function references.
+    for_initializer_names: Vec<Vec<String>>,
     functions: &'a HashSet<String>,
     methods: &'a HashMap<String, Vec<&'a Function>>,
     known_types: &'a HashSet<String>,
@@ -117,6 +121,7 @@ pub fn build(
         cpp,
         graph: PropertyGraph::default(),
         scopes: vec![HashMap::new()],
+        for_initializer_names: Vec::new(),
         functions: known_functions,
         methods: bindings.methods,
         known_types: bindings.known_types,
@@ -353,6 +358,10 @@ impl Builder<'_> {
         let known_function = may_reference_function
             && binding.is_none()
             && !self.inherited_bindings.contains_key(name)
+            && !self
+                .for_initializer_names
+                .iter()
+                .any(|names| names.iter().any(|n| n == name))
             && self.functions.contains(name);
         let expected_signature = (known_function && self.cpp)
             .then(|| {
@@ -1889,7 +1898,8 @@ impl Builder<'_> {
                     .unwrap_or_default();
                 // c2cpg converts the initializer in its own block scope and
                 // pops it before visiting the condition, update and body.
-                self.scopes.pop();
+                let names = self.scopes.pop().unwrap_or_default().into_keys().collect();
+                self.for_initializer_names.push(names);
                 self.scopes.push(HashMap::new());
                 let mut slots = vec![initial];
                 if let Some(condition) = condition {
@@ -1908,6 +1918,7 @@ impl Builder<'_> {
                 }
                 let flow = self.for_loop(id, slots, body);
                 self.scopes.pop();
+                self.for_initializer_names.pop();
                 flow
             }
             // CDT cannot parse a C++20 init-statement, so Joern has no loop.

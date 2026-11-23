@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "generator": "pyjoern 4.0.150.4 / Joern v4.0.150",
+  "reference_module": "pyjoern (local path omitted)",
+  "seconds": 21.13669425000262,
+  "functions": {
+    "contains": {
+      "name": "contains",
+      "start_line": 6,
+      "end_line": 13,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "edges": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            3,
+            6
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            7,
+            1
+          ]
+        ],
+        "entry": [
+          7
+        ],
+        "exit": [],
+        "degenerate": false,
+        "labels": {
+          "0": "12.0:\nreturn false;,returnfalse;\n",
+          "1": "7.0:\nit != last\n",
+          "2": "8.1:\nit == value\n",
+          "3": "8.0:\nit==value||last==value || \n",
+          "4": "9.0:\nreturn true;,returntrue;\n",
+          "5": "8.2:\nlast == value\n",
+          "6": "7.4:\nstep()\n<UnsupportedStmt: ['assignmentPlus', 'it+=step()']>\n",
+          "7": "6.0:\nFUNCTION_START\nfirst()\nit = first()\n<UnsupportedStmt: last,this-&gt;last()>\nlast = this-&gt;last()\n"
+        }
+      }
+    },
+    "span": {
+      "name": "span",
+      "start_line": 15,
+      "end_line": 21,
+      "cfg": {
+        "nodes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "entry": [
+          3
+        ],
+        "exit": [
+          1
+        ],
+        "degenerate": false,
+        "labels": {
+          "0": "17.0:\nit < last\n",
+          "1": "20.2:\nlast()\n<UnsupportedStmt: ['addition', 'total+last()']>\nreturn total+last();,returntotal+last();\nFUNCTION_END\n",
+          "2": "18.1:\n<UnsupportedStmt: ['subtraction', 'last-it']>\n<UnsupportedStmt: ['assignmentPlus', 'total+=last-it']>\n<UnsupportedStmt: ['preIncrement', '++it']>\n",
+          "3": "15.0:\nFUNCTION_START\ntotal = 0\nfirst()\nit = first()\n<UnsupportedStmt: last,this-&gt;last()>\nlast = this-&gt;last()\n"
+        }
+      }
+    },
+    "first": {
+      "name": "first",
+      "start_line": 2,
+      "end_line": 2,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "2.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "step": {
+      "name": "step",
+      "start_line": 4,
+      "end_line": 4,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "4.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    },
+    "last": {
+      "name": "last",
+      "start_line": 3,
+      "end_line": 3,
+      "cfg": {
+        "nodes": [
+          0
+        ],
+        "edges": [],
+        "entry": [
+          0
+        ],
+        "exit": [
+          0
+        ],
+        "degenerate": true,
+        "labels": {
+          "0": "3.0:\nFUNCTION_START\nFUNCTION_END\n"
+        }
+      }
+    }
+  },
+  "source_sha256": "6c3df618cae4e1d4b76f9b6045703d76d2f9352fcea79e6eba45fe82f14dc428",
+  "prepared_sha256": "6c3df618cae4e1d4b76f9b6045703d76d2f9352fcea79e6eba45fe82f14dc428"
+}
