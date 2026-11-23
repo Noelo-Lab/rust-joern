@@ -2381,7 +2381,10 @@ impl Parser<'_> {
             && self.cpp
             && (header.name_start..header.parameters_start).any(|i| self.text(i) == "operator")
         {
-            if definition {
+            // CDT parses `= default` and `= delete` as function definitions.
+            let defaulted = (header.parameters_end + 1..body_start)
+                .any(|i| self.text(i) == "=" && matches!(self.text(i + 1), "default" | "delete"));
+            if definition || defaulted {
                 operator.to_string()
             } else {
                 format!("operator {operator}")
@@ -3447,7 +3450,12 @@ impl Parser<'_> {
                 if self.text(i) == "(" {
                     i = self.matching(i, end).map_or(end, |close| close + 1);
                 }
-            } else if matches!(self.text(i), "->" | ":" | "requires") {
+            } else if matches!(self.text(i), "->" | ":" | "requires")
+                || (self.cpp
+                    && self.text(i) == "="
+                    && matches!(self.text(i + 1), "default" | "delete" | "0"))
+            {
+                // A defaulted, deleted or pure function is still a method.
                 return None;
             } else if matches!(self.text(i), "(" | "[") {
                 i = self.matching(i, end).map_or(end, |close| close + 1);

@@ -86,3 +86,28 @@ fn recovery_does_not_qualify_unknown_initialization_effects() {
         .is_err()
     );
 }
+
+#[test]
+fn defaulted_and_deleted_members_are_methods_named_like_definitions() {
+    // CDT parses `= default` and `= delete` as definitions: Joern keeps each
+    // member and names a defaulted operator like a defined one.
+    let source = "struct A {\n  A() = default;\n  A(const A&) = delete;\n  ~A() = default;\n  A& operator=(const A&) = default;\n  A& operator+=(int);\n  virtual int f() = 0;\n};\n";
+    let analysis = analyze(source, "members.cpp", &options()).unwrap();
+    let mut methods = analysis
+        .functions
+        .iter()
+        .map(|f| (f.name.as_str(), f.fullname.as_str()))
+        .collect::<Vec<_>>();
+    methods.sort();
+    assert_eq!(
+        methods,
+        [
+            ("=", "A.operator=:A &(A &)"),
+            ("A", "A.A:ANY()"),
+            ("A", "A.A:ANY(A &)"),
+            ("f", "A.f:int()"),
+            ("operator +=", "A.operator+=:A &(int)"),
+            ("~A", "A.~A:ANY()"),
+        ]
+    );
+}
