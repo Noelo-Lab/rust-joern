@@ -7,7 +7,7 @@ CDT's Java parser and bindings**. Translating the frontend does not translate
 CDT, its overload resolution, templates, or object model.
 
 The first production slice translates both complete operator-selection
-matches in `AstForExpressionsCreator.scala`. `src/builder.rs` consumes the
+matches in `AstForExpressionsCreator.scala`. `src/builder/` consumes the
 generated functions; the old hand-maintained binary/unary tables are removed.
 This is a behavior-preserving port/refactor, not a new C++ quality claim.
 
