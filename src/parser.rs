@@ -3407,6 +3407,16 @@ impl Parser<'_> {
             {
                 // A C++ member-pointer operator owns a qualified scope.
                 cursor += 2;
+            } else if self.cpp
+                && self.text(cursor) == "::"
+                && cursor > start
+                && matches!(self.text(cursor - 1), ">" | ">>")
+                && cursor + 1 < header.name_start
+                && self.tokens[cursor + 1].kind == TokenKind::Identifier
+            {
+                // A member of a template-id names the type, as in
+                // `std::vector<T>::iterator f()`.
+                cursor += 2;
             } else {
                 return true;
             }
@@ -3891,7 +3901,7 @@ impl Parser<'_> {
                 });
                 continue;
             }
-            let base_end = self.specifier_end(a, b);
+            let base_end = self.parameter_specifier_end(a, b);
             self.remember_inferred_type(a, base_end);
             let (name_index, suffix) = self.declarator_name(base_end, b);
             let mut name = name_index
@@ -3963,7 +3973,7 @@ impl Parser<'_> {
         if self.text(start) == "..." {
             return "...".into();
         }
-        let base_end = self.specifier_end(start, end);
+        let base_end = self.parameter_specifier_end(start, end);
         let (name, suffix) = self.declarator_name(base_end, end);
         let mut group = base_end;
         while group < end
@@ -4250,6 +4260,26 @@ impl Parser<'_> {
                 continue;
             }
             break;
+        }
+        i
+    }
+
+    /// `specifier_end` stops after the first template-id, but a parameter
+    /// like `map<K, V>::iterator it` names a member type through it, and
+    /// `it` is the declarator.
+    fn parameter_specifier_end(&self, start: usize, end: usize) -> usize {
+        let mut i = self.specifier_end(start, end);
+        if !self.cpp || i == start || !matches!(self.text(i - 1), ">" | ">>") {
+            return i;
+        }
+        while i + 1 < end
+            && self.text(i) == "::"
+            && self.tokens[i + 1].kind == TokenKind::Identifier
+        {
+            i += 2;
+            if self.text(i) == "<" {
+                i = self.angle_close(i, end).map_or(i, |close| close + 1);
+            }
         }
         i
     }

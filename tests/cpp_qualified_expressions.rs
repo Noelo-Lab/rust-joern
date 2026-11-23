@@ -355,3 +355,22 @@ fn operator_template_names_do_not_hide_invalid_runtime_arguments() {
         }
     }
 }
+
+#[test]
+fn template_member_types_keep_functions_and_parameter_names() {
+    let analysis = parse(
+        "template<class T> struct Box { typedef T *cursor; }; struct S { void touch(Box<int>::cursor at); int f(Box<int>::cursor at, int n); }; Box<int>::cursor last(int n); Box<int>::cursor first(int n) { return 0; } int S::f(Box<int>::cursor at, int n) { if (n) { touch(at); } return n; }",
+    );
+    for name in ["last", "first", "f"] {
+        assert!(analysis.functions.iter().any(|f| f.name == name), "{name}");
+    }
+    let f = function(&analysis);
+    let parameter = f
+        .cpg
+        .nodes
+        .iter()
+        .find(|n| n.kind == "METHOD_PARAMETER_IN" && n.code.starts_with("Box"))
+        .unwrap();
+    assert_eq!(parameter.name.as_deref(), Some("at"));
+    assert_eq!(argument_code(f, call(f, "touch"), 1), "at");
+}
