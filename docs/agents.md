@@ -13,10 +13,11 @@ preprocessed source and sanitized decompiler output that may not compile.
 
 | Location | Responsibility |
 | --- | --- |
-| `src/lexer.rs`, `src/parser.rs`, `src/syntax.rs` | Tokens, C/C++ syntax, bindings, and CDT-compatible recovery |
-| `src/builder.rs`, `src/graph.rs` | CPG construction, CFG lowering, and serialized graph types |
+| `src/lexer/` | Tokens and preprocessor handling: `macros.rs` (conditionals, source and retained macros), `trivia.rs` |
+| `src/parser/`, `src/syntax.rs` | C/C++ syntax, bindings, and CDT-compatible recovery; see the parser modules below |
+| `src/builder/`, `src/graph.rs` | CPG construction and CFG lowering: `nodes.rs`, `control_flow.rs`, `statements.rs`, `expressions.rs`; serialized graph types |
 | `src/normalize.rs` | Joern CFG projection and PyJoern basic-block normalization |
-| `src/dataflow.rs`, `src/ddg.rs` | Reaching definitions, semantic summaries, and labeled DDG projection |
+| `src/dataflow/`, `src/ddg.rs` | Reaching definitions (`graph.rs`), semantic summaries (`summaries.rs`), and labeled DDG projection |
 | `src/lib.rs`, `src/main.rs` | Analysis pipeline, multi-file context, C ABI, and JSON/DOT CLI |
 | `python/rust_joern/__init__.py` | Shared-library loading, Python API, and NetworkX graph views |
 | `compat/pyjoern/__init__.py` | Opt-in DecBench shim, excluded from the installed package |
@@ -24,6 +25,26 @@ preprocessed source and sanitized decompiler output that may not compile.
 | `scripts/` | Reference capture, parity comparison, DecBench validation, and GED rescoring |
 | `docs/` | Integration documentation, divergence log, historical evaluation methods/results, and this guide |
 | `workspace/` | Ignored generated captures, evaluation outputs, and scratch work |
+
+Each module folder keeps its shared structs and public entry points in
+`mod.rs`; the other files add `impl` blocks and helpers by topic. Unit tests
+sit beside them in `tests.rs` (the parser also has `declaration_tests.rs` and
+`expression_port_tests.rs`). The parser is split as follows:
+
+| `src/parser/` file | Contents |
+| --- | --- |
+| `mod.rs` | Entry points, `Parser` state, and translation-unit parsing |
+| `tokens.rs` | Token navigation, delimiters, and diagnostics |
+| `declarations.rs` | Declarations, function headers, records, and file scope |
+| `types.rs` | Specifiers, declarators, and type bindings |
+| `statements.rs` | Statements and control-flow syntax |
+| `expressions.rs` | Expressions, calls, and operators |
+| `cpp.rs` | C++ names, templates, classes, lambdas, and scopes |
+| `cdt_recovery.rs` | Reproduction of CDT problem statements and expressions |
+| `macros.rs` | Builtins, attributes, inline assembly, and macro reparsing |
+| `helpers.rs` | Keyword tables and syntax-tree helpers |
+
+Add new code to the file whose topic it shares, rather than to `mod.rs`.
 
 The [README](../README.md) covers installation and public usage.
 [DecBench integration](decbench.md), [CFG parity](eval/cfg_parity.md), and
